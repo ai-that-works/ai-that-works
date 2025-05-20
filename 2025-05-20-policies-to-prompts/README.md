@@ -27,17 +27,24 @@ unzip the file
 tar -xzvf enron_mail_20150507.tar.gz
 ```
 
-### Download sarbanes-oxley dataset
+### Download sarbanes-oxley rules (plaintext)
 
 ```bash
 wget 'https://www.govinfo.gov/content/pkg/PLAW-107publ204/html/PLAW-107publ204.htm'
 ```
 
 
+### Download the JPMC 2024 code of conduct (pdf)
+
+```
+wget 'https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/documents/code-of-conduct.pdf'
+```
+
+
 ### run the code
 
 ```
-# Run the code
+# Run the code:
 python enron.py
 ```
 

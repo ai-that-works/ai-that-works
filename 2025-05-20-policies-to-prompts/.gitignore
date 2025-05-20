@@ -2,3 +2,6 @@
 maildir/
 questions*.json
 *.htm
+*.pdf
+*.txt
+data/*
