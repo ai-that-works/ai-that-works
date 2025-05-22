@@ -1,8 +1,11 @@
 import json
 import os
+from pathlib import Path
 from baml_client import b
 from baml_client.types import Question
 import asyncio
+
+DATA_DIR = Path(os.getenv("DATA_DIR", "data"))
 
 def chunk_document(text: str, num_chunks: int = 5) -> list[str]:
     # Split the document into roughly equal chunks
@@ -15,10 +18,10 @@ def chunk_document(text: str, num_chunks: int = 5) -> list[str]:
     return chunks
 
 async def process_chunk(chunk: str, chunk_index: int) -> list[Question]:
-    output_file = f"questions-{chunk_index}.json"
+    output_file = DATA_DIR / f"questions-{chunk_index}.json"
     
     # Check if we already have results for this chunk
-    if os.path.exists(output_file):
+    if output_file.exists():
         with open(output_file, "r") as f:
             try:
                 return json.load(f)
@@ -34,14 +37,14 @@ async def process_chunk(chunk: str, chunk_index: int) -> list[Question]:
     
     return questions
 
-async def main() -> None:
+async def extract_questions(document: Path) -> None:
     # read the sox document
-    with open("PLAW-107publ204.htm", "r") as f:
+    with open(document, "r") as f:
         sox_document = f.read()
 
     # Check if we already have the final combined results
-    if os.path.exists("questions.json"):
-        with open("questions.json", "r") as f:
+    if (DATA_DIR / "questions.json").exists():
+        with open(DATA_DIR / "questions.json", "r") as f:
             try:
                 questions = json.load(f)
                 print(f"Loaded {len(questions)} questions from questions.json")
@@ -60,10 +63,10 @@ async def main() -> None:
         all_questions.extend(chunk_questions)
     
     # Save combined results
-    with open("questions.json", "w") as f:
+    with open(DATA_DIR / "questions.json", "w") as f:
         json.dump([x.model_dump(mode="json") for x in all_questions], f, indent=2)
     
     print(f"Processed {len(all_questions)} total questions")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(extract_questions(Path("data/sarbanes_oxley.htm")))

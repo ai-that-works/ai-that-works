@@ -3,9 +3,13 @@ name = "2025-05-13-designing-evals"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dependencies = [
     "baml-py>=0.87.2",
     "pydantic>=2.11.4",
+    "pymupdf>=1.25.5",
+    "pytest-asyncio>=0.26.0",
     "pytest>=8.3.5",
+    "requests>=2.31.0",
+    "tqdm>=4.67.1",
 ]

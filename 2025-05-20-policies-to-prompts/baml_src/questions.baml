@@ -1,6 +1,8 @@
 // Defining a data model.
 class Question {
   question string @description("A binary question that can be answered to determine whether the rule was followed")
+  citation_str string @description("The exact text from the document that inspired the question")
+  citation string? @description("The section and header from the document that inspired the question")
 }
 
 // Create a function to extract the resume from a string.
@@ -33,21 +35,16 @@ function ExtractQuestions(document: string) -> Question[] {
 
 
 // Test the function with a sample resume. Open the VSCode playground to run this.
-test vaibhav_resume {
-  functions [ExtractResume]
+test sarbanes_oxley {
+  functions [ExtractQuestions]
   args {
-    resume #"
-      Vaibhav Gupta
-      vbv@boundaryml.com
+    document #"
 
-      Experience:
-      - Founder at BoundaryML
-      - CV Engineer at Google
-      - CV Engineer at Microsoft
+      Section 101.100
 
-      Skills:
-      - Rust
-      - C++
+      Members must not accept gifts or favors from any person or entity that is a subject of the Company's business, including suppliers, customers, competitors, or other third parties.
+
     "#
   }
+  @@assert(output, {{"gifts" in output[0].citation_str}})
 }
