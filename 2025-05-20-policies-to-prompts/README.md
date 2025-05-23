@@ -4,6 +4,7 @@ one of the most common problems in AI engineering is looking at a set of policie
 
 [Video](https://www.youtube.com/watch?v=gkekVC67iVs) • [RSVP](https://lu.ma/iw1d9l3j)
 
+<a href="https://www.youtube.com/watch?v=gkekVC67iVs"><img width="1019" alt="Screenshot 2025-05-22 at 10 29 53 PM" src="https://github.com/user-attachments/assets/68c43941-f249-4c92-9a69-54db5e4a62ee" /></a>
 
 
 ## Key Topics
@@ -39,6 +40,13 @@ Aside - 12-Factor / ShadCN-for-Agents Mindset
 
 ## Whiteboards
 
+![image](https://github.com/user-attachments/assets/fcd7f73b-ee1f-485d-8771-f09176b54196)
+
+![image](https://github.com/user-attachments/assets/d18c4c82-e3b2-4eca-922a-b5e80f37956f)
+
+![image](https://github.com/user-attachments/assets/ddd2cddc-a596-4ef0-8543-4aacbbd76a7f)
+
+![image](https://github.com/user-attachments/assets/c76ab794-5f21-4e07-963e-2f65c6b7cbf5)
 
 
 ## Running this code
