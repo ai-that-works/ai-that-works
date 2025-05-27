@@ -195,7 +195,8 @@ The the BAML code is configured to use a baseten-hosted model by default
 To get a Baseten API key and URL, create an account at [baseten.co](https://baseten.co),
 and then deploy [Qwen3 32B from the model library](https://www.baseten.co/library/qwen-3-32b/).
 
-If you want to run the example with no changes, you can set the following
+If you want to run the example with no changes, you can set the following, using the full URL from the 
+baseten console as the base
 
     export BASETEN_API_KEY=...
     export BASETEN_BASE_URL=...
