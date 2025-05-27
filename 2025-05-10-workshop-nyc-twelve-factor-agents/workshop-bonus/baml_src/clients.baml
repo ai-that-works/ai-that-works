@@ -73,3 +73,11 @@ retry_policy Exponential {
     max_delay_ms 10000
   }
 }
+
+client<llm> CustomOllama {
+  provider openai-generic
+  options {
+    base_url "http://localhost:11434/v1"
+    model "llama3.1:latest"
+  }
+}
