@@ -1,4 +1,4 @@
-import { AddTool, SubtractTool, DivideTool, MultiplyTool, b } from "../baml_client";
+import { AddTool, SubtractTool, DivideTool, MultiplyTool, b, ProcessRefund } from "../baml_client";
 
 export interface Event {
     type: string
@@ -8,6 +8,10 @@ export interface Event {
 export class Thread {
     
     events: Event[] = [];
+
+    strictPrompt: boolean = false;
+
+    workingAgent: string = "success-agent";
 
     constructor(events: Event[]) {
         this.events = events;
@@ -48,7 +52,7 @@ export class Thread {
 
 export type CalculatorTool = AddTool | SubtractTool | MultiplyTool | DivideTool;
 
-export async function handleNextStep(nextStep: CalculatorTool, thread: Thread): Promise<Thread> {
+export async function handleNextStep(nextStep: CalculatorTool | ProcessRefund, thread: Thread): Promise<Thread> {
     let result: number;
     switch (nextStep.intent) {
         case "add":
@@ -83,12 +87,23 @@ export async function handleNextStep(nextStep: CalculatorTool, thread: Thread): 
                 "data": result
             });
             return thread;
+        case "process_refund":
+            thread.events.push({
+                "type": "tool_response",
+                "data": "refund processed successfully"
+            });
+            return thread;
     }
 }
 
 export async function agentLoop(thread: Thread): Promise<Thread> {
     while (true) {
+        if (thread.strictPrompt) {
+        const nextStep = await b.DetermineNextStepThinkHarder(thread.serializeForLLM());
+        } else {
+
         const nextStep = await b.DetermineNextStep(thread.serializeForLLM());
+        }
         console.log("nextStep", nextStep);
 
         thread.events.push({
@@ -99,11 +114,12 @@ export async function agentLoop(thread: Thread): Promise<Thread> {
         switch (nextStep.intent) {
             case "done_for_now":
             case "request_more_information":
-            case "request_approval_from_manager":
+            // case "request_approval_from_manager":
                 // response to human, return the thread
                 return thread;
             case "divide":
-                // divide is scary, return it for human approval
+            case "process_refund":
+                // divide and process_refund is scary, return it for human approval
                 return thread;
             case "add":
             case "subtract":

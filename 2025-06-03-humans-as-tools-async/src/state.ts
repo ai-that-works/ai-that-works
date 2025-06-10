@@ -21,7 +21,7 @@ export class FileSystemThreadStore implements ThreadStore {
     
     async create(thread: Thread): Promise<string> {
         await fs.mkdir(this.threadsDir, { recursive: true });
-        const id = crypto.randomUUID();
+        const id = `${new Date().toISOString().replace(/[-:T.Z]/g, '').slice(0,14)}_${crypto.randomUUID()}`;
         const filePath = path.join(this.threadsDir, `${id}.json`);
         const txtPath = path.join(this.threadsDir, `${id}.txt`);
         await Promise.all([

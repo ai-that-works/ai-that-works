@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { Thread, agentLoop as innerLoop, handleNextStep } from '../src/agent';
 import { FileSystemThreadStore, ThreadStore } from '../src/state';
 import { ContactChannel, FunctionCall, HumanContact, humanlayer, V1Beta2EmailEventReceived, V1Beta2HumanContactCompleted, V1Beta2SlackEventReceived } from '@humanlayer/sdk';
+import { askManager } from './cli';
 
 const app = express();
 app.use(express.json());
@@ -80,7 +81,7 @@ const outerLoop = async (req: Request, res: Response) => {
                 notFound(res);
                 return;
             }
-            thread = store.get(threadId);
+            thread = await store.get(threadId);
             if (!thread) {
                 notFound(res);
                 return;
@@ -113,9 +114,9 @@ const outerLoop = async (req: Request, res: Response) => {
     await Promise.resolve().then(async() => {
         const newThread = await innerLoop(thread);
         if (threadId) {
-            store.update(threadId, newThread);
+            await store.update(threadId, newThread);
         } else {
-            threadId = store.create(newThread);
+            threadId = await store.create(newThread);
         }
         // we exited the inner loop, send to human
         const lastEvent = newThread.lastEvent();
@@ -132,7 +133,10 @@ const outerLoop = async (req: Request, res: Response) => {
                 });
                 console.log(`created human contact "${lastEvent.data.message}"`);
                 break;
-            case "other_scary_tools":  // example, add more tools here
+            case "process_refund":  // example, add more tools here
+                const approval = await askManager(lastEvent);
+                if (approval.approved) {
+                    
             case "divide":
                 const intent = lastEvent.data.intent;
                 // remove intent from kwargs payload

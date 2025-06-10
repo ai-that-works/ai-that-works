@@ -10,20 +10,14 @@ class DoneForNow {
     message to send to the user about the work that was done. 
   "#)
 }
-
-class RequestApprovalFromManager {
-  intent "request_approval_from_manager"
-  message string
-}
-
 class ProcessRefund {
-  intent "process_refund" @description("you can process a refund for a customer, always request approval from the manager before processing a refund")
+  intent "process_refund" 
   order_id string
   amount int | float
   reason string
 }
 
-type HumanTools = ClarificationRequest | DoneForNow | RequestApprovalFromManager
+type HumanTools = ClarificationRequest | DoneForNow 
 type CalculatorTools = AddTool | SubtractTool | MultiplyTool | DivideTool
 type CustomerSupportTools = ProcessRefund
 
@@ -165,3 +159,54 @@ test MathOperationPostClarification {
   @@assert(a, {{this.b == 12}})
 }
         
+test ProcessRefund {
+  functions [DetermineNextStep]
+  args {
+    thread #"
+      <user_input>
+        can you process a refund for order 1234567890?
+      </user_input>
+    "#
+  }
+}
+
+
+test ProcessRefundWithAllDetails {
+  functions [DetermineNextStep]
+  args {
+    thread #"
+      <user_input>
+        can you process a refund for order 1234567890?
+
+        its for the jeans they're too big and baggy what is this gen z nonsense?
+
+        they were $200
+      </user_input>
+    "#
+  }
+}
+
+
+
+
+test ProcessRefundDenied {
+  functions [DetermineNextStep]
+  args {
+    thread #"
+      <user_input>
+      i need a refund for oreder 123541 for $200 the jeans are too big and baggy what is this gen z nonsense this is not fashion
+      </user_input>
+
+      <process_refund>
+      order_id: 123541
+      amount: 200
+      reason: The jeans are too big and baggy
+      </process_refund>
+
+      <tool_response>
+      user denied operation process_refund with feedback: can you ask them what color the jeans were first?
+      </tool_response>
+    "#
+  }
+  @@assert(intent, {{this.intent == "request_more_information"}})
+}

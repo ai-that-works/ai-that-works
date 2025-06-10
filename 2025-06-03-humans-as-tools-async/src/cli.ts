@@ -25,7 +25,10 @@ export async function cliOuterLoop(message: string) {
         // everything on CLI
         const responseEvent = await askHumanCLI(lastEvent);
         newThread.events.push(responseEvent);
+
+        // multiplayer mode
         // if (lastEvent.data.intent === "request_approval_from_manager") {
+
         //     const responseEvent = await askManager(lastEvent);
         //     thread.events.push(responseEvent);
         // } else {
@@ -45,28 +48,62 @@ export async function cli() {
     await cliOuterLoop(message);
 }
 
-// async function askManager(lastEvent: Event): Promise<Event> {
-//     const hl = humanlayer({
-//         contactChannel: {
-//              email: {
-//                 address: process.env.HUMANLAYER_EMAIL_ADDRESS || "manager@example.com"
-//             }
-//         }
-//     })
-//     const resp = await hl.fetchHumanResponse({
-//         spec: {
-//             msg: lastEvent.data.message
-//         }
-//      })
-//      return {
-//         type: "manager_response",
-//         data: resp
-//      }
-// }
+export async function askManager(lastEvent: Event): Promise<Approval> {
+    const contactChannel = process.env.HUMANLAYER_EMAIL_ADDRESS ? {
+        email: {
+            address: process.env.HUMANLAYER_EMAIL_ADDRESS,
+            experimental_subject_line: "request from support agent"
+        }
+    } : {
+        slack: {
+            channel_or_user_id: process.env.HUMANLAYER_SLACK_CHANNEL_ID || "C08AQLH5SK0"
+        }
+    };
+
+    // const contactChannel ={
+    //     email: {
+    //         address: process.env.HUMANLAYER_EMAIL_ADDRESS || "manager@example.com",
+    //         experimental_subject_line: "request from support agent"
+    //     }
+    // }
+
+    const hl = humanlayer({
+        runId: "support-agent",
+        contactChannel,
+    })
+
+    // fetch synchronously and poll
+    const resp = await hl.fetchHumanApproval({
+        spec: {
+          fn: lastEvent.data.intent,
+          kwargs: {
+            order_id: lastEvent.data.order_id,
+            amount: lastEvent.data.amount,
+            reason: lastEvent.data.reason
+          }
+        }
+     })
+     return {
+        approved: resp.approved || false,
+        comment: resp.comment || ""
+     }
+}
 
 async function askHumanCLI(lastEvent: Event): Promise<Event> {
 
     switch (lastEvent.data.intent) {
+        case "process_refund":
+            const approval = await askManager(lastEvent);
+            if (approval.approved) {
+                const thread = new Thread([lastEvent]);
+                const result = await handleNextStep(lastEvent.data, thread);
+                return result.events[result.events.length - 1];
+            } else {
+                return {
+                    type: "tool_response",
+                    data: `user denied operation ${lastEvent.data.intent} with feedback: ${approval.comment}`
+                };
+            }
         case "divide":
             const response = await approveCLI(`agent wants to run ${chalk.green(JSON.stringify(lastEvent.data))}\nPress Enter to approve, or type feedback to cancel:`);
             if (response.approved) {
@@ -80,7 +117,6 @@ async function askHumanCLI(lastEvent: Event): Promise<Event> {
                 };
             }
         case "request_more_information":
-        case "request_approval_from_manager":
         case "done_for_now":
             const message = await messageCLI(lastEvent.data.message);
             return {
