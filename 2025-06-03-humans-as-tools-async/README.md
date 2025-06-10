@@ -21,9 +21,17 @@ This session builds on our [12-factor agents workshop](../2025-04-22-twelve-fact
 
 ## Whiteboards
 
+### inner vs outer loop
+
 ![image](https://github.com/user-attachments/assets/3f3269f1-e177-473f-a4bc-7802255447dc)
 
+
+### deterministic vs non-deterministic human approval
+
 ![image](https://github.com/user-attachments/assets/a36a19ec-52fa-43d1-be02-63cbf209d11e)
+
+
+### base agent architecture refresh
 
 ![image](https://github.com/user-attachments/assets/b11a5c94-b1a0-4d02-89fb-9640ce436484)
 
