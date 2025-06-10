@@ -1,6 +1,8 @@
 # Humans as Tools: Async Agents and Durable Execution
 
-[![video thumbnail](video thumbnail)](video link)
+[Video](https://youtu.be/NMhH5_ju3-I)
+
+[![image](https://img.youtube.com/vi/NMhH5_ju3-I/0.jpg)](https://youtu.be/NMhH5_ju3-I)
 
 This session builds on our [12-factor agents workshop](../2025-04-22-twelve-factor-agents) to explore async agents and durable execution patterns. We'll learn how to build agents that can pause, contact humans for feedback or approval, and resume execution based on human responses.
 
