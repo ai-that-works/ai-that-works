@@ -1,0 +1,12 @@
+[project]
+name = "workshop-bonus"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "baml-py==0.88.0",
+    "numpy>=2.2.6",
+    "openai>=1.82.0",
+    "pydantic>=2.11.4",
+]
