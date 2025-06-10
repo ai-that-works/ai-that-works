@@ -1,0 +1,9 @@
+[project]
+name = "2025-06-10-cracking-the-prompting-interview"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "baml-py>=0.89.0",
+]
