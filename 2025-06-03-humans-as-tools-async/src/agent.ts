@@ -98,12 +98,8 @@ export async function handleNextStep(nextStep: CalculatorTool | ProcessRefund, t
 
 export async function agentLoop(thread: Thread): Promise<Thread> {
     while (true) {
-        if (thread.strictPrompt) {
-        const nextStep = await b.DetermineNextStepThinkHarder(thread.serializeForLLM());
-        } else {
-
         const nextStep = await b.DetermineNextStep(thread.serializeForLLM());
-        }
+
         console.log("nextStep", nextStep);
 
         thread.events.push({
