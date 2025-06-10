@@ -2,7 +2,7 @@
 
 [Video](https://youtu.be/NMhH5_ju3-I)
 
-[![image](https://img.youtube.com/vi/NMhH5_ju3-I/0.jpg)](https://youtu.be/NMhH5_ju3-I)
+<a href="https://www.youtube.com/watch?v=NMhH5_ju3-I"><img width="600" alt="Screenshot 2025-06-10 at 8 56 45 AM" src="https://github.com/user-attachments/assets/1c01a45f-0103-43fd-98cd-4e2adb59c04f" /></a>
 
 This session builds on our [12-factor agents workshop](../2025-04-22-twelve-factor-agents) to explore async agents and durable execution patterns. We'll learn how to build agents that can pause, contact humans for feedback or approval, and resume execution based on human responses.
 
