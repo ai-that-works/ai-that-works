@@ -1,5 +1,13 @@
+from baml_client import b
+from baml_client.types import Content
+
 def main():
-    print("Hello from 2025-06-10-cracking-the-prompting-interview!")
+    contents = [
+        Content(url="https://en.wikipedia.org/wiki/France", content="France is a country in Europe."),
+    ]
+    answer = b.AnswerQuestion(question="What is the capital of France?", contents=[])
+    for url in answer.citations:
+        print(contents[url].url)
 
 
 if __name__ == "__main__":
