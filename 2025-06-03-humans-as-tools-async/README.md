@@ -21,8 +21,17 @@ This session builds on our [12-factor agents workshop](../2025-04-22-twelve-fact
 
 ## Whiteboards
 
+![image](https://github.com/user-attachments/assets/3f3269f1-e177-473f-a4bc-7802255447dc)
+
+![image](https://github.com/user-attachments/assets/a36a19ec-52fa-43d1-be02-63cbf209d11e)
+
+![image](https://github.com/user-attachments/assets/b11a5c94-b1a0-4d02-89fb-9640ce436484)
 
 
+![image](https://github.com/user-attachments/assets/661500e9-ba0e-496e-a774-e0add0d2b8e6)
+
+
+![image](https://github.com/user-attachments/assets/d54415a4-5452-4035-8cf8-70b13ef3dafd)
 
 
 ## Running the Code
