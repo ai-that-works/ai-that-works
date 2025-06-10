@@ -3,14 +3,14 @@ class Code {
         goal of the lesson
     "#)
     code string 
-    // @description(#"
-    //     use triple backticks to format the code
-    //     {
-    //        code: ```python
-    //        ...
-    //        ```
-    //     }
-    // "#)
+    @description(#"
+        use triple backticks to format the code
+        {
+           code: ```python
+           ...
+           ```
+        }
+    "#)
 }
 
 function GenerateCode(input: string) -> Code[] {
