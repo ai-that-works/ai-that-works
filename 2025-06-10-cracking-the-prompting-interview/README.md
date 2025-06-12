@@ -2,7 +2,8 @@
 
 > Ready to level up your prompting skills? Join us for a deep dive into advanced prompting techniques that separate good prompt engineers from great ones. We'll cover systematic prompt design, evaluation frameworks, and tackle real interview-style prompting challenges.
 
-[Video](https://youtu.be/PU2h0V-pANQ)
+[Video](https://youtu.be/PU2h0V-pANQ) (1h23m - Available June 13, 2025 8 AM PST)
+[![Large Scale Classification](https://img.youtube.com/vi/PU2h0V-pANQ/0.jpg)](https://www.youtube.com/watch?v=PU2h0V-pANQ)
 
 ## 🎯 Key Takeaways
 
