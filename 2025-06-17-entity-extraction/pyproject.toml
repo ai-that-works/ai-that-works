@@ -1,0 +1,10 @@
+[project]
+name = "2025-06-17-entity-extraction"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "baml-py>=0.90.1",
+    "pydantic>=2.11.7",
+]
