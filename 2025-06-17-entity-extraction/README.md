@@ -20,6 +20,15 @@ Links:
 - **Status-Driven Async Workflow**: Use database status columns (proposed/ready/committed) to enable human-in-loop and future automation
 - **Start Expensive, Then Optimize**: Ship with big models first, collect ground-truth data, then optimize when it hurts
 
+## Whiteboards
+
+![image](https://github.com/user-attachments/assets/f5d14eda-445e-4e04-bf4b-589ca437a409)
+
+* * *
+
+![image](https://github.com/user-attachments/assets/6460b1fd-2780-4985-865c-45ecd9510a1d)
+
+
 ## Core Architecture
 
 ### Pipeline Stages
