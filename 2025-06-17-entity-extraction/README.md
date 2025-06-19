@@ -2,7 +2,7 @@
 
 > Disambiguating many ways of naming the same thing (companies, skills, etc.) - from entity extraction to resolution to deduping.
 
-[Video](https://youtu.be/niR896pQWOQ) (1h15m)
+[Video](https://youtu.be/niR896pQWOQ) (1h15m) (AVAILABLE June 20 8 am PST)
 
 [![Entity Resolution & De-duping](https://img.youtube.com/vi/niR896pQWOQ/0.jpg)](https://www.youtube.com/watch?v=niR896pQWOQ)
 
