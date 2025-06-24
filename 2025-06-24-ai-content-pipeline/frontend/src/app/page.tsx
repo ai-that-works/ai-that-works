@@ -1,5 +1,5 @@
-import { VideoImportForm } from '@/components/VideoImportForm'
 import { VideoList } from '@/components/VideoList'
+import { ZoomRecordingsList } from '@/components/ZoomRecordingsList'
 
 export default function Home() {
   return (
@@ -15,9 +15,9 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Import Form */}
+        {/* Zoom Recordings */}
         <div className="mb-8">
-          <VideoImportForm />
+          <ZoomRecordingsList />
         </div>
 
         {/* Video List */}

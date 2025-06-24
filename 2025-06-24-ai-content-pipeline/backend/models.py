@@ -46,6 +46,21 @@ class Feedback(BaseModel):
     created_at: datetime
 
 
+# Zoom Recording Models
+class ZoomRecording(BaseModel):
+    meeting_id: str
+    meeting_title: str
+    recording_id: str
+    recording_type: str
+    file_size: int
+    recording_start: Optional[str] = None
+    recording_end: Optional[str] = None
+    download_url: Optional[str] = None
+    file_extension: str
+    status: str
+    duration: Optional[int] = None
+
+
 # API Response Models
 class VideoImportResponse(BaseModel):
     video_id: str
@@ -77,3 +92,22 @@ class FeedbackResponse(BaseModel):
 
 class StatusResponse(BaseModel):
     status: str
+
+
+class ZoomRecordingsResponse(BaseModel):
+    recordings: List[ZoomRecording]
+    total_count: int
+
+
+# Grouped Zoom Meeting Model
+class ZoomMeetingRecordings(BaseModel):
+    meeting_id: str
+    meeting_title: str
+    recording_start: str
+    recording_end: str
+    recordings: List[ZoomRecording]
+
+
+class ZoomMeetingsResponse(BaseModel):
+    meetings: List[ZoomMeetingRecordings]
+    total_count: int

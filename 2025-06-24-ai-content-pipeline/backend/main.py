@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List
+from typing import List, Optional
 import uuid
 from datetime import datetime
 import os
@@ -10,9 +10,12 @@ from models import (
     VideoImportRequest, DraftUpdateRequest, FeedbackRequest,
     Video, Draft, Feedback,
     VideoImportResponse, VideoResponse, SummaryResponse, 
-    DraftsListResponse, DraftSaveResponse, FeedbackResponse, StatusResponse
+    DraftsListResponse, DraftSaveResponse, FeedbackResponse, StatusResponse,
+    ZoomRecordingsResponse, ZoomRecording,
+    ZoomMeetingRecordings, ZoomMeetingsResponse
 )
 from database import db
+from zoom_client import zoom_client
 
 # Load environment variables
 load_dotenv()
@@ -209,7 +212,44 @@ async def test_zoom():
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                           detail=f"Zoom API test failed: {str(e)}")
 
+@app.get("/zoom/recordings", response_model=ZoomMeetingsResponse)
+async def get_zoom_recordings(
+    from_date: Optional[str] = None,
+    to_date: Optional[str] = None,
+    user_id: str = "me"
+):
+    """Fetch existing Zoom recordings, grouped by meeting"""
+    try:
+        recordings_data = zoom_client.get_recordings(
+            user_id=user_id,
+            from_date=from_date,
+            to_date=to_date
+        )
+        # Group by meeting_id
+        meetings = {}
+        for rec in recordings_data:
+            m_id = rec["meeting_id"]
+            if m_id not in meetings:
+                meetings[m_id] = {
+                    "meeting_id": m_id,
+                    "meeting_title": rec["meeting_title"],
+                    "recording_start": rec["recording_start"],
+                    "recording_end": rec["recording_end"],
+                    "recordings": []
+                }
+            meetings[m_id]["recordings"].append(ZoomRecording(**rec))
+        meetings_list = [ZoomMeetingRecordings(**m) for m in meetings.values()]
+        return ZoomMeetingsResponse(
+            meetings=meetings_list,
+            total_count=len(meetings_list)
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch Zoom recordings: {str(e)}"
+        )
+
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
