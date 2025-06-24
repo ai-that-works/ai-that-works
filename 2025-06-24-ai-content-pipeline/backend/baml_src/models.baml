@@ -3,11 +3,8 @@
 class EmailDraft {
   subject string
   body string @description(#"
-    use triple quotes for multi-line strings (this can be dense)
-
-    include small code snippets in the emails
+    use triple quotes for multi-line strings
   "#)
-  call_to_action string?
 }
 
 class TwitterThread {

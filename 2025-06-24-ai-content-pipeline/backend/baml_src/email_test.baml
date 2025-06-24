@@ -1,3 +1,65 @@
+test EmailStructure {
+  functions [GenerateEmailStructure]
+  args {
+    summary {
+      bullet_points [
+        #"Use indexes instead of full text/URLs when possible to improve reliability"#,
+        #"Let models output content naturally rather than forcing strict formats"#,
+        #"Add clear schemas and structure to guide responses"#,
+        #"Read prompts carefully when debugging issues"#,
+        #"Consider both token efficiency and output quality"#,
+        #"Use comments and reasoning steps to improve output quality"#,
+        #"Test prompts with real production data"#
+      ]
+      key_topics [
+        #"Label and citation handling"#,
+        #"Diarization techniques"#,
+        #"Code generation"#,
+        #"Prompt debugging"#,
+        #"Token efficiency"#,
+        #"Structured outputs"#,
+        #"Real-world applications"#
+      ]
+      main_takeaways [
+        #"Don't force models to generate long sequences of meaningless tokens (like URLs) - use indexes or aliases instead"#,
+        #"Let models output content in their natural format rather than forcing strict JSON when possible"#,
+        #"Always read your prompts carefully (RTFP) when debugging or improving them"#,
+        #"Use structured outputs and clear schemas to guide model responses"#,
+        #"Consider token efficiency but don't sacrifice quality - find the right balance"#
+      ]
+      timed_data [
+        {
+          end_time #"00:15:00"#
+          start_time #"00:00:00"#
+          summary #"Discussion of labels and citations in prompting, focusing on how to handle URLs and long token sequences efficiently. Introduced technique of using indexes instead of full URLs to reduce token usage and improve accuracy."#
+        },
+        {
+          end_time #"00:30:00"#
+          start_time #"00:15:00"#
+          summary #"Coverage of diarization techniques for speaker identification in transcripts. Demonstrated how to use structured outputs and indexes instead of raw text to improve efficiency and accuracy."#
+        },
+        {
+          end_time #"00:45:00"#
+          start_time #"00:30:00"#
+          summary #"Discussion of code generation techniques, focusing on allowing models to output code naturally rather than forcing JSON structure. Covered importance of reading prompts carefully (RTFP)."#
+        },
+        {
+          end_time #"01:00:00"#
+          start_time #"00:45:00"#
+          summary #"Practical examples of improving prompts for real use cases, including event planning and video editing applications."#
+        }
+      ]
+    }
+    structure {
+      subject #"🚀 Announcing Our Latest Session: Cracking the Prompting Interview!"#
+      we_covered #"effective prompting techniques and strategies for AI applications."#
+      quick_recap #"We explored the nuances of prompting in AI, examining methods to improve model outputs by utilizing structured prompts and avoiding long sequences of tokens that can lead to errors. Key strategies included leveraging indexes instead of full text and implementing reasoning steps to enhance response quality."#
+      one_thing_to_remember #"Effective prompting is key! Always aim to guide the model's responses through clear schemas, indexes, and thoughtful structuring rather than relying on lengthy inputs."#
+      next_session #"Join us for our next session where we'll delve into 'Optimizing AI Outputs with Structured Prompts' on [June 24th]. Sign up here: https://lu.ma/zcf5c8yd"#
+    }
+  }
+}
+
 test Marriedguan {
   functions [GenerateEmailDraft]
   args {

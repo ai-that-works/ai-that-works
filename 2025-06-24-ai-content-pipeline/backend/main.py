@@ -220,10 +220,15 @@ async def process_video_summary(video_id: str, transcript: str, title: Optional[
                 print(f"📧 Generating email draft for video {video_id}")
                 # Get updated video to use latest title
                 updated_video = await db.get_video(video_id)
-                email_draft: types.EmailDraft = await b.GenerateEmailDraft(
+                structure: types.EmailStructure = await b.GenerateEmailDraft(
                     summary=video_summary,
                     transcript=transcript,
                     video_title=updated_video.title if updated_video else title
+                )
+
+                email_draft = await b.GenerateEmailStructure(
+                    summary=video_summary,
+                    structure=structure
                 )
                 
                 # Update the shared draft with email content
@@ -231,7 +236,7 @@ async def process_video_summary(video_id: str, transcript: str, title: Optional[
                 email_draft_content = EmailDraftContent(
                     subject=email_draft.subject,
                     body=email_draft.body,
-                    call_to_action=email_draft.call_to_action or "<none>"
+                    call_to_action="<none>"
                 )
                 
                 await db.update_draft_field(shared_draft_id, "email_draft", email_draft_content)
@@ -559,7 +564,7 @@ async def refine_content_background_task(
             refined_email = EmailDraftContent(
                 subject=refined_content.subject,
                 body=refined_content.body,
-                call_to_action=refined_content.call_to_action or "<none>"
+                call_to_action="<none>"
             )
             await db.update_draft_field(draft_id, "email_draft", refined_email)
             

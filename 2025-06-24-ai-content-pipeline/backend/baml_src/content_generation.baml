@@ -25,8 +25,47 @@ template_string EmailExample() #"
     Vaibhav & Dex
 "#
 
+class EmailStructure {
+  subject string
+  we_covered string @description(#"
+    fill in the blank
+
+    we covered a lot on ______. Here's a quick recap:
+  "#)
+  quick_recap string 
+  one_thing_to_remember string
+  next_session string
+}
+
+function GenerateEmailStructure(summary: VideoSummary, structure: EmailStructure) -> EmailDraft {
+  client CustomGPT4oMini
+  prompt #"
+    Make the email structure fit the final email draft.
+
+    {{ ctx.output_format }}
+
+    My goal email is something like this.
+    {{ EmailExample() }}
+
+    {{ _.role('user') }}
+    Here's my draft so far.
+
+    Subject: {{ structure.subject }}
+
+    We covered a lot on {{ structure.we_covered }}. Here's a quick recap:
+
+    {{ structure.quick_recap }}
+
+    One thing to remember:
+    {{ structure.one_thing_to_remember }}
+
+    Next session:
+    {{ structure.next_session }}
+  "#
+}
+
 // Generate professional email draft
-function GenerateEmailDraft(summary: VideoSummary, transcript: string?, video_title: string?) -> EmailDraft {
+function GenerateEmailDraft(summary: VideoSummary, transcript: string?, video_title: string?) -> EmailStructure {
   client CustomGPT4oMini
   prompt #"
     Create a professional email announcing this video content on behalf of Vaibhav and Dex.
