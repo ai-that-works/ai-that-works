@@ -25,3 +25,9 @@ dev = [
     "black>=24.0.0",
     "isort>=5.13.0",
 ]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.16.1",
+    "ruff>=0.12.0",
+]

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List, Optional
+from typing import Optional
 import uuid
 from datetime import datetime
 import os
@@ -9,13 +9,13 @@ from dotenv import load_dotenv
 from models import (
     VideoImportRequest, DraftUpdateRequest, FeedbackRequest,
     Video, Draft, Feedback,
-    VideoImportResponse, VideoResponse, SummaryResponse, 
+    VideoImportResponse, VideoResponse, SummaryResponse,
     DraftsListResponse, DraftSaveResponse, FeedbackResponse, StatusResponse,
-    ZoomRecordingsResponse, ZoomRecording,
-    ZoomMeetingRecordings, ZoomMeetingsResponse
+    ZoomRecording, ZoomMeetingRecordings, ZoomMeetingsResponse
 )
 from database import db
 from zoom_client import zoom_client
+from job_processor import create_video_processing_job, get_job_status, get_queue_status
 
 # Load environment variables
 load_dotenv()
@@ -43,25 +43,78 @@ async def root():
 
 @app.post("/videos/import", status_code=status.HTTP_202_ACCEPTED, response_model=VideoImportResponse)
 async def import_video(request: VideoImportRequest):
-    """Queue Zoom download - returns video ID immediately"""
-    video_id = str(uuid.uuid4())
+    """Queue Zoom download and AI processing - returns job ID immediately"""
+    job_id = create_video_processing_job(request.zoom_meeting_id)
     
-    # Create video record
+    # Also create database record for tracking
+    video_id = str(uuid.uuid4())
     video = Video(
         id=video_id,
         zoom_meeting_id=request.zoom_meeting_id,
         title=f"Zoom Meeting {request.zoom_meeting_id}",
-        duration=3600,  # 1 hour
+        duration=3600,
         status="processing",
         created_at=datetime.now()
     )
     
     try:
         await db.create_video(video)
-        return VideoImportResponse(video_id=video_id, status="queued")
+        return VideoImportResponse(video_id=video_id, status="queued", job_id=job_id)
     except Exception as e:
         print(f"Error creating video: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+# Job status endpoints from AI pipeline
+@app.get("/jobs/{job_id}")
+async def get_job_status_endpoint(job_id: str):
+    """Get job status and results"""
+    status_result = get_job_status(job_id)
+    if "error" in status_result and status_result["error"] == "Job not found":
+        raise HTTPException(status_code=404, detail="Job not found")
+    return status_result
+
+@app.get("/jobs")
+async def get_queue_status_endpoint():
+    """Get overall job queue status"""
+    return get_queue_status()
+
+@app.get("/jobs/{job_id}/video")
+async def get_processed_video(job_id: str):
+    """Get video processing results from completed job"""
+    job_status = get_job_status(job_id)
+    
+    if "error" in job_status and job_status["error"] == "Job not found":
+        raise HTTPException(status_code=404, detail="Job not found")
+    
+    if job_status["status"] != "completed":
+        return {"status": job_status["status"], "progress": job_status["progress"]}
+    
+    result = job_status["result"]
+    if not result:
+        raise HTTPException(status_code=500, detail="Job completed but no result available")
+    
+    return {
+        "video": result["video"],
+        "ai_content": result["ai_content"],
+        "status": "completed"
+    }
+
+@app.get("/jobs/{job_id}/drafts")
+async def get_ai_drafts(job_id: str):
+    """Get AI-generated content drafts from completed job"""
+    job_status = get_job_status(job_id)
+    
+    if "error" in job_status and job_status["error"] == "Job not found":
+        raise HTTPException(status_code=404, detail="Job not found")
+    
+    if job_status["status"] != "completed":
+        return {"status": job_status["status"], "progress": job_status["progress"]}
+    
+    result = job_status["result"]
+    if not result or "ai_content" not in result:
+        raise HTTPException(status_code=500, detail="AI content not available")
+    
+    return result["ai_content"]
 
 @app.get("/videos/{video_id}", response_model=VideoResponse)
 async def get_video(video_id: str):
@@ -87,7 +140,7 @@ async def trigger_summarize(video_id: str):
         if not video:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Video not found")
         
-        # Simulate processing - update status and add sample summary points
+        # Update status and add sample summary points
         updates = {
             "status": "processing",
             "summary_points": [
@@ -146,7 +199,6 @@ async def save_drafts(video_id: str, request: DraftUpdateRequest):
         
         draft_id = str(uuid.uuid4())
         
-        # Create new draft
         draft = Draft(
             id=draft_id,
             video_id=video_id,
@@ -194,23 +246,21 @@ async def add_feedback(draft_id: str, request: FeedbackRequest):
 async def test_supabase():
     """Test Supabase connection and credentials"""
     try:
-        # Test database connection by trying to get a count
-        from database import db
         # Try a simple operation to test connection
-        result = db.client.table("videos").select("count", count="exact").execute()
+        db.client.table("videos").select("count", count="exact").execute()
         return {
-            "status": "connected", 
+            "status": "connected",
             "message": "Supabase credentials valid",
             "tables_accessible": True
         }
     except Exception as e:
         print(f"Supabase test failed: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Supabase connection failed: {str(e)}"
         )
 
-@app.get("/test/zoom")  
+@app.get("/test/zoom")
 async def test_zoom():
     """Test Zoom API credentials"""
     zoom_api_key = os.getenv("ZOOM_API_KEY")
@@ -221,7 +271,6 @@ async def test_zoom():
                           detail="Zoom API credentials not configured")
     
     try:
-        # Simple credentials validation
         return {"status": "configured", "message": "Zoom API credentials found"}
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
