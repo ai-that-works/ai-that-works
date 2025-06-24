@@ -69,18 +69,26 @@ class VideoProcessor:
             # Download Zoom recording
             video_file_path = await self._download_zoom_recording(zoom_meeting_id)
             
+            # Get transcript from Zoom
+            transcript = await self._get_transcript(zoom_meeting_id)
+            
             # Update status to uploading
             await db.update_video(video_id, {"processing_stage": "uploading"})
             
             # Upload to YouTube
             youtube_url = await self._upload_to_youtube(video_file_path, zoom_meeting_id)
             
-            # Update final status
-            await db.update_video(video_id, {
+            # Update final status with transcript
+            update_data = {
                 "processing_stage": "ready",
                 "status": "ready",
                 "youtube_url": youtube_url
-            })
+            }
+            
+            if transcript:
+                update_data["transcript"] = transcript
+            
+            await db.update_video(video_id, update_data)
             
             # Clean up temporary file
             if os.path.exists(video_file_path):
@@ -114,18 +122,43 @@ class VideoProcessor:
             temp_file_path = temp_file.name
             temp_file.close()
             
-            # Download the file
-            response = requests.get(recording["download_url"], stream=True)
+            # Download the file with authorization headers
+            headers = {
+                "Authorization": f"Bearer {zoom_client.access_token}",
+                "Content-Type": "application/json"
+            }
+            
+            response = requests.get(recording["download_url"], headers=headers, stream=True)
+            if response.status_code != 200:
+                # Try without headers as fallback
+                print(f"Download with auth failed ({response.status_code}), trying without auth...")
+                response = requests.get(recording["download_url"], stream=True)
+            
             response.raise_for_status()
             
             with open(temp_file_path, "wb") as f:
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
             
+            print(f"Successfully downloaded video file: {temp_file_path}")
             return temp_file_path
             
         except Exception as e:
             raise Exception(f"Failed to download Zoom recording: {e}")
+    
+    async def _get_transcript(self, zoom_meeting_id: str) -> Optional[str]:
+        """Get transcript from Zoom recording"""
+        try:
+            transcript = zoom_client.get_transcript(zoom_meeting_id)
+            if transcript:
+                print(f"Successfully retrieved transcript for meeting {zoom_meeting_id}")
+                return transcript
+            else:
+                print(f"No transcript available for meeting {zoom_meeting_id}")
+                return None
+        except Exception as e:
+            print(f"Error getting transcript for meeting {zoom_meeting_id}: {e}")
+            return None
     
     async def _upload_to_youtube(self, video_file_path: str, zoom_meeting_id: str) -> Optional[str]:
         """Upload video to YouTube"""

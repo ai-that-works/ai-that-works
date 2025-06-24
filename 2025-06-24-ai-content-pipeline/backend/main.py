@@ -12,7 +12,7 @@ from models import (
     VideoImportResponse, VideoResponse, SummaryResponse, 
     DraftsListResponse, DraftSaveResponse, FeedbackResponse, StatusResponse,
     ZoomRecordingsResponse, ZoomRecording,
-    ZoomMeetingRecordings, ZoomMeetingsResponse
+    ZoomMeetingRecordings, ZoomMeetingsResponse, TranscriptResponse
 )
 from database import db
 from zoom_client import zoom_client
@@ -126,6 +126,24 @@ async def get_summary(video_id: str):
         print(f"Error getting summary for video {video_id}: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
+@app.get("/videos/{video_id}/transcript", response_model=TranscriptResponse)
+async def get_transcript(video_id: str):
+    """Get video transcript"""
+    try:
+        video = await db.get_video(video_id)
+        if not video:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Video not found")
+        
+        if not video.transcript:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Transcript not available")
+        
+        return TranscriptResponse(transcript=video.transcript)
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error getting transcript for video {video_id}: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
 @app.get("/videos/{video_id}/drafts", response_model=DraftsListResponse)
 async def list_drafts(video_id: str):
     """List draft history"""
@@ -219,16 +237,22 @@ async def test_supabase():
 @app.get("/test/zoom")  
 async def test_zoom():
     """Test Zoom API credentials"""
-    zoom_api_key = os.getenv("ZOOM_API_KEY")
-    zoom_api_secret = os.getenv("ZOOM_API_SECRET")
+    zoom_account_id = os.getenv("ZOOM_ACCOUNT_ID")
+    zoom_client_id = os.getenv("ZOOM_CLIENT_ID")
+    zoom_client_secret = os.getenv("ZOOM_CLIENT_SECRET")
     
-    if not zoom_api_key or not zoom_api_secret:
+    if not zoom_account_id or not zoom_client_id or not zoom_client_secret:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                          detail="Zoom API credentials not configured")
+                          detail="Zoom OAuth credentials not configured")
     
     try:
-        # Simple credentials validation
-        return {"status": "configured", "message": "Zoom API credentials found"}
+        # Test the Zoom client
+        recordings = zoom_client.get_recordings()
+        return {
+            "status": "configured", 
+            "message": "Zoom OAuth credentials valid",
+            "recordings_count": len(recordings)
+        }
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                           detail=f"Zoom API test failed: {str(e)}")

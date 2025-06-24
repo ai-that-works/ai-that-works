@@ -69,11 +69,14 @@ export const api = {
   },
 
   // Trigger video summarization
-  async summarizeVideo(videoId: string) {
+  async summarizeVideo(videoId: string): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/videos/${videoId}/summarize`, {
       method: 'POST',
     })
-    return response.json()
+    
+    if (!response.ok) {
+      throw new Error(`Failed to trigger summarization: ${response.statusText}`)
+    }
   },
 
   // Save draft
@@ -94,5 +97,17 @@ export const api = {
       body: JSON.stringify(feedback),
     })
     return response.json()
+  },
+
+  async getTranscript(videoId: string): Promise<string> {
+    const response = await fetch(`${API_BASE_URL}/videos/${videoId}/transcript`, {
+    })
+    
+    if (!response.ok) {
+      throw new Error(`Failed to get transcript: ${response.statusText}`)
+    }
+    
+    const data = await response.json()
+    return data.transcript
   },
 } 

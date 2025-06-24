@@ -29,6 +29,7 @@ class Video(BaseModel):
     status: str  # "processing", "ready", "failed"
     created_at: datetime
     summary_points: Optional[List[str]] = None
+    transcript: Optional[str] = None
 
 
 class Draft(BaseModel):
@@ -94,6 +95,10 @@ class FeedbackResponse(BaseModel):
 
 class StatusResponse(BaseModel):
     status: str
+
+
+class TranscriptResponse(BaseModel):
+    transcript: str
 
 
 class ZoomRecordingsResponse(BaseModel):

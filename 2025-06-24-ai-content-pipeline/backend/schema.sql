@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS videos (
     processing_stage TEXT NOT NULL DEFAULT 'queued', -- 'queued', 'downloading', 'uploading', 'ready', 'failed'
     status TEXT NOT NULL DEFAULT 'processing', -- 'processing', 'ready', 'failed'
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    summary_points TEXT[] -- Array of summary points
+    summary_points TEXT[], -- Array of summary points
+    transcript TEXT -- Full video transcript
 );
 
 -- Drafts table

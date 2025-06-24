@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { supabase, type Video } from '@/lib/supabase'
 import { api } from '@/lib/api'
 import { DraftEditor } from '@/components/DraftEditor'
+import { TranscriptViewer } from '@/components/TranscriptViewer'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Play, Clock, CheckCircle, XCircle, Loader2, Sparkles } from 'lucide-react'
 
@@ -224,6 +225,13 @@ export default function VideoDetailPage() {
           {/* Draft Editor */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <DraftEditor videoId={videoId} />
+          </div>
+        </div>
+
+        {/* Transcript Section */}
+        <div className="mt-8">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <TranscriptViewer videoId={videoId} />
           </div>
         </div>
       </div>
