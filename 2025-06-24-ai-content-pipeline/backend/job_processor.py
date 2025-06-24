@@ -58,9 +58,13 @@ class JobProcessor:
         
         logger.info(f"Created job {job_id} for task {task_name}")
         
-        # Start processing if not already running
+        # Start processing if not already running (only if we have an event loop)
         if not self.is_processing:
-            asyncio.create_task(self._process_queue())
+            try:
+                asyncio.create_task(self._process_queue())
+            except RuntimeError:
+                # No event loop running, processing will start when called from async context
+                logger.info("No event loop running, job will be processed when accessed from async context")
         
         return job_id
     
@@ -169,6 +173,11 @@ class JobProcessor:
             "completed_jobs": len(self.get_jobs_by_status(JobStatus.COMPLETED)),
             "failed_jobs": len(self.get_jobs_by_status(JobStatus.FAILED))
         }
+    
+    async def process_pending_jobs(self):
+        """Manually trigger processing of pending jobs"""
+        if not self.is_processing and self.queue:
+            await self._process_queue()
 
 # Global instance
 job_processor = JobProcessor()

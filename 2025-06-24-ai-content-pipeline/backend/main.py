@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import uuid
 from datetime import datetime
+from job_processor import create_video_processing_job, get_job_status, get_queue_status
 
 app = FastAPI(title="AI Content Pipeline API", version="1.0.0")
 
@@ -52,120 +53,68 @@ class Feedback(BaseModel):
 class FeedbackRequest(BaseModel):
     content: str
 
-# In-memory storage for stub data
-videos_db = {}
-drafts_db = {}
-feedback_db = {}
-
 @app.get("/")
 async def root():
     return {"message": "AI Content Pipeline API"}
 
 @app.post("/videos/import")
 async def import_video(request: VideoImportRequest):
-    """Queue Zoom download - returns video ID immediately"""
-    video_id = str(uuid.uuid4())
-    
-    # Create stub video data
-    videos_db[video_id] = Video(
-        id=video_id,
-        title=f"Zoom Meeting {request.zoom_meeting_id}",
-        duration=3600,  # 1 hour
-        status="processing",
-        created_at=datetime.now()
-    )
-    
-    return {"video_id": video_id, "status": "queued"}
+    """Queue Zoom download and AI processing - returns job ID immediately"""
+    job_id = create_video_processing_job(request.zoom_meeting_id)
+    return {"job_id": job_id, "meeting_id": request.zoom_meeting_id, "status": "queued"}
 
-@app.get("/videos/{video_id}")
-async def get_video(video_id: str):
-    """Get video details + drafts"""
-    if video_id not in videos_db:
-        raise HTTPException(status_code=404, detail="Video not found")
+# Job status endpoints
+@app.get("/jobs/{job_id}")
+async def get_job_status_endpoint(job_id: str):
+    """Get job status and results"""
+    status = get_job_status(job_id)
+    if "error" in status and status["error"] == "Job not found":
+        raise HTTPException(status_code=404, detail="Job not found")
+    return status
+
+@app.get("/jobs")
+async def get_queue_status_endpoint():
+    """Get overall job queue status"""
+    return get_queue_status()
+
+# AI pipeline endpoints
+@app.get("/jobs/{job_id}/video")
+async def get_processed_video(job_id: str):
+    """Get video processing results from completed job"""
+    job_status = get_job_status(job_id)
     
-    video = videos_db[video_id]
-    video_drafts = [d for d in drafts_db.values() if d.video_id == video_id]
+    if "error" in job_status and job_status["error"] == "Job not found":
+        raise HTTPException(status_code=404, detail="Job not found")
+    
+    if job_status["status"] != "completed":
+        return {"status": job_status["status"], "progress": job_status["progress"]}
+    
+    result = job_status["result"]
+    if not result:
+        raise HTTPException(status_code=500, detail="Job completed but no result available")
     
     return {
-        "video": video,
-        "drafts": video_drafts
+        "video": result["video"],
+        "ai_content": result["ai_content"],
+        "status": "completed"
     }
 
-@app.post("/videos/{video_id}/summarize")
-async def trigger_summarize(video_id: str):
-    """Trigger Gemini pipeline"""
-    if video_id not in videos_db:
-        raise HTTPException(status_code=404, detail="Video not found")
+@app.get("/jobs/{job_id}/drafts")
+async def get_ai_drafts(job_id: str):
+    """Get AI-generated content drafts from completed job"""
+    job_status = get_job_status(job_id)
     
-    # Simulate processing
-    videos_db[video_id].status = "processing"
-    videos_db[video_id].summary_points = [
-        "Key point 1: Introduction to AI content pipeline",
-        "Key point 2: Benefits of automated content generation",
-        "Key point 3: Best practices for implementation"
-    ]
+    if "error" in job_status and job_status["error"] == "Job not found":
+        raise HTTPException(status_code=404, detail="Job not found")
     
-    return {"status": "summarization started"}
-
-@app.get("/videos/{video_id}/summary")
-async def get_summary(video_id: str):
-    """Get summary points"""
-    if video_id not in videos_db:
-        raise HTTPException(status_code=404, detail="Video not found")
+    if job_status["status"] != "completed":
+        return {"status": job_status["status"], "progress": job_status["progress"]}
     
-    video = videos_db[video_id]
-    return {"summary_points": video.summary_points or []}
-
-@app.get("/videos/{video_id}/drafts")
-async def list_drafts(video_id: str):
-    """List draft history"""
-    if video_id not in videos_db:
-        raise HTTPException(status_code=404, detail="Video not found")
+    result = job_status["result"]
+    if not result or "ai_content" not in result:
+        raise HTTPException(status_code=500, detail="AI content not available")
     
-    video_drafts = [d for d in drafts_db.values() if d.video_id == video_id]
-    return {"drafts": video_drafts}
-
-@app.post("/videos/{video_id}/drafts")
-async def save_drafts(video_id: str, request: DraftUpdateRequest):
-    """Save edited drafts"""
-    if video_id not in videos_db:
-        raise HTTPException(status_code=404, detail="Video not found")
-    
-    draft_id = str(uuid.uuid4())
-    
-    # Create new draft
-    draft = Draft(
-        id=draft_id,
-        video_id=video_id,
-        email_content=request.email_content,
-        x_content=request.x_content,
-        linkedin_content=request.linkedin_content,
-        created_at=datetime.now(),
-        version=1
-    )
-    
-    drafts_db[draft_id] = draft
-    
-    return {"draft_id": draft_id, "status": "saved"}
-
-@app.post("/drafts/{draft_id}/feedback")
-async def add_feedback(draft_id: str, request: FeedbackRequest):
-    """Add feedback"""
-    if draft_id not in drafts_db:
-        raise HTTPException(status_code=404, detail="Draft not found")
-    
-    feedback_id = str(uuid.uuid4())
-    
-    feedback = Feedback(
-        id=feedback_id,
-        draft_id=draft_id,
-        content=request.content,
-        created_at=datetime.now()
-    )
-    
-    feedback_db[feedback_id] = feedback
-    
-    return {"feedback_id": feedback_id, "status": "added"}
+    return result["ai_content"]
 
 if __name__ == "__main__":
     import uvicorn
