@@ -14,6 +14,7 @@ export interface Video {
   status: 'processing' | 'ready' | 'failed'
   created_at: string
   summary_points?: string[]
+  transcript?: string
 }
 
 export interface Draft {

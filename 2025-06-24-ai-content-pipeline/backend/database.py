@@ -1,9 +1,10 @@
 # Temporary database implementation - will be replaced by Infrastructure Agent
+from datetime import datetime
 from typing import List, Optional, Dict, Any
 from models import Video, Draft, Feedback
 import os
-from datetime import datetime
 from supabase import create_client, Client
+from dateutil.parser import parse as parse_datetime
 
 class SupabaseDatabase:
     def __init__(self):
@@ -31,7 +32,6 @@ class SupabaseDatabase:
     async def create_video(self, video: Video) -> None:
         """Create a new video record"""
         if self._use_stub:
-            # Fallback to stub implementation
             self._stub_videos[video.id] = video
             return
             
@@ -41,9 +41,11 @@ class SupabaseDatabase:
             "duration": video.duration,
             "zoom_meeting_id": video.zoom_meeting_id,
             "youtube_url": video.youtube_url,
+            "processing_stage": video.processing_stage,
             "status": video.status,
             "created_at": video.created_at.isoformat(),
-            "summary_points": video.summary_points
+            "summary_points": video.summary_points,
+            "transcript": video.transcript
         }
         
         result = self.client.table("videos").insert(video_data).execute()
@@ -67,9 +69,11 @@ class SupabaseDatabase:
             duration=video_data["duration"],
             zoom_meeting_id=video_data["zoom_meeting_id"],
             youtube_url=video_data.get("youtube_url"),
+            processing_stage=video_data.get("processing_stage", "queued"),
             status=video_data["status"],
-            created_at=datetime.fromisoformat(video_data["created_at"]),
-            summary_points=video_data.get("summary_points")
+            created_at=parse_datetime(video_data["created_at"]),
+            summary_points=video_data.get("summary_points"),
+            transcript=video_data.get("transcript")
         )
     
     async def update_video(self, video_id: str, updates: Dict[str, Any]) -> None:
@@ -109,7 +113,7 @@ class SupabaseDatabase:
                 email_content=draft_data["email_content"],
                 x_content=draft_data["x_content"],
                 linkedin_content=draft_data["linkedin_content"],
-                created_at=datetime.fromisoformat(draft_data["created_at"]),
+                created_at=parse_datetime(draft_data["created_at"]),
                 version=draft_data["version"]
             ))
         
@@ -152,7 +156,7 @@ class SupabaseDatabase:
             email_content=draft_data["email_content"],
             x_content=draft_data["x_content"],
             linkedin_content=draft_data["linkedin_content"],
-            created_at=datetime.fromisoformat(draft_data["created_at"]),
+            created_at=parse_datetime(draft_data["created_at"]),
             version=draft_data["version"]
         )
     

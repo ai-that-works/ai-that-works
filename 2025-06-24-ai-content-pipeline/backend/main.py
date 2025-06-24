@@ -1,6 +1,6 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Optional
+from typing import List, Optional
 import uuid
 from datetime import datetime
 import os
@@ -11,10 +11,12 @@ from models import (
     Video, Draft, Feedback,
     VideoImportResponse, VideoResponse, SummaryResponse,
     DraftsListResponse, DraftSaveResponse, FeedbackResponse, StatusResponse,
-    ZoomRecording, ZoomMeetingRecordings, ZoomMeetingsResponse
+    ZoomRecordingsResponse, ZoomRecording,
+    ZoomMeetingRecordings, ZoomMeetingsResponse, TranscriptResponse
 )
 from database import db
 from zoom_client import zoom_client
+from video_processor import video_processor
 
 # Load environment variables
 load_dotenv()
@@ -41,21 +43,27 @@ async def root():
     return {"message": "AI Content Pipeline API"}
 
 @app.post("/videos/import", status_code=status.HTTP_202_ACCEPTED, response_model=VideoImportResponse)
-async def import_video(request: VideoImportRequest):
-    """Queue Zoom download - returns video ID immediately"""
+async def import_video(request: VideoImportRequest, background_tasks: BackgroundTasks):
+    """Queue Zoom download - returns video ID immediately and starts background processing"""
     video_id = str(uuid.uuid4())
-    
+
+    # Create video record
     video = Video(
         id=video_id,
         zoom_meeting_id=request.zoom_meeting_id,
         title=f"Zoom Meeting {request.zoom_meeting_id}",
-        duration=3600,
+        duration=3600,  # 1 hour
         status="processing",
+        processing_stage="queued",
         created_at=datetime.now()
     )
-    
+
     try:
         await db.create_video(video)
+
+        # Add background task for video processing
+        background_tasks.add_task(video_processor.process_video, video_id, request.zoom_meeting_id)
+
         return VideoImportResponse(video_id=video_id, status="queued")
     except Exception as e:
         print(f"Error creating video: {e}")
@@ -68,7 +76,7 @@ async def get_video(video_id: str):
         video = await db.get_video(video_id)
         if not video:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Video not found")
-        
+
         video_drafts = await db.get_drafts_by_video(video_id)
         return VideoResponse(video=video, drafts=video_drafts)
     except HTTPException:
@@ -84,8 +92,8 @@ async def trigger_summarize(video_id: str):
         video = await db.get_video(video_id)
         if not video:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Video not found")
-        
-        # Update status and add sample summary points
+
+        # Simulate processing - update status and add sample summary points
         updates = {
             "status": "processing",
             "summary_points": [
@@ -94,7 +102,7 @@ async def trigger_summarize(video_id: str):
                 "Key point 3: Best practices for implementation"
             ]
         }
-        
+
         await db.update_video(video_id, updates)
         return StatusResponse(status="summarization started")
     except HTTPException:
@@ -110,12 +118,30 @@ async def get_summary(video_id: str):
         video = await db.get_video(video_id)
         if not video:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Video not found")
-        
+
         return SummaryResponse(summary_points=video.summary_points or [])
     except HTTPException:
         raise
     except Exception as e:
         print(f"Error getting summary for video {video_id}: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+@app.get("/videos/{video_id}/transcript", response_model=TranscriptResponse)
+async def get_transcript(video_id: str):
+    """Get video transcript"""
+    try:
+        video = await db.get_video(video_id)
+        if not video:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Video not found")
+
+        if not video.transcript:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Transcript not available")
+
+        return TranscriptResponse(transcript=video.transcript)
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error getting transcript for video {video_id}: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @app.get("/videos/{video_id}/drafts", response_model=DraftsListResponse)
@@ -125,7 +151,7 @@ async def list_drafts(video_id: str):
         video = await db.get_video(video_id)
         if not video:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Video not found")
-        
+
         video_drafts = await db.get_drafts_by_video(video_id)
         return DraftsListResponse(drafts=video_drafts)
     except HTTPException:
@@ -141,9 +167,10 @@ async def save_drafts(video_id: str, request: DraftUpdateRequest):
         video = await db.get_video(video_id)
         if not video:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Video not found")
-        
+
         draft_id = str(uuid.uuid4())
-        
+
+        # Create new draft
         draft = Draft(
             id=draft_id,
             video_id=video_id,
@@ -153,7 +180,7 @@ async def save_drafts(video_id: str, request: DraftUpdateRequest):
             created_at=datetime.now(),
             version=1
         )
-        
+
         await db.create_draft(draft)
         return DraftSaveResponse(draft_id=draft_id, status="saved")
     except HTTPException:
@@ -169,16 +196,16 @@ async def add_feedback(draft_id: str, request: FeedbackRequest):
         draft = await db.get_draft(draft_id)
         if not draft:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Draft not found")
-        
+
         feedback_id = str(uuid.uuid4())
-        
+
         feedback = Feedback(
             id=feedback_id,
             draft_id=draft_id,
             content=request.content,
             created_at=datetime.now()
         )
-        
+
         await db.create_feedback(feedback)
         return FeedbackResponse(feedback_id=feedback_id, status="added")
     except HTTPException:
@@ -191,8 +218,10 @@ async def add_feedback(draft_id: str, request: FeedbackRequest):
 async def test_supabase():
     """Test Supabase connection and credentials"""
     try:
+        # Test database connection by trying to get a count
+        from database import db
         # Try a simple operation to test connection
-        db.client.table("videos").select("count", count="exact").execute()
+        result = db.client.table("videos").select("count", count="exact").execute()
         return {
             "status": "connected",
             "message": "Supabase credentials valid",
@@ -208,15 +237,22 @@ async def test_supabase():
 @app.get("/test/zoom")
 async def test_zoom():
     """Test Zoom API credentials"""
-    zoom_api_key = os.getenv("ZOOM_API_KEY")
-    zoom_api_secret = os.getenv("ZOOM_API_SECRET")
-    
-    if not zoom_api_key or not zoom_api_secret:
+    zoom_account_id = os.getenv("ZOOM_ACCOUNT_ID")
+    zoom_client_id = os.getenv("ZOOM_CLIENT_ID")
+    zoom_client_secret = os.getenv("ZOOM_CLIENT_SECRET")
+
+    if not zoom_account_id or not zoom_client_id or not zoom_client_secret:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                          detail="Zoom API credentials not configured")
-    
+                          detail="Zoom OAuth credentials not configured")
+
     try:
-        return {"status": "configured", "message": "Zoom API credentials found"}
+        # Test the Zoom client
+        recordings = zoom_client.get_recordings()
+        return {
+            "status": "configured",
+            "message": "Zoom OAuth credentials valid",
+            "recordings_count": len(recordings)
+        }
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                           detail=f"Zoom API test failed: {str(e)}")

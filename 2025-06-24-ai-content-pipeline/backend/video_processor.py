@@ -1,205 +1,214 @@
-import os
-import logging
 import asyncio
-from typing import Dict, Optional, Tuple
-from pathlib import Path
-import httpx
-from google.oauth2.credentials import Credentials
-from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import Flow
+import os
+import tempfile
+import requests
+from typing import Optional
+from datetime import datetime
+import json
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
-import json
-import subprocess
+from googleapiclient.errors import HttpError
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
 
-logger = logging.getLogger(__name__)
+from database import db
+from zoom_client import zoom_client
 
-class VideoProcessingError(Exception):
-    """Custom exception for video processing errors"""
-    pass
 
 class VideoProcessor:
     def __init__(self):
-        self.youtube_service = None
-        self.temp_dir = Path("/tmp/video_processing")
-        self.temp_dir.mkdir(exist_ok=True)
+        self.youtube_credentials = self._load_youtube_credentials()
     
-    async def download_zoom_recording(self, meeting_id: str) -> str:
-        """
-        Download Zoom recording by meeting ID
-        Returns: local file path of downloaded video
-        """
+    def _load_youtube_credentials(self) -> Optional[Credentials]:
+        """Load YouTube API credentials from the existing OAuth setup"""
         try:
-            logger.info(f"Starting download for Zoom meeting {meeting_id}")
+            # Use the tokens.json file created by oauth_setup_claude.py
+            token_file = 'tokens.json'
+            if not os.path.exists(token_file):
+                print("WARNING: tokens.json not found. Run oauth_setup_claude.py first.")
+                return None
             
-            # For V0 implementation, we'll create a placeholder
-            # In production, this would integrate with Zoom API
-            video_path = self.temp_dir / f"zoom_meeting_{meeting_id}.mp4"
+            SCOPES = [
+                'https://www.googleapis.com/auth/youtube.upload',
+                'https://www.googleapis.com/auth/youtube.readonly'
+            ]
             
-            # Create a dummy video file for testing
-            # In production, this would be actual Zoom API download
-            if not video_path.exists():
-                # Create a placeholder file
-                with open(video_path, 'w') as f:
-                    f.write("# Placeholder video file for testing")
-                logger.info(f"Created placeholder video file: {video_path}")
+            # Load credentials from the token file
+            creds = Credentials.from_authorized_user_file(token_file, SCOPES)
             
-            return str(video_path)
+            # Check if credentials are valid, refresh if needed
+            if not creds.valid:
+                if creds.expired and creds.refresh_token:
+                    try:
+                        creds.refresh(Request())
+                        # Save refreshed credentials
+                        with open(token_file, 'w') as token:
+                            token.write(creds.to_json())
+                    except Exception as e:
+                        print(f"WARNING: Failed to refresh YouTube credentials: {e}")
+                        return None
+                else:
+                    print("WARNING: YouTube credentials are invalid and cannot be refreshed.")
+                    return None
+            
+            return creds
             
         except Exception as e:
-            logger.error(f"Failed to download Zoom recording {meeting_id}: {e}")
-            raise VideoProcessingError(f"Zoom download failed: {e}")
+            print(f"WARNING: Failed to load YouTube credentials: {e}")
+            return None
     
-    async def upload_to_youtube(self, video_path: str, title: str) -> str:
-        """
-        Upload video to YouTube as unlisted
-        Returns: YouTube video URL
-        """
+    async def process_video(self, video_id: str, zoom_meeting_id: str):
+        """Main processing pipeline: download Zoom recording and upload to YouTube"""
         try:
-            logger.info(f"Starting YouTube upload for {title}")
+            # Update status to downloading
+            await db.update_video(video_id, {
+                "processing_stage": "downloading",
+                "status": "processing"
+            })
             
-            # For V0 implementation, we'll return a mock URL
-            # In production, this would use YouTube Data API v3
-            video_id = f"mock_video_{hash(video_path)}"
-            youtube_url = f"https://www.youtube.com/watch?v={video_id}"
+            # Download Zoom recording
+            video_file_path = await self._download_zoom_recording(zoom_meeting_id)
             
-            logger.info(f"Mock YouTube upload completed: {youtube_url}")
-            return youtube_url
+            # Get transcript from Zoom
+            transcript = await self._get_transcript(zoom_meeting_id)
             
-        except Exception as e:
-            logger.error(f"Failed to upload to YouTube: {e}")
-            raise VideoProcessingError(f"YouTube upload failed: {e}")
-    
-    def extract_video_metadata(self, video_path: str) -> Dict:
-        """
-        Extract video metadata (duration, title, etc.)
-        Returns: Dictionary with video metadata
-        """
-        try:
-            logger.info(f"Extracting metadata from {video_path}")
+            # Update status to uploading
+            await db.update_video(video_id, {"processing_stage": "uploading"})
             
-            # For V0 implementation, return mock metadata
-            # In production, this would use ffprobe or similar
-            metadata = {
-                "duration": 3600,  # 1 hour in seconds
-                "width": 1920,
-                "height": 1080,
-                "fps": 30,
-                "codec": "h264",
-                "file_size": os.path.getsize(video_path) if os.path.exists(video_path) else 1024*1024*100,
-                "title": f"Meeting Recording {Path(video_path).stem}"
+            # Upload to YouTube
+            youtube_url = await self._upload_to_youtube(video_file_path, zoom_meeting_id)
+            
+            # Update final status with transcript
+            update_data = {
+                "processing_stage": "ready",
+                "status": "ready",
+                "youtube_url": youtube_url
             }
             
-            logger.info(f"Extracted metadata: {metadata}")
-            return metadata
+            if transcript:
+                update_data["transcript"] = transcript
             
+            await db.update_video(video_id, update_data)
+            
+            # Clean up temporary file
+            if os.path.exists(video_file_path):
+                os.remove(video_file_path)
+                
         except Exception as e:
-            logger.error(f"Failed to extract video metadata: {e}")
-            raise VideoProcessingError(f"Metadata extraction failed: {e}")
+            print(f"Error processing video {video_id}: {e}")
+            await db.update_video(video_id, {
+                "processing_stage": "failed",
+                "status": "failed"
+            })
+            raise
     
-    async def generate_transcript(self, video_path: str) -> str:
-        """
-        Generate transcript from video using Gemini or Whisper
-        Returns: Full transcript text
-        """
+    async def _download_zoom_recording(self, zoom_meeting_id: str) -> str:
+        """Download Zoom recording to temporary file"""
         try:
-            logger.info(f"Generating transcript for {video_path}")
+            # Get recording details from Zoom
+            recordings = zoom_client.get_recordings()
+            recording = None
             
-            # For V0 implementation, return mock transcript
-            # In production, this would use Google Speech-to-Text or OpenAI Whisper
-            mock_transcript = """
-            Welcome to today's meeting about AI content pipeline implementation. 
-            We're going to discuss how to build an automated system that takes video content 
-            and generates social media posts, email drafts, and other marketing materials.
+            for rec in recordings:
+                if rec["meeting_id"] == zoom_meeting_id:
+                    recording = rec
+                    break
             
-            The key components we'll cover include:
-            1. Video processing and transcription
-            2. AI-powered content generation using BAML
-            3. Multi-platform content adaptation
-            4. Automated publishing workflows
+            if not recording or not recording.get("download_url"):
+                raise Exception(f"No downloadable recording found for meeting {zoom_meeting_id}")
             
-            First, let's talk about the technical architecture. We're using FastAPI for the backend,
-            which provides excellent async support for handling video processing tasks.
-            The frontend is built with React and Next.js for a modern user experience.
+            # Create temporary file
+            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
+            temp_file_path = temp_file.name
+            temp_file.close()
             
-            For AI integration, we're leveraging BAML which gives us structured outputs
-            and reliable prompt management. This is crucial for generating consistent,
-            high-quality content across different platforms.
-            
-            The video processing pipeline handles Zoom recording downloads,
-            YouTube uploads, and transcript generation. All of this runs asynchronously
-            to provide a smooth user experience.
-            
-            Questions about implementation details or next steps?
-            """
-            
-            # Simulate processing time
-            await asyncio.sleep(1)
-            
-            logger.info("Transcript generation completed")
-            return mock_transcript.strip()
-            
-        except Exception as e:
-            logger.error(f"Failed to generate transcript: {e}")
-            raise VideoProcessingError(f"Transcript generation failed: {e}")
-    
-    async def process_video_complete(self, meeting_id: str) -> Dict:
-        """
-        Complete video processing pipeline
-        Returns: Dictionary with all processed data
-        """
-        try:
-            logger.info(f"Starting complete video processing for meeting {meeting_id}")
-            
-            # Step 1: Download video
-            video_path = await self.download_zoom_recording(meeting_id)
-            
-            # Step 2: Extract metadata
-            metadata = self.extract_video_metadata(video_path)
-            
-            # Step 3: Generate transcript
-            transcript = await self.generate_transcript(video_path)
-            
-            # Step 4: Upload to YouTube
-            title = metadata.get("title", f"Meeting {meeting_id}")
-            youtube_url = await self.upload_to_youtube(video_path, title)
-            
-            result = {
-                "meeting_id": meeting_id,
-                "video_path": video_path,
-                "metadata": metadata,
-                "transcript": transcript,
-                "youtube_url": youtube_url,
-                "status": "completed"
+            # Download the file with authorization headers
+            headers = {
+                "Authorization": f"Bearer {zoom_client.access_token}",
+                "Content-Type": "application/json"
             }
             
-            logger.info(f"Video processing completed successfully for {meeting_id}")
-            return result
+            response = requests.get(recording["download_url"], headers=headers, stream=True)
+            if response.status_code != 200:
+                # Try without headers as fallback
+                print(f"Download with auth failed ({response.status_code}), trying without auth...")
+                response = requests.get(recording["download_url"], stream=True)
+            
+            response.raise_for_status()
+            
+            with open(temp_file_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            
+            print(f"Successfully downloaded video file: {temp_file_path}")
+            return temp_file_path
             
         except Exception as e:
-            logger.error(f"Complete video processing failed for {meeting_id}: {e}")
-            raise VideoProcessingError(f"Video processing pipeline failed: {e}")
+            raise Exception(f"Failed to download Zoom recording: {e}")
+    
+    async def _get_transcript(self, zoom_meeting_id: str) -> Optional[str]:
+        """Get transcript from Zoom recording"""
+        try:
+            transcript = zoom_client.get_transcript(zoom_meeting_id)
+            if transcript:
+                print(f"Successfully retrieved transcript for meeting {zoom_meeting_id}")
+                return transcript
+            else:
+                print(f"No transcript available for meeting {zoom_meeting_id}")
+                return None
+        except Exception as e:
+            print(f"Error getting transcript for meeting {zoom_meeting_id}: {e}")
+            return None
+    
+    async def _upload_to_youtube(self, video_file_path: str, zoom_meeting_id: str) -> Optional[str]:
+        """Upload video to YouTube"""
+        if not self.youtube_credentials:
+            print("YouTube credentials not available, skipping upload")
+            return None
+        
+        try:
+            # Build YouTube service using the credentials from OAuth setup
+            youtube = build('youtube', 'v3', credentials=self.youtube_credentials)
+            
+            # Prepare upload request
+            body = {
+                'snippet': {
+                    'title': f'Zoom Meeting {zoom_meeting_id}',
+                    'description': f'Recording from Zoom meeting {zoom_meeting_id}',
+                    'tags': ['zoom', 'meeting', 'recording'],
+                    'categoryId': '22'  # People & Blogs
+                },
+                'status': {
+                    'privacyStatus': 'private'  # Start as private for safety
+                }
+            }
+            
+            # Create media upload
+            media = MediaFileUpload(video_file_path, chunksize=-1, resumable=True)
+            
+            # Execute upload
+            request = youtube.videos().insert(
+                part=",".join(body.keys()),
+                body=body,
+                media_body=media
+            )
+            
+            response = None
+            while response is None:
+                status, response = request.next_chunk()
+                if status:
+                    print(f"Uploaded {int(status.progress() * 100)}%")
+            
+            video_id = response['id']
+            return f"https://www.youtube.com/watch?v={video_id}"
+            
+        except HttpError as e:
+            print(f"YouTube upload failed: {e}")
+            return None
+        except Exception as e:
+            print(f"Error uploading to YouTube: {e}")
+            return None
 
-# Global instance
-video_processor = VideoProcessor()
 
-# Convenience functions for external use
-async def download_zoom_recording(meeting_id: str) -> str:
-    """Download Zoom recording by meeting ID"""
-    return await video_processor.download_zoom_recording(meeting_id)
-
-async def upload_to_youtube(video_path: str, title: str) -> str:
-    """Upload video to YouTube as unlisted"""
-    return await video_processor.upload_to_youtube(video_path, title)
-
-def extract_video_metadata(video_path: str) -> Dict:
-    """Extract video metadata"""
-    return video_processor.extract_video_metadata(video_path)
-
-async def generate_transcript(video_path: str) -> str:
-    """Generate transcript from video"""
-    return await video_processor.generate_transcript(video_path)
-
-async def process_video_complete(meeting_id: str) -> Dict:
-    """Run complete video processing pipeline"""
-    return await video_processor.process_video_complete(meeting_id)
+# Global processor instance
+video_processor = VideoProcessor() 
