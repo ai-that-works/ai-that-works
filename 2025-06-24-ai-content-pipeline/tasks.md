@@ -73,6 +73,8 @@ implement each endpoint one at a time, test with curl
 ---
 
 ## 🎨 FRONTEND TASKS (Next.js + TypeScript)
+NOTE THE FRONTEND DOESNT READ FROM TEH BACKEND. IT LISTENS TO THE REALTIME DATABASE BY SUPABASE.
+FRONTEND WILL TALK TO BACKEND, but only to request writes.
 
 ### 1. Dependencies & Setup
 - [ ] Add missing dependencies:
