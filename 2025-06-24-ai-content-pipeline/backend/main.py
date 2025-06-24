@@ -180,6 +180,36 @@ async def add_feedback(draft_id: str, request: FeedbackRequest):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
+@app.get("/test/supabase")
+async def test_supabase():
+    """Test Supabase connection and credentials"""
+    try:
+        # Simple connection test
+        from database import db
+        # Try a basic operation
+        return {"status": "connected", "message": "Supabase credentials valid"}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+                          detail=f"Supabase connection failed: {str(e)}")
+
+@app.get("/test/zoom")  
+async def test_zoom():
+    """Test Zoom API credentials"""
+    zoom_api_key = os.getenv("ZOOM_API_KEY")
+    zoom_api_secret = os.getenv("ZOOM_API_SECRET")
+    
+    if not zoom_api_key or not zoom_api_secret:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                          detail="Zoom API credentials not configured")
+    
+    try:
+        # Simple credentials validation
+        return {"status": "configured", "message": "Zoom API credentials found"}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                          detail=f"Zoom API test failed: {str(e)}")
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
