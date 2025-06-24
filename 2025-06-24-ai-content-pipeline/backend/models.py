@@ -23,6 +23,7 @@ class Video(BaseModel):
     id: str
     title: str
     duration: int  # seconds
+    zoom_meeting_id: str
     youtube_url: Optional[str] = None
     status: str  # "processing", "ready", "failed"
     created_at: datetime

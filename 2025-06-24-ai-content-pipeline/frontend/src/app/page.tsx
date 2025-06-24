@@ -14,12 +14,6 @@ export default function Home() {
             Turn your Zoom recordings into YouTube videos and AI-generated content drafts
           </p>
         </div>
-
-        {/* Zoom Recordings */}
-        <div className="mb-8">
-          <ZoomRecordingsList />
-        </div>
-
         {/* Video List */}
         <div>
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
@@ -27,6 +21,12 @@ export default function Home() {
           </h2>
           <VideoList />
         </div>
+
+        {/* Zoom Recordings */}
+        <div className="mb-8">
+          <ZoomRecordingsList />
+        </div>
+
       </div>
     </div>
   )

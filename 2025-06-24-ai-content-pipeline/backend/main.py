@@ -31,12 +31,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 # Validate required environment variables
 required_env_vars = ["SUPABASE_URL", "SUPABASE_ANON_KEY"]
-for var in required_env_vars:
-    if not os.getenv(var):
-        print(f"WARNING: {var} environment variable not set")
+missing_vars = [var for var in required_env_vars if not os.getenv(var)]
+if missing_vars:
+    print(f"WARNING: Missing environment variables: {', '.join(missing_vars)}")
 
 @app.get("/")
 async def root():
@@ -50,6 +49,7 @@ async def import_video(request: VideoImportRequest):
     # Create video record
     video = Video(
         id=video_id,
+        zoom_meeting_id=request.zoom_meeting_id,
         title=f"Zoom Meeting {request.zoom_meeting_id}",
         duration=3600,  # 1 hour
         status="processing",
@@ -60,6 +60,7 @@ async def import_video(request: VideoImportRequest):
         await db.create_video(video)
         return VideoImportResponse(video_id=video_id, status="queued")
     except Exception as e:
+        print(f"Error creating video: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @app.get("/videos/{video_id}", response_model=VideoResponse)
@@ -75,6 +76,7 @@ async def get_video(video_id: str):
     except HTTPException:
         raise
     except Exception as e:
+        print(f"Error getting video {video_id}: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @app.post("/videos/{video_id}/summarize", status_code=status.HTTP_202_ACCEPTED, response_model=StatusResponse)
@@ -100,6 +102,7 @@ async def trigger_summarize(video_id: str):
     except HTTPException:
         raise
     except Exception as e:
+        print(f"Error triggering summarize for video {video_id}: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @app.get("/videos/{video_id}/summary", response_model=SummaryResponse)
@@ -114,6 +117,7 @@ async def get_summary(video_id: str):
     except HTTPException:
         raise
     except Exception as e:
+        print(f"Error getting summary for video {video_id}: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @app.get("/videos/{video_id}/drafts", response_model=DraftsListResponse)
@@ -129,6 +133,7 @@ async def list_drafts(video_id: str):
     except HTTPException:
         raise
     except Exception as e:
+        print(f"Error listing drafts for video {video_id}: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @app.post("/videos/{video_id}/drafts", response_model=DraftSaveResponse)
@@ -157,6 +162,7 @@ async def save_drafts(video_id: str, request: DraftUpdateRequest):
     except HTTPException:
         raise
     except Exception as e:
+        print(f"Error saving draft for video {video_id}: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @app.post("/drafts/{draft_id}/feedback", response_model=FeedbackResponse)
@@ -181,19 +187,28 @@ async def add_feedback(draft_id: str, request: FeedbackRequest):
     except HTTPException:
         raise
     except Exception as e:
+        print(f"Error adding feedback for draft {draft_id}: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @app.get("/test/supabase")
 async def test_supabase():
     """Test Supabase connection and credentials"""
     try:
-        # Simple connection test
+        # Test database connection by trying to get a count
         from database import db
-        # Try a basic operation
-        return {"status": "connected", "message": "Supabase credentials valid"}
+        # Try a simple operation to test connection
+        result = db.client.table("videos").select("count", count="exact").execute()
+        return {
+            "status": "connected", 
+            "message": "Supabase credentials valid",
+            "tables_accessible": True
+        }
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
-                          detail=f"Supabase connection failed: {str(e)}")
+        print(f"Supabase test failed: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail=f"Supabase connection failed: {str(e)}"
+        )
 
 @app.get("/test/zoom")  
 async def test_zoom():
@@ -244,6 +259,7 @@ async def get_zoom_recordings(
             total_count=len(meetings_list)
         )
     except Exception as e:
+        print(f"Error fetching Zoom recordings: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch Zoom recordings: {str(e)}"
