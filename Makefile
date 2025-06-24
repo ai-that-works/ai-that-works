@@ -3,21 +3,21 @@
 
 setup:
 	@echo "Setting up project..."
-	cd backend && uv sync
-	cd frontend && npm install
+	cd 2025-06-24-ai-content-pipeline/backend && uv sync
+	cd 2025-06-24-ai-content-pipeline/frontend && npm install
 	@echo "Setup complete!"
 
 backend-dev:
-	cd backend && uv run uvicorn main:app --reload
+	cd 2025-06-24-ai-content-pipeline/backend && uv run uvicorn main:app --reload
 
 frontend-dev:
-	cd frontend && npm run dev
+	cd 2025-06-24-ai-content-pipeline/frontend && npm run dev
 
 backend-test:
-	cd backend && uv run python -m pytest || echo "No tests yet"
+	cd 2025-06-24-ai-content-pipeline/backend && uv run python -m pytest || echo "No tests yet"
 
 frontend-build:
-	cd frontend && npm run build
+	cd 2025-06-24-ai-content-pipeline/frontend && npm run build
 
 teardown:
 	@echo "Tearing down project..."
