@@ -130,7 +130,7 @@ export function VideoList() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open(video.youtube_url, '_blank')}
+                  onClick={() => window.open(video.youtube_url!, '_blank')}
                   className="text-red-600 border-red-200 hover:bg-red-50"
                 >
                   <Play className="w-3 h-3 mr-1" />

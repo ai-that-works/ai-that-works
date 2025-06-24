@@ -182,5 +182,5 @@ export function ZoomRecordingsList() {
         </div>
       ))}
     </div>
-  )
+  );
 } 

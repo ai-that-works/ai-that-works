@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { api } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Loader2, FileText, Copy, Check } from 'lucide-react'
@@ -15,7 +15,7 @@ export function TranscriptViewer({ videoId }: TranscriptViewerProps) {
   const [error, setError] = useState<string>('')
   const [copied, setCopied] = useState(false)
 
-  const fetchTranscript = async () => {
+  const fetchTranscript = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
@@ -26,7 +26,7 @@ export function TranscriptViewer({ videoId }: TranscriptViewerProps) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [videoId])
 
   const copyToClipboard = async () => {
     try {
@@ -40,7 +40,7 @@ export function TranscriptViewer({ videoId }: TranscriptViewerProps) {
 
   useEffect(() => {
     fetchTranscript()
-  }, [videoId])
+  }, [videoId, fetchTranscript])
 
   if (loading) {
     return (

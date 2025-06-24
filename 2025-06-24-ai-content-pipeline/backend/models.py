@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 
@@ -8,10 +8,24 @@ class VideoImportRequest(BaseModel):
     zoom_meeting_id: str
 
 
+# Structured content models
+class EmailDraftContent(BaseModel):
+    subject: str
+    body: str
+    call_to_action: str
+
+class XDraftContent(BaseModel):
+    tweets: List[str]
+    hashtags: List[str]
+
+class LinkedInDraftContent(BaseModel):
+    content: str
+    hashtags: List[str]
+
 class DraftUpdateRequest(BaseModel):
-    email_content: str
-    x_content: str
-    linkedin_content: str
+    email_draft: Optional[EmailDraftContent] = None
+    x_draft: Optional[XDraftContent] = None
+    linkedin_draft: Optional[LinkedInDraftContent] = None
 
 
 class FeedbackRequest(BaseModel):
@@ -28,16 +42,17 @@ class Video(BaseModel):
     processing_stage: str = "queued"  # "queued", "downloading", "uploading", "ready", "failed"
     status: str  # "processing", "ready", "failed"
     created_at: datetime
-    summary_points: Optional[List[str]] = None
+    summary_points: Optional[List[str]] = None  # Legacy field, kept for backwards compatibility
+    summary: Optional[Dict[str, Any]] = None  # Rich summary data from BAML
     transcript: Optional[str] = None
 
 
 class Draft(BaseModel):
     id: str
     video_id: str
-    email_content: str
-    x_content: str
-    linkedin_content: str
+    email_draft: Optional[EmailDraftContent] = None
+    x_draft: Optional[XDraftContent] = None
+    linkedin_draft: Optional[LinkedInDraftContent] = None
     created_at: datetime
     version: int
 

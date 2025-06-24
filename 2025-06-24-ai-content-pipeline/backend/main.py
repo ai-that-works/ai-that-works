@@ -17,6 +17,8 @@ from models import (
 from database import db
 from zoom_client import zoom_client
 from video_processor import video_processor
+from baml_client import types
+from baml_client.async_client import b
 
 # Load environment variables
 load_dotenv()
@@ -86,30 +88,182 @@ async def get_video(video_id: str):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @app.post("/videos/{video_id}/summarize", status_code=status.HTTP_202_ACCEPTED, response_model=StatusResponse)
-async def trigger_summarize(video_id: str):
-    """Trigger Gemini pipeline"""
+async def trigger_summarize(video_id: str, background_tasks: BackgroundTasks):
+    """Trigger BAML summarization pipeline"""
     try:
         video = await db.get_video(video_id)
         if not video:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Video not found")
         
-        # Simulate processing - update status and add sample summary points
-        updates = {
-            "status": "processing",
-            "summary_points": [
-                "Key point 1: Introduction to AI content pipeline",
-                "Key point 2: Benefits of automated content generation",
-                "Key point 3: Best practices for implementation"
-            ]
-        }
+        if not video.transcript:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Video transcript not available for summarization")
         
-        await db.update_video(video_id, updates)
+        # Add background task for summarization
+        background_tasks.add_task(process_video_summary, video_id, video.transcript, video.title)
+        
+        # Update status to processing with detailed stage
+        await db.update_video(video_id, {
+            "status": "processing",
+            "processing_stage": "summarizing"
+        })
         return StatusResponse(status="summarization started")
     except HTTPException:
         raise
     except Exception as e:
         print(f"Error triggering summarize for video {video_id}: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+
+async def process_video_summary(video_id: str, transcript: str, title: Optional[str] = None):
+    """Background task to process video summary and generate content using BAML with parallel processing"""
+    try:
+        print(f"🚀 Starting BAML summarization for video {video_id}")
+        
+        # Step 1: Generate video summary FIRST
+        stream = b.stream.SummarizeVideo(transcript=transcript, title=title)
+        async for video_summary in stream:
+            summary_data = {
+                "bullet_points": video_summary.bullet_points,
+                "key_topics": video_summary.key_topics,
+                "main_takeaways": video_summary.main_takeaways,
+                "generated_at": datetime.now().isoformat()
+            }
+            await db.update_video(video_id, {
+                "summary": summary_data,
+                "summary_points": video_summary.bullet_points,
+                "processing_stage": "summarizing"
+            })
+        video_summary = await stream.get_final_response()
+        print(f"✅ BAML summarization completed for video {video_id}")
+        
+        # Step 2: Save summary to DB immediately and delete prior drafts
+        summary_data = {
+            "bullet_points": video_summary.bullet_points,
+            "key_topics": video_summary.key_topics,
+            "main_takeaways": video_summary.main_takeaways,
+            "generated_at": datetime.now().isoformat()
+        }
+        
+        # Delete all existing drafts for this video (fresh start)
+        print(f"🗑️ Deleting all existing drafts for video {video_id}")
+        await db.delete_drafts_by_video(video_id)
+        
+        await db.update_video(video_id, {
+            "summary": summary_data,
+            "summary_points": video_summary.bullet_points,
+            "processing_stage": "generating_content"
+        })
+        print(f"💾 Summary saved for video {video_id}, UI updated immediately!")
+        
+        # Step 3: Create a single draft and update it as content generates
+        print(f"🔄 Starting parallel content generation for video {video_id}")
+        
+        # Create a shared draft record first
+        shared_draft_id = str(uuid.uuid4())
+        initial_draft = Draft(
+            id=shared_draft_id,
+            video_id=video_id,
+            email_draft=None,
+            x_draft=None,
+            linkedin_draft=None,
+            created_at=datetime.now(),
+            version=1
+        )
+        
+        await db.create_draft(initial_draft)
+        print(f"📝 Created shared draft {shared_draft_id} for video {video_id}")
+        
+        # Create tasks for parallel execution that update the same draft
+        import asyncio
+        
+        async def generate_and_update_email():
+            try:
+                print(f"📧 Generating email draft for video {video_id}")
+                email_draft: types.EmailDraft = await b.GenerateEmailDraft(
+                    summary=video_summary,
+                    video_title=title
+                )
+                
+                # Update the shared draft with email content
+                from models import EmailDraftContent
+                email_draft_content = EmailDraftContent(
+                    subject=email_draft.subject,
+                    body=email_draft.body,
+                    call_to_action=email_draft.call_to_action
+                )
+                
+                await db.update_draft_field(shared_draft_id, "email_draft", email_draft_content)
+                print(f"✅ Email content updated in shared draft {shared_draft_id} - UI will update in real-time!")
+                
+            except Exception as e:
+                print(f"❌ Error generating email draft: {e}")
+        
+        async def generate_and_update_x():
+            try:
+                print(f"🐦 Generating X thread for video {video_id}")
+                twitter_thread: types.TwitterThread = await b.GenerateTwitterThread(
+                    summary=video_summary,
+                    video_title=title
+                )
+                
+                # Update the shared draft with X content
+                from models import XDraftContent
+                x_draft_content = XDraftContent(
+                    tweets=twitter_thread.tweets,
+                    hashtags=twitter_thread.hashtags
+                )
+                
+                await db.update_draft_field(shared_draft_id, "x_draft", x_draft_content)
+                print(f"✅ X content updated in shared draft {shared_draft_id} - UI will update in real-time!")
+                
+            except Exception as e:
+                print(f"❌ Error generating X draft: {e}")
+        
+        async def generate_and_update_linkedin():
+            try:
+                print(f"💼 Generating LinkedIn post for video {video_id}")
+                linkedin_post: types.LinkedInPost = await b.GenerateLinkedInPost(
+                    summary=video_summary,
+                    video_title=title
+                )
+                
+                # Update the shared draft with LinkedIn content
+                from models import LinkedInDraftContent
+                linkedin_draft_content = LinkedInDraftContent(
+                    content=linkedin_post.content,
+                    hashtags=linkedin_post.hashtags
+                )
+                
+                await db.update_draft_field(shared_draft_id, "linkedin_draft", linkedin_draft_content)
+                print(f"✅ LinkedIn content updated in shared draft {shared_draft_id} - UI will update in real-time!")
+                
+            except Exception as e:
+                print(f"❌ Error generating LinkedIn draft: {e}")
+        
+        # Execute all content generation in parallel
+        await asyncio.gather(
+            generate_and_update_email(),
+            generate_and_update_x(),
+            generate_and_update_linkedin(),
+            return_exceptions=True  # Don't fail if one content type fails
+        )
+        
+        print(f"🎉 All content generation completed for video {video_id}")
+        
+        # Finalize video status
+        await db.update_video(video_id, {
+            "status": "ready",
+            "processing_stage": "completed"
+        })
+        print(f"✅ Video {video_id} processing completed successfully")
+        
+    except Exception as e:
+        print(f"❌ Error processing summary for video {video_id}: {e}")
+        # Update video status to failed
+        await db.update_video(video_id, {
+            "status": "failed",
+            "processing_stage": "summary_failed"
+        })
 
 @app.get("/videos/{video_id}/summary", response_model=SummaryResponse)
 async def get_summary(video_id: str):
@@ -163,6 +317,9 @@ async def list_drafts(video_id: str):
 @app.post("/videos/{video_id}/drafts", response_model=DraftSaveResponse)
 async def save_drafts(video_id: str, request: DraftUpdateRequest):
     """Save edited drafts"""
+    print(f"🎯 Save drafts endpoint called for video: {video_id}")
+    print(f"📝 Request data: {request}")
+    
     try:
         video = await db.get_video(video_id)
         if not video:
@@ -170,18 +327,23 @@ async def save_drafts(video_id: str, request: DraftUpdateRequest):
         
         draft_id = str(uuid.uuid4())
         
+        # Get existing drafts to determine version number
+        existing_drafts = await db.get_drafts_by_video(video_id)
+        new_version = max([d.version for d in existing_drafts], default=0) + 1
+        
         # Create new draft
         draft = Draft(
             id=draft_id,
             video_id=video_id,
-            email_content=request.email_content,
-            x_content=request.x_content,
-            linkedin_content=request.linkedin_content,
+            email_draft=request.email_draft,
+            x_draft=request.x_draft,
+            linkedin_draft=request.linkedin_draft,
             created_at=datetime.now(),
-            version=1
+            version=new_version
         )
         
         await db.create_draft(draft)
+        print(f"✅ Draft saved successfully: {draft_id}")
         return DraftSaveResponse(draft_id=draft_id, status="saved")
     except HTTPException:
         raise
@@ -221,7 +383,7 @@ async def test_supabase():
         # Test database connection by trying to get a count
         from database import db
         # Try a simple operation to test connection
-        result = db.client.table("videos").select("count", count="exact").execute()
+        db.client.table("videos").select("count", count="exact").execute()
         return {
             "status": "connected", 
             "message": "Supabase credentials valid",

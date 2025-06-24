@@ -2,6 +2,7 @@ import asyncio
 import os
 import tempfile
 import requests
+import hashlib
 from typing import Optional
 from datetime import datetime
 import json
@@ -18,6 +19,22 @@ from zoom_client import zoom_client
 class VideoProcessor:
     def __init__(self):
         self.youtube_credentials = self._load_youtube_credentials()
+        self.cache_dir = self._setup_cache_directory()
+    
+    def _setup_cache_directory(self) -> str:
+        """Setup cache directory for downloaded videos"""
+        cache_dir = os.path.join(os.getcwd(), "video_cache")
+        if not os.path.exists(cache_dir):
+            os.makedirs(cache_dir)
+            print(f"Created cache directory: {cache_dir}")
+        return cache_dir
+    
+    def _get_cache_filename(self, zoom_meeting_id: str, recording_id: str) -> str:
+        """Generate cache filename for a recording"""
+        # Create a hash of the meeting and recording IDs for the filename
+        hash_input = f"{zoom_meeting_id}_{recording_id}".encode()
+        hash_value = hashlib.md5(hash_input).hexdigest()
+        return os.path.join(self.cache_dir, f"{hash_value}.mp4")
     
     def _load_youtube_credentials(self) -> Optional[Credentials]:
         """Load YouTube API credentials from the existing OAuth setup"""
@@ -90,9 +107,8 @@ class VideoProcessor:
             
             await db.update_video(video_id, update_data)
             
-            # Clean up temporary file
-            if os.path.exists(video_file_path):
-                os.remove(video_file_path)
+            # Don't clean up the cached file - keep it for future use
+            print(f"Video processing completed. Cached file: {video_file_path}")
                 
         except Exception as e:
             print(f"Error processing video {video_id}: {e}")
@@ -103,47 +119,107 @@ class VideoProcessor:
             raise
     
     async def _download_zoom_recording(self, zoom_meeting_id: str) -> str:
-        """Download Zoom recording to temporary file"""
+        """Download Zoom recording with caching"""
         try:
-            # Get recording details from Zoom
+            print(f"Looking for recordings for meeting {zoom_meeting_id}...")
+            
+            # Get recording details from Zoom API
             recordings = zoom_client.get_recordings()
             recording = None
             
+            # Find the meeting and get all its recordings
+            meeting_recordings = []
             for rec in recordings:
                 if rec["meeting_id"] == zoom_meeting_id:
-                    recording = rec
+                    meeting_recordings.append(rec)
+            
+            if not meeting_recordings:
+                raise Exception(f"No recordings found for meeting {zoom_meeting_id}")
+            
+            print(f"Found {len(meeting_recordings)} recordings for meeting {zoom_meeting_id}:")
+            for rec in meeting_recordings:
+                print(f"  - {rec['recording_type']}: {rec.get('file_size', 0)} bytes")
+            
+            # Prioritize video recordings over audio-only
+            # Order of preference: shared_screen_with_speaker_view > shared_screen > video_only > audio_only
+            video_types = [
+                'shared_screen_with_speaker_view(CC)',
+                'shared_screen_with_speaker_view',
+                'shared_screen',
+                'video_only',
+                'audio_only'
+            ]
+            
+            for video_type in video_types:
+                for rec in meeting_recordings:
+                    if rec.get("recording_type") == video_type:
+                        recording = rec
+                        print(f"Selected recording type: {video_type}")
+                        break
+                if recording:
                     break
             
-            if not recording or not recording.get("download_url"):
+            if not recording:
+                # Fallback to any recording with a download URL
+                for rec in meeting_recordings:
+                    if rec.get("download_url"):
+                        recording = rec
+                        print(f"Fallback to recording type: {rec.get('recording_type')}")
+                        break
+            
+            if not recording:
                 raise Exception(f"No downloadable recording found for meeting {zoom_meeting_id}")
             
-            # Create temporary file
-            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
-            temp_file_path = temp_file.name
-            temp_file.close()
+            recording_id = recording.get("recording_id")
+            if not recording_id:
+                raise Exception(f"No recording ID found for meeting {zoom_meeting_id}")
             
-            # Download the file with authorization headers
+            # Check if we have a cached version
+            cache_filename = self._get_cache_filename(zoom_meeting_id, recording_id)
+            if os.path.exists(cache_filename):
+                print(f"Using cached video file: {cache_filename}")
+                return cache_filename
+            
+            # Get the download URL from the recording details
+            download_url = recording.get("download_url")
+            if not download_url:
+                raise Exception(f"No download URL found for recording {recording_id}")
+            
+            print(f"Downloading {recording.get('recording_type')} from: {download_url[:100]}...")
+            
+            # Download the file with proper authentication
             headers = {
                 "Authorization": f"Bearer {zoom_client.access_token}",
-                "Content-Type": "application/json"
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
             }
             
-            response = requests.get(recording["download_url"], headers=headers, stream=True)
+            # First try with authentication
+            response = requests.get(download_url, headers=headers, stream=True)
+            
             if response.status_code != 200:
-                # Try without headers as fallback
                 print(f"Download with auth failed ({response.status_code}), trying without auth...")
-                response = requests.get(recording["download_url"], stream=True)
+                # Try without authentication as fallback
+                response = requests.get(download_url, stream=True)
             
-            response.raise_for_status()
+            if response.status_code != 200:
+                raise Exception(f"Failed to download video: HTTP {response.status_code}")
             
-            with open(temp_file_path, "wb") as f:
+            # Download to cache file
+            print(f"Downloading to cache file: {cache_filename}")
+            with open(cache_filename, "wb") as f:
+                total_size = 0
                 for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
+                    if chunk:
+                        f.write(chunk)
+                        total_size += len(chunk)
+                        if total_size % (1024 * 1024) == 0:  # Print progress every MB
+                            print(f"Downloaded {total_size // (1024 * 1024)} MB")
             
-            print(f"Successfully downloaded video file: {temp_file_path}")
-            return temp_file_path
+            print(f"Successfully downloaded video file: {cache_filename} ({total_size} bytes)")
+            return cache_filename
             
         except Exception as e:
+            print(f"Error in _download_zoom_recording: {e}")
             raise Exception(f"Failed to download Zoom recording: {e}")
     
     async def _get_transcript(self, zoom_meeting_id: str) -> Optional[str]:
