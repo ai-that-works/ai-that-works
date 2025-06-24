@@ -181,7 +181,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "baml-py" },
+    { name = "baml-py", specifier = "==0.90.2" },
     { name = "black", marker = "extra == 'dev'", specifier = ">=24.0.0" },
     { name = "fastapi", specifier = ">=0.115.13" },
     { name = "google-api-python-client", specifier = ">=2.130.0" },

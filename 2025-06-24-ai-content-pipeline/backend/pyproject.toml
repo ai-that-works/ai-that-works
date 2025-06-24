@@ -15,7 +15,7 @@ dependencies = [
     "google-auth>=2.30.0",
     "google-auth-oauthlib>=1.2.0",
     "google-api-python-client>=2.130.0",
-    "baml-py",
+    "baml-py==0.90.2",
 ]
 
 [project.optional-dependencies]
