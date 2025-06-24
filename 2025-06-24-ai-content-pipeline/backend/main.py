@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 import uuid
@@ -16,6 +16,7 @@ from models import (
 )
 from database import db
 from zoom_client import zoom_client
+from video_processor import video_processor
 
 # Load environment variables
 load_dotenv()
@@ -42,8 +43,8 @@ async def root():
     return {"message": "AI Content Pipeline API"}
 
 @app.post("/videos/import", status_code=status.HTTP_202_ACCEPTED, response_model=VideoImportResponse)
-async def import_video(request: VideoImportRequest):
-    """Queue Zoom download - returns video ID immediately"""
+async def import_video(request: VideoImportRequest, background_tasks: BackgroundTasks):
+    """Queue Zoom download - returns video ID immediately and starts background processing"""
     video_id = str(uuid.uuid4())
     
     # Create video record
@@ -53,11 +54,16 @@ async def import_video(request: VideoImportRequest):
         title=f"Zoom Meeting {request.zoom_meeting_id}",
         duration=3600,  # 1 hour
         status="processing",
+        processing_stage="queued",
         created_at=datetime.now()
     )
     
     try:
         await db.create_video(video)
+        
+        # Add background task for video processing
+        background_tasks.add_task(video_processor.process_video, video_id, request.zoom_meeting_id)
+        
         return VideoImportResponse(video_id=video_id, status="queued")
     except Exception as e:
         print(f"Error creating video: {e}")

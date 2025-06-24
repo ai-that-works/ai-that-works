@@ -25,6 +25,7 @@ class Video(BaseModel):
     duration: int  # seconds
     zoom_meeting_id: str
     youtube_url: Optional[str] = None
+    processing_stage: str = "queued"  # "queued", "downloading", "uploading", "ready", "failed"
     status: str  # "processing", "ready", "failed"
     created_at: datetime
     summary_points: Optional[List[str]] = None

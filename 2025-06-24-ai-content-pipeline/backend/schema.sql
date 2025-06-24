@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS videos (
     duration INTEGER NOT NULL, -- seconds
     zoom_meeting_id TEXT NOT NULL,
     youtube_url TEXT,
+    processing_stage TEXT NOT NULL DEFAULT 'queued', -- 'queued', 'downloading', 'uploading', 'ready', 'failed'
     status TEXT NOT NULL DEFAULT 'processing', -- 'processing', 'ready', 'failed'
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     summary_points TEXT[] -- Array of summary points
@@ -38,6 +39,7 @@ CREATE TABLE IF NOT EXISTS feedback (
 -- Indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_videos_zoom_meeting_id ON videos(zoom_meeting_id);
 CREATE INDEX IF NOT EXISTS idx_videos_status ON videos(status);
+CREATE INDEX IF NOT EXISTS idx_videos_processing_stage ON videos(processing_stage);
 CREATE INDEX IF NOT EXISTS idx_drafts_video_id ON drafts(video_id);
 CREATE INDEX IF NOT EXISTS idx_drafts_created_at ON drafts(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_feedback_draft_id ON feedback(draft_id);
