@@ -66,7 +66,6 @@ class ZoomRecording(BaseModel):
 class VideoImportResponse(BaseModel):
     video_id: str
     status: str
-    job_id: Optional[str] = None
 
 
 class VideoResponse(BaseModel):
