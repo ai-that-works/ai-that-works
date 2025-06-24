@@ -3,30 +3,33 @@ import { ZoomRecordingsList } from '@/components/ZoomRecordingsList'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
             AI Content Pipeline
           </h1>
-          <p className="text-gray-600">
-            Turn your Zoom recordings into YouTube videos and AI-generated content drafts
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Transform your Zoom recordings into YouTube videos and AI-generated content drafts
           </p>
         </div>
-        {/* Video List */}
-        <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            Your Videos
-          </h2>
-          <VideoList />
-        </div>
 
-        {/* Zoom Recordings */}
-        <div className="mb-8">
-          <ZoomRecordingsList />
-        </div>
+        {/* Main Content Grid */}
+        <div className="grid gap-8 lg:grid-cols-2">
+          {/* Video List Section */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold text-gray-900 flex items-center">
+              Your Videos
+            </h2>
+            <VideoList />
+          </div>
 
+          {/* Zoom Recordings Section */}
+          <div className="space-y-6">
+            <ZoomRecordingsList />
+          </div>
+        </div>
       </div>
     </div>
   )

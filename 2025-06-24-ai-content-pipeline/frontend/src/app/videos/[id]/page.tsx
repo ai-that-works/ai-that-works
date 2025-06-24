@@ -99,16 +99,16 @@ export default function VideoDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
       </div>
     )
   }
 
   if (!video) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center bg-white p-8 rounded-xl shadow-sm">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Video Not Found</h1>
           <p className="text-gray-600">The video you&apos;re looking for doesn&apos;t exist.</p>
         </div>
@@ -117,89 +117,96 @@ export default function VideoDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <Button
             variant="ghost"
             onClick={() => window.history.back()}
-            className="mb-4"
+            className="mb-6 hover:bg-white/50"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Videos
           </Button>
           
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{video.title}</h1>
-              <div className="flex items-center space-x-4 text-sm text-gray-500">
-                <span className="flex items-center">
-                  <Clock className="w-4 h-4 mr-1" />
-                  {formatDuration(video.duration)}
-                </span>
-                <span>{formatDate(video.created_at)}</span>
-                <span className="flex items-center capitalize">
-                  {getStatusIcon(video.status)}
-                  <span className="ml-1">{video.status}</span>
-                </span>
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div className="min-w-0 flex-1">
+                <h1 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">{video.title}</h1>
+                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                  <span className="flex items-center">
+                    <Clock className="w-4 h-4 mr-1" />
+                    {formatDuration(video.duration)}
+                  </span>
+                  <span>{formatDate(video.created_at)}</span>
+                  <span className="flex items-center px-3 py-1 bg-gray-100 rounded-full text-xs font-medium capitalize">
+                    {getStatusIcon(video.status)}
+                    <span className="ml-2">{video.status}</span>
+                  </span>
+                </div>
               </div>
-            </div>
-            
-            <div className="flex space-x-2">
-              {video.youtube_url && (
-                <Button
-                  variant="outline"
-                  onClick={() => window.open(video.youtube_url, '_blank')}
-                >
-                  <Play className="w-4 h-4 mr-2" />
-                  Watch on YouTube
-                </Button>
-              )}
-              {video.status === 'ready' && !video.summary_points?.length && (
-                <Button
-                  onClick={handleSummarize}
-                  disabled={summarizing}
-                >
-                  {summarizing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Summarizing...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      Generate Summary
-                    </>
-                  )}
-                </Button>
-              )}
+              
+              <div className="flex flex-wrap gap-2">
+                {video.youtube_url && (
+                  <Button
+                    variant="outline"
+                    onClick={() => window.open(video.youtube_url, '_blank')}
+                    className="text-red-600 border-red-200 hover:bg-red-50"
+                  >
+                    <Play className="w-4 h-4 mr-2" />
+                    Watch on YouTube
+                  </Button>
+                )}
+                {video.status === 'ready' && !video.summary_points?.length && (
+                  <Button
+                    onClick={handleSummarize}
+                    disabled={summarizing}
+                    className="bg-purple-600 hover:bg-purple-700"
+                  >
+                    {summarizing ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Summarizing...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        Generate Summary
+                      </>
+                    )}
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Video Summary */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Summary</h2>
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Summary</h2>
             {video.summary_points && video.summary_points.length > 0 ? (
-              <ul className="space-y-2">
+              <ul className="space-y-4">
                 {video.summary_points.map((point, index) => (
                   <li key={index} className="flex items-start">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                    <span className="text-gray-700">{point}</span>
+                    <span className="w-3 h-3 bg-blue-500 rounded-full mt-2 mr-4 flex-shrink-0"></span>
+                    <span className="text-gray-700 leading-relaxed">{point}</span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <div className="text-gray-500 text-center py-8">
+              <div className="text-center py-12">
                 {video.status === 'ready' ? (
                   <div>
-                    <p>No summary generated yet.</p>
+                    <div className="text-gray-400 mb-4">
+                      <Sparkles className="w-12 h-12 mx-auto" />
+                    </div>
+                    <p className="text-gray-500 text-lg mb-4">No summary generated yet</p>
                     <Button
                       onClick={handleSummarize}
                       disabled={summarizing}
-                      className="mt-2"
+                      className="bg-purple-600 hover:bg-purple-700"
                     >
                       {summarizing ? (
                         <>
@@ -215,14 +222,19 @@ export default function VideoDetailPage() {
                     </Button>
                   </div>
                 ) : (
-                  <p>Summary will be available once processing is complete.</p>
+                  <div>
+                    <div className="text-gray-400 mb-4">
+                      <Clock className="w-12 h-12 mx-auto" />
+                    </div>
+                    <p className="text-gray-500 text-lg">Summary will be available once processing is complete</p>
+                  </div>
                 )}
               </div>
             )}
           </div>
 
           {/* Draft Editor */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <DraftEditor videoId={videoId} />
           </div>
         </div>

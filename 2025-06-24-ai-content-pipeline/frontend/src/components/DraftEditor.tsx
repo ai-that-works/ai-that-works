@@ -98,10 +98,10 @@ export function DraftEditor({ videoId }: DraftEditorProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Content Drafts</h3>
-        <div className="flex items-center space-x-2">
+        <h3 className="text-xl font-semibold text-gray-900">Content Drafts</h3>
+        <div className="flex items-center space-x-3">
           {lastSaved && (
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-500 font-medium">
               Last saved: {lastSaved.toLocaleTimeString()}
             </span>
           )}
@@ -109,6 +109,7 @@ export function DraftEditor({ videoId }: DraftEditorProps) {
             onClick={handleSave}
             disabled={isSaving}
             size="sm"
+            className="bg-blue-600 hover:bg-blue-700"
           >
             {isSaving ? (
               <>
@@ -125,10 +126,10 @@ export function DraftEditor({ videoId }: DraftEditorProps) {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-1">
+      <div className="space-y-6">
         {/* Email Draft */}
-        <div className="space-y-2">
-          <label className="flex items-center gap-2 text-sm font-medium">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <label className="flex items-center gap-2 text-sm font-semibold text-blue-900 mb-3">
             <Mail className="w-4 h-4" />
             Email Content
           </label>
@@ -136,13 +137,13 @@ export function DraftEditor({ videoId }: DraftEditorProps) {
             value={currentDraft.email_content}
             onChange={(e) => handleContentChange('email_content', e.target.value)}
             placeholder="Write your email content here..."
-            className="min-h-[120px]"
+            className="min-h-[120px] border-blue-200 focus:border-blue-500 bg-white"
           />
         </div>
 
         {/* X/Twitter Draft */}
-        <div className="space-y-2">
-          <label className="flex items-center gap-2 text-sm font-medium">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
             <Twitter className="w-4 h-4" />
             X (Twitter) Content
           </label>
@@ -150,13 +151,13 @@ export function DraftEditor({ videoId }: DraftEditorProps) {
             value={currentDraft.x_content}
             onChange={(e) => handleContentChange('x_content', e.target.value)}
             placeholder="Write your X post here..."
-            className="min-h-[120px]"
+            className="min-h-[120px] border-gray-200 focus:border-gray-500 bg-white"
           />
         </div>
 
         {/* LinkedIn Draft */}
-        <div className="space-y-2">
-          <label className="flex items-center gap-2 text-sm font-medium">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <label className="flex items-center gap-2 text-sm font-semibold text-blue-900 mb-3">
             <Linkedin className="w-4 h-4" />
             LinkedIn Content
           </label>
@@ -164,20 +165,20 @@ export function DraftEditor({ videoId }: DraftEditorProps) {
             value={currentDraft.linkedin_content}
             onChange={(e) => handleContentChange('linkedin_content', e.target.value)}
             placeholder="Write your LinkedIn post here..."
-            className="min-h-[120px]"
+            className="min-h-[120px] border-blue-200 focus:border-blue-500 bg-white"
           />
         </div>
       </div>
 
       {/* Draft History */}
       {drafts.length > 1 && (
-        <div className="mt-8">
-          <h4 className="text-sm font-medium mb-3">Draft History</h4>
+        <div className="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Draft History</h4>
           <div className="space-y-2">
             {drafts.slice(1).map((draft) => (
               <div
                 key={draft.id}
-                className="text-xs text-gray-500 p-2 bg-gray-50 rounded"
+                className="text-xs text-gray-600 p-3 bg-white border border-gray-200 rounded font-medium"
               >
                 Version {draft.version} - {new Date(draft.created_at).toLocaleString()}
               </div>

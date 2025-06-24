@@ -80,16 +80,20 @@ export function VideoList() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-32">
-        <Loader2 className="w-6 h-6 animate-spin" />
+      <div className="flex justify-center items-center h-32 bg-white rounded-xl shadow-sm">
+        <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
       </div>
     )
   }
 
   if (videos.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
-        No videos yet. Import your first Zoom recording to get started.
+      <div className="text-center py-12 bg-white rounded-xl shadow-sm">
+        <div className="text-gray-400 mb-4">
+          <Play className="w-12 h-12 mx-auto" />
+        </div>
+        <p className="text-gray-500 text-lg">No videos yet</p>
+        <p className="text-gray-400 text-sm">Import your first Zoom recording to get started</p>
       </div>
     )
   }
@@ -99,39 +103,44 @@ export function VideoList() {
       {videos.map((video) => (
         <div
           key={video.id}
-          className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow"
+          className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 border border-gray-100"
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              {getStatusIcon(video.status)}
-              <div>
-                <h3 className="font-medium text-gray-900">{video.title}</h3>
-                <div className="flex items-center space-x-4 text-sm text-gray-500">
+            <div className="flex items-center space-x-4">
+              <div className="flex-shrink-0">
+                {getStatusIcon(video.status)}
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="font-semibold text-gray-900 text-lg truncate">{video.title}</h3>
+                <div className="flex items-center space-x-4 text-sm text-gray-500 mt-1">
                   <span className="flex items-center">
                     <Clock className="w-3 h-3 mr-1" />
                     {formatDuration(video.duration)}
                   </span>
                   <span>{formatDate(video.created_at)}</span>
-                  <span className="capitalize">{video.status}</span>
+                  <span className="px-2 py-1 bg-gray-100 rounded-full text-xs capitalize font-medium">
+                    {video.status}
+                  </span>
                 </div>
               </div>
             </div>
             
-            <div className="flex space-x-2">
+            <div className="flex space-x-2 flex-shrink-0">
               {video.youtube_url && (
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => window.open(video.youtube_url, '_blank')}
+                  className="text-red-600 border-red-200 hover:bg-red-50"
                 >
                   <Play className="w-3 h-3 mr-1" />
                   Watch
                 </Button>
               )}
               <Button
-                variant="default"
                 size="sm"
                 onClick={() => window.location.href = `/videos/${video.id}`}
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 View Details
               </Button>
