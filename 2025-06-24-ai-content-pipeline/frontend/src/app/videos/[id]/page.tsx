@@ -8,7 +8,7 @@ import { TranscriptViewer } from "@/components/video/transcript-viewer"
 import { DraftEditor } from "@/components/video/draft-editor"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Sparkles, Clock, Loader2 } from "lucide-react"
+import { ArrowLeft, Sparkles, Clock, Loader2, RotateCcw } from "lucide-react"
 import { toast } from "sonner"
 import { formatDuration, formatDate } from "@/lib/utils"
 import { LoadingIndicator } from "@/components/shared/loading-indicator"
@@ -25,6 +25,7 @@ export default function VideoDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isSummarizing, setIsSummarizing] = useState(false)
+  const [isResetting, setIsResetting] = useState(false)
   const [realtimeStatus, setRealtimeStatus] = useState<string>("disconnected")
   const [reconnectAttempts, setReconnectAttempts] = useState(0)
 
@@ -146,6 +147,36 @@ export default function VideoDetailPage() {
     })
   }
 
+  const handleReset = async () => {
+    if (!videoId) return
+    setIsResetting(true)
+    
+    try {
+      // Update video status to reset the processing state
+      const { error } = await supabase
+        .from("videos")
+        .update({ 
+          status: "ready",
+          processing_stage: "ready"
+        })
+        .eq("id", videoId)
+        
+      if (error) {
+        console.error("❌ Reset failed:", error)
+        toast.error(`Failed to reset: ${error.message}`)
+      } else {
+        console.log("✅ Video status reset")
+        toast.success("Processing status reset. You can now re-trigger summarization.")
+        fetchVideo() // Refresh to show updated status
+      }
+    } catch (err) {
+      console.error("❌ Reset error:", err)
+      toast.error("Failed to reset processing status")
+    } finally {
+      setIsResetting(false)
+    }
+  }
+
   if (loading && !video) {
     // Show full page loader only on initial load
     return <LoadingIndicator fullPage text="Loading video details..." />
@@ -260,18 +291,40 @@ export default function VideoDetailPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between macos-text-callout">
-                    <span>Summary Generation</span>
-                    <span className="text-green-600">
-                      {(video as any).processing_stage === "generating_content" || video.summary_points ? "✓ Complete" : "⏳ Processing..."}
-                    </span>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between macos-text-callout">
+                      <span>Summary Generation</span>
+                      <span className="text-green-600">
+                        {(video as any).processing_stage === "generating_content" || video.summary_points ? "✓ Complete" : "⏳ Processing..."}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between macos-text-callout">
+                      <span>Content Drafts</span>
+                      <span className="text-blue-600">
+                        {(video as any).processing_stage === "generating_content" ? "⏳ In Progress..." : "⌛ Waiting..."}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between macos-text-callout">
-                    <span>Content Drafts</span>
-                    <span className="text-blue-600">
-                      {(video as any).processing_stage === "generating_content" ? "⏳ In Progress..." : "⌛ Waiting..."}
-                    </span>
+                  
+                  <div className="pt-2 border-t border-blue-200 dark:border-blue-800">
+                    <p className="macos-text-caption1 text-muted-foreground mb-3">
+                      If processing appears stuck, you can reset the status and retry.
+                    </p>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={handleReset}
+                      disabled={isResetting}
+                      className="border-red-200 text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950"
+                    >
+                      {isResetting ? (
+                        <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                      ) : (
+                        <RotateCcw className="w-4 h-4 mr-1" />
+                      )}
+                      {isResetting ? "Resetting..." : "Reset Processing"}
+                    </Button>
                   </div>
                 </div>
               </CardContent>
