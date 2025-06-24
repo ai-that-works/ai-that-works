@@ -99,9 +99,8 @@ export function ZoomRecordingsList() {
   const handleProcess = async (meetingId: string) => {
     setProcessing(meetingId)
     try {
-      // Call backend API to process the meeting (replace with actual endpoint if needed)
       await api.importVideo({ zoom_meeting_id: meetingId })
-      // Optionally show a success message or update UI
+      alert('Processing started for this meeting!')
     } catch {
       alert('Failed to process meeting')
     } finally {
@@ -137,6 +136,19 @@ export function ZoomRecordingsList() {
             </div>
             <span className="text-xs text-gray-400">Meeting ID: {meeting.meeting_id}</span>
           </div>
+          <Button
+            size="sm"
+            variant="default"
+            className="w-full mb-2"
+            onClick={() => handleProcess(meeting.meeting_id)}
+            disabled={processing === meeting.meeting_id}
+          >
+            {processing === meeting.meeting_id ? (
+              <span className="flex items-center justify-center"><Loader2 className="w-4 h-4 animate-spin mr-2" />Processing...</span>
+            ) : (
+              'Process'
+            )}
+          </Button>
           <div className="grid gap-2 mb-2">
             {meeting.recordings.map((recording) => (
               <div
@@ -162,19 +174,6 @@ export function ZoomRecordingsList() {
               </div>
             ))}
           </div>
-          <Button
-            size="sm"
-            variant="default"
-            className="w-full"
-            onClick={() => handleProcess(meeting.meeting_id)}
-            disabled={processing === meeting.meeting_id}
-          >
-            {processing === meeting.meeting_id ? (
-              <span className="flex items-center justify-center"><Loader2 className="w-4 h-4 animate-spin mr-2" />Processing...</span>
-            ) : (
-              'Process'
-            )}
-          </Button>
         </div>
       ))}
     </div>
