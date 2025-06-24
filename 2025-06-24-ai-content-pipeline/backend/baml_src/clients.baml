@@ -5,6 +5,7 @@ client<llm> CustomGPT4o {
   options {
     model "gpt-4o"
     api_key env.OPENAI_API_KEY
+    temperature 0.0
   }
 }
 
@@ -22,6 +23,7 @@ client<llm> CustomSonnet {
   options {
     model "claude-3-5-sonnet-20241022"
     api_key env.ANTHROPIC_API_KEY
+    temperature 0.0
   }
 }
 

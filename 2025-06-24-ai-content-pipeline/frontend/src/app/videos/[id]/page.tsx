@@ -16,6 +16,7 @@ import { LoadingIndicator } from "@/components/shared/loading-indicator"
 import { ErrorMessage } from "@/components/shared/error-message"
 import { YouTubeEmbed } from "@/components/shared/youtube-embed"
 import { getVideoStatusIcon } from "@/components/shared/utils"
+import { useSummarizeVideo } from "@/baml_client/react/hooks"
 
 export default function VideoDetailPage() {
   const params = useParams()
@@ -484,6 +485,26 @@ export default function VideoDetailPage() {
                 {video.summary ? (
                   // New BAML structured summary
                   <div className="space-y-6">
+                    {video.summary.timed_data && video.summary.timed_data.length > 0 && (
+                      <div>
+                        <h4 className="macos-text-title3 font-semibold mb-3">Timeline Summary</h4>
+                        <div className="space-y-3">
+                          {video.summary.timed_data.map((segment, index) => (
+                            <div key={index} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                              <div className="flex-shrink-0">
+                                <div className="macos-text-caption1 font-semibold text-primary">
+                                  {segment.start_time} - {segment.end_time}
+                                </div>
+                              </div>
+                              <div className="flex-1">
+                                <p className="macos-text-body text-foreground">{segment.summary}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
                     {video.summary.bullet_points && video.summary.bullet_points.length > 0 && (
                       <div>
                         <h4 className="macos-text-title3 font-semibold mb-3">Key Points</h4>

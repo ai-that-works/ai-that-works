@@ -155,12 +155,8 @@ async def process_video_summary(video_id: str, transcript: str, title: Optional[
         # Step 1: Generate video summary FIRST
         stream = b.stream.SummarizeVideo(transcript=transcript, title=title)
         async for video_summary in stream:
-            summary_data = {
-                "bullet_points": video_summary.bullet_points,
-                "key_topics": video_summary.key_topics,
-                "main_takeaways": video_summary.main_takeaways,
-                "generated_at": datetime.now().isoformat()
-            }
+            summary_data = video_summary.model_dump(mode="json")
+            summary_data["generated_at"] = datetime.now().isoformat()
             await db.update_video(video_id, {
                 "summary": summary_data,
                 "summary_points": video_summary.bullet_points,
@@ -170,12 +166,8 @@ async def process_video_summary(video_id: str, transcript: str, title: Optional[
         print(f"✅ BAML summarization completed for video {video_id}")
         
         # Step 2: Save summary to DB immediately and delete prior drafts
-        summary_data = {
-            "bullet_points": video_summary.bullet_points,
-            "key_topics": video_summary.key_topics,
-            "main_takeaways": video_summary.main_takeaways,
-            "generated_at": datetime.now().isoformat()
-        }
+        summary_data = video_summary.model_dump(mode="json")
+        summary_data["generated_at"] = datetime.now().isoformat()
         
         # Delete all existing drafts for this video (fresh start)
         print(f"🗑️ Deleting all existing drafts for video {video_id}")
@@ -193,7 +185,7 @@ async def process_video_summary(video_id: str, transcript: str, title: Optional[
         try:
             new_title = await b.GenerateYouTubeTitle(
                 summary=video_summary,
-                transcript=video.transcript,
+                transcript=transcript,
                 current_title=title
             )
             await db.update_video(video_id, {"title": new_title})
@@ -230,6 +222,7 @@ async def process_video_summary(video_id: str, transcript: str, title: Optional[
                 updated_video = await db.get_video(video_id)
                 email_draft: types.EmailDraft = await b.GenerateEmailDraft(
                     summary=video_summary,
+                    transcript=transcript,
                     video_title=updated_video.title if updated_video else title
                 )
                 
@@ -238,7 +231,7 @@ async def process_video_summary(video_id: str, transcript: str, title: Optional[
                 email_draft_content = EmailDraftContent(
                     subject=email_draft.subject,
                     body=email_draft.body,
-                    call_to_action=email_draft.call_to_action
+                    call_to_action=email_draft.call_to_action or "<none>"
                 )
                 
                 await db.update_draft_field(shared_draft_id, "email_draft", email_draft_content)
@@ -532,14 +525,16 @@ async def refine_content_background_task(
             video_summary = types.VideoSummary(
                 bullet_points=video.summary.get('bullet_points', []),
                 key_topics=video.summary.get('key_topics', []),
-                main_takeaways=video.summary.get('main_takeaways', [])
+                main_takeaways=video.summary.get('main_takeaways', []),
+                timed_data=video.summary.get('timed_data', [])
             )
         elif video.summary_points:
             # Fallback to legacy format
             video_summary = types.VideoSummary(
                 bullet_points=video.summary_points,
                 key_topics=[],
-                main_takeaways=[]
+                main_takeaways=[],
+                timed_data=[]
             )
         else:
             print(f"❌ No video summary available for video {video_id}")
@@ -564,7 +559,7 @@ async def refine_content_background_task(
             refined_email = EmailDraftContent(
                 subject=refined_content.subject,
                 body=refined_content.body,
-                call_to_action=refined_content.call_to_action
+                call_to_action=refined_content.call_to_action or "<none>"
             )
             await db.update_draft_field(draft_id, "email_draft", refined_email)
             
@@ -677,13 +672,15 @@ async def generate_title_background_task(video_id: str):
             video_summary = types.VideoSummary(
                 bullet_points=video.summary.get('bullet_points', []),
                 key_topics=video.summary.get('key_topics', []),
-                main_takeaways=video.summary.get('main_takeaways', [])
+                main_takeaways=video.summary.get('main_takeaways', []),
+                timed_data=video.summary.get('timed_data', [])
             )
         elif video.summary_points:
             video_summary = types.VideoSummary(
                 bullet_points=video.summary_points,
                 key_topics=[],
-                main_takeaways=[]
+                main_takeaways=[],
+                timed_data=[]
             )
         else:
             print(f"❌ No video summary available for video {video_id}")
@@ -716,7 +713,7 @@ async def test_supabase():
         # Test database connection by trying to get a count
         from database import db
         # Try a simple operation to test connection
-        db.client.table("videos").select("count", count="exact").execute()
+        db.client.table("videos").select("count").execute()
         return {
             "status": "connected", 
             "message": "Supabase credentials valid",
