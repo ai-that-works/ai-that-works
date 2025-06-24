@@ -75,7 +75,7 @@ class VideoProcessor:
             return None
     
     async def process_video(self, video_id: str, zoom_meeting_id: str):
-        """Main processing pipeline: download Zoom recording and upload to YouTube"""
+        """Main processing pipeline: download Zoom recording, upload to YouTube, and trigger summarization"""
         try:
             # Update status to downloading
             await db.update_video(video_id, {
@@ -95,7 +95,7 @@ class VideoProcessor:
             # Upload to YouTube
             youtube_url = await self._upload_to_youtube(video_file_path, zoom_meeting_id)
             
-            # Update final status with transcript
+            # Update status with transcript and YouTube URL
             update_data = {
                 "processing_stage": "ready",
                 "status": "ready",
@@ -106,6 +106,9 @@ class VideoProcessor:
                 update_data["transcript"] = transcript
             
             await db.update_video(video_id, update_data)
+            
+            # Video processing completed - summarization will be triggered automatically by the import pipeline
+            print(f"✅ Video processing completed for {video_id}")
             
             # Don't clean up the cached file - keep it for future use
             print(f"Video processing completed. Cached file: {video_file_path}")

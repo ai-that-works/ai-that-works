@@ -3,19 +3,23 @@
 import { useState } from "react"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Eye, Edit3 } from "lucide-react"
+import { Eye, Edit3, MessageSquare, Sparkles, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { EmailDraft } from "@/baml_client/types"
 
 interface EmailPreviewProps {
   draft: EmailDraft | null
   onChange: (draft: EmailDraft) => void
+  onRefine?: (feedback: string) => void
   className?: string
   readOnly?: boolean
 }
 
-export function EmailPreview({ draft, onChange, className, readOnly = false }: EmailPreviewProps) {
+export function EmailPreview({ draft, onChange, onRefine, className, readOnly = false }: EmailPreviewProps) {
   const [isEditing, setIsEditing] = useState(false)
+  const [showFeedback, setShowFeedback] = useState(false)
+  const [feedback, setFeedback] = useState("")
+  const [isRefining, setIsRefining] = useState(false)
   const [formData, setFormData] = useState({
     subject: "",
     body: "",
@@ -40,6 +44,22 @@ export function EmailPreview({ draft, onChange, className, readOnly = false }: E
       call_to_action: formData.call_to_action.trim()
     })
     setIsEditing(false)
+  }
+
+  // Handle feedback submission
+  const handleFeedback = async () => {
+    if (!feedback.trim() || !onRefine) return
+    
+    setIsRefining(true)
+    try {
+      await onRefine(feedback.trim())
+      setFeedback("")
+      setShowFeedback(false)
+    } catch (error) {
+      console.error("Error refining content:", error)
+    } finally {
+      setIsRefining(false)
+    }
   }
 
   if (isEditing) {
@@ -107,16 +127,65 @@ export function EmailPreview({ draft, onChange, className, readOnly = false }: E
       <div className="flex justify-between items-center">
         <h3 className="macos-text-title3 text-foreground">Email Preview</h3>
         {!readOnly && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={startEditing}
-          >
-            <Edit3 className="w-4 h-4 mr-1" />
-            Edit
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={startEditing}
+            >
+              <Edit3 className="w-4 h-4 mr-1" />
+              Edit
+            </Button>
+            {onRefine && draft && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowFeedback(!showFeedback)}
+              >
+                <MessageSquare className="w-4 h-4 mr-1" />
+                Feedback
+              </Button>
+            )}
+          </div>
         )}
       </div>
+      
+      {/* Feedback Input */}
+      {showFeedback && !readOnly && onRefine && (
+        <div className="bg-muted/20 border border-border/40 rounded-lg p-4 space-y-3">
+          <h4 className="macos-text-callout font-medium text-foreground">Provide feedback to refine this email</h4>
+          <Textarea
+            placeholder="e.g., Make it more casual, add a personal story, emphasize the key benefits..."
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+            className="min-h-[100px]"
+          />
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setShowFeedback(false)
+                setFeedback("")
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleFeedback}
+              disabled={!feedback.trim() || isRefining}
+            >
+              {isRefining ? (
+                <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+              ) : (
+                <Sparkles className="w-4 h-4 mr-1" />
+              )}
+              {isRefining ? "Refining..." : "Refine Email"}
+            </Button>
+          </div>
+        </div>
+      )}
       
       {/* Email Interface Mockup */}
       <div className="macos-material-content border border-border/60 rounded-lg overflow-hidden">

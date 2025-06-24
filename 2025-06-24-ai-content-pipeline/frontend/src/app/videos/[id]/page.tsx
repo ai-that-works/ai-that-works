@@ -7,8 +7,9 @@ import { api } from "@/lib/apiClient" // Assuming apiClient.ts for client-side A
 import { TranscriptViewer } from "@/components/video/transcript-viewer"
 import { DraftEditor } from "@/components/video/draft-editor"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Sparkles, Clock, Loader2, RotateCcw } from "lucide-react"
+import { ArrowLeft, Sparkles, Clock, Loader2, RotateCcw, Edit3, Check, X } from "lucide-react"
 import { toast } from "sonner"
 import { formatDuration, formatDate } from "@/lib/utils"
 import { LoadingIndicator } from "@/components/shared/loading-indicator"
@@ -26,6 +27,10 @@ export default function VideoDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [isSummarizing, setIsSummarizing] = useState(false)
   const [isResetting, setIsResetting] = useState(false)
+  const [isEditingTitle, setIsEditingTitle] = useState(false)
+  const [editedTitle, setEditedTitle] = useState("")
+  const [isSavingTitle, setIsSavingTitle] = useState(false)
+  const [isGeneratingTitle, setIsGeneratingTitle] = useState(false)
   const [realtimeStatus, setRealtimeStatus] = useState<string>("disconnected")
   const [reconnectAttempts, setReconnectAttempts] = useState(0)
 
@@ -177,6 +182,48 @@ export default function VideoDetailPage() {
     }
   }
 
+  // Handle title editing
+  const startTitleEdit = () => {
+    setEditedTitle(video?.title || "")
+    setIsEditingTitle(true)
+  }
+
+  const cancelTitleEdit = () => {
+    setIsEditingTitle(false)
+    setEditedTitle("")
+  }
+
+  const saveTitleEdit = async () => {
+    if (!videoId || !editedTitle.trim()) return
+    
+    setIsSavingTitle(true)
+    try {
+      await api.updateTitle(videoId, editedTitle.trim())
+      setIsEditingTitle(false)
+      toast.success("Title updated successfully!")
+    } catch (error: any) {
+      console.error("Error updating title:", error)
+      toast.error(`Failed to update title: ${error.message || "Unknown error"}`)
+    } finally {
+      setIsSavingTitle(false)
+    }
+  }
+
+  const generateNewTitle = async () => {
+    if (!videoId) return
+    
+    setIsGeneratingTitle(true)
+    try {
+      await api.generateTitle(videoId)
+      toast.success("Title generation started! You'll see the new title shortly.")
+    } catch (error: any) {
+      console.error("Error generating title:", error)
+      toast.error(`Failed to generate title: ${error.message || "Unknown error"}`)
+    } finally {
+      setIsGeneratingTitle(false)
+    }
+  }
+
   if (loading && !video) {
     // Show full page loader only on initial load
     return <LoadingIndicator fullPage text="Loading video details..." />
@@ -227,7 +274,71 @@ export default function VideoDetailPage() {
         </Button>
         
         <div className="flex-1">
-          <h1 className="macos-text-title1 text-foreground truncate">{video.title}</h1>
+          {isEditingTitle ? (
+            <div className="flex items-center gap-2">
+              <Input
+                value={editedTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
+                className="macos-text-title1 font-bold border-2 border-blue-500"
+                placeholder="Enter video title..."
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    saveTitleEdit()
+                  } else if (e.key === "Escape") {
+                    cancelTitleEdit()
+                  }
+                }}
+                autoFocus
+              />
+              <div className="flex gap-1">
+                <Button
+                  size="sm"
+                  onClick={saveTitleEdit}
+                  disabled={isSavingTitle || !editedTitle.trim()}
+                >
+                  {isSavingTitle ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Check className="w-4 h-4" />
+                  )}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={cancelTitleEdit}
+                  disabled={isSavingTitle}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <h1 className="macos-text-title1 text-foreground truncate">{video.title}</h1>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={startTitleEdit}
+                className="opacity-60 hover:opacity-100"
+              >
+                <Edit3 className="w-4 h-4" />
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={generateNewTitle}
+                disabled={isGeneratingTitle}
+                className="opacity-60 hover:opacity-100"
+                title="Generate AI title"
+              >
+                {isGeneratingTitle ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Sparkles className="w-4 h-4" />
+                )}
+              </Button>
+            </div>
+          )}
           <div className="flex items-center gap-4 mt-1">
             <span className="flex items-center gap-1 macos-text-callout text-muted-foreground">
               {getVideoStatusIcon(video.status)}

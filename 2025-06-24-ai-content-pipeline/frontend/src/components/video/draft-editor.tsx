@@ -129,6 +129,34 @@ export function DraftEditor({ videoId }: DraftEditorProps) {
     )
   }
 
+  // Handle content refinement with feedback
+  const handleRefineContent = async (contentType: "email" | "x" | "linkedin", feedback: string) => {
+    console.log(`🎨 Refining ${contentType} content with feedback:`, feedback)
+    
+    let currentContentDraft = null
+    if (contentType === "email" && currentDraft.email_draft) {
+      currentContentDraft = currentDraft.email_draft
+    } else if (contentType === "x" && currentDraft.x_draft) {
+      currentContentDraft = currentDraft.x_draft
+    } else if (contentType === "linkedin" && currentDraft.linkedin_draft) {
+      currentContentDraft = currentDraft.linkedin_draft
+    }
+    
+    if (!currentContentDraft) {
+      toast.error(`No existing ${contentType} content to refine`)
+      return
+    }
+    
+    try {
+      await api.refineContent(videoId, feedback, contentType, currentContentDraft)
+      console.log(`✅ ${contentType} refinement request sent successfully`)
+      toast.success(`${contentType} refinement started! You'll see the updated content shortly.`)
+    } catch (err: any) {
+      console.error(`❌ ${contentType} content refinement request failed:`, err)
+      toast.error(`Failed to start ${contentType} refinement: ${err.message || "Unknown error"}`)
+    }
+  }
+
 
   const viewHistoricalDraft = (draft: Draft) => {
     setSelectedHistoricalDraft(draft)
@@ -162,6 +190,7 @@ export function DraftEditor({ videoId }: DraftEditorProps) {
               const updatedDraft = { ...currentDraft, email_draft: draft }
               handleSaveDraft(updatedDraft)
             }}
+            onRefine={(feedback) => handleRefineContent("email", feedback)}
           />
         </TabsContent>
         <TabsContent value="x" className="mt-4">

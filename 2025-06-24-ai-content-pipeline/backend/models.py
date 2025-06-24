@@ -31,6 +31,14 @@ class DraftUpdateRequest(BaseModel):
 class FeedbackRequest(BaseModel):
     content: str
 
+class ContentRefinementRequest(BaseModel):
+    feedback: str
+    content_type: str  # "email", "x", "linkedin"
+    current_draft: Optional[Dict[str, Any]] = None
+
+class TitleUpdateRequest(BaseModel):
+    title: str
+
 
 # Response Models
 class Video(BaseModel):
