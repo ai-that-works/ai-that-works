@@ -5,12 +5,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Eye, Edit3 } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-interface EmailDraft {
-  subject: string
-  body: string
-  call_to_action: string
-}
+import type { EmailDraft } from "@/baml_client/types"
 
 interface EmailPreviewProps {
   draft: EmailDraft | null

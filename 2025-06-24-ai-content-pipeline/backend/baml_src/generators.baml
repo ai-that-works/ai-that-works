@@ -16,3 +16,20 @@ generator target {
     // This controls what `b.FunctionName()` will be (sync or async).
     default_client_mode sync
 }
+
+
+generator target_ts {
+    // Valid values: "python/pydantic", "typescript", "ruby/sorbet", "rest/openapi"
+    output_type "typescript/react"
+
+    // Where the generated code will be saved (relative to baml_src/)
+    output_dir "../../frontend/src"
+
+    // The version of the BAML package you have installed (e.g. same version as your baml-py or @boundaryml/baml).
+    // The BAML VSCode extension version should also match this version.
+    version "0.90.2"
+
+    // Valid values: "sync", "async"
+    // This controls what `b.FunctionName()` will be (sync or async).
+    default_client_mode async
+}

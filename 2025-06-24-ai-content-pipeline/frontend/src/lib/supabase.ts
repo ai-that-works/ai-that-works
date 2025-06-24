@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js"
+import type { EmailDraft, TwitterThread, LinkedInPost, VideoSummary } from "@/baml_client/types"
 
 // Ensure these environment variables are correctly set in your Vercel project
 // or .env.local file for local development.
@@ -17,8 +18,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     params: {
       eventsPerSecond: 10
     },
-    timeout: 30000,
-    heartbeatIntervalMs: 15000
+    timeout: 120000, // 2 minutes
+    heartbeatIntervalMs: 30000 // 30 seconds
   }
 })
 
@@ -30,25 +31,15 @@ export interface Video {
   youtube_url?: string | null
   status: "processing" | "ready" | "failed" | "pending" // Added 'pending' or other relevant statuses
   created_at: string
-  summary_points?: string[] | null
+  summary_points?: string[] | null // Legacy field for backwards compatibility
+  summary?: VideoSummary | null // New structured summary from BAML
   transcript?: string | null // Transcript might be fetched separately or stored here
 }
 
-export interface EmailDraft {
-  subject: string
-  body: string
-  call_to_action: string
-}
-
-export interface XDraft {
-  tweets: string[]
-  hashtags: string[]
-}
-
-export interface LinkedInDraft {
-  content: string
-  hashtags: string[]
-}
+// Use BAML-generated types
+export type { EmailDraft, VideoSummary }
+export type XDraft = TwitterThread
+export type LinkedInDraft = LinkedInPost
 
 export interface Draft {
   id: string

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { api } from "@/lib/apiClient" // Assuming apiClient.ts
-import { supabase, type Draft } from "@/lib/supabase" // Assuming supabase.ts
+import { supabase, type Draft, type EmailDraft, type XDraft, type LinkedInDraft } from "@/lib/supabase" // Assuming supabase.ts
 import { Mail, MessageSquareText, LinkedinIcon, History, Eye } from "lucide-react" // Using MessageSquareText for X/Twitter
 import { toast } from "sonner"
 import { formatDate } from "@/lib/utils"
@@ -30,21 +30,7 @@ interface DraftEditorProps {
   videoId: string
 }
 
-interface EmailDraft {
-  subject: string
-  body: string
-  call_to_action: string
-}
-
-interface XDraft {
-  tweets: string[]
-  hashtags: string[]
-}
-
-interface LinkedInDraft {
-  content: string
-  hashtags: string[]
-}
+// Types now imported from BAML-generated types via supabase.ts
 
 interface CurrentDraftState {
   email_draft: EmailDraft | null

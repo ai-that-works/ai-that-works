@@ -5,11 +5,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Eye, Edit3, ThumbsUp, MessageSquare, Send, MoreHorizontal, Repeat2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import type { LinkedInPost } from "@/baml_client/types"
 
-interface LinkedInDraft {
-  content: string
-  hashtags: string[]
-}
+type LinkedInDraft = LinkedInPost
 
 interface LinkedInPreviewProps {
   draft: LinkedInDraft | null

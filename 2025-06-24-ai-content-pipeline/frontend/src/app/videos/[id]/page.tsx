@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation" // Added useRouter
-import { supabase, type Video } from "@/lib/supabase" // Assuming supabase.ts is in lib
+import { supabase, type Video, type VideoSummary } from "@/lib/supabase" // Assuming supabase.ts is in lib
 import { api } from "@/lib/apiClient" // Assuming apiClient.ts for client-side API calls
 import { TranscriptViewer } from "@/components/video/transcript-viewer"
 import { DraftEditor } from "@/components/video/draft-editor"
@@ -26,6 +26,7 @@ export default function VideoDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [isSummarizing, setIsSummarizing] = useState(false)
   const [realtimeStatus, setRealtimeStatus] = useState<string>("disconnected")
+  const [reconnectAttempts, setReconnectAttempts] = useState(0)
 
   const fetchVideo = useCallback(async () => {
     setLoading(true)
@@ -44,70 +45,88 @@ export default function VideoDetailPage() {
     }
   }, [videoId])
 
+  const setupRealtimeSubscription = useCallback(() => {
+    console.log(`🔗 Setting up real-time subscription for video ${videoId}`)
+    
+    const channel = supabase
+      .channel(`video-${videoId}`, {
+        config: {
+          broadcast: { self: true },
+          presence: { key: videoId },
+          private: false
+        }
+      })
+      .on(
+        "postgres_changes",
+        { 
+          event: "*", 
+          schema: "public", 
+          table: "videos", 
+          filter: `id=eq.${videoId}` 
+        },
+        (payload) => {
+          console.log("🔔 Video change received:", payload)
+          fetchVideo()
+        },
+      )
+      .on(
+        "postgres_changes",
+        { 
+          event: "*", 
+          schema: "public", 
+          table: "drafts", 
+          filter: `video_id=eq.${videoId}` 
+        },
+        (payload) => {
+          console.log("🔔 Draft change received:", payload)
+          window.dispatchEvent(new CustomEvent(`draft-update-${videoId}`))
+        },
+      )
+      .subscribe((status, err) => {
+        console.log(`📡 Combined subscription status: ${status}`)
+        setRealtimeStatus(status)
+        
+        if (status === "SUBSCRIBED") {
+          console.log(`✅ Successfully subscribed to video-${videoId} changes (videos + drafts)`)
+          setReconnectAttempts(0) // Reset attempts on successful connection
+        } else if (status === "CHANNEL_ERROR") {
+          console.error(`❌ Channel error for video-${videoId}:`, err)
+        } else if (status === "TIMED_OUT") {
+          console.error(`⏱️ Subscription timed out for video-${videoId}`)
+          // Auto-reconnect after timeout
+          const maxAttempts = 3
+          if (reconnectAttempts < maxAttempts) {
+            const delay = Math.min(5000 * Math.pow(2, reconnectAttempts), 30000) // Exponential backoff, max 30s
+            console.log(`🔄 Auto-reconnecting in ${delay/1000}s (attempt ${reconnectAttempts + 1}/${maxAttempts})`)
+            setTimeout(() => {
+              setReconnectAttempts(prev => prev + 1)
+              supabase.removeChannel(channel)
+              setupRealtimeSubscription()
+            }, delay)
+          } else {
+            console.log("🛑 Max reconnection attempts reached")
+          }
+        } else if (status === "CLOSED") {
+          console.log(`🔌 Channel closed for video-${videoId}`)
+        }
+        if (err) {
+          console.error(`❌ Subscription error for video-${videoId}:`, err)
+        }
+      })
+
+    return channel
+  }, [videoId, fetchVideo, reconnectAttempts])
+
   useEffect(() => {
     if (videoId) {
       fetchVideo()
-
-      console.log(`🔗 Setting up real-time subscription for video ${videoId}`)
-      
-      const channel = supabase
-        .channel(`video-${videoId}`, {
-          config: {
-            broadcast: { self: true },
-            presence: { key: videoId },
-            private: false
-          }
-        })
-        .on(
-          "postgres_changes",
-          { 
-            event: "*", 
-            schema: "public", 
-            table: "videos", 
-            filter: `id=eq.${videoId}` 
-          },
-          (payload) => {
-            console.log("🔔 Video change received:", payload)
-            fetchVideo() // Refetch to get the latest data
-          },
-        )
-        .on(
-          "postgres_changes",
-          { 
-            event: "*", 
-            schema: "public", 
-            table: "drafts", 
-            filter: `video_id=eq.${videoId}` 
-          },
-          (payload) => {
-            console.log("🔔 Draft change received:", payload)
-            // Notify DraftEditor component to update
-            window.dispatchEvent(new CustomEvent(`draft-update-${videoId}`))
-          },
-        )
-        .subscribe((status, err) => {
-          console.log(`📡 Combined subscription status: ${status}`)
-          setRealtimeStatus(status)
-          
-          if (status === "SUBSCRIBED") {
-            console.log(`✅ Successfully subscribed to video-${videoId} changes (videos + drafts)`)
-          } else if (status === "CHANNEL_ERROR") {
-            console.error(`❌ Channel error for video-${videoId}:`, err)
-          } else if (status === "TIMED_OUT") {
-            console.error(`⏱️ Subscription timed out for video-${videoId}`)
-          } else if (status === "CLOSED") {
-            console.log(`🔌 Channel closed for video-${videoId}`)
-          }
-          if (err) {
-            console.error(`❌ Subscription error for video-${videoId}:`, err)
-          }
-        })
+      const channel = setupRealtimeSubscription()
 
       return () => {
         supabase.removeChannel(channel)
       }
     }
-  }, [videoId, fetchVideo])
+  }, [videoId, fetchVideo, setupRealtimeSubscription])
 
   const handleSummarize = async () => {
     if (!videoId) return
@@ -218,7 +237,7 @@ export default function VideoDetailPage() {
             ) : (
               <Sparkles className="w-4 h-4 mr-1" />
             )}
-            {video.summary_points && video.summary_points.length > 0 ? "Re-Summarize" : "Summarize"}
+            {(video.summary_points && video.summary_points.length > 0) || video.summary ? "Re-Summarize" : "Summarize"}
           </Button>
           
         </div>
@@ -259,32 +278,10 @@ export default function VideoDetailPage() {
             </Card>
           )}
 
-          {/* Summary Points Card */}
-          {video.summary_points && video.summary_points.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Key Summary Points</CardTitle>
-                <CardDescription>AI-generated key takeaways from the video</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {video.summary_points.map((point, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center macos-text-caption2 font-semibold mt-0.5">
-                        {index + 1}
-                      </span>
-                      <span className="macos-text-body text-foreground flex-1">{point}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          )}
-
           {/* Video and Transcript Section */}
-          <div className={`grid gap-6 ${video.youtube_url && video.status === "ready" ? "lg:grid-cols-2" : "grid-cols-1"}`}>
+          <div className={`grid gap-6 ${video.youtube_url ? "lg:grid-cols-2" : "grid-cols-1"}`}>
             {/* YouTube Video Player */}
-            {video.youtube_url && video.status === "ready" && (
+            {video.youtube_url && (
               <Card>
                 <CardHeader>
                   <CardTitle>Video Player</CardTitle>
@@ -311,6 +308,85 @@ export default function VideoDetailPage() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Video Summary Card */}
+          {((video.summary_points && video.summary_points.length > 0) || video.summary) && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Video Summary</CardTitle>
+                <CardDescription>AI-generated insights and key takeaways from the video</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {video.summary ? (
+                  // New BAML structured summary
+                  <div className="space-y-6">
+                    {video.summary.bullet_points && video.summary.bullet_points.length > 0 && (
+                      <div>
+                        <h4 className="macos-text-title3 font-semibold mb-3">Key Points</h4>
+                        <ul className="space-y-2">
+                          {video.summary.bullet_points.map((point, index) => (
+                            <li key={index} className="flex items-start gap-3">
+                              <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center macos-text-caption2 font-semibold mt-0.5">
+                                {index + 1}
+                              </span>
+                              <span className="macos-text-body text-foreground flex-1">{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    
+                    {video.summary.key_topics && video.summary.key_topics.length > 0 && (
+                      <div>
+                        <h4 className="macos-text-title3 font-semibold mb-3">Key Topics</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {video.summary.key_topics.map((topic, index) => (
+                            <span
+                              key={index}
+                              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                            >
+                              {topic}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {video.summary.main_takeaways && video.summary.main_takeaways.length > 0 && (
+                      <div>
+                        <h4 className="macos-text-title3 font-semibold mb-3">Main Takeaways</h4>
+                        <ul className="space-y-2">
+                          {video.summary.main_takeaways.map((takeaway, index) => (
+                            <li key={index} className="flex items-start gap-2">
+                              <span className="flex-shrink-0 w-2 h-2 bg-green-500 rounded-full mt-2"></span>
+                              <span className="macos-text-body text-foreground">{takeaway}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  // Legacy summary format
+                  video.summary_points && (
+                    <div>
+                      <h4 className="macos-text-title3 font-semibold mb-3">Summary Points</h4>
+                      <ul className="space-y-3">
+                        {video.summary_points.map((point, index) => (
+                          <li key={index} className="flex items-start gap-3">
+                            <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center macos-text-caption2 font-semibold mt-0.5">
+                              {index + 1}
+                            </span>
+                            <span className="macos-text-body text-foreground flex-1">{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )
+                )}
+              </CardContent>
+            </Card>
+          )}
 
           {/* Draft Editor Card */}
           <Card>

@@ -5,11 +5,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Eye, Edit3, Heart, MessageCircle, Repeat2, Share, MoreHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"
+import type { TwitterThread } from "@/baml_client/types"
 
-interface XDraft {
-  tweets: string[]
-  hashtags: string[]
-}
+type XDraft = TwitterThread
 
 interface XPreviewProps {
   draft: XDraft | null

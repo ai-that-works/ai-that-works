@@ -1,45 +1,4 @@
-// Video content generation models
-class VideoSummary {
-  bullet_points string[]
-  key_topics string[]
-  main_takeaways string[]
-}
-
-class EmailDraft {
-  subject string
-  body string
-  call_to_action string
-}
-
-class TwitterThread {
-  tweets string[]
-  hashtags string[]
-}
-
-class LinkedInPost {
-  content string
-  hashtags string[]
-}
-
-// Summarize video transcript into key points
-function SummarizeVideo(transcript: string, title: string?) -> VideoSummary {
-  client CustomGPT4oMini
-  prompt #"
-    Analyze this video transcript and create a comprehensive summary.
-
-    {% if title %}Video Title: {{ title }}{% endif %}
-
-    Transcript:
-    {{ transcript }}
-
-    Extract:
-    1. Key bullet points that capture the main content
-    2. Important topics discussed
-    3. Main takeaways and insights
-
-    {{ ctx.output_format }}
-  "#
-}
+// Content generation functions for different platforms
 
 // Generate professional email draft
 function GenerateEmailDraft(summary: VideoSummary, video_title: string?) -> EmailDraft {

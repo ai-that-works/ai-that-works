@@ -1,4 +1,16 @@
+import type { EmailDraft, TwitterThread, LinkedInPost } from "@/baml_client/types"
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+
+// Type aliases for consistency with existing code
+type XDraft = TwitterThread
+type LinkedInDraft = LinkedInPost
+
+interface DraftContent {
+  email_draft: EmailDraft | null
+  x_draft: XDraft | null  
+  linkedin_draft: LinkedInDraft | null
+}
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -22,7 +34,7 @@ export const api = {
     return data.transcript
   },
 
-  saveDraft: async (videoId: string, draftContent: any, version?: number): Promise<any> => {
+  saveDraft: async (videoId: string, draftContent: DraftContent, version?: number): Promise<any> => {
     console.log('🌐 API Call - Save Draft:', {
       videoId,
       draftContent,
