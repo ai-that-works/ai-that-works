@@ -1,6 +1,8 @@
-content Content pipeline episode is done. Can you update the main readme and the readme inside the content pipeline episode to match all of the below? And then... T up the description for the next event and add the luma link, etc.
+RECENTLY COMPLETED EPISODE: ...
 
-Please rename the episode readme so the readme in 2025-06-24-... matches all the other readmes in the episodes. I will add the whiteboard graphics when you are done.
+The episode is done. Can you update the main readme and the readme inside the content pipeline episode to match all of the below? And then tee up the description for the next event and add the luma link, etc.
+
+Please ensure the readme for the finished episode matches all the other readmes in the episodes. I will add the whiteboard graphics when you are done.
 
 <past_episode>
 
@@ -11,7 +13,7 @@ Youtube image link can be derived from the watch link (see how it's done in othe
 
 Here are the notes
 
-BULLET POINTS
+BULLET POINTS etc
 
 Here's the email we're sending
 
