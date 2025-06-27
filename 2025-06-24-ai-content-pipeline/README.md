@@ -38,23 +38,6 @@
 
 ![image](https://github.com/user-attachments/assets/b899b5d6-e43b-4d06-a2fa-16d8e739e4d1)
 
-
-## Core Architecture
-
-### 🏗️ Infrastructure Foundation
-- Laid the foundation with a solid infrastructure, the key to your AI success
-- Focus on building a robust pipeline that can handle various content types and sources
-
-### 🚀 Automation Features
-- Automate your video uploads straight from Zoom with ease
-- Integrate with YouTube API for seamless content publishing
-- GitHub integration for code and documentation management
-
-### ✍️ Content Generation
-- Craft transcripts, draft emails, & iterate on AI models effortlessly—and faster!
-- Use BAML for structured prompt engineering
-- Build pipelines that allow rapid iteration on content generation
-
 ## Running the Code
 
 ```bash
