@@ -1,25 +1,102 @@
 // Content generation functions for different platforms
 
-// Generate professional email draft
-function GenerateEmailDraft(summary: VideoSummary, video_title: string?) -> EmailDraft {
+template_string EmailExample() #"
+    Hello First Name,
+
+    This weeks 🦄 ai that works session was on "Entity Resolution: Extraction, Deduping, and Enriching"! 
+
+    The full recording, code, and diagrams from the session are now available on GitHub:
+    https://github.com/hellovai/ai-that-works
+
+    We covered a lot on building robust entity resolution pipelines. Here’s a super quick recap:
+
+    It's a Multi-Stage System, Not Just One Prompt: Effective entity resolution involves an initial LLM pass for extraction, crucial validation against your existing database of known entities (because you can't just stuff your whole DB into the prompt!), and then targeted enrichment for anything new or unconfirmed.
+    Your Entity Database is a Living Asset: The real power comes from continuously growing and refining your canonical entity list. For new entities (like "BoundaryML" from our example), kick off an asynchronous enrichment pipeline – think LLM-powered research and web search – with a review process to keep your master list accurate and evolving.
+
+    If you remember one thing from this session:
+    Entity Resolution is an engineered system. It’s an initial LLM pass for extraction, robust validation logic against your known entities, and a separate, resilient pipeline to research, verify, and add new entities to your database over time.
+
+    We also had a fascinating session last week about "Cracking the Prompting Interview" for algorithms to make prompts better, video/whiteboards/code are on the Github!
+
+    Our next session on [June 24th] will be all about "Building an AI Content Pipeline" – exploring how to use an AI pipeline to write emails like this from zoom recordings and transcripts.
+    Sign up here: https://lu.ma/zcf5c8yd
+    If you have any questions, reply to this email or ask on Discord: https://www.boundaryml.com/discord. We read every message! Happy coding 🧑‍💻
+
+    Vaibhav & Dex
+"#
+
+class EmailStructure {
+  subject string
+  we_covered string @description(#"
+    fill in the blank
+
+    we covered a lot on ______. Here's a quick recap:
+  "#)
+  quick_recap string 
+  one_thing_to_remember string
+  next_session string
+}
+
+function GenerateEmailStructure(summary: VideoSummary, structure: EmailStructure) -> EmailDraft {
   client CustomGPT4oMini
   prompt #"
-    Create a professional email announcing this video content.
-
-    {% if video_title %}Video Title: {{ video_title }}{% endif %}
-
-    Video Summary:
-    Bullet Points: {{ summary.bullet_points }}
-    Key Topics: {{ summary.key_topics }}
-    Main Takeaways: {{ summary.main_takeaways }}
-
-    Write a compelling email that:
-    - Has an engaging subject line
-    - Summarizes the video value proposition
-    - Includes a clear call-to-action
-    - Maintains a professional but approachable tone
+    Make the email structure fit the final email draft.
 
     {{ ctx.output_format }}
+
+    My goal email is something like this.
+    {{ EmailExample() }}
+
+    {{ _.role('user') }}
+    Here's my draft so far.
+
+    Subject: {{ structure.subject }}
+
+    We covered a lot on {{ structure.we_covered }}. Here's a quick recap:
+
+    {{ structure.quick_recap }}
+
+    One thing to remember:
+    {{ structure.one_thing_to_remember }}
+
+    Next session:
+    {{ structure.next_session }}
+  "#
+}
+
+// Generate professional email draft
+function GenerateEmailDraft(summary: VideoSummary, transcript: string?, video_title: string?) -> EmailStructure {
+  client CustomGPT4oMini
+  prompt #"
+    Create a professional email announcing this video content on behalf of Vaibhav and Dex.
+
+    {{ ctx.output_format }}
+
+    An example great email for a prior video was this:
+    {{ EmailExample() }}
+
+    {{ _.role('user') }}
+    {% if video_title %}Video Title: {{ video_title }}{% endif %}
+
+    {% if transcript %}
+    Full Transcript:
+    {{ transcript }}
+    {% endif %}
+
+    Video Summary:
+    {% for point in summary.bullet_points %}
+    - {{ point }}
+    {% endfor %}
+
+    Key Topics: 
+    {% for topic in summary.key_topics %}
+    - {{ topic }}
+    {% endfor %}
+
+    Main Takeaways:
+    {% for takeaway in summary.main_takeaways %}
+    - {{ takeaway }}
+    {% endfor %}
   "#
 }
 

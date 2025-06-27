@@ -34,8 +34,8 @@ class AIGenerator:
         except Exception as e:
             logger.error(f"Failed to generate video summary: {e}")
             raise AIGenerationError(f"Video summarization failed: {e}")
-    
-    async def generate_email_draft(self, summary: VideoSummary, video_title: Optional[str] = None) -> EmailDraft:
+
+    async def generate_email_draft(self, summary: VideoSummary, transcript: Optional[str] = None, video_title: Optional[str] = None) -> EmailDraft:
         """
         Generate professional email draft from video summary
         Returns: EmailDraft with subject, body, and call-to-action
@@ -46,6 +46,7 @@ class AIGenerator:
             # Use BAML to generate email content
             email_draft = await self.client.GenerateEmailDraft(
                 summary=summary,
+                transcript=transcript,
                 video_title=video_title
             )
             
@@ -110,7 +111,7 @@ class AIGenerator:
             summary = await self.summarize_video(transcript, video_title)
             
             # Step 2: Generate all content types in parallel
-            email_task = self.generate_email_draft(summary, video_title)
+            email_task = self.generate_email_draft(summary, transcript, video_title)
             twitter_task = self.generate_twitter_thread(summary, video_title)
             linkedin_task = self.generate_linkedin_post(summary, video_title)
             
@@ -123,7 +124,8 @@ class AIGenerator:
                 "summary": {
                     "bullet_points": summary.bullet_points,
                     "key_topics": summary.key_topics,
-                    "main_takeaways": summary.main_takeaways
+                    "main_takeaways": summary.main_takeaways,
+                    "timed_data": [{"start_time": td.start_time, "end_time": td.end_time, "summary": td.summary} for td in summary.timed_data] if hasattr(summary, 'timed_data') else []
                 },
                 "email_draft": {
                     "subject": email_draft.subject,
@@ -156,9 +158,9 @@ async def summarize_video(transcript: str, title: Optional[str] = None) -> Video
     """Generate video summary from transcript"""
     return await ai_generator.summarize_video(transcript, title)
 
-async def generate_email_draft(summary: VideoSummary, video_title: Optional[str] = None) -> EmailDraft:
+async def generate_email_draft(summary: VideoSummary, transcript: Optional[str] = None, video_title: Optional[str] = None) -> EmailDraft:
     """Generate email draft from video summary"""
-    return await ai_generator.generate_email_draft(summary, video_title)
+    return await ai_generator.generate_email_draft(summary, transcript, video_title)
 
 async def generate_twitter_thread(summary: VideoSummary, video_title: Optional[str] = None) -> TwitterThread:
     """Generate Twitter thread from video summary"""

@@ -2,8 +2,9 @@
 
 class EmailDraft {
   subject string
-  body string
-  call_to_action string
+  body string @description(#"
+    use triple quotes for multi-line strings
+  "#)
 }
 
 class TwitterThread {
