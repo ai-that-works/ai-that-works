@@ -32,7 +32,12 @@
 
 ## Whiteboards
 
-[Space for whiteboard graphics to be added]
+![image](https://github.com/user-attachments/assets/e61ac3b4-cc10-4e28-8547-a615ebc6f8e7)
+
+![image](https://github.com/user-attachments/assets/a85aef4f-8101-40ec-86d8-e022f972fce1)
+
+![image](https://github.com/user-attachments/assets/b899b5d6-e43b-4d06-a2fa-16d8e739e4d1)
+
 
 ## Core Architecture
 
@@ -49,18 +54,6 @@
 - Craft transcripts, draft emails, & iterate on AI models effortlessly—and faster!
 - Use BAML for structured prompt engineering
 - Build pipelines that allow rapid iteration on content generation
-
-## Email Summary
-
-Here's what we covered in this session:
-- 🏗️ Laid the foundation with a solid infrastructure, the key to your AI success.
-- 🚀 Automate your video uploads straight from Zoom with ease.
-- ✍️ Craft transcripts, draft emails, & iterate on AI models effortlessly—and faster!
-
-Takeaways you can't miss:
-- Kickstart with a structured pipeline to power-up your AI components. ⚡
-- Run tests on real data for precision and efficiency.
-- Break down the complicated tasks into chewable bits for optimal control and results.
 
 ## Running the Code
 
