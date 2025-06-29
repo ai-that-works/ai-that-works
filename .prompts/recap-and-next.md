@@ -33,6 +33,17 @@ NEXT EVENT DESCRIPTION
 
 </next_episode>
 
+<current_root_readme>
+
+...todo
+
+</current_root_readme>
+
+<example_episode_readme>
+
+...todo
+
+</example_episode_readme>
 
 <task_list>
 
