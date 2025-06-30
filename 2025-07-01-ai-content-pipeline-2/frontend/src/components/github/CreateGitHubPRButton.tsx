@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Github, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -40,6 +40,7 @@ export function CreateGitHubPRButton({
 	onSuccess,
 }: CreateGitHubPRButtonProps) {
 	const [isLoading, setIsLoading] = useState(false);
+	const [isFetchingLuma, setIsFetchingLuma] = useState(false);
 	const [nextEpisodeSummary, setNextEpisodeSummary] = useState("");
 	const [nextEpisodeLumaLink, setNextEpisodeLumaLink] = useState("");
 	const [showForm, setShowForm] = useState(false);
@@ -51,6 +52,43 @@ export function CreateGitHubPRButton({
 	if (!video.youtube_url) missingItems.push("YouTube URL");
 	if (!video.transcript) missingItems.push("Transcript");
 	if (!video.summary) missingItems.push("Summary");
+
+	// Fetch next Luma event when modal opens
+	useEffect(() => {
+		if (showForm) {
+			setIsFetchingLuma(true);
+			apiClient
+				.getNextAIThatWorksEvent()
+				.then((response) => {
+					if (response.found && response.event) {
+						// Auto-populate the fields
+						setNextEpisodeLumaLink(response.event.url);
+						// Extract a concise summary from the description
+						const description = response.event.description || "";
+						const lines = description.split("\n").filter((line) => line.trim());
+						// Try to find the most relevant line that describes the content
+						const summaryLine =
+							lines.find(
+								(line) =>
+									line.toLowerCase().includes("we'll") ||
+									line.toLowerCase().includes("we will") ||
+									line.toLowerCase().includes("session"),
+							) ||
+							lines[2] ||
+							lines[0] ||
+							"";
+						setNextEpisodeSummary(summaryLine.trim());
+					}
+				})
+				.catch((error) => {
+					console.error("Failed to fetch next Luma event:", error);
+					// Don't show error toast - just allow manual entry
+				})
+				.finally(() => {
+					setIsFetchingLuma(false);
+				});
+		}
+	}, [showForm]);
 
 	const handleCreatePR = async () => {
 		if (!nextEpisodeSummary || !nextEpisodeLumaLink) {
@@ -110,7 +148,17 @@ export function CreateGitHubPRButton({
 				{video.github_pr_url ? "PR Created" : "Create GitHub Draft"}
 			</Button>
 
-			<Dialog open={showForm} onOpenChange={setShowForm}>
+			<Dialog
+				open={showForm}
+				onOpenChange={(open) => {
+					setShowForm(open);
+					// Clear fields when closing
+					if (!open) {
+						setNextEpisodeSummary("");
+						setNextEpisodeLumaLink("");
+					}
+				}}
+			>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
 						<DialogTitle>Create GitHub PR</DialogTitle>
@@ -120,6 +168,15 @@ export function CreateGitHubPRButton({
 					</DialogHeader>
 
 					<div className="grid gap-4 py-4">
+						{isFetchingLuma && (
+							<div className="flex items-center justify-center py-4">
+								<Loader2 className="h-4 w-4 animate-spin mr-2" />
+								<span className="text-sm text-muted-foreground">
+									Fetching next episode details...
+								</span>
+							</div>
+						)}
+
 						<div className="grid gap-2">
 							<Label htmlFor="next-summary">Next Episode Summary</Label>
 							<Textarea
@@ -128,6 +185,7 @@ export function CreateGitHubPRButton({
 								onChange={(e) => setNextEpisodeSummary(e.target.value)}
 								placeholder="Brief description of the next episode..."
 								rows={3}
+								disabled={isFetchingLuma}
 							/>
 						</div>
 
@@ -139,6 +197,7 @@ export function CreateGitHubPRButton({
 								value={nextEpisodeLumaLink}
 								onChange={(e) => setNextEpisodeLumaLink(e.target.value)}
 								placeholder="https://lu.ma/..."
+								disabled={isFetchingLuma}
 							/>
 						</div>
 					</div>
