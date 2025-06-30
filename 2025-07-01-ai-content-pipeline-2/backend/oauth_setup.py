@@ -10,11 +10,7 @@ https://developers.google.com/youtube/v3/guides/uploading_a_video
 import os
 import json
 import sys
-import time
-import random
 import base64
-from pathlib import Path
-from typing import Optional, Dict, Any
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -115,7 +111,7 @@ def test_youtube_connection(youtube):
             snippet = channel['snippet']
             stats = channel.get('statistics', {})
             
-            print(f"✅ YouTube API connected successfully!")
+            print("✅ YouTube API connected successfully!")
             print(f"   Channel: {snippet['title']}")
             print(f"   Subscribers: {stats.get('subscriberCount', 'Hidden')}")
             print(f"   Videos: {stats.get('videoCount', 'Unknown')}")
@@ -192,7 +188,7 @@ def test_zoom_connection():
         
         if response.status_code == 200:
             user_data = response.json()
-            print(f"✅ Zoom API connected successfully!")
+            print("✅ Zoom API connected successfully!")
             print(f"   User: {user_data.get('first_name', '')} {user_data.get('last_name', '')}")
             print(f"   Email: {user_data.get('email', 'Unknown')}")
             print(f"   Account: {user_data.get('account_id', 'Unknown')}")

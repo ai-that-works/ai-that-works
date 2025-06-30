@@ -1,11 +1,7 @@
-import asyncio
 import os
-import tempfile
 import requests
 import hashlib
 from typing import Optional
-from datetime import datetime
-import json
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from googleapiclient.errors import HttpError

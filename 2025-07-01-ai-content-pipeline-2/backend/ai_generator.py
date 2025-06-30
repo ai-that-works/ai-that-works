@@ -1,6 +1,6 @@
 import logging
 import asyncio
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 from baml_wrapper import get_baml_client
 from baml_client.types import VideoSummary, EmailDraft, TwitterThread, LinkedInPost
 

@@ -1,17 +1,19 @@
 from fastapi import FastAPI, HTTPException, status, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List, Optional
+from typing import Optional, Dict
 import uuid
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+import logging
 
 from models import (
     VideoImportRequest, DraftUpdateRequest, FeedbackRequest, ContentRefinementRequest, TitleUpdateRequest,
+    CreateGitHubPRRequest,
     Video, Draft, Feedback,
     VideoImportResponse, VideoResponse, SummaryResponse, 
     DraftsListResponse, DraftSaveResponse, FeedbackResponse, StatusResponse,
-    ZoomRecordingsResponse, ZoomRecording,
+    ZoomRecording,
     ZoomMeetingRecordings, ZoomMeetingsResponse, TranscriptResponse
 )
 from database import db
@@ -22,6 +24,9 @@ from baml_client.async_client import b
 
 # Load environment variables
 load_dotenv()
+
+# Configure logging
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AI Content Pipeline API", version="1.0.0")
 
@@ -550,7 +555,7 @@ async def refine_content_background_task(
         
         if content_type == "email":
             current_email = types.EmailDraft(**current_draft_data)
-            print(f"📧 Refining email content with BAML...")
+            print("📧 Refining email content with BAML...")
             refined_content = await b.RefineEmailDraft(
                 current_draft=current_email,
                 feedback=feedback,
@@ -570,7 +575,7 @@ async def refine_content_background_task(
             
         elif content_type == "x":
             current_x = types.TwitterThread(**current_draft_data)
-            print(f"🐦 Refining X thread content with BAML...")
+            print("🐦 Refining X thread content with BAML...")
             refined_content = await b.RefineTwitterThread(
                 current_draft=current_x,
                 feedback=feedback,
@@ -589,7 +594,7 @@ async def refine_content_background_task(
             
         elif content_type == "linkedin":
             current_linkedin = types.LinkedInPost(**current_draft_data)
-            print(f"💼 Refining LinkedIn post content with BAML...")
+            print("💼 Refining LinkedIn post content with BAML...")
             refined_content = await b.RefineLinkedInPost(
                 current_draft=current_linkedin,
                 feedback=feedback,
@@ -607,7 +612,7 @@ async def refine_content_background_task(
             await db.update_draft_field(draft_id, "linkedin_draft", refined_linkedin)
         
         print(f"✅ Background refinement completed for draft {draft_id} ({content_type})")
-        print(f"🔔 Real-time update will notify frontend of changes")
+        print("🔔 Real-time update will notify frontend of changes")
         
     except Exception as e:
         print(f"❌ Error in background refinement for draft {draft_id}: {e}")
@@ -692,7 +697,7 @@ async def generate_title_background_task(video_id: str):
             return
         
         # Generate new title using BAML
-        print(f"🎬 Generating YouTube title with BAML...")
+        print("🎬 Generating YouTube title with BAML...")
         new_title = await b.GenerateYouTubeTitle(
             summary=video_summary,
             transcript=video.transcript,
@@ -704,12 +709,76 @@ async def generate_title_background_task(video_id: str):
         
         print(f"✅ Background title generation completed for video {video_id}")
         print(f"📝 New title: {new_title}")
-        print(f"🔔 Real-time update will notify frontend of changes")
+        print("🔔 Real-time update will notify frontend of changes")
         
     except Exception as e:
         print(f"❌ Error in background title generation for video {video_id}: {e}")
         import traceback
         traceback.print_exc()
+
+
+@app.post("/videos/{video_id}/create-github-pr", response_model=Dict[str, str])
+async def create_github_pr(
+    video_id: str,
+    request: CreateGitHubPRRequest,
+    background_tasks: BackgroundTasks
+):
+    """Manually trigger GitHub PR creation for a video"""
+    
+    # Validate video exists and has required data
+    video = await db.get_video(video_id)
+    if not video:
+        raise HTTPException(status_code=404, detail="Video not found")
+    
+    # Check required fields
+    if not video.youtube_url:
+        raise HTTPException(status_code=400, detail="YouTube URL is required")
+    if not video.transcript:
+        raise HTTPException(status_code=400, detail="Transcript is required")
+    if not video.summary:
+        raise HTTPException(status_code=400, detail="Summary is required")
+    
+    # Validate request has next episode details
+    if not request.next_episode_summary or not request.next_episode_luma_link:
+        raise HTTPException(status_code=400, detail="Next episode details are required")
+    
+    try:
+        # Initialize GitHub service
+        from github_pr_service import GitHubPRService
+        github_service = GitHubPRService()
+        
+        # Extract YouTube video ID from URL
+        youtube_video_id = video.youtube_url.split("v=")[-1].split("&")[0] if "v=" in video.youtube_url else video.youtube_url.split("/")[-1]
+        
+        # Create PR
+        pr_url = await github_service.create_content_pr(
+            video_id=video.id,
+            video_title=video.title,
+            episode_date=video.created_at.strftime("%Y-%m-%d"),
+            summary=video.summary,
+            youtube_url=video.youtube_url,
+            youtube_thumbnail_url=f"https://img.youtube.com/vi/{youtube_video_id}/0.jpg",
+            transcript=video.transcript,
+            zoom_recording_date=video.created_at,
+            next_episode_summary=request.next_episode_summary,
+            next_episode_luma_link=request.next_episode_luma_link,
+        )
+        
+        # Update video with PR URL
+        # Note: episode_path is already determined inside create_content_pr
+        await db.update_video(video_id, {
+            "github_pr_url": pr_url
+        })
+        
+        return {
+            "pr_url": pr_url,
+            "message": "GitHub PR created successfully"
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to create GitHub PR: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/test/supabase")
 async def test_supabase():

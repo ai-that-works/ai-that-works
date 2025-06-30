@@ -318,3 +318,155 @@ function GenerateYouTubeTitle(
     Return ONLY the title text, nothing else.
   "#
 }
+
+// GitHub PR Integration Functions
+
+class EpisodePathResult {
+    episode_path string
+    is_new bool
+}
+
+function DetermineEpisodePath(
+    video_title: string, 
+    zoom_recording_date: string,
+    existing_folders: string[]
+) -> EpisodePathResult {
+    client CustomSonnet
+    prompt #"
+        Given a video title, recording date, and list of existing episode folders, 
+        either find the matching folder or generate a new folder name.
+        
+        Video Title: {{ video_title }}
+        Recording Date: {{ zoom_recording_date }}
+        
+        Existing Episode Folders:
+        {% for folder in existing_folders %}
+        - {{ folder }}
+        {% endfor %}
+        
+        Rules:
+        1. If an existing folder matches the recording date exactly, return it
+        2. If the video title strongly matches an existing folder topic, return it
+        3. Otherwise, generate a new folder name in format: YYYY-MM-DD-kebab-case-title
+        4. Remove generic words like "ai-that-works", "episode", "session" from the slug
+        5. Keep the slug concise but descriptive
+        
+        Return the episode_path and whether it's new or existing.
+    "#
+}
+
+function GenerateEpisodeReadme(
+    video_title: string,
+    episode_date: string,
+    summary: VideoSummary,
+    youtube_url: string,
+    youtube_thumbnail_url: string,
+    example_readme: string,
+    existing_readme_content: string?
+) -> string {
+    client CustomSonnet
+    prompt #"
+        Generate an episode README following the exact format of the example.
+        
+        {% if existing_readme_content %}
+        Current README content to update:
+        {{ existing_readme_content }}
+        {% endif %}
+        
+        Episode Details:
+        - Title: {{ video_title }}
+        - Date: {{ episode_date }}
+        - YouTube URL: {{ youtube_url }}
+        - Thumbnail: {{ youtube_thumbnail_url }}
+        
+        Summary:
+        {{ summary }}
+        
+        Example README format to follow EXACTLY:
+        {{ example_readme }}
+        
+        Instructions:
+        - Follow the example structure precisely
+        - Write a clear "Core Architecture" section based on technical content
+        - Leave "Whiteboards" section as "(intentionally blank)"
+        - Use the exact Resources section format with all links
+    "#
+}
+
+function GenerateRootReadmeUpdate(
+    current_readme: string,
+    new_episode_title: string,
+    new_episode_path: string,
+    new_episode_date: string,
+    next_episode_summary: string,
+    next_episode_luma_link: string
+) -> string {
+    client CustomSonnet
+    prompt #"
+        Update the root README.md following these steps:
+        
+        1. Move the current "Next Session" content to the "Past Sessions" section
+        2. Add the new completed episode to "Past Sessions" with proper formatting
+        3. Update the "Next Session" section with the new upcoming session details
+        
+        Current README:
+        {{ current_readme }}
+        
+        Completed Episode to Add:
+        - Title: {{ new_episode_title }}
+        - Path: {{ new_episode_path }}
+        - Date: {{ new_episode_date }}
+        
+        Next Session Details:
+        - Summary: {{ next_episode_summary }}
+        - Luma Link: {{ next_episode_luma_link }}
+        
+        IMPORTANT:
+        - Maintain the EXACT formatting and structure of the current README
+        - Preserve all existing content except for the specific updates
+        - Keep the same section headers and formatting style
+        - Add the new episode entry in chronological order
+    "#
+}
+
+template_string ExampleEpisodeReadme() #"
+# TITLE
+
+> short description
+
+[Video](URL) (1h15m) 
+
+[![title](THUMBNAIL_URL)](URL)
+
+Links:
+
+- ...
+
+## Key Takeaways
+
+- GraphQL provides a flexible query language that pairs well with LLM-based resolvers
+- BAML's type safety ensures consistent API responses even with dynamic AI generation
+- Streaming responses can significantly improve perceived performance for complex queries
+- Proper error handling and fallbacks are crucial for production AI-powered APIs
+
+## Whiteboards
+
+(intentionally blank)
+
+## Core Architecture
+
+...
+
+## Running the Code
+
+...
+
+...
+
+## Resources
+
+- [Session Recording](YOUTUBE_URL)
+- [BAML Documentation](https://docs.boundaryml.com/)
+- [Discord Community](https://www.boundaryml.com/discord)
+- Sign up for the next session on [Luma](NEXT_SESSION_URL)
+"#

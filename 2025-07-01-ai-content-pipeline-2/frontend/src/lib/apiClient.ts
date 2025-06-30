@@ -124,7 +124,32 @@ export const api = {
     console.log('🌐 API Response - Update Title:', result)
     return result
   },
+
+  createGitHubPR: async (videoId: string, nextEpisodeSummary: string, nextEpisodeLumaLink: string): Promise<{ pr_url: string; message: string }> => {
+    console.log('🌐 API Call - Create GitHub PR:', {
+      videoId,
+      nextEpisodeSummary,
+      nextEpisodeLumaLink,
+      url: `${API_BASE_URL}/videos/${videoId}/create-github-pr`
+    })
+    
+    const response = await fetch(`${API_BASE_URL}/videos/${videoId}/create-github-pr`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        next_episode_summary: nextEpisodeSummary,
+        next_episode_luma_link: nextEpisodeLumaLink
+      }),
+    })
+    
+    const result = await handleResponse(response)
+    console.log('🌐 API Response - Create GitHub PR:', result)
+    return result
+  },
 }
+
+// Export apiClient as an alias for api for compatibility
+export const apiClient = api
 
 // NOTE: You'll need to implement the actual API routes (e.g., using Next.js Route Handlers)
 // that these client-side functions will call.

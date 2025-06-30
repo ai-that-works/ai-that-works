@@ -17,6 +17,7 @@ import { ErrorMessage } from "@/components/shared/error-message"
 import { YouTubeEmbed } from "@/components/shared/youtube-embed"
 import { getVideoStatusIcon } from "@/components/shared/utils"
 import { useSummarizeVideo } from "@/baml_client/react/hooks"
+import { CreateGitHubPRButton } from "@/components/github/CreateGitHubPRButton"
 
 export default function VideoDetailPage() {
   const params = useParams()
@@ -383,6 +384,13 @@ export default function VideoDetailPage() {
             {(video.summary_points && video.summary_points.length > 0) || video.summary ? "Re-Summarize" : "Summarize"}
           </Button>
           
+          <CreateGitHubPRButton 
+            video={video}
+            onSuccess={(prUrl) => {
+              console.log("GitHub PR created:", prUrl)
+              // Optionally refresh the video data to show the PR URL
+            }}
+          />
         </div>
       </div>
 

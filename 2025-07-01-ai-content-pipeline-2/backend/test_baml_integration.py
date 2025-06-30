@@ -71,7 +71,7 @@ def test_baml_summarize():
             summary=summary,
             video_title="AI Content Pipeline Project Update"
         )
-        print(f"\n📧 Email Draft:")
+        print("\n📧 Email Draft:")
         print(f"   Subject: {email.subject}")
         print(f"   Body: {email.body[:100]}...")
         print(f"   CTA: {email.call_to_action}")
@@ -91,7 +91,7 @@ def test_baml_summarize():
             summary=summary,
             video_title="AI Content Pipeline Project Update"
         )
-        print(f"\n💼 LinkedIn Post:")
+        print("\n💼 LinkedIn Post:")
         print(f"   Content: {linkedin.content[:100]}...")
         print(f"   Hashtags: {', '.join(linkedin.hashtags)}")
         

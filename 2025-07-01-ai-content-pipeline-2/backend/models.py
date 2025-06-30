@@ -40,6 +40,11 @@ class TitleUpdateRequest(BaseModel):
     title: str
 
 
+class CreateGitHubPRRequest(BaseModel):
+    next_episode_summary: str
+    next_episode_luma_link: str
+
+
 # Response Models
 class Video(BaseModel):
     id: str

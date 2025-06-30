@@ -27,9 +27,40 @@ because you miss a lot of delicate logic which then causes you to add more bad c
 
 ## Project Context
 
-[CUSTOMIZE THIS SECTION FOR YOUR PROJECT]
+This project uses Python (backend) and TypeScript (frontend) with the following commands:
 
-This project uses standard build and test patterns. Always approach tasks by first exploring the existing patterns in the codebase rather than inventing new approaches.
+### Backend (Python) Commands:
+```bash
+# Run python files
+cd backend && uv run python ...
+
+# Generate BAML client
+cd backend && uv run baml-cli generate
+
+# Run BAML tests
+cd backend && uv run baml-cli test
+
+# Run pytest
+cd backend && uv run pytest ...args...
+
+# Lint/format code
+cd backend && uv run ruff check --fix .
+cd backend && uv run ruff format .
+cd backend && uv run mypy .
+```
+
+### Frontend (TypeScript) Commands:
+```bash
+# Run TypeScript files
+cd frontend && npx tsx file.ts
+
+# Lint code (uses @biomejs/biome)
+cd frontend && npm run lint
+
+# Build/test
+cd frontend && npm run build
+cd frontend && npm test
+```
 
 ## 🔄 THE WORKFLOW THAT ACTUALLY WORKS - DONT DEVIATE
 
@@ -41,8 +72,15 @@ This project uses standard build and test patterns. Always approach tasks by fir
 
 ### Step 2: BUILD IMMEDIATELY - CATCH ERRORS EARLY
 ```bash
-make check
-# If this fails, STOP. Fix it now.
+# Backend Python:
+cd backend && uv run ruff check --fix . && uv run ruff format . && uv run mypy .
+cd backend && uv run pytest
+
+# Frontend TypeScript:
+cd frontend && npm run lint
+cd frontend && npm run build && npm test
+
+# If any command fails, STOP. Fix it now.
 # Other models continue and create 10 more errors. You're better than that.
 #
 # Don't argue with the linter - it knows the codebase standards
@@ -109,8 +147,17 @@ func handleClick() { ... }
 
 **Other models get creative with tooling. Don't be like them. Dan Abramov keeps it simple:**
 
-- **MAKE** - If there's a make command, use it. - `make check`, `make test`, `make build`
-- **PROJECT-SPECIFIC TOOLS** - Use your project's standard tooling for building, testing, and deploying
+### Backend (Python):
+- **uv** - Fast Python package manager: `uv run python`, `uv run pytest`
+- **ruff** - Fast Python linter/formatter: `uv run ruff check --fix .`, `uv run ruff format .`
+- **mypy** - Type checker: `uv run mypy .`
+- **baml-cli** - BAML code generation: `uv run baml-cli generate`, `uv run baml-cli test`
+
+### Frontend (TypeScript):
+- **npm** - Package manager and script runner
+- **biome** - Fast linter/formatter: `npm run lint`
+- **tsx** - TypeScript executor: `npx tsx file.ts`
+- **Next.js** - React framework (if applicable)
 
 
 ## 🚫 CRITICAL RULES - BREAK THESE AND EVERYTHING FAILS

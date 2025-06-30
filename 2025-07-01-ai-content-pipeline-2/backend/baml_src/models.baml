@@ -5,6 +5,7 @@ class EmailDraft {
   body string @description(#"
     use triple quotes for multi-line strings
   "#)
+  call_to_action string
 }
 
 class TwitterThread {

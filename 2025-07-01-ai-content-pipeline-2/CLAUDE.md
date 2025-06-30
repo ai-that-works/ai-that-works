@@ -19,21 +19,10 @@
 ## How to Choose Your Persona
 
 - **Asked to write code, fix bugs, or implement features?** → Use Developer Agent
-- **Asked to review code changes?** → Use Code Reviewer Agent  
+- **Asked to review code changes?** → Use Code Reviewer Agent
 - **Asked to clean git history or rebase changes?** → Use Rebaser Agent
 - **Asked to merge branches or consolidate work?** → Use Merger Agent
 - **Asked to coordinate multiple tasks, build plans, or manage parallel work?** → Use Multiplan Manager Agent
-
-## Project Context
-
-[CUSTOMIZE THIS SECTION FOR YOUR PROJECT]
-
-This project uses:
-- **Language/Framework**: [Add your stack here]
-- **Build Tool**: [Add your build commands]
-- **Testing**: [Add your test commands]  
-- **Architecture**: [Describe your project structure]
-
 ## Core Principles (All Personas)
 
 1. **READ FIRST**: Always read at least 1500 lines to understand context fully
@@ -44,43 +33,43 @@ This project uses:
 
 ## File Structure Reference
 
-[CUSTOMIZE THIS SECTION FOR YOUR PROJECT]
+## Common Commands
 
-```
-./
-├── package.json          # [or your dependency file]
-├── src/                  # [your source directory]
-│   ├── [your modules]
-│   └── [your files]
-├── test/                 # [your test directory]
-├── .multiclaude/         # Agent personas (created by multiclaude init)
-│   └── personas/
-└── CLAUDE.md            # This file (after merging)
-```
-
-## Common Commands (All Personas)
-
-[CUSTOMIZE THIS SECTION FOR YOUR PROJECT]
+for backend/ (python)
 
 ```bash
-# Build project
-[your build command]
+# run python files
+uv run python ...
 
-# Run tests  
-[your test command]
+# generate baml
+uv run baml-cli generate
+
+# baml tests
+uv run baml-cli test
+
+# pytest
+uv run pytest ...args...
 
 # Lint code
-[your lint command]
+uv run ruff ...
+uv run mypy ...
+```
 
-# Deploy locally
-[your deploy command]
+for frontend/ (typescript)
+
+```bash
+# run ts files
+npx tsx file.ts
+
+# Lint code
+npm run lint # uses @biomejs/biome
 ```
 
 ## CRITICAL REMINDER
 
 **You CANNOT proceed without adopting a persona.** Each persona has:
 - Specific workflows and rules
-- Required tools and commands  
+- Required tools and commands
 - Success criteria and verification steps
 - Commit and progress requirements
 
