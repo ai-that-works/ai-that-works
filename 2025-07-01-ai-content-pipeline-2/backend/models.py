@@ -16,13 +16,16 @@ class EmailDraftContent(BaseModel):
     body: str
     call_to_action: str
 
+
 class XDraftContent(BaseModel):
     tweets: List[str]
     hashtags: List[str]
 
+
 class LinkedInDraftContent(BaseModel):
     content: str
     hashtags: List[str]
+
 
 class DraftUpdateRequest(BaseModel):
     email_draft: Optional[EmailDraftContent] = None
@@ -33,13 +36,11 @@ class DraftUpdateRequest(BaseModel):
 class FeedbackRequest(BaseModel):
     content: str
 
+
 class ContentRefinementRequest(BaseModel):
     feedback: str
     content_type: str  # "email", "x", "linkedin"
     current_draft: Optional[Dict[str, Any]] = None
-
-class TitleUpdateRequest(BaseModel):
-    title: str
 
 
 class CreateGitHubPRRequest(BaseModel):
@@ -55,10 +56,14 @@ class Video(BaseModel):
     zoom_meeting_id: str
     youtube_url: Optional[str] = None
     thumbnail_url: Optional[str] = None
-    processing_stage: str = "queued"  # "queued", "downloading", "uploading", "ready", "failed"
+    processing_stage: str = (
+        "queued"  # "queued", "downloading", "uploading", "ready", "failed"
+    )
     status: str  # "processing", "ready", "failed"
     created_at: datetime
-    summary_points: Optional[List[str]] = None  # Legacy field, kept for backwards compatibility
+    summary_points: Optional[List[str]] = (
+        None  # Legacy field, kept for backwards compatibility
+    )
     summary: Optional[Dict[str, Any]] = None  # Rich summary data from BAML
     transcript: Optional[str] = None
 

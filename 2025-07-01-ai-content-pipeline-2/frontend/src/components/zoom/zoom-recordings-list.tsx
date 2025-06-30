@@ -207,7 +207,10 @@ export function ZoomRecordingsList() {
           <Card key={meeting.uuid} className="flex flex-col">
             <CardHeader>
               <CardTitle className="text-lg line-clamp-2">
-                {meeting.topic}
+                {lumaMatches[meeting.uuid]?.matched &&
+                lumaMatches[meeting.uuid]?.event
+                  ? lumaMatches[meeting.uuid].event.title
+                  : `Zoom Meeting ${meeting.uuid}`}
               </CardTitle>
               <CardDescription>
                 {formatDate(meeting.start_time, {

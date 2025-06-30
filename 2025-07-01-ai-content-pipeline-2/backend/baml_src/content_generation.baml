@@ -280,45 +280,6 @@ function RefineLinkedInPost(
   "#
 }
 
-// Generate YouTube video title
-function GenerateYouTubeTitle(
-  summary: VideoSummary,
-  transcript: string?,
-  current_title: string?
-) -> string {
-  client "openai/gpt-4o"
-  prompt #"
-    Create an engaging YouTube video title that will maximize views and accurately represent the content.
-
-    {% if current_title %}Current Title: {{ current_title }}{% endif %}
-
-    Video Summary:
-    Key Points: {{ summary.bullet_points }}
-    Topics: {{ summary.key_topics }}
-    Takeaways: {{ summary.main_takeaways }}
-
-    {% if transcript %}
-    Transcript (for reference):
-    {{ transcript }}
-    {% endif %}
-
-    Guidelines for YouTube titles:
-    1. 60 characters or less (optimal for mobile display)
-    2. Include compelling keywords that people search for
-    3. Create curiosity or promise value
-    4. Use power words: "Ultimate", "Secret", "Proven", "Essential", etc.
-    5. Consider numbers and lists: "5 Ways", "Top 10", etc.
-    6. Avoid clickbait - be accurate to content
-    7. Front-load the most important keywords
-    8. Consider your target audience (AI/tech professionals)
-
-    This is for "AI that works" series - practical AI applications, not surface-level content.
-    The audience is familiar with LLMs and wants actionable insights.
-
-    Return ONLY the title text, nothing else.
-  "#
-}
-
 // GitHub PR Integration Functions
 
 class EpisodePathResult {
@@ -335,6 +296,8 @@ function DetermineEpisodePath(
     prompt #"
         Given a video title, recording date, and list of existing episode folders, 
         either find the matching folder or generate a new folder name.
+        
+        {{ ctx.output_format }}
         
         Video Title: {{ video_title }}
         Recording Date: {{ zoom_recording_date }}
@@ -361,7 +324,6 @@ function GenerateEpisodeReadme(
     summary: VideoSummary,
     youtube_url: string,
     youtube_thumbnail_url: string,
-    example_readme: string,
     existing_readme_content: string?
 ) -> string {
     client CustomSonnet
@@ -383,7 +345,9 @@ function GenerateEpisodeReadme(
         {{ summary }}
         
         Example README format to follow EXACTLY:
-        {{ example_readme }}
+        <example>
+        {{ ExampleEpisodeReadme() }}
+        </example>
         
         Instructions:
         - Follow the example structure precisely
@@ -440,7 +404,7 @@ template_string ExampleEpisodeReadme() #"
 
 Links:
 
-- ...
+(intentionally blank) 
 
 ## Key Takeaways
 

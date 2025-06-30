@@ -17,8 +17,8 @@ dependencies = [
     "google-api-python-client>=2.130.0",
     "baml-py==0.90.2",
     "requests>=2.31.0",
-    "kit>=0.2.15",
     "supersonic>=0.1.0",
+    "cased-kit>=1.4.0",
 ]
 
 [project.optional-dependencies]

@@ -101,43 +101,6 @@ export const api = {
     return result;
   },
 
-  generateTitle: async (videoId: string): Promise<any> => {
-    console.log("🌐 API Call - Generate Title:", {
-      videoId,
-      url: `${API_BASE_URL}/videos/${videoId}/generate-title`,
-    });
-
-    const response = await fetch(
-      `${API_BASE_URL}/videos/${videoId}/generate-title`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      },
-    );
-
-    const result = await handleResponse(response);
-    console.log("🌐 API Response - Generate Title:", result);
-    return result;
-  },
-
-  updateTitle: async (videoId: string, title: string): Promise<any> => {
-    console.log("🌐 API Call - Update Title:", {
-      videoId,
-      title,
-      url: `${API_BASE_URL}/videos/${videoId}/title`,
-    });
-
-    const response = await fetch(`${API_BASE_URL}/videos/${videoId}/title`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title }),
-    });
-
-    const result = await handleResponse(response);
-    console.log("🌐 API Response - Update Title:", result);
-    return result;
-  },
-
   createGitHubPR: async (
     videoId: string,
     nextEpisodeSummary: string,
@@ -215,6 +178,15 @@ export const api = {
     const response = await fetch(
       `${API_BASE_URL}/luma/next-ai-that-works-event`,
     );
+    return handleResponse(response);
+  },
+
+  updateTitle: async (videoId: string, title: string): Promise<any> => {
+    const response = await fetch(`${API_BASE_URL}/videos/${videoId}/title`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title }),
+    });
     return handleResponse(response);
   },
 };

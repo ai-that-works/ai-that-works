@@ -47,7 +47,6 @@ export default function VideoDetailPage() {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [isSavingTitle, setIsSavingTitle] = useState(false);
-  const [isGeneratingTitle, setIsGeneratingTitle] = useState(false);
   const [realtimeStatus, setRealtimeStatus] = useState<string>("disconnected");
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
 
@@ -240,25 +239,6 @@ export default function VideoDetailPage() {
     }
   };
 
-  const generateNewTitle = async () => {
-    if (!videoId) return;
-
-    setIsGeneratingTitle(true);
-    try {
-      await api.generateTitle(videoId);
-      toast.success(
-        "Title generation started! You'll see the new title shortly.",
-      );
-    } catch (error: any) {
-      console.error("Error generating title:", error);
-      toast.error(
-        `Failed to generate title: ${error.message || "Unknown error"}`,
-      );
-    } finally {
-      setIsGeneratingTitle(false);
-    }
-  };
-
   if (loading && !video) {
     // Show full page loader only on initial load
     return <LoadingIndicator fullPage text="Loading video details..." />;
@@ -366,20 +346,6 @@ export default function VideoDetailPage() {
                 className="opacity-60 hover:opacity-100"
               >
                 <Edit3 className="w-4 h-4" />
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={generateNewTitle}
-                disabled={isGeneratingTitle}
-                className="opacity-60 hover:opacity-100"
-                title="Generate AI title"
-              >
-                {isGeneratingTitle ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Sparkles className="w-4 h-4" />
-                )}
               </Button>
             </div>
           )}

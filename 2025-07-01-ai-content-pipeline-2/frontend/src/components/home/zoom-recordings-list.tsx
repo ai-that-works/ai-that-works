@@ -225,7 +225,7 @@ export function ZoomRecordingsList() {
                 <CardTitle className="macos-text-title3 line-clamp-2">
                   {meeting.luma_event
                     ? meeting.luma_event.title
-                    : meeting.meeting_title}
+                    : `Zoom Meeting ${meeting.meeting_id}`}
                 </CardTitle>
                 <CardDescription>
                   {formatDate(meeting.recording_start, {
