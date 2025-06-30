@@ -146,6 +146,26 @@ export const api = {
     console.log('🌐 API Response - Create GitHub PR:', result)
     return result
   },
+
+  importVideo: async (data: { zoom_meeting_id: string; title: string; thumbnail_url: string }): Promise<any> => {
+    const response = await fetch(`${API_BASE_URL}/videos/import`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+    return handleResponse(response)
+  },
+
+  getZoomRecordings: async (params: { from_date: string; to_date: string }): Promise<any> => {
+    const queryParams = new URLSearchParams(params)
+    const response = await fetch(`${API_BASE_URL}/zoom/recordings?${queryParams}`)
+    return handleResponse(response)
+  },
+
+  getLumaMatch: async (meetingId: string): Promise<{ matched: boolean; event: any }> => {
+    const response = await fetch(`${API_BASE_URL}/zoom/recordings/${meetingId}/luma-match`)
+    return handleResponse(response)
+  },
 }
 
 // Export apiClient as an alias for api for compatibility

@@ -34,6 +34,13 @@ interface ZoomMeetingRecording {
   recording_start: string
   recording_end: string
   recordings: ZoomRecording[]
+  luma_event?: {
+    event_id: string
+    title: string
+    thumbnail_url?: string
+    description?: string
+    url?: string
+  }
 }
 
 function getLastNMonthsRange(months: number) {
@@ -60,7 +67,28 @@ export function ZoomRecordingsList() {
       // Ensure your API client handles the response structure correctly.
       // This assumes api.getZoomRecordings returns { meetings: ZoomMeetingRecording[] }
       const response = await api.getZoomRecordings({ from_date, to_date })
-      setMeetings(response.meetings || [])
+      const meetings = response.meetings || []
+      
+      // Check for Luma matches for each meeting
+      const meetingsWithLuma = await Promise.all(
+        meetings.map(async (meeting) => {
+          try {
+            const lumaMatch = await api.getLumaMatch(meeting.meeting_id)
+            if (lumaMatch.matched && lumaMatch.event) {
+              return { ...meeting, luma_event: lumaMatch.event }
+            }
+            // Check if there's an error message indicating missing API key
+            if (lumaMatch.error) {
+              console.warn(`Luma API issue for ${meeting.meeting_id}: ${lumaMatch.error}`)
+            }
+          } catch (err) {
+            console.error(`Error checking Luma match for ${meeting.meeting_id}:`, err)
+          }
+          return meeting
+        })
+      )
+      
+      setMeetings(meetingsWithLuma)
     } catch (err) {
       console.error("Error fetching Zoom recordings:", err)
       setError(err instanceof Error ? err.message : "Failed to fetch Zoom recordings. Please try again.")
@@ -74,17 +102,23 @@ export function ZoomRecordingsList() {
     fetchRecordings()
   }, [fetchRecordings])
 
-  const handleProcessMeeting = async (meetingId: string) => {
-    setProcessingMeetingId(meetingId)
-    toast.promise(api.importVideo({ zoom_meeting_id: meetingId }), {
-      // Assuming api.importVideo
-      loading: `Processing meeting ${meetingId}...`,
+  const handleProcessMeeting = async (meeting: ZoomMeetingRecording) => {
+    if (!meeting.luma_event) {
+      toast.error("No Luma event found for this recording. Cannot process without event details.")
+      return
+    }
+    
+    setProcessingMeetingId(meeting.meeting_id)
+    toast.promise(api.importVideo({ 
+      zoom_meeting_id: meeting.meeting_id,
+      title: meeting.luma_event.title,
+      thumbnail_url: meeting.luma_event.thumbnail_url || ""
+    }), {
+      loading: `Processing "${meeting.luma_event.title}"...`,
       success: () => {
-        // Optionally, you might want to refresh the list or update the specific meeting's status
-        // fetchRecordings();
-        return `Meeting ${meetingId} processing started!`
+        return `Started processing "${meeting.luma_event.title}"!`
       },
-      error: (err) => `Failed to process meeting ${meetingId}: ${err.message || "Unknown error"}`,
+      error: (err) => `Failed to process: ${err.message || "Unknown error"}`,
       finally: () => setProcessingMeetingId(null),
     })
   }
@@ -135,11 +169,27 @@ export function ZoomRecordingsList() {
           const duration = calculateDuration(meeting.recording_start, meeting.recording_end)
           
           return (
-            <Card key={meeting.meeting_id} className="flex flex-col macos-hover">
+            <Card key={meeting.meeting_id} className={`flex flex-col macos-hover ${meeting.luma_event ? 'border-green-500' : 'border-orange-500'}`}>
+              {meeting.luma_event?.thumbnail_url && (
+                <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
+                  <img 
+                    src={meeting.luma_event.thumbnail_url} 
+                    alt={meeting.luma_event.title}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              )}
               <CardHeader>
-                <CardTitle className="macos-text-title3 line-clamp-2">{meeting.meeting_title}</CardTitle>
+                <CardTitle className="macos-text-title3 line-clamp-2">
+                  {meeting.luma_event ? meeting.luma_event.title : meeting.meeting_title}
+                </CardTitle>
                 <CardDescription>
                   {formatDate(meeting.recording_start, { dateStyle: "medium", timeStyle: "short" })}
+                  {meeting.luma_event && (
+                    <Badge variant="outline" className="ml-2 text-green-600">
+                      Luma Event Matched
+                    </Badge>
+                  )}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-grow space-y-3">
@@ -163,17 +213,24 @@ export function ZoomRecordingsList() {
                 )}
               </CardContent>
               <CardFooter>
+                {!meeting.luma_event && (
+                  <div className="w-full text-center text-sm text-orange-600 mb-2">
+                    No matching Luma event found
+                  </div>
+                )}
                 <Button
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  onClick={() => handleProcessMeeting(meeting.meeting_id)}
-                  disabled={processingMeetingId === meeting.meeting_id}
+                  className="w-full"
+                  variant={meeting.luma_event ? "default" : "secondary"}
+                  onClick={() => handleProcessMeeting(meeting)}
+                  disabled={processingMeetingId === meeting.meeting_id || !meeting.luma_event}
                 >
                   {processingMeetingId === meeting.meeting_id ? (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   ) : (
                     <UploadCloud className="w-4 h-4 mr-2" />
                   )}
-                  {processingMeetingId === meeting.meeting_id ? "Processing..." : "Import & Process"}
+                  {processingMeetingId === meeting.meeting_id ? "Processing..." : 
+                   !meeting.luma_event ? "Luma Event Required" : "Import & Process"}
                 </Button>
               </CardFooter>
             </Card>

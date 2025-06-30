@@ -6,6 +6,8 @@ from datetime import datetime
 # Request Models
 class VideoImportRequest(BaseModel):
     zoom_meeting_id: str
+    title: str
+    thumbnail_url: str
 
 
 # Structured content models
@@ -52,6 +54,7 @@ class Video(BaseModel):
     duration: int  # seconds
     zoom_meeting_id: str
     youtube_url: Optional[str] = None
+    thumbnail_url: Optional[str] = None
     processing_stage: str = "queued"  # "queued", "downloading", "uploading", "ready", "failed"
     status: str  # "processing", "ready", "failed"
     created_at: datetime
@@ -146,3 +149,18 @@ class ZoomMeetingRecordings(BaseModel):
 class ZoomMeetingsResponse(BaseModel):
     meetings: List[ZoomMeetingRecordings]
     total_count: int
+
+
+# Luma Event Models
+class LumaEvent(BaseModel):
+    event_id: str
+    title: str
+    thumbnail_url: Optional[str] = None
+    description: Optional[str] = None
+    url: Optional[str] = None
+    start_at: Optional[datetime] = None
+    end_at: Optional[datetime] = None
+
+
+class LumaEventsResponse(BaseModel):
+    events: List[LumaEvent]

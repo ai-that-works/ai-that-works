@@ -88,8 +88,12 @@ class VideoProcessor:
             # Update status to uploading
             await db.update_video(video_id, {"processing_stage": "uploading"})
             
+            # Get video details to use the title for YouTube upload
+            video = await db.get_video(video_id)
+            video_title = video.title if video else f"Zoom Meeting {zoom_meeting_id}"
+            
             # Upload to YouTube
-            youtube_url = await self._upload_to_youtube(video_file_path, zoom_meeting_id)
+            youtube_url = await self._upload_to_youtube(video_file_path, video_title)
             
             # Update status with transcript and YouTube URL
             update_data = {
@@ -235,7 +239,7 @@ class VideoProcessor:
             print(f"Error getting transcript for meeting {zoom_meeting_id}: {e}")
             return None
     
-    async def _upload_to_youtube(self, video_file_path: str, zoom_meeting_id: str) -> Optional[str]:
+    async def _upload_to_youtube(self, video_file_path: str, video_title: str) -> Optional[str]:
         """Upload video to YouTube"""
         if not self.youtube_credentials:
             print("YouTube credentials not available, skipping upload")
@@ -248,8 +252,8 @@ class VideoProcessor:
             # Prepare upload request
             body = {
                 'snippet': {
-                    'title': f'Zoom Meeting {zoom_meeting_id}',
-                    'description': f'Recording from Zoom meeting {zoom_meeting_id}',
+                    'title': video_title,
+                    'description': f'Video: {video_title}',
                     'tags': ['zoom', 'meeting', 'recording'],
                     'categoryId': '22'  # People & Blogs
                 },

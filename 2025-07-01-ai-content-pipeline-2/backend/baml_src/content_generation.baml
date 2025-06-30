@@ -470,3 +470,52 @@ Links:
 - [Discord Community](https://www.boundaryml.com/discord)
 - Sign up for the next session on [Luma](NEXT_SESSION_URL)
 "#
+
+// Luma Event Identification
+
+class LumaEventInfo {
+    event_id string
+    title string
+    description string
+    start_date string
+    url string
+}
+
+class NextAIThatWorksEventResult {
+    event_id string
+    reasoning string
+}
+
+function IdentifyNextAIThatWorksEvent(
+    events: LumaEventInfo[],
+    current_date: string
+) -> NextAIThatWorksEventResult {
+    client CustomGPT4oMini
+    prompt #"
+        You need to identify which event is the next "AI that works" event from the list below.
+        
+        {{ ctx.output_format }}
+        
+        Current date: {{ current_date }}
+        
+        Events (sorted by date, earliest first):
+        {% for event in events %}
+        Event {{ loop.index }}:
+        - ID: {{ event.event_id }}
+        - Title: {{ event.title }}
+        - Description: {{ event.description }}
+        - Start Date: {{ event.start_date }}
+        - URL: {{ event.url }}
+        
+        {% endfor %}
+        
+        Look for events that:
+        1. Have "ai that works" in the title (case insensitive)
+        2. Are part of the weekly AI that works series
+        3. Have the 🦄 emoji which is commonly used
+        4. Are technical sessions about AI/ML/LLMs
+        
+        Return the event_id of the next AI that works event and explain your reasoning.
+        If no event matches, return an empty event_id.
+    "#
+}

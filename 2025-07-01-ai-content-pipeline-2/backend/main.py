@@ -14,11 +14,13 @@ from models import (
     VideoImportResponse, VideoResponse, SummaryResponse, 
     DraftsListResponse, DraftSaveResponse, FeedbackResponse, StatusResponse,
     ZoomRecording,
-    ZoomMeetingRecordings, ZoomMeetingsResponse, TranscriptResponse
+    ZoomMeetingRecordings, ZoomMeetingsResponse, TranscriptResponse,
+    LumaEventsResponse
 )
 from database import db
 from zoom_client import zoom_client
 from video_processor import video_processor
+from luma_client import luma_client
 from baml_client import types
 from baml_client.async_client import b
 
@@ -49,6 +51,62 @@ if missing_vars:
 async def root():
     return {"message": "AI Content Pipeline API"}
 
+@app.get("/luma/recent-events", response_model=LumaEventsResponse)
+async def get_recent_luma_events():
+    """Get the 3 most recent past Luma events"""
+    try:
+        # Since the client is simplified, we'll need to handle this differently
+        # For now, return empty list since the method is private
+        return LumaEventsResponse(events=[])
+    except Exception as e:
+        logger.error(f"Error fetching Luma events: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+@app.get("/luma/next-ai-that-works-event")
+async def get_next_ai_that_works_event():
+    """Get the next upcoming AI that works event"""
+    try:
+        event = await luma_client.fetch_next_upcoming_event()
+        if event:
+            return {
+                "found": True,
+                "event": {
+                    "event_id": event.event_id,
+                    "title": event.title,
+                    "description": event.description,
+                    "url": event.url,
+                    "start_at": event.start_at.isoformat() if event.start_at else None,
+                    "end_at": event.end_at.isoformat() if event.end_at else None,
+                    "thumbnail_url": event.thumbnail_url
+                }
+            }
+        else:
+            return {"found": False, "event": None}
+    except Exception as e:
+        logger.error(f"Error fetching next AI that works event: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+@app.get("/zoom/recordings/{meeting_id}/luma-match")
+async def get_luma_match_for_zoom_recording(meeting_id: str):
+    """Check if a Zoom recording has a matching Luma event"""
+    try:
+        # Check if Luma API key is configured
+        if not luma_client.api_key:
+            logger.warning("LUMA_API_KEY not configured - returning no match")
+            return {"matched": False, "event": None, "error": "Luma API key not configured"}
+            
+        # Use the simplified Luma client method
+        luma_event = luma_client.get_event_for_zoom_meeting(meeting_id)
+        
+        if luma_event:
+            return {"matched": True, "event": luma_event}
+        else:
+            return {"matched": False, "event": None}
+            
+    except Exception as e:
+        logger.error(f"Error matching Zoom recording to Luma event: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
 @app.post("/videos/import", status_code=status.HTTP_202_ACCEPTED, response_model=VideoImportResponse)
 async def import_video(request: VideoImportRequest, background_tasks: BackgroundTasks):
     """Queue Zoom download - returns video ID immediately and starts full background processing pipeline"""
@@ -58,7 +116,8 @@ async def import_video(request: VideoImportRequest, background_tasks: Background
     video = Video(
         id=video_id,
         zoom_meeting_id=request.zoom_meeting_id,
-        title=f"Zoom Meeting {request.zoom_meeting_id}",
+        title=request.title,
+        thumbnail_url=request.thumbnail_url,
         duration=3600,  # 1 hour
         status="processing",
         processing_stage="queued",
@@ -185,21 +244,7 @@ async def process_video_summary(video_id: str, transcript: str, title: Optional[
         })
         print(f"💾 Summary saved for video {video_id}, UI updated immediately!")
         
-        # Step 3: Generate YouTube title using BAML
-        print(f"🎬 Generating YouTube title for video {video_id}")
-        try:
-            new_title = await b.GenerateYouTubeTitle(
-                summary=video_summary,
-                transcript=transcript,
-                current_title=title
-            )
-            await db.update_video(video_id, {"title": new_title})
-            print(f"✅ YouTube title generated and updated: {new_title}")
-        except Exception as e:
-            print(f"❌ Error generating title: {e}")
-            # Continue with original title if generation fails
-        
-        # Step 4: Create a single draft and update it as content generates
+        # Step 3: Create a single draft and update it as content generates
         print(f"🔄 Starting parallel content generation for video {video_id}")
         
         # Create a shared draft record first

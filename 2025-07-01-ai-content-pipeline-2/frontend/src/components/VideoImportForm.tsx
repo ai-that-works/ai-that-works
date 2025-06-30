@@ -2,26 +2,35 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { api } from '@/lib/api'
 import { Video, Loader2 } from 'lucide-react'
 
 export function VideoImportForm() {
   const [zoomMeetingId, setZoomMeetingId] = useState('')
+  const [title, setTitle] = useState('')
+  const [thumbnailUrl, setThumbnailUrl] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!zoomMeetingId.trim()) return
+    if (!zoomMeetingId.trim() || !title.trim() || !thumbnailUrl.trim()) return
 
     setIsLoading(true)
     setError('')
 
     try {
-      const result = await api.importVideo({ zoom_meeting_id: zoomMeetingId })
+      const result = await api.importVideo({ 
+        zoom_meeting_id: zoomMeetingId,
+        title: title.trim(),
+        thumbnail_url: thumbnailUrl.trim()
+      })
       console.log('Video import result:', result)
       setZoomMeetingId('')
+      setTitle('')
+      setThumbnailUrl('')
       // The frontend will automatically update via Supabase real-time subscription
     } catch (err) {
       setError('Failed to import video. Please try again.')
