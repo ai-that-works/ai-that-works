@@ -1,8 +1,7 @@
 from supersonic import Supersonic
 import os
 from datetime import datetime
-from models import VideoSummary
-from baml_client import b
+from baml_client import b, types
 import re
 
 
@@ -65,7 +64,7 @@ class GitHubPRService:
         video_id: str,
         video_title: str,
         episode_date: str,
-        summary: VideoSummary,
+        summary: dict,  # VideoSummary as dict from database
         youtube_url: str,
         youtube_thumbnail_url: str,
         transcript: str,
