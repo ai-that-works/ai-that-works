@@ -318,6 +318,36 @@ function DetermineEpisodePath(
     "#
 }
 
+test DetermineEpisodePathTest {
+  functions [DetermineEpisodePath]
+  args {
+    video_title "ai content pipeline"
+    zoom_recording_date "2025-06-24"
+    existing_folders [
+      "2025-06-17-something-else-cooler"
+      "2025-06-10-something-cool"
+    ]
+  }
+}
+
+test DetermineEpisodePathTest2 {
+  functions [DetermineEpisodePath]
+  args {
+    video_title "ai content pipeline"
+    zoom_recording_date "2025-07-01"
+    existing_folders [
+      "2025-07-01-ai-content-pipeline-2",
+      "2025-06-24-ai-content-pipeline",
+      "2025-06-17-entity-extraction",
+      "2025-06-10-cracking-the-prompting-interview",
+      "2025-05-20-policies-to-prompts",
+      "2025-05-17-workshop-sf-twelve-factor-agents",
+      "2025-04-22-twelve-factor-agents",
+      "2025-04-15-code-generation-small-models"
+    ]
+  }
+}
+
 function GenerateEpisodeReadme(
     video_title: string,
     episode_date: string,
@@ -453,7 +483,7 @@ class NextAIThatWorksEventResult {
 function IdentifyNextAIThatWorksEvent(
     events: LumaEventInfo[],
     current_date: string
-) -> NextAIThatWorksEventResult {
+) -> NextAIThatWorksEventResult? {
     client CustomGPT4oMini
     prompt #"
         You need to identify which event is the next "AI that works" event from the list below.
@@ -482,4 +512,27 @@ function IdentifyNextAIThatWorksEvent(
         Return the event_id of the next AI that works event and explain your reasoning.
         If no event matches, return an empty event_id.
     "#
+}
+
+test IdentifyEvent {
+  functions [IdentifyNextAIThatWorksEvent]
+  args {
+    current_date "2025-06-25"
+    events [
+      {
+        event_id "123"
+        title "AI that works"
+        description "AI that works"
+        start_date "2025-07-01"
+        url "https://www.luma.com/event/123"
+      }
+      {
+        event_id "abs1"
+        title "Vaibhav birthday zoom"
+        description "hes turning 22!"
+        start_date "2025-06-30"
+        url "https://www.luma.com/event/1234"
+      }
+    ]
+  }
 }

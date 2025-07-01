@@ -397,6 +397,9 @@ class LumaClient:
             result = await b.IdentifyNextAIThatWorksEvent(
                 events=events_data, current_date=now.isoformat()
             )
+            if not result:
+                logger.warning("Could not identify next AI that works event")
+                return None
 
             # Find and return the identified event
             if result.event_id:
