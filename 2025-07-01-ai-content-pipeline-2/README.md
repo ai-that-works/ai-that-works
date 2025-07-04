@@ -14,9 +14,15 @@
 
 > If you remember one thing from this session: High-quality AI generation isn't about one magic prompt. It's an engineered system that first extracts facts reliably and then polishes them for tone and flow. Separate your data pipeline from your creative pipeline.
 
-## Whiteboards
+## Whiteboards (not AI generated)
 
-[Add whiteboard images here]
+Our architecture diagram (which we used to parallelize work + define the problem)
+![image](https://github.com/user-attachments/assets/112ea93e-0f59-4370-9243-fd6d8e6c2320)
+
+General idea when thinking about prompting:
+![image](https://github.com/user-attachments/assets/f8d92f97-44cc-418c-85fb-c9e7fba6899d)
+
+
 
 ## Running the Code
 
