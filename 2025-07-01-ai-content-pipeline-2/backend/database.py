@@ -5,7 +5,9 @@ from models import Video, Draft, Feedback
 import os
 from supabase import create_client, Client
 from dateutil.parser import parse as parse_datetime
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class SupabaseDatabase:
     def __init__(self):

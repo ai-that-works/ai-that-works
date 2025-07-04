@@ -4,7 +4,6 @@ from typing import Optional, Dict
 import uuid
 from datetime import datetime, timedelta
 import os
-from dotenv import load_dotenv
 import logging
 import asyncio
 import json
@@ -38,6 +37,7 @@ from video_processor import video_processor
 from luma_client import luma_client
 from baml_client import types
 from baml_client.async_client import b
+from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
@@ -442,13 +442,13 @@ async def process_video_summary(
                 print(f"📧 Generating email draft for video {video_id}")
                 # Get updated video to use latest title
                 updated_video = await db.get_video(video_id)
-                structure: types.EmailStructure = await b.GenerateEmailDraft(
+                structure: types.EmailStructure = await b.GetEmailBulletPoints(
                     summary=video_summary,
                     transcript=transcript,
                     video_title=updated_video.title if updated_video else title,
                 )
 
-                email_draft = await b.GenerateEmailStructure(
+                email_draft = await b.DraftEmail(
                     summary=video_summary, structure=structure
                 )
 

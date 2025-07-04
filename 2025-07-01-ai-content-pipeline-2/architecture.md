@@ -25,7 +25,7 @@ The AI Content Pipeline is an automated system that transforms Zoom recordings i
 
 ### AI Functions (BAML)
 - **SummarizeVideo**: Generates structured summary with bullet points, key topics, and takeaways
-- **GenerateEmailDraft**: Creates newsletter draft in two stages (structure → full email)
+- **GetEmailBulletPoints**: Creates newsletter draft in two stages (structure → full email)
 - **GenerateTwitterThread**: Produces multi-tweet thread with hashtags
 - **GenerateLinkedInPost**: Creates professional LinkedIn post
 - **RefineEmailDraft/TwitterThread/LinkedInPost**: Iterates on content based on user feedback
@@ -140,7 +140,7 @@ sequenceDiagram
         API->>Database: Update stage: "generating_content"
 
         par Parallel Generation
-            API->>BAML: GenerateEmailDraft
+            API->>BAML: GetEmailBulletPoints
             and
             API->>BAML: GenerateTwitterThread
             and

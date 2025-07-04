@@ -83,3 +83,11 @@ client<llm> MyGemini {
     model "gemini-2.0-flash"
   }
 }
+
+client<llm> MyGeminiSmart {
+  provider vertex-ai
+  options {
+    location "us-central1"
+    model "gemini-2.5-pro"
+  }
+}

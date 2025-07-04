@@ -1,5 +1,5 @@
 test EmailStructure {
-  functions [GenerateEmailStructure]
+  functions [DraftEmail]
   args {
     summary {
       main_takeaways [
@@ -54,7 +54,7 @@ test EmailStructure {
 }
 
 test Marriedguan {
-  functions [GenerateEmailDraft]
+  functions [GetEmailBulletPoints]
   args {
     next_session {
       event_name #"Generating AI powered Content with LLMs"#

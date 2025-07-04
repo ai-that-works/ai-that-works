@@ -30,7 +30,7 @@ class TimeData {
 
 // Summarize video transcript into key points
 function SummarizeVideo(transcript: string, title: string?) -> VideoSummary {
-  client MyGemini
+  client MyGeminiSmart
   prompt #"
     {{ _.role('user') }}
     {% if title %}Video Title: {{ title }}{% endif %}

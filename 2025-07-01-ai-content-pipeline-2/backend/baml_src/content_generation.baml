@@ -37,16 +37,9 @@ class EmailStructure {
   next_session string
 }
 
-function GenerateEmailStructure(summary: VideoSummary, structure: EmailStructure) -> EmailDraft {
-  client MyGemini
+function DraftEmail(summary: VideoSummary, structure: EmailStructure) -> EmailDraft {
+  client MyGeminiSmart
   prompt #"
-    Make the email structure fit the final email draft.
-
-    {{ ctx.output_format }}
-
-    My goal email is something like this.
-    {{ EmailExample() }}
-
     {{ _.role('user') }}
     Here's my draft so far.
 
@@ -61,20 +54,21 @@ function GenerateEmailStructure(summary: VideoSummary, structure: EmailStructure
 
     Next session:
     {{ structure.next_session }}
+
+    {{ _.role('user') }}
+    Make the email structure fit the final email draft.
+
+    {{ ctx.output_format }}
+
+    My goal email is something like this.
+    {{ EmailExample() }}
   "#
 }
 
 // Generate professional email draft
-function GenerateEmailDraft(summary: VideoSummary, transcript: string?, video_title: string?) -> EmailStructure {
+function GetEmailBulletPoints(summary: VideoSummary, transcript: string?, video_title: string?) -> EmailStructure {
   client MyGemini
   prompt #"
-    Create a professional email announcing this video content on behalf of Vaibhav and Dex.
-
-    {{ ctx.output_format }}
-
-    An example great email for a prior video was this:
-    {{ EmailExample() }}
-
     {{ _.role('user') }}
     {% if video_title %}Video Title: {{ video_title }}{% endif %}
 
@@ -97,6 +91,14 @@ function GenerateEmailDraft(summary: VideoSummary, transcript: string?, video_ti
     {% for takeaway in summary.main_takeaways %}
     - {{ takeaway }}
     {% endfor %}
+
+    {{ _.role('user') }}
+    Create a professional email announcing this video content on behalf of Vaibhav and Dex.
+
+    {{ ctx.output_format }}
+
+    An example great email for a prior video was this:
+    {{ EmailExample() }}
   "#
 }
 
@@ -156,39 +158,27 @@ function RefineEmailDraft(
   transcript: string?,
   video_title: string?
 ) -> EmailDraft {
-  client "openai/gpt-4o"
+  client MyGeminiSmart
   prompt #"
     You are helping refine an email draft based on user feedback. Use the video content as context to make informed improvements.
 
     {{ ctx.output_format }}
 
+    Here's an example of a great email for a prior video:
+    {{ EmailExample() }}
+
     {% if video_title %}Video Title: {{ video_title }}{% endif %}
+
+    Video Summary Context:
+    Key Points:{{ summary.bullet_points }}
+    Topics: {{ summary.key_topics }}
+    Takeaways: {{ summary.main_takeaways }}
 
     Current Email Draft:
     Subject: {{ current_draft.subject }}
     Body: {{ current_draft.body }}
-    Call to Action: {{ current_draft.call_to_action }}
 
     User Feedback: {{ feedback }}
-
-    Video Summary Context:
-    Key Points: {{ summary.bullet_points }}
-    Topics: {{ summary.key_topics }}
-    Takeaways: {{ summary.main_takeaways }}
-
-    {% if transcript %}
-    Original Transcript (for reference):
-    {{ transcript }}
-    {% endif %}
-
-    Instructions:
-    1. Carefully analyze the user's feedback to understand what they want changed
-    2. Use the video summary and transcript to ensure accuracy and relevance
-    3. Maintain the professional email tone while implementing the requested changes
-    4. Keep the email structure (subject, body, call-to-action) but improve based on feedback
-    5. If feedback is vague, make reasonable improvements that enhance clarity and engagement
-
-    Return an improved email that addresses the user's feedback while staying true to the video content.
   "#
 }
 
