@@ -32,13 +32,13 @@ class EmailStructure {
 
     we covered a lot on ______. Here's a quick recap:
   "#)
-  quick_recap string 
+  quick_recap string[] 
   one_thing_to_remember string
   next_session string
 }
 
 function GenerateEmailStructure(summary: VideoSummary, structure: EmailStructure) -> EmailDraft {
-  client CustomGPT4oMini
+  client MyGemini
   prompt #"
     Make the email structure fit the final email draft.
 
@@ -66,7 +66,7 @@ function GenerateEmailStructure(summary: VideoSummary, structure: EmailStructure
 
 // Generate professional email draft
 function GenerateEmailDraft(summary: VideoSummary, transcript: string?, video_title: string?) -> EmailStructure {
-  client CustomGPT4oMini
+  client MyGemini
   prompt #"
     Create a professional email announcing this video content on behalf of Vaibhav and Dex.
 
@@ -277,6 +277,45 @@ function RefineLinkedInPost(
     6. Ensure the post encourages professional discussion and adds value
 
     Return an improved LinkedIn post that addresses the user's feedback while staying true to the video content.
+  "#
+}
+
+// Generate YouTube video title
+function GenerateYouTubeTitle(
+  summary: VideoSummary,
+  transcript: string?,
+  current_title: string?
+) -> string {
+  client "openai/gpt-4o"
+  prompt #"
+    Create an engaging YouTube video title that will maximize views and accurately represent the content.
+
+    {% if current_title %}Current Title: {{ current_title }}{% endif %}
+
+    Video Summary:
+    Key Points: {{ summary.bullet_points }}
+    Topics: {{ summary.key_topics }}
+    Takeaways: {{ summary.main_takeaways }}
+
+    {% if transcript %}
+    Transcript (for reference):
+    {{ transcript }}
+    {% endif %}
+
+    Guidelines for YouTube titles:
+    1. 60 characters or less (optimal for mobile display)
+    2. Include compelling keywords that people search for
+    3. Create curiosity or promise value
+    4. Use power words: "Ultimate", "Secret", "Proven", "Essential", etc.
+    5. Consider numbers and lists: "5 Ways", "Top 10", etc.
+    6. Avoid clickbait - be accurate to content
+    7. Front-load the most important keywords
+    8. Consider your target audience (AI/tech professionals)
+
+    This is for "AI that works" series - practical AI applications, not surface-level content.
+    The audience is familiar with LLMs and wants actionable insights.
+
+    Return ONLY the title text, nothing else.
   "#
 }
 

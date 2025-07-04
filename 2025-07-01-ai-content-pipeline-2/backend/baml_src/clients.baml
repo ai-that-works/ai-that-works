@@ -75,3 +75,11 @@ retry_policy Exponential {
     max_delay_ms 10000
   }
 }
+
+client<llm> MyGemini {
+  provider vertex-ai
+  options {
+    location "us-central1"
+    model "gemini-2.0-flash"
+  }
+}

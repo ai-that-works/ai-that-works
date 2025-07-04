@@ -56,15 +56,18 @@ class AIGenerator:
         try:
             logger.info("Generating email draft from video summary")
 
+
             # Use BAML to generate email content
             email_draft = await self.client.GenerateEmailDraft(
                 summary=summary, transcript=transcript, video_title=video_title
             )
 
+            result = await self.client.GenerateEmailStructure(summary=summary, structure=email_draft)
+
             logger.info(
                 f"Generated email draft with subject: {email_draft.subject[:50]}..."
             )
-            return email_draft
+            return result
 
         except Exception as e:
             logger.error(f"Failed to generate email draft: {e}")
@@ -146,16 +149,6 @@ class AIGenerator:
                     "bullet_points": summary.bullet_points,
                     "key_topics": summary.key_topics,
                     "main_takeaways": summary.main_takeaways,
-                    "timed_data": [
-                        {
-                            "start_time": td.start_time,
-                            "end_time": td.end_time,
-                            "summary": td.summary,
-                        }
-                        for td in summary.timed_data
-                    ]
-                    if hasattr(summary, "timed_data")
-                    else [],
                 },
                 "email_draft": {
                     "subject": email_draft.subject,

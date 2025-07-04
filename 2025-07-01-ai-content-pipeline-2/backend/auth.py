@@ -5,10 +5,13 @@ OAuth authentication framework for external services
 import os
 from typing import Optional, Dict, Any
 from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
+from google.oauth2.credentials import Credentials as GoogleCredentials
+from google.auth.external_account_authorized_user import Credentials as ExternalAccountCredentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 import json
+
+Credentials = ExternalAccountCredentials | GoogleCredentials
 
 
 class OAuthManager:
@@ -60,7 +63,7 @@ class OAuthManager:
         flow.redirect_uri = redirect_uri
 
         flow.fetch_token(code=code)
-        return flow.credentials
+        return flow.credentials  # type: ignore
 
     def save_google_credentials(self, credentials: Credentials) -> bool:
         """Save Google credentials to file"""
@@ -84,7 +87,7 @@ class OAuthManager:
             with open(self.google_token_file, "r") as token_file:
                 creds_data = json.load(token_file)
 
-            credentials = Credentials.from_authorized_user_info(
+            credentials = GoogleCredentials.from_authorized_user_info(
                 creds_data, self.google_scopes
             )
 

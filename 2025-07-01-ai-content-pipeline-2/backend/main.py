@@ -803,7 +803,6 @@ async def refine_content_background_task(
                 bullet_points=video.summary.get("bullet_points", []),
                 key_topics=video.summary.get("key_topics", []),
                 main_takeaways=video.summary.get("main_takeaways", []),
-                timed_data=video.summary.get("timed_data", []),
             )
         elif video.summary_points:
             # Fallback to legacy format
@@ -811,7 +810,6 @@ async def refine_content_background_task(
                 bullet_points=video.summary_points,
                 key_topics=[],
                 main_takeaways=[],
-                timed_data=[],
             )
         else:
             print(f"❌ No video summary available for video {video_id}")

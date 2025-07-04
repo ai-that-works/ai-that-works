@@ -1,7 +1,9 @@
 // Video summarization functions
 
 class VideoSummary {
-  timed_data TimeData[]
+  // timed_data TimeData[] @description(#"
+  //   usually 5-10 minute semantic chunks (but exact timings from transcript)
+  // "#)
   main_takeaways (string)[] @description(#"
     use triple quotes for multi-line strings (this can be dense)
     [
@@ -28,8 +30,15 @@ class TimeData {
 
 // Summarize video transcript into key points
 function SummarizeVideo(transcript: string, title: string?) -> VideoSummary {
-  client CustomSonnet
+  client MyGemini
   prompt #"
+    {{ _.role('user') }}
+    {% if title %}Video Title: {{ title }}{% endif %}
+    
+    Transcript:
+    {{ transcript }}
+
+    {{ _.role('user') }}
     Analyze this video transcript and create a comprehensive summary.
     {{ ctx.output_format }}
 
@@ -39,14 +48,6 @@ function SummarizeVideo(transcript: string, title: string?) -> VideoSummary {
     Before answering, outline a very dense summary of the video.
 
     Since the vidoes are pretty long, try and have time ranges (synced to the transcript)
-
-    example:
-    < very dense summary of the video >
-    (00:00:00 - 00:XX:XX)
-    ...topic 0 para...
-
-    (00:XX:XX - 00:XX:XX)
-    ...topic 1 para...
 
     ...topic 2 para...
     ...
