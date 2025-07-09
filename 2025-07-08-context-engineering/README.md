@@ -52,8 +52,6 @@ Links:
 
 ![image](https://github.com/user-attachments/assets/89af8e43-4a26-4e84-a263-6f0db0f99dd7)
 
-![image](https://github.com/user-attachments/assets/09166cbc-96e1-406f-b510-8bb947692bc9)
-
 ![image](https://github.com/user-attachments/assets/42209c27-529a-47f6-8ded-0085c53a7417)
 
 ![image](https://github.com/user-attachments/assets/6d8d8a8c-c540-4fbc-a9d0-d25101b6f2af)
