@@ -43,6 +43,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AI Content Pipeline API", version="1.0.0")

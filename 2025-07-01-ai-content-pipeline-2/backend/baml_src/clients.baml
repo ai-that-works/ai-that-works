@@ -81,6 +81,7 @@ client<llm> MyGemini {
   options {
     location "us-central1"
     model "gemini-2.0-flash"
+    project_id env.GOOGLE_CLOUD_PROJECT
   }
 }
 
@@ -89,5 +90,6 @@ client<llm> MyGeminiSmart {
   options {
     location "us-central1"
     model "gemini-2.5-pro"
+    project_id env.GOOGLE_CLOUD_PROJECT
   }
 }
