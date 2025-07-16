@@ -1,4 +1,4 @@
-# >� ai that works: Implementing Decaying-Resolution Memory
+# 🦄 ai that works: Implementing Decaying-Resolution Memory
 
 > A hands-on implementation of Decaying-Resolution Memory (DRM) for AI agents, building on the conceptual foundation from episode #13 to create a practical, deployable memory system.
 
@@ -11,6 +11,19 @@ Moving from theory to practice - implementing DRM as a production-ready componen
 The key insight of DRM is that not all memories need the same resolution over time. Recent events stay detailed, while older events naturally compress into higher-level summaries.
 
 By implementing exponential decay in memory resolution, we create a system that mirrors human memory - preserving what matters while gracefully forgetting the details that don't.
+
+## Whiteboards
+
+<img width="3706" height="1857" alt="image" src="https://github.com/user-attachments/assets/2dbabf09-56eb-4238-9ec2-88ab5fa509ad" />
+
+<img width="5133" height="2113" alt="image" src="https://github.com/user-attachments/assets/2414ad6f-0a0b-4b1e-a658-4695d955454f" />
+
+<img width="3705" height="2970" alt="image" src="https://github.com/user-attachments/assets/3000b593-6649-4a20-a431-25c46abeb963" />
+
+<img width="3826" height="3153" alt="image" src="https://github.com/user-attachments/assets/2c489058-01bb-4b85-9345-6282e63235e4" />
+
+<img width="2738" height="2722" alt="image" src="https://github.com/user-attachments/assets/6defe4e1-44ce-4313-bc8c-ade5000246e3" />
+
 
 ## Key Takeaways
 
