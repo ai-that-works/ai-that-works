@@ -6,6 +6,8 @@ Here's the updated README.md with the requested changes:
 
 ### 📅 event calendar - https://lu.ma/baml
 
+### Discord - https://boundaryml.com/discord
+
 every tuesday at 10 am pst on zoom.
 
 1 hour of live code, q&a with some prepped content to help you take your ai app from a demo to production.
