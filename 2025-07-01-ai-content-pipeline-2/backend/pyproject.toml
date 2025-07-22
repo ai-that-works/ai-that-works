@@ -15,7 +15,7 @@ dependencies = [
     "google-auth>=2.30.0",
     "google-auth-oauthlib>=1.2.0",
     "google-api-python-client>=2.130.0",
-    "baml-py==0.90.2",
+    "baml-py==0.202.1",
     "requests>=2.31.0",
     "supersonic>=0.1.0",
     "cased-kit>=1.4.0",
