@@ -10,19 +10,6 @@
 
 In this episode, we explored how to effectively process PDF documents using multimodal AI models. We tackled the challenge that models don't read PDFs natively but convert them to images, and demonstrated how to take control of this process for better results.
 
-## Key Points
-
-### 1. Control your pre-processing pipeline
-If a model provider's direct PDF upload fails, manually convert your PDF pages to images using a library like `pdf2image`. This gives you control over resolution and prepares you for further cleaning steps.
-
-### 2. Use image differencing to remove boilerplate
-To remove headers and footers, use a function like `ImageChops.difference()` from the Python Pillow library on two separate pages. This quickly and cheaply identifies common elements, allowing you to mask them before sending the image to an LLM.
-
-### 3. Provide context for page-spanning data
-To handle data split between pages, pass both the current page image and a cropped image of the bottom section of the previous page in a single prompt. This gives the model the visual context it needs to stitch the information together correctly.
-
-### 4. Build validation into your prompts
-When extracting structured data like financial transactions, also prompt the model to extract summary figures. Then, write simple, deterministic code to validate that the parts add up to the whole. If they don't, you've successfully caught a hallucination.
 
 ## Key Topics
 
@@ -36,7 +23,32 @@ When extracting structured data like financial transactions, also prompt the mod
 
 - **Handling Edge Cases**: Practical techniques for solving common document processing challenges, such as parsing records that are split across a page break by providing cropped context from the previous page.
 
+## Whiteboards
+
+<img width="7573" height="2479" alt="image" src="https://github.com/user-attachments/assets/6ff39e3b-4aa1-407f-b603-bdadac38c190" />
+
+<img width="2147" height="1470" alt="image" src="https://github.com/user-attachments/assets/fe425e7f-3825-4dc1-bfd6-16f03781750e" />
+
+<img width="3204" height="2952" alt="image" src="https://github.com/user-attachments/assets/21c223c6-5669-4603-98d4-03f10d4641e3" />
+
+<img width="1869" height="1019" alt="image" src="https://github.com/user-attachments/assets/d92ec658-6f5b-48a4-a1bd-7068f5929d37" />
+
+
 ## Main Takeaways
+
+
+## Control your pre-processing pipeline
+If a model provider's direct PDF upload fails, manually convert your PDF pages to images using a library like `pdf2image`. This gives you control over resolution and prepares you for further cleaning steps.
+
+## Use pixel-wise image diffing to remove boilerplate
+To remove headers and footers, use a function like `ImageChops.difference()` from the Python Pillow library on two separate pages. This quickly and cheaply identifies common elements, allowing you to mask them before sending the image to an LLM.
+
+## Provide context for page-spanning data
+To handle data split between pages, pass both the current page image and a cropped image of the bottom section of the previous page in a single prompt. This gives the model the visual context it needs to stitch the information together correctly.
+
+## Build validation into your prompts
+When extracting structured data like financial transactions, also prompt the model to extract summary figures. Then, write simple, deterministic code to validate that the parts add up to the whole. If they don't, you've successfully caught a hallucination.
+
 
 ### Build hybrid AI systems
 The most reliable and production-ready applications combine the generative power of LLMs with deterministic code (e.g., math, image processing libraries) for pre-processing and validation. Don't use an LLM for tasks that have a simpler, more reliable solution.
@@ -79,9 +91,7 @@ python main.py
 - [BAML Documentation](https://docs.boundaryml.com)
 - [Discord Community](https://boundaryml.com/discord)
 
-## Whiteboards
 
-*Whiteboard images from the session will be added here*
 
 ## Next Week
 
