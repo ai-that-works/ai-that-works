@@ -12,7 +12,8 @@ Update the just-completed episode README with YouTube link, thumbnail, and summa
    - Next episode signup link (starting with lu.ma/...)
    - Summary/description of the next episode
    - YouTube link to the just-completed recording
-   - Folder for the just-completed episode (dated today or yesterday)
+   - Folder for the just-completed episode (dated today or yesterday) (use List() or Bash(ls) to check if it exists)
+
    
    **STOP and ask the user if ANY of these are missing**
 
