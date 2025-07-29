@@ -1,0 +1,6 @@
+{
+    "subject": "🧠 Advanced Prompting Techniques – Session Recap + What’s Next",
+    "body": "Thanks for attending our session on advanced prompt engineering and LLM optimization strategies! Here's a quick summary of what we covered and what to keep in mind:\n\n💡 Main Takeaways:\n- Shift complex generation tasks to deterministic code.\n- Use indexes or aliases instead of full text to save tokens.\n- Provide clear indexes and structured input to improve LLM focus.\n- Guide LLM reasoning with inline comments (even in JSON).\n- Structure prompts instead of relying on real-world examples.\n- Don’t make the LLM count – pre-process or enforce constraints with code.\n- Leverage broken JSON and code for natural LLM generation.\n- Avoid role-playing; give clear, concise instructions.\n- RTFP: Read the F***ing Prompt before debugging.\n- Always structure output to match actionable, specific needs.\n\n📌 Quick Recap:\n- Shift complex logic to code\n- Use aliases instead of full text\n- Add inline comments for LLM reasoning\n- Structure prompts instead of examples\n\n🧭 One thing to remember:\nFocus on actionable insights by structuring output to match specific needs and workflows.",
+    "call_to_action": "📅 Next session: \"Generating AI-Powered Content with LLMs\" – July 15th, 2025\nSign up here → https://lu.ma/ai-that-works-12"
+  }
+  

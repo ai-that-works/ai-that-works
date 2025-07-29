@@ -3173,3 +3173,61 @@ test Marriedguan {
     video_title #"Cracking the Prompting Interview"#
   }
 }
+
+test Burningguineafowl {
+  functions [DraftEmail]
+  args {
+    summary {
+      main_takeaways [
+        #"Optimize prompts by shifting complex generation tasks to deterministic code."#,
+        #"Reduce LLM token usage by outputting indexes or aliases instead of full text."#,
+        #"Improve LLM focus by providing clear indexes and structured input."#,
+        #"Use inline comments (even in JSON) to guide LLM reasoning without adding extra output."#,
+        #"Read the F***ing Prompt (RTFP) to understand how the LLM is interpreting instructions."#,
+        #"Structure prompts rather than adding real-world examples, to keep the control over the results."#,
+        #"Leverage 'broken' JSON and deterministic code to enable more natural LLM code generation."#,
+        #"Don't force LLMs to adopt a role, instead give it clear instructions."#,
+        #"Don't have the LLM count. Pre-process your data and pass in the count, or create deterministic code that enforces the constraints."#,
+        #"Focus on actionable insights by structuring output to match specific needs and workflows."#
+      ]
+      key_topics [
+        #"Prompt engineering"#,
+        #"Token efficiency"#,
+        #"Structured outputs"#,
+        #"LLM reasoning"#,
+        #"Busted JSON"#,
+        #"Classification Optimization"#,
+        #"Deterministic Code vs. LLM Generation"#,
+        #"LLM Sampling Nuances"#,
+        #"Zero-Shot Learning with Structure"#
+      ]
+      bullet_points [
+        #"Replace long, complex URLs with content indexes for citations."#,
+        #"In diarization, output dialogue indexes instead of repeating the entire transcript."#,
+        #"Use inline comments as guiding principles for reasoning steps."#,
+        #"Always read the prompt to identify areas for optimization."#,
+        #"Favor structural guidance over few-shot learning."#,
+        #"Allow the LLM to generate more natural outputs, even if it means 'broken' JSON, and handle parsing deterministically."#,
+        #"Favor structured outputs as opposed to relying on spitting out strings."#,
+        #"
+          Use separate pipelines for cleaning up or evaluating results in specific steps."
+              "Don't have the LLM perform tasks that it is not good at (counting, deterministic lookups, etc.
+        "#
+      ]
+    }
+    structure {
+      subject #"Cracking the Prompting Interview: Tips and Tricks from Vaibhav & Dex!"#
+      we_covered #"a grab bag of small tips and tricks that are reusable across problem spaces, and like lower level advice that you can apply to lots of problems."#
+      quick_recap [
+        #"Labels: Use indexes instead of full UIDs/URLs to improve reliability and token efficiency. Remap programmatically."#,
+        #"Diarization: Don't emit the full transcript. Use indexes of the transcript to reduce token count and improve focus."#,
+        #"In-line Comments: Use comments to guide reasoning and improve output, but consider impact on parsing."#,
+        #"RTFP: Read the F**king Prompt! Always read carefully when debugging or iterating."#,
+        #"Few-Shot Structure: Use few-shot prompting to define structure, but not necessarily content."#,
+        #"Cogen: When generating code, let models output content naturally rather than forcing strict formats. It improves the quality."#
+      ]
+      one_thing_to_remember #"Don’t try to be clever with token generation. Let the model pick the best token."#
+      next_session #"Our next session on [July 15th 2025] will be all about \"Generating AI powered Content with LLMs \" – exploring how to use LLMs to generate content for various use cases. \nSign up here: https://lu.ma/ai-that-works-12"#
+    }
+  }
+}
