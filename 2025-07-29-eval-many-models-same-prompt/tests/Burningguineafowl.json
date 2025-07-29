@@ -1,0 +1,43 @@
+[
+  {
+    "main_takeaways": [
+      "Optimize prompts by shifting complex generation tasks to deterministic code.",
+      "Reduce LLM token usage by outputting indexes or aliases instead of full text.",
+      "Improve LLM focus by providing clear indexes and structured input.",
+      "Use inline comments (even in JSON) to guide LLM reasoning without adding extra output.",
+      "Read the F***ing Prompt (RTFP) to understand how the LLM is interpreting instructions.",
+      "Structure prompts rather than adding real-world examples, to keep the control over the results.",
+      "Leverage 'broken' JSON and deterministic code to enable more natural LLM code generation.",
+      "Don't force LLMs to adopt a role, instead give it clear instructions.",
+      "Don't have the LLM count. Pre-process your data and pass in the count, or create deterministic code that enforces the constraints.",
+      "Focus on actionable insights by structuring output to match specific needs and workflows."
+    ],
+    "key_topics": [
+      "Prompt engineering",
+      "Token efficiency",
+      "Structured outputs", 
+      "LLM reasoning",
+      "Code generation",
+      "Best practices"
+    ],
+    "bullet_points": [
+      "Shift complex generation tasks to deterministic code",
+      "Use indexes or aliases instead of full text",
+      "Provide clear indexes and structured input",
+      "Use inline comments to guide LLM reasoning",
+      "Structure prompts rather than adding examples"
+    ]
+  },
+  {
+    "subject": "Advanced Prompting Techniques - Session Recap",
+    "we_covered": "advanced prompt engineering and LLM optimization strategies",
+    "quick_recap": [
+      "Optimize prompts by shifting complex generation tasks to deterministic code",
+      "Reduce LLM token usage by outputting indexes or aliases instead of full text",
+      "Use inline comments to guide LLM reasoning without adding extra output",
+      "Structure prompts rather than adding real-world examples"
+    ],
+    "one_thing_to_remember": "Focus on actionable insights by structuring output to match specific needs and workflows.",
+    "next_session": "Our next session on [July 15th 2025] will be all about \"Generating AI powered Content with LLMs\" – exploring how to use LLMs to generate content for various use cases. \nSign up here: https://lu.ma/ai-that-works-12"
+  }
+]
