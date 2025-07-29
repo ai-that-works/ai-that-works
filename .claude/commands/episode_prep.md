@@ -13,7 +13,7 @@ Update the just-completed episode README with YouTube link, thumbnail, and summa
    - Summary/description of the next episode
    - YouTube link to the just-completed recording
    - Folder for the just-completed episode (dated today or yesterday)
-   
+
    **STOP and ask the user if ANY of these are missing**
 
 3. **Request episode summary** - When all info is verified, ask the user for the summary of the just-completed episode
