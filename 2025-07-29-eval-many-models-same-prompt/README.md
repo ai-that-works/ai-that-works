@@ -1,0 +1,3 @@
+- `bun run index.ts`
+- OR `npx tsx index.ts`
+- `uv run main.py`
