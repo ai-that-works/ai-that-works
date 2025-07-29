@@ -6,11 +6,11 @@ generator target {
     output_type "python/pydantic"
 
     // Where the generated code will be saved (relative to baml_src/)
-    output_dir "../"
+    output_dir "../app/"
 
     // The version of the BAML package you have installed (e.g. same version as your baml-py or @boundaryml/baml).
     // The BAML VSCode extension version should also match this version.
-    version "0.90.2"
+    version "0.202.1"
 
     // Valid values: "sync", "async"
     // This controls what `b.FunctionName()` will be (sync or async).
@@ -23,11 +23,11 @@ generator target_ts {
     output_type "typescript/react"
 
     // Where the generated code will be saved (relative to baml_src/)
-    output_dir "../../frontend/src"
+    output_dir "../src"
 
     // The version of the BAML package you have installed (e.g. same version as your baml-py or @boundaryml/baml).
     // The BAML VSCode extension version should also match this version.
-    version "0.90.2"
+    version "0.202.1"
 
     // Valid values: "sync", "async"
     // This controls what `b.FunctionName()` will be (sync or async).
