@@ -100,6 +100,27 @@ Same fancy prompt from above, fresh CONTEXT WINDOW 3, and a fresh baml checkout 
 
 ### Step 5 - plan attempt with no research
 
-I was getting impatient and wondered if we could spin up a plan without any research, and see if that would work. Start CONTEXT WINDOW 4 - with the same DETAILED prompt from step 3
+I was getting impatient and wondered if we could spin up a plan without any research, and see if that would work. Start CONTEXT WINDOW 4 - with the same DETAILED prompt from step 3, and use the `/create_plan` command
 
 ### Step 6 - plan attempt with research
+
+CONTEXT WINDOW 5 - created a new plan with `/create_plan`, passing in the path to the research from attempt 3.
+
+### Step 7 - implementation attempt with no-research plan
+
+- take the the plan from step 5 and implement it in a worktree
+
+### Step 8 - implementation attempt with researched plan
+
+- take the research and the plan from step 6 and implement it in a worktree
+
+## Comparing implementations
+
+Step 7 with no research finished more quickly, and its plan
+
+
+## compare and push
+
+    /g_describe_pr but first commit and push to origin and use `gh pr create --fill` - skip the pr template part, just go
+    and make a decent pr body for the descriptiong_describe_pr but first commit and push to origin and use `gh pr create
+    --fill` to create it
