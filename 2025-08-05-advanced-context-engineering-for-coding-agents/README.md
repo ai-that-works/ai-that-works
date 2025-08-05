@@ -42,10 +42,25 @@ We covered a ton on how to get the most out of coding agents. Here are key takea
 
 > Context engineering isn't just about cramming more stuff into the prompt; it's a deliberate practice of structuring, compacting, and aligning information to make your AI agent a more effective partner.
 
+
+## Whiteboards
+
+<img width="1999" height="4370" alt="the-dumb-way" src="https://github.com/user-attachments/assets/a8e98a3f-0247-4de6-a0c7-4e6952a56e86" />
+
+<img width="5936" height="4573" alt="slightly-smarter" src="https://github.com/user-attachments/assets/5ee4eae7-2a1c-4554-b3a0-f7bc077ceaca" />
+
+<img width="5108" height="4490" alt="sub-agents" src="https://github.com/user-attachments/assets/d8d080ba-1899-46b3-b77b-a7ba73c96161" />
+
+<img width="9552" height="4057" alt="impact : process" src="https://github.com/user-attachments/assets/35db0eb0-d09f-4cd5-826b-e543af00f829" />
+
+<img width="11064" height="6485" alt="3-step-process" src="https://github.com/user-attachments/assets/64588a1f-b2ec-4820-a6dd-7fa754f29b8d" />
+
+<img width="8598" height="9329" alt="flow-1" src="https://github.com/user-attachments/assets/53bb8d91-700c-48ad-81bf-b0449074ab98" />
+
+
 ## Resources
 
 - [Session Recording](https://www.youtube.com/watch?v=42AzKZRNhsk)
 - [Discord Community](https://www.boundaryml.com/discord)
 - Sign up for the next session on [Luma](https://lu.ma/qvp6ap99)
 
-## Whiteboards
