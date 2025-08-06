@@ -45,7 +45,7 @@ We covered a ton on how to get the most out of coding agents. Here are key takea
 
 ## Whiteboards
 
-<img width="1000" alt="the-dumb-way" src="https://github.com/user-attachments/assets/a8e98a3f-0247-4de6-a0c7-4e6952a56e86" />
+<img width="400" alt="the-dumb-way" src="https://github.com/user-attachments/assets/a8e98a3f-0247-4de6-a0c7-4e6952a56e86" />
 
 <img width="5936" height="4573" alt="slightly-smarter" src="https://github.com/user-attachments/assets/5ee4eae7-2a1c-4554-b3a0-f7bc077ceaca" />
 
