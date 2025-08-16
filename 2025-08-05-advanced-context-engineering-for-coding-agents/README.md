@@ -10,7 +10,7 @@
 
 - [The issue we resolved](https://github.com/BoundaryML/baml/issues/1252)
 - [Some commands we use at humanlayer](https://github.com/humanlayer/humanlayer/tree/main/.claude/commands)
-- [Sign up for our claude code multiplexer](https://hlyr.dev/code)
+- [CodeLayer early access](https://hlyr.dev/code)
 - [The new code - Sean's Talk from AI Engineer](https://www.youtube.com/watch?v=8rABwKRsec4) (the only talk from AIE 2025 with more views than 12-Factor agents :) )
 - [Wielding agents - Beyang's talk from AI Engineer](https://www.youtube.com/watch?v=F_RyElT_gJk&t=480s)
 
@@ -45,7 +45,7 @@ We covered a ton on how to get the most out of coding agents. Here are key takea
 
 ## Whiteboards
 
-<img width="1999" height="4370" alt="the-dumb-way" src="https://github.com/user-attachments/assets/a8e98a3f-0247-4de6-a0c7-4e6952a56e86" />
+<img width="400" alt="the-dumb-way" src="https://github.com/user-attachments/assets/a8e98a3f-0247-4de6-a0c7-4e6952a56e86" />
 
 <img width="5936" height="4573" alt="slightly-smarter" src="https://github.com/user-attachments/assets/5ee4eae7-2a1c-4554-b3a0-f7bc077ceaca" />
 
