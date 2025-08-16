@@ -16,6 +16,15 @@
 
 > "Be judicious with few-shot prompting—use it only when needed and structure examples properly to avoid biasing the output."
 
+## Topics
+
+- Overview of Manus paper and context engineering
+- KV cache design in LLMs
+- Handling tool calls and dynamic variables
+- Few-shot prompting pitfalls
+- Smart cache strategies and prompt structuring
+- Reinforcement techniques for maintaining context
+
 ## Key Takeaways
 
 1. **Optimize Your Cache, Optimize Your Performance**: Your prompt's structure directly impacts speed and cost. By keeping your system message consistent and placing dynamic variables (like the user's question) at the end of the input, you can intelligently utilize the KV cache, leading to significant performance gains.
@@ -26,21 +35,17 @@
 
 4. **Smart Variable Management**: Handle tool calls and dynamic variables thoughtfully. Consider re-injecting relevant information or tasks periodically to reinforce context rather than relying solely on immediate observations.
 
-## Key Topics
+## Whiteboards
 
-- Overview of Manus paper and context engineering
-- KV cache design in LLMs
-- Handling tool calls and dynamic variables
-- Few-shot prompting pitfalls
-- Smart cache strategies and prompt structuring
-- Reinforcement techniques for maintaining context
+<img width="3603" height="2975" alt="image" src="https://github.com/user-attachments/assets/a68ac7b4-0aaf-4054-af2e-d20bc42d1e2b" />
 
-## Main Takeaways
+<img width="3103" height="2404" alt="image" src="https://github.com/user-attachments/assets/95b746f4-c12a-4f25-a0ad-1c44ce5023c7" />
 
-- Understanding context engineering is crucial for optimizing LLM performance
-- Effective management of cache can significantly speed up response times
-- Dynamic variable management and thoughtful structuring of tool calls can enhance model performance
-- Context Engineering is an active process requiring continuous management and optimization
+<img width="1510" height="1454" alt="image" src="https://github.com/user-attachments/assets/df75fa04-e2bd-40f4-9ae7-e7a997ebeebe" />
+
+<img width="1570" height="1247" alt="image" src="https://github.com/user-attachments/assets/e7b0fa9c-1a3b-4e06-921c-1b2e80a348b7" />
+
+
 
 ## Resources
 
@@ -51,6 +56,7 @@
 ## Links
 
 - [Manus Paper: Context Engineering for AI Agents](https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus)
+- [Anthropic Caching Docs: ](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching)
 
 ## Whiteboards
 
