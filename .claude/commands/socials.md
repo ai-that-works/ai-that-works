@@ -4,7 +4,7 @@
    - create a socials.md file in the just-completed episode folder with Twitter posts based on the whiteboard images from the episode
    - Find all whiteboard images in the episode's README.md (usually 3-4 images)
    - For each whiteboard image:
-     - Use 'Bash(wget)' to download and preview the image 
+     - Use 'Bash(wget)' to download and preview the image
      - Create a Twitter post that captures the key insight from that specific whiteboard
      - Keep it short, casual language, include some questionable grammar
      - Each post should teach one specific lesson from the whiteboard
