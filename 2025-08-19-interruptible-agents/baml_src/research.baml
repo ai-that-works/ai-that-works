@@ -31,6 +31,16 @@ function PlanWebSearches(query: string) -> WebSearchPlan {
   "#
 }
 
+test TestName {
+  functions [PlanWebSearches]
+  args {
+    query #"
+      Why is a woodpeckers tongue so long?
+    "#
+  }
+}
+
+
 client<llm> WithWebSearch {
   provider openai-responses
   options {
@@ -91,8 +101,29 @@ function WriteResearchReport(query: string, summaries: string[]) -> ReportData {
 
     {{ _.role('user') }}
     Original query: {{ query }}
-    Summarized search results: {{ summaries }}
+    Summarized search results: 
+    {% for summary in summaries %}
+    {{ loop.index }}. {{ summary }}
+    -
+    {% endfor %}
   "#
 }
 
 
+
+test TestName {
+  functions [WriteResearchReport]
+  args {
+    query #"
+      Why is a woodpeckers tongue so long?
+    "#
+    summaries [
+      #"
+        Woodpeckers have a long tongue to help them peck at trees and get insects.
+      "#,
+      #"
+        The biology of woodpeckers is fascinating.
+      "#
+    ]
+  }
+}
