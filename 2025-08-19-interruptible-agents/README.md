@@ -1,4 +1,4 @@
-# >„ ai that works: Interruptible Agents
+# ðŸ¦„ ai that works: Interruptible Agents
 
 > Building agents that users can guide, correct, and collaborate with in real-time to create more interactive and flexible AI experiences.
 
@@ -8,7 +8,7 @@
 
 ## Episode Summary
 
-This week's >„ ai that works session was all about "Interruptible Agents"! We explored how to build agents that users can guide, correct, and collaborate with in real-time.
+This week's ðŸ¦„ ai that works session was all about "Interruptible Agents"! We explored how to build agents that users can guide, correct, and collaborate with in real-time.
 
 Most agents today are "fire-and-forget"you give them a task, and you wait. Interruptible agents let the user jump in, change direction, or provide feedback mid-task. This creates a much more interactive and flexible experience, turning the AI into a true partner.
 
@@ -37,8 +37,10 @@ We covered why this is such a game-changer for UX:
 
 ## Whiteboards
 
-<!-- Whiteboards to be added manually -->
+<img width="4250" height="2065" alt="image" src="https://github.com/user-attachments/assets/8c8d867b-a316-453d-baa4-a3cfb9b3bccd" />
 
-## Links
+<img width="5179" height="2464" alt="image" src="https://github.com/user-attachments/assets/4eadbefa-7e68-47ff-a896-a20334d266b0" />
 
-<!-- Links to be added manually -->
+<img width="3599" height="2432" alt="image" src="https://github.com/user-attachments/assets/b22bd46b-fe32-41fd-9da4-6ff24c2ce511" />
+
+<img width="2757" height="2651" alt="image" src="https://github.com/user-attachments/assets/34cbbe03-43f2-4d55-9d26-07964cf59ace" />
