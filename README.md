@@ -1,5 +1,3 @@
-Here's the updated README.md with the requested changes:
-
 # 🦄 ai that works
 
 > ​a weekly conversation about how we can all get the most juice out of todays models with [@hellovai](https://www.github.com/hellovai) & [@dexhorthy](https://www.github.com/dexhorthy)
