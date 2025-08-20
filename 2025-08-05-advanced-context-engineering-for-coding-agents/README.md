@@ -10,6 +10,8 @@
 
 - [The issue we resolved](https://github.com/BoundaryML/baml/issues/1252)
 - [Some commands we use at humanlayer](https://github.com/humanlayer/humanlayer/tree/main/.claude/commands)
+- [Agents as Spec Compilers](https://x.com/dexhorthy/status/1946586571865800724)
+- [How not to use SubAgents](https://x.com/dexhorthy/status/1950288431122436597)
 - [CodeLayer early access](https://hlyr.dev/code)
 - [The new code - Sean's Talk from AI Engineer](https://www.youtube.com/watch?v=8rABwKRsec4) (the only talk from AIE 2025 with more views than 12-Factor agents :) )
 - [Wielding agents - Beyang's talk from AI Engineer](https://www.youtube.com/watch?v=F_RyElT_gJk&t=480s)
