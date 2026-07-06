@@ -10,6 +10,24 @@
 
 </div>
 
+<div align="center">
+<h2>🦄 <strong>Next Episode</strong></h2>
+<h3><strong>agent observability</strong></h3>
+<p><strong>Tuesday, July 7, 2026 at 10 AM PST</strong></p>
+<p><em>In this episode, we will dive into AI agent observability and answer a question every production engineer eventually faces: how do you diagnose why an autonomous agent went off the rails three days ago?
+
+When you are dealing with non-deterministic tools, old-school debugging habits like inserting `print("here")` statements fails to scale. We will break down the essentials of modern agent tracking, from implementing structured logging for complex tool calls to establishing robust tracing that allows you to replay and reconstruct an agent's exact decision tree.
+</em></p>
+
+<a href="https://luma.com/aitw-agent-observability" target="_blank">
+<img src="https://img.shields.io/badge/🦄_REGISTER_NOW-Join_Live_Session-ff4444?style=for-the-badge&logo=calendar" alt="Register Now">
+</a>
+
+</div>
+
+---
+
+
 ---
 
 ## **What We're About**
@@ -80,6 +98,21 @@ Before joining, get familiar with our toolkit:
 </tr>
 </thead>
 <tbody>
+<tr><td>
+      <div style="padding: 8px 0;">
+        <div style="margin-bottom: 2px;">
+          <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
+        </div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-07-07</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#64</strong>: agent observability</div>
+        <div style="font-size: 13px; color: #666;">
+          <a href="./2026-07-07-agent-observability">code</a> • <a href="https://luma.com/aitw-agent-observability">register</a>
+        </div>
+      </div>
+    </td><td><div style="padding: 8px 0; line-height: 1.5;">In this episode, we will dive into AI agent observability and answer a question every production engineer eventually faces: how do you diagnose why an autonomous agent went off the rails three days ago?
+
+When you are dealing with non-deterministic tools, old-school debugging habits like inserting `print("here")` statements fails to scale. We will break down the essentials of modern agent tracking, from implementing structured logging for complex tool calls to establishing robust tracing that allows you to replay and reconstruct an agent's exact decision tree.
+</div></td></tr>
 <tr><td>
       <div style="padding: 8px 0;">
         <div style="margin-bottom: 2px;">
