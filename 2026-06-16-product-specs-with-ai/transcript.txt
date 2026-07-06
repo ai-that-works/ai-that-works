@@ -1,0 +1,841 @@
+Vaibhav (00:01.604)
+Anyway, that was fun.
+
+dex (00:03.719)
+Vibob told I have to make a funny face 'cause it's the first thing that shows up on the thumbnail when we do the stream.
+
+Vaibhav (00:09.846)
+That's right. no I'm just I just love being late.
+
+dex (00:11.379)
+How you doing, dude?
+
+Don't make me pull out the nano banana picture of you covered in watches and audio equipment, dude. I'll go get that. I don't know where it is, but I can find it.
+
+Vaibhav (00:25.614)
+How are you doing?
+
+dex (00:25.831)
+I'm good. I'm super stoked. I was just at the the cursor conference in San Francisco at Fort Mason, hanging out with some very cool people. I won't name names, but it's a good good crowd there. Congrats to the cursor team on the space acquisition. It's big. It's good.
+
+Vaibhav (00:32.834)
+Yeah.
+
+Vaibhav (00:41.76)
+I mean Dude, huge congrats. Yeah, it's it's it's a great, great, great outcome right now for them. I'm sure they're excited.
+
+dex (00:51.165)
+There's at least I've seen at least two tweets today already of people posting screenshots of DMs with Michael Truel where he's inviting them to join the cursor team in the last like year or two and they say no, they're like, I'm happy where I'm at, but like thanks for the offer and they're just like, damn, I really dropped the bag on this one.
+
+Vaibhav (01:09.964)
+I mean if you're if you've been around enough awesome people, at some point you will have missed out on opportunities that would have been fantastic opportunities. And you know, yeah, it sucks but dude. I don't know if I can say this. So never mind. But I had yeah, you know. I used to let's just say some of the my earliest jobs were did not have legal forms of currency. at that time. and like
+
+dex (01:18.451)
+That's fair. What's an opportunity you missed out on?
+
+dex (01:26.907)
+All right. All right. We'll
+
+dex (01:36.761)
+Interesting.
+
+Vaibhav (01:37.932)
+Some currency sh should have been held on to much longer than I thought.
+
+dex (01:42.612)
+I'll do it. what's up y'all? This is the AI That Works podcast. I'm Dex. I'm CEO and co-founder of Human Layer. We're building the missing piece of the software factory. great design discussions. keep your AI coding agents on track. I'm joined by Vibov. Vibov, please tell us what you've been working on.
+
+Vaibhav (02:02.561)
+We are building a programming language that's designed to be agent first and human second ish. Anyway. Yeah. Dude, honestly every single time I use stuff now, I'm like ninety percent of the tasks are so freaking boring, I just want AI to do it for me. And it's like
+
+dex (02:11.303)
+That's nice. I mean the world really should be agent first, human second. I think that's where we're going.
+
+dex (02:22.887)
+There's so many things where I'm like, I can't believe there's no way my agent can do this for me. Like, give me a C L I, give me an MCP.
+
+Vaibhav (02:28.457)
+Yeah, ex give me something I can use for my agent. Exactly.
+
+dex (02:32.007)
+Yeah, I will use shitty software that has a CLI over good software that doesn't. I mean, I've actually been like this for d a decade, right? I've always been like dude, if I can put it on a bash script, I will tolerate so much jank if I can script it and automate it.
+
+Vaibhav (02:34.711)
+Ha ha ha.
+
+Vaibhav (02:40.381)
+Vaibhav (02:47.211)
+Really?
+
+dex (02:48.483)
+yeah. Well for a while. I I got over that eventually. As I got in my late in my late twenties I grew tired of the like I used to run Linux on the desktop and I had to grind and all of that and takes a lot of grit and I loved it. but now I'm back. Now Claude can write my T mux config and I can have the perfect T mux config and my Vim config. I don't have to think about any of this anymore.
+
+Vaibhav (02:49.905)
+Vaibhav (03:10.879)
+You know what's so interesting? I feel the exact opposite as you in so many situations about this. Like my my philosophy in life has always been like I actually want to learn the least amount of stuff. So anytime there is like these micro optimizations that people can make is like, you can type in Vim instead of you can use Vim keyboard binding instead of just like typing like a human and using your mouse. I just like I always did that. So like what's interesting to me is like these optimizations now
+
+That like these agent first things are in some ways optimizing for like the laziest humans out there, which I am one of.
+
+dex (03:42.824)
+We are gonna do we're gonna do an April Fool's episode of this show where we do a live stream and you just go through Vim Tutor for an hour and it's gonna be really fun. No, it's it's fun, dude. You're gonna like it. It's you know, as someone who enjo
+
+Vaibhav (03:50.428)
+my god, dude, I would die. I would frickin' die. I I do understand yeah, I do understand JK does stuff and that's about it. yeah, that's the other thing I learned about. I forgot about that.
+
+dex (03:59.956)
+Dude, wait till you find out about HL, dude.
+
+Yeah. no, I think as someone who really appreciates learning and explaining things, and how do you like help someone absorb mental content and build their skills as quickly and efficiently and ideally pleasantly as possible? Something we do on this show all the time is like how do we make this stuff approachable, but also help you make a lot of progress in a short amount of time? You will appreciate the design of VimTutor, if not anything else.
+
+Vaibhav (04:07.893)
+Yeah.
+
+dex (04:30.961)
+All right, Vibob was late, but we are ten minutes in, so I'm gonna stop yapping. today we are gonna talk about something's been requested and we've touched on a little bit here and there. but basically using AI to build really good product specifications. We're gonna dive into human layer today, and do it in there. But you can do this with any set of skills with any CLI. We're gonna work a lot with HTML and mock-ups and things like this. but I'm gonna hop on the whiteboard and Vibob, let me get you the link to this so you have it.
+
+I am putting it in the studio chat, you got it?
+
+Vaibhav (05:04.929)
+Yes. How much whiteboard versus real code are we gonna or like docs are we gonna see today? What do you think?
+
+dex (05:10.183)
+probably about five minutes on the whiteboard and then we're gonna get hands on. Alright, sick. If I said twenty, would you have told me to fuck off?
+
+Vaibhav (05:13.677)
+Let's do it.
+
+Vaibhav (05:18.825)
+No, I was just mentally thinking how much input I should ever provide based on what your timing is.
+
+dex (05:23.901)
+Yep. So we have this thing, this process questions. It started as like RPI, right? We had research, plan, and we talked on this show about how we developed implement yeah, you're gonna do that one, cool. Thank you. Finally, for once I'm not helping you use the whiteboard.
+
+Vaibhav (05:40.589)
+Yeah, I'll do it for you.
+
+Vaibhav (05:47.693)
+Dude, I can do some I can do some ops work. Not very often, but every now and then I'm not too bad at it.
+
+dex (05:52.764)
+Yep. so this is the the update on what's what's great in agentic coding.
+
+Vaibhav (06:02.381)
+Crispy.
+
+dex (06:04.401)
+Yes, QR SPI, which this does not say QR structure outline.
+
+PI. There you go. The design got dropped because it didn't fit in the acronym. Exactly, the DSign. Damn, that would be a great shirt. so one thing we've done actually that I don't know if anybody noticed, but if you've been using Human Layer, we actually dropped the plan step and we just started using a smarter model during implementation. gave you a lot more flexibility if you had to change something.
+
+Vaibhav (06:17.003)
+Well the D is silent.
+
+dex (06:36.467)
+but the other thing that we've been exploring, and that I've really been like I'll talk about why we did this, but is basically breaking this design step up into product design. And when I say product design, I don't just mean the UI. I mean like the, you know, this is gonna be like user experience. how do we measure success? We talked a little bit about this on the feature flex episode too, of like being able to know if you actually made the user's experience better. And then like
+
+What does it look like? What's out of scope? Etc. and then we would get into the technical design, which is like
+
+System architecture contracts between systems. what else? and then also what I would call like program design. So this is like testing seams, function signatures, etc. etc. Basically like and the the whole idea of this is like at each stage you have less clarity and more leverage. So the design you're at like 25k foot view.
+
+Of like, okay, here's kind of like where we want to end up. And then the outline is like the 10k foot view of like, okay, here's the kind of the shape and the order we're gonna do the things. And then here's like the like live view of implementing and you actually see the code and things like this, right? Make sense so far? So what I want to walk through today is definitely this product design part. the reason why we ended up splitting this is because I don't know if you've used our design discussion stuff. It often without steering, it might default
+
+To leaning more heavily one way or the other, right? It might take the product input and just us take it as given and not kind of verify it with you. Or it might like just do how does the user experience look? And it says, it's all done. You're like, great, my design discussion is done. And then you get to the outline and you go to the implementation, like this code is shit. Like this is not what I expected. And you realize that you skipped the part of aligning on what is the actual like program gonna look and how is it gonna be laid out.
+
+dex (08:45.083)
+Like what files are gonna change and all of this stuff. Does that make sense?
+
+Vaibhav (08:48.478)
+Yeah, you know what's really interesting on our team. I I love that you actually split this onto two things. I I'm reflecting back on this and how we approach this problem.
+
+I we haven't split this out in our process like this in our actual engineering workflow. We actually just have different things like design tasks and implementation tasks. And what we basically do is our team, like some person's job, regardless of if they implement it or not, is just to go design stuff. You spend like two or three days like iterating with the model and like iterating in like literally the RPI approach or I guess the crispy approach. And instead of the artifact being commits, it's actually a design spec. On the right side.
+
+dex (09:24.893)
+And then that becomes the input to someone else's kind of implementation task, and they get more into the technical weeds. Okay.
+
+Vaibhav (09:27.852)
+Exactly. And it's not Exactly. But it's like the surface area is like well described. So it's very interesting that you're but I think like we only do this for like really
+
+dex (09:35.005)
+Okay, so what you were doing is so you would see like product surface, the UX, the CLIs, like what is actually expected, and then you would feed that back into questions, research, etcetera, except and then you would do a separate type of design where the person knew now they're actually digging into like, you know, preparing for implementation.
+
+Vaibhav (09:57.173)
+Yeah, and it's like meaty. Like if you guys want to check this out you can like I'll post a link here.
+
+dex (10:00.487)
+Yeah, share your screen. Show us show us show us show us an example.
+
+Vaibhav (10:05.708)
+Where is this? Screen share tab.
+
+Like these these design docs let me find one that's actually interesting. yeah, what whatever we'll just do like tests and asserts. Or like metrics. Like these things are like meaty like there's a hundred and twelve comments on this document by other people on the team. You can see like how much design goes into it. There's a lot of like just like
+
+tr there's also like technical conversation that goes into it. But a lot of API surface area gets discussed. A lot of how user interaction gets discussed. And this one is so meaty that we like seven sub pages on it. And this is very rare. I think this is our biggest design doc today where we actually like literally evaluated against like every other possible way to go do the same thing. And then we also are like
+
+dex (10:52.486)
+this is like other eval providers?
+
+Vaibhav (10:54.9)
+Yeah, yeah, like we're designed like what we think eval should look like. And we literally then put it together and we then we have like the person on the team like actually putting together like true end to end examples that show the full thing. And you can see like the amount of detail that we go into. So it's like it is basically just a design problem. At this point we haven't even discussed any implementation details on how this gets detailed.
+
+dex (11:14.887)
+Yeah, if you're looking at like if you're looking at like what do competitors do and you're building the matrix of like what do we want to do that they don't do and what are they gonna do? What are we not gonna do? That's all product work. That's all what should the user experience be? What should we enable people to do and what should the like cause this, yeah, this is code, but this is what code would the user write? Which is basically like you're building a program, my version of that is like what does the web app look like, or what does the CLI look like? But for you, it's like what does the user's code look like?
+
+Vaibhav (11:19.018)
+Yeah. I Yeah, exactly. Exactly.
+
+Vaibhav (11:33.886)
+Exactly.
+
+Vaibhav (11:37.748)
+Yeah, exactly. Yeah.
+
+Yeah, exactly. And it's like it's really spending a lot of time thinking about like what the user's code looks like in like so many different things. Like when we wrote mock. Like literally it's writing down what we think mock should be like when we go implement this. And th it's somewhere in there there's like there's something like prior art somewhere in here where we talk about like the heritage of mock. And like we talk about like different syntax and everything.
+
+dex (11:57.126)
+One and one one challenge of this too is I think it's it's very when when like you're a very good engineer who also understands the customer and the domain and like a lot of dev tools have this have this blessing and curse where it's like well you not only like understand how to build it, but you also understand what you want, because you're building a tool that you yourself would lose that you you yourself would use. And I actually think there's like the reason why there's so many dev tools companies, especially in SF, is like
+
+Vaibhav (12:10.484)
+Yeah.
+
+Vaibhav (12:19.542)
+Yeah.
+
+Vaibhav (12:24.607)
+yeah, 'cause engineers
+
+dex (12:26.577)
+It's because engineers that don't actually like care to learn the art of product management, like the the like very pure like product management idea is like how do you build empathy for people who are different than you? How do you understand the problems of somebody which are not problems that you have? And if you build dev tools, you don't have to do that. You don't have to learn how to do that. And it's like it's not good or bad, it's just like where do you want to spend your time? And it's why DevTools is so competitive, is because
+
+Vaibhav (12:51.35)
+Different. Yeah, exactly.
+
+dex (12:54.745)
+It's it's cheaper to build things for yourself because you don't have to go spend a lot of time researching and talking to users versus building something for bankers or for veterinarians or whatever it is, right?
+
+Vaibhav (13:07.828)
+Agreed. Agreed. But yeah. Anyway. Yeah, show me. I'm excited 'cause like this might make my life easier.
+
+dex (13:09.195)
+cool. You wanna look at what we're building today? Okay. I think you're gonna like it. okay, we're gonna go full screen. AI, AI that works, circle of trust. If you see something you shouldn't, please unsee it and tell Vibov in the chat. but this is if you've seen it, this is HumanLair. And
+
+I'm going to kick off this PRD. So I started doing the research for this already. I'll jump into the ticket, but I'm just going to kick this off so it can get working. but one thing that's interesting here is like this is our task page. And so I can hide this and I can hide the sidebar, and this is kind of like how you look at your bundle of sessions. And I've been thinking for a while that this view is like not super useful. Like an app that is just tape data tables is like not that great.
+
+From a, I don't know, there's just there's so much more we could do here. And so we've experimented. We have this graph that kind of shows you the workflow and shows you the sessions, and you can kind of like navigate into them here. but the ticket I've written is basically like, hey, look, we want to just like rethink some alternatives. There's like a sketch of one possible thing we could do, and like how do how do we make it just a little more rich versus just being a table on the task page? So
+
+Maybe a little bit loop looping in on itself, but I want to use the tool to improve the tool. And so what we're gonna do is like look at this view holistically and try to see what we could do to to make this view a little bit better, richer, more useful.
+
+Vaibhav (14:37.333)
+Sure. A yeah, and this is a very this is a pure product this is a pure product question, so it makes sense.
+
+dex (14:43.047)
+So I I want to do something that was product rich and was sort of visual. so we've got our PRD skill here, which you can kind of come here and read. but you know, it's read read what's already in there, write the docs here, and then basically like do a minimal skeleton and then like settle the foundation of like, hey, what are we building and what's the problem to solve? And this is a really interesting one is like what does success look like? Like what is
+
+Vaibhav (14:46.923)
+That's it.
+
+dex (15:10.077)
+What does business success look like and how can we measure it? I think this is a really powerful concept that you can do when you're working with your agents. If you want to give agents a way to propose improvements and continuously improve your app, ask them during building to work with you on how we can measure success, because then you give the agent a way to kind of look and see whether it's, hey, we made this workflow 10% faster or we increased conversion on this page.
+
+Or hey, peep more people are using this feature, et cetera, whatever it is. you should have some kind of if you can have not everything fits this model, but if you can have some kind of measurable goal, then it makes it a lot easier for you to just spin up an age and be like, hey, go check the numbers and see what happened, and like look at what the users are look at what users are doing, and then decide if we solve the problem or if we need to keep iterating on this feature. okay, so this is done. It's written the initial skeleton.
+
+Vaibhav (15:54.763)
+That's cool.
+
+Vaibhav (16:03.221)
+Ca can you show us the ticket before you do anything? Like what what exactly did you put in the ticket?
+
+dex (16:05.959)
+Yep. So I put, you know, the title is task page session table alternative workflow outline with sessions and artifacts. we want to make the task page more than just a collection of sessions. What we really want is it for to be a holistic view of what's happening and not necessarily need to jump into each session to be able to understand what's going on. We'll explore a lot of different UI changes and how to wi wire wire the data in. Let's get creative. And then I just gave it a little bit of guidance on what the research should include.
+
+Vaibhav (16:32.627)
+I really like how you you really prompted it with the cue of creativity. I find that whenever I'm doing design tasks, like especially like syntax design, like I somehow have to push the model into the creative zone or else by default it doesn't tend to do that. And actually most most of the best creative ideas so far I haven't yet had a model go do that, but a model proposes really nice inklings. then I take and then I assemble a new prompt with those things and I s push it better into the vector space that I need.
+
+dex (16:47.783)
+Yeah, and I'm gonna sh you're good.
+
+dex (17:02.395)
+Yep, threads you can kind of pull on and nudge it. If you give it a broader, less pure thing, have it stay. This is the other nice thing about the product side, is like you stay high level about like what okay, what does it look like? What does it feel like? so, okay, so we have problem to solve, it's a time-ordered list, not a workflow of you. Artifacts are disconnected from the work that produced them, RPI phase progression already exists in the data.
+
+Vaibhav (17:04.593)
+Exactly.
+
+Vaibhav (17:10.921)
+Yeah. Yeah, I like this. Cool.
+
+dex (17:23.365)
+Understand status means opening sessions, which is like the frick so yeah, we wanna basically pull more information out of the sessions so you can think about a task more holistically instead of just a bundle of sessions that you have to drill into.
+
+dex (17:37.676)
+that makes sense. Let's move on. and so this skill also we've we've designed it to be a lot more like question focused. So if you look at this outline, it's actually been written just as a skeleton with the very basic like problem to solve here. And we're gonna kind of iterate one thing at a time instead of like, if you've used this before, kind of we're experimenting with this. I think the the answer is somewhere in the middle of like, okay, do I wanna wait for every question to come in, or do I wanna be able to like
+
+Scroll down like with one of these research docs, you can just scroll through this and add comments and give feedback and kind of move it through. but we'll see what comes back. So yeah, now now we're talking about the success definition. So this is an exploratory UX change, the lever should capture can user understands a task state without opening sessions.
+
+So it's given us a couple options. Fewer dives into sessions per task visit. adoption engagement of the new view. I'm gonna just skip measurements since it's a purely UI thing. Qualitative read. We'll do some user interviews with this. So in this case, I'm skipping the I'm skipping the like
+
+deep metrics stuff because I haven't really thought deeply about it and you can always come back and stitch that in later. so I'm dis I'm I'm I'm ignoring my own advice, but this is also like the nuance here is like knowing when to use which tool and knowing what problem you're solving. And today we're really doing more exploratory stuff. So I don't care as much about like understanding metrics.
+
+Does that make sense, Bybov?
+
+Vaibhav (19:17.033)
+Let's do it. I wanna see some UIs, man. I'm just excited to see some UIs. I feel like when I when I whenever I see like UI stuff, and this is what's interesting about this approach is like this PRD stuff is so fascinating because when I do synth and I'll let you keep typing and making progress, but like whenever I do like language syntax design, what's fascinating to me is like the first thing I wanna do is I wanna see prior art. But almost instantly, right before I do anything else
+
+dex (19:19.643)
+I know, I know, I know, I know.
+
+dex (19:31.869)
+Yep. Keep going.
+
+Vaibhav (19:44.521)
+Like before I actually like actually think about the problem anymore and I not even like a full prior art study. I just want to see like a rough prior art. But then I immediately wanna see some syntax right afterwards. And the reason I do that is because I wanna see an emotional I wanna feel something emotionally about that current status to then decide if I actually need to work on it more. And when it comes to like this kind of stuff, which is like UI stuff, I feel like I instantly wanna feel emotional.
+
+dex (20:05.362)
+Yeah.
+
+Vaibhav (20:11.846)
+about something and the only way I can feel emotion about it is by seeing a new UI. So that's probably like my first thought on this is like I wish it showed me some UI immediately before I even started like chatting with it so I could feel something and then it would like almost like compel me to go have a conversation about it so I'm not like detached in the way I'm operating.
+
+dex (20:32.477)
+So we did we did have we did have that as the first step. is the first thing you would see is a UI mock-up. And what we realized is like this is the classic like if you want to do product thinking, you really you really should start by understanding what product what problem you want to solve.
+
+Vaibhav (20:36.969)
+Yeah.
+
+Vaibhav (20:46.012)
+Yeah. Yeah. I agree. I mean that's why I said I do like background work with so programming language is interesting 'cause I like a prior for most things. Like I know how to do things in almost every language.
+
+dex (20:58.941)
+So we do have this one full screen now where it's kind of like, okay, we're gonna have a research where we have sessions and sessions and here's our artifact, and then we have session two and here's our artifact, and so this is its first mock up that it's done. with the task and the next step. Yep. And then there's like an outline here, which I don't love that there's an outline here and there's an outline here. So we'll see. It said it was gonna do yeah. I looked in the th yeah, go ahead.
+
+Vaibhav (21:01.265)
+Okay.
+
+Vaibhav (21:12.306)
+Yeah. So it's like still group by task.
+
+Vaibhav (21:22.598)
+And the tags are repeated. Probably you know what other what other insight that I would share here is like a task is really not in like multiples phases at once. A task is usually kinda like in a phase and that's like the subsequences of the phase and like I'm usually working on multiple tasks in parallel.
+
+dex (21:28.827)
+Yeah.
+
+dex (21:41.128)
+Yeah. And that's why actually I'll show you really quickly is we actually just added this Kanban board as well. So you can kind of break down your tasks into Yeah. Yep. so it's writing I think it did it write the second one? No, it's still writing the second one. HTML is a little bit slow, there's a lot of tokens here. although actually no this one's pretty short.
+
+Vaibhav (21:47.1)
+Yeah, exactly. 'Cause this is what I really want to see for my task.
+
+Vaibhav (22:04.052)
+That's fascinating actually. I wonder what is a better way to do like I guess one could use mermaid, but mermaid is not rich enough. So it's really fascinating what a merging is
+
+dex (22:12.751)
+Exactly. We do we do sometimes have mermaid stuff in here, and you may see like in this dock, which is like architecture of the thing. That was like the first step, and then we realized we needed more. okay, cool. So it's made this one, and then it's also showing me this option here where they're kind of more centralized. Yeah, this one's better. so I'm gonna do my notice and then let's get
+
+Vaibhav (22:17.979)
+Yeah, I've seen that before.
+
+Vaibhav (22:30.856)
+That's definitely better than the previous one. But I think it's probably just tell it that like tasks have a s
+
+dex (22:39.047)
+Let's get creative with a bunch more options. Like task is only going to be in one s like stage at a time. So it probably makes more sense to have the later stages floated to the top. I also want to explore a view, where we use how do I say this? Where we have like an artifact focused workflow where the sessions are kind of secondary and the artifacts are the primary thing that we're looking at.
+
+This could be tabs across the top for different phases of the workflow, and then you could see the artifact and the sessions for each phase. But give me at least like three or four more options. Put them all in a single HTML file just for speed and we can explore the four different options.
+
+Vaibhav (23:22.666)
+Yeah, browse browser says something interesting where it's like what one of the cloud code devs is having agents write HTML over MD files. And like I agree, like MD files are just not rich enough to work on most things. I myself am like I'm hitting the limits of what I can do with MD files because like at some point a mermaid diagram just doesn't have the depth that I need to actually understand software control flow. And I feel like I'm fighting the system and not really understanding it. that said
+
+dex (23:22.909)
+Does that make sense?
+
+dex (23:47.944)
+I will say for for something like this, like the research, which is primarily designed for the model to consume. I do prefer MD because it's much more token efficient. But yes, in general, if you want to if it if you want to be human-facing, HTML is just so much more.
+
+Vaibhav (24:05.47)
+So I think the real problem is that there's no standalone UI system that you can actually write like React. If I would really I have. MDX doesn't have a s does not have a s solid rendering engine that is like shared and universal. It's like a thing and there's no like spec for it. So like you can't you basically have to invent like the fact that you can't like import stuff makes a huge difference in how you go do this
+
+dex (24:11.443)
+So have you tried MDX? Yeah.
+
+dex (24:30.513)
+You can import MDX. It's like blending. So you can blend like Markdown with React. And so you can just write this once and reuse it in a bunch of places. And you get some like templating and this can be like I think some renderers will even let you do like tailwind styles on this thing and then you get MDX in there.
+
+Vaibhav (24:33.384)
+I've like
+
+Vaibhav (24:46.79)
+I think w yeah, I think the problem is it's not standardized enough so the model kinda struggles with it in my experience. And I don't have like I can't just like export and move my MDX files everywhere so I c like they're like broken half the time. Like my render on GitHub doesn't show it to me correctly. Like a bunch of stuff like that. I think breaks the workflow for me.
+
+dex (25:05.32)
+Yep.
+
+Vaibhav (25:05.88)
+and and that point I'm like shit, I should just have like an MD file. It's easy. Like the universality of an MD file I think is the nice part. And that's the same thing with HTML. Like most things have a universal view of rendering HTML. Whereas like running MDX files requires you to have a React runtime that has an MDX renderer.
+
+dex (25:17.489)
+Yeah.
+
+dex (25:21.905)
+It's true. Yeah, it's a lot easier. Like this is just an HTML file on S three being rendered in an iframe and anything can render this. And I can open this in my editor and then I can let's see if I can actually
+
+Vaibhav (25:25.427)
+Yeah.
+
+Vaibhav (25:39.154)
+Bowser, I hope you mean like MDX files on MD. There's no friction of using MD, in my opinion, if for like mostly text content. your editor will not render HTML. It doesn't have a browser render built in. 'Cause you need to have like a you need to have like a browser, right?
+
+dex (25:55.112)
+Yeah, sorry. So we have a switcher at the top where we have like the different phases and then you see the artifacts. maybe a deliverables gallery, but this one you can't actually see any of the sessions. the pipeline stepper. This is interesting. This is kind of an extension or a like specialization of what we have with the this like implementation graph here.
+
+Of like, hey, here's the steps we've gone through and stuff. but let's see I don't know, which one of these do you like the most?
+
+Vaibhav (26:23.774)
+Yeah.
+
+Vaibhav (26:31.844)
+I I can you show me them again? Sorry, I could not
+
+dex (26:34.631)
+Yeah. So we have the like current, whatever's current is like floats to the top.
+
+Vaibhav (26:38.759)
+Yeah, not a f is that by task?
+
+dex (26:42.831)
+So this is a no, this is a single task like the sessions and artifacts in a phase, basically.
+
+Vaibhav (26:45.989)
+I don't really care about that. That's like a useless bit of information to me. I find
+
+dex (26:53.693)
+you have like the f stages and the artifacts and then basically in the stage you got the sessions on the side, but the artifacts are the primary thing.
+
+Vaibhav (27:02.119)
+I like this more. Deliverable gallery.
+
+dex (27:03.633)
+Yeah. and then you have all the sessions on the right here basically. So it's like artifacts primary. Okay.
+
+Vaibhav (27:07.985)
+Yeah, I like this a lot more and if I c Yeah, and then I can click on click on that. I as as long as I can click on that and open the artifact. That's probably like the most important part to me.
+
+dex (27:19.045)
+Yeah yeah yeah yeah. yeah where your task is basically artifact focus and the sessions are an implementation detail basically. Okay. Okay, so let's do this. let's settle on number three deliverables gallery, but I would like it if the sessions were listed kind of indented under each artifact instead of requiring to have the side sidebar open to be able to see them because we may want the workflow graph and the sidebar instead.
+
+Vaibhav (27:25.529)
+Yeah, that's kinda what I what I find.
+
+dex (27:48.349)
+Can you try a final mock up with just that? and then we can lock that in once I'm happy with it.
+
+Vaibhav (27:54.428)
+also leave a note to say that I want to be able to like open multiple artifacts in the same UI as well. Like so like I actually find like opening two artifacts side by side is highly valuable.
+
+dex (28:00.571)
+dex (28:06.267)
+I also find that opening two artifacts side by side is highly valuable. You're gonna you
+
+Vaibhav (28:11.155)
+Yes. Anyway.
+
+dex (28:14.735)
+Yeah. Well what we need is I need a way to the to to stream your sound into my super whisper and then we'll be then we'll be pairing for so this is the thing that we're also talking about building is like a audio like audio calling thing where like you can call me through the human layer app and we can have a conversation and then the transcript just can be like pasted in or becomes its own artifact.
+
+Vaibhav (28:20.177)
+Yeah, it's actually quite hard.
+
+Vaibhav (28:36.515)
+what Bowser said another interesting thing is like the only reason I don't use HTML over Markdown is honestly just the fact that it's so token dense to send something useful over HTML that I can't the I my iteration speed is gonna drop by like twenty percent. And again, twenty percent is totally fine if I'm only ever doing like purely asynchronous tasks.
+
+dex (28:58.664)
+Yeah.
+
+Vaibhav (28:58.941)
+But I actually can't work on like like right now I'm doing an extremely hard design task. I literally cannot work on anything in parallel while I do it. It's like too like too much brain power for me to like context switch out. And the only time I can do like parallelism is like when when I have like medium or hard tasks, but like extremely hard design design is like I cannot do it in parallel because like my brain needs to be focused on design. And at that point a twenty percent reduction in iteration speed matters a lot.
+
+dex (29:25.479)
+Yeah.
+
+Vaibhav (29:28.875)
+And then if it's easy, I don't often need the root.
+
+dex (29:31.269)
+Yeah, if you're gonna be if you're gonna be single threaded you wanna be able to loop as quickly as possible.
+
+Vaibhav (29:36.155)
+Exactly. And I I will take the token efficiency hit and I will take the iteration speed if I need the richness. But that's like a choice, not a not like a thing that I want by default.
+
+dex (29:42.856)
+Yeah.
+
+It's it depends what you're working on, right? If if you want the model to convey information to you in a more dense way that's easier for you to understand, then HTML is right. But usually when we're writing these markdown docs, it's a little bit for my understanding, but it's more like I we're basically building the prompt for the next model, the next session and the next context window. And so if this is going to a model, then I absolutely want it to be then I want it to be let's see.
+
+Vaibhav (30:05.413)
+Exactly, exactly.
+
+Vaibhav (30:12.145)
+Yeah, and I want like the percentage I want the percentage of tokens that are good to be like that are relevant to be mostly about the content, not about the formatting.
+
+dex (30:16.498)
+Yep.
+
+Vaibhav (30:21.585)
+So like if I need H and one other thing that I do is like I actually rarely will actually feed HTML into the model, I'll often turn it into an S V G or something else. Or like a P PNG and then paste that in. Because the model will do better with that rather than like the actual HTML. Because again, HTML is like it's just one of the probably like the if just about like information density. It's like one of the least information dense formats out in the world. But
+
+dex (30:30.13)
+Yep.
+
+dex (30:36.689)
+Yep, that makes sense.
+
+dex (30:46.567)
+Yep, that makes sense.
+
+Vaibhav (30:48.453)
+Once you render it, it's one of the most rich formats. So it's it's like this interesting thing where the raw file is kind of bad, but the rendered artifact is amazing.
+
+dex (30:59.771)
+Yeah. Yeah. And and also the raw file ends up being like the I mean we talk about this even with writing like getting AI to write SQL. It's better to get the AI to write a JSON representation of the AST and then compile that back into SQL than it is to try to have the model write SQL. Or at this is true a year ago. Obviously models are very good at writing SQL now. But it's like there's this intermediate representation that is like human readable and model friendly that you use and then you deterministically turn it into the final artifact.
+
+Vaibhav (31:14.799)
+Well Yeah. And it depends on the complexity.
+
+Vaibhav (31:27.015)
+Yeah, like the models are really amazing at writing SQL now. So like it but if I'm writing an extremely complex query that needs to be query optimized, probably would not expect the model to write that one shot. It's just not what it's good for.
+
+dex (31:41.521)
+Yep. Yep. Well that's where we get into the performance testing thing of like let the model benchmark its own work.
+
+Vaibhav (31:46.642)
+Yeah, exactly.
+
+Yeah. This is fun. This is really cool. I like this new UI stuff and how you've been approaching this. I think it's very it sounds very practical.
+
+dex (31:50.84)
+cool. So this is
+
+dex (31:57.416)
+I mean it's yeah. The also idea here is like we were looking to see it can we can we make this process approachable for more like less technical people basically is like most of the questions here are not gonna be about the tech, they're gonna be about like what it looked like. And it's like, okay, cool, can I make this like make sense to a PM and how they would normally work with a designer and like write up a product spec and use basically like
+
+This is obviously not gonna replace Figma, but it can do a lot of the like early work while it's cheap. Okay. Let's see.
+
+dex (32:38.803)
+True authorship. I'm actually not going to run through all of these questions because I actually want to jump into the next phase here and we can look at the TDD stuff too. So I'm going to go ahead and create TDD here as well. even though we haven't like fully finished the PRD, I'm going to just like start walking through that one as well.
+
+dex (33:06.515)
+let's see. So yeah, here's our here's our outline and it's got our mock-up in it, and then the model's gonna go through and start outlining. yeah, so I I told it let's lock this one in, and then it put that one in the actually referenced in the doc. So if you the if you view the raw here, it's just able to like reference and inline these artifacts here with like a special syntax that it knows about.
+
+Vaibhav (33:11.6)
+That's cool. So it kind of updates to the most latest one by default.
+
+Vaibhav (33:26.456)
+I see. And and that basically tells it to go
+
+dex (33:30.085)
+And so then I can share this to my teammates and they just read it like they would read a Google Doc or another kind of spec and they can say, you know, I can come here and put a comment on on the artifact and say like, I don't like that this has et cetera, et cetera.
+
+Vaibhav (33:44.508)
+Yeah, I get it, I get it.
+
+dex (33:47.056)
+so yeah, that's kind of the idea there.
+
+Vaibhav (33:52.048)
+And the idea is now that you've done this, now you can have like a technical design discussion right after that.
+
+dex (33:57.042)
+Yeah. and I'm gonna skip a couple steps here because I'm gonna say let's jump straight to program design. this is another thing we've added in. What's your first question? I'd take whatever recommendations you want for the the system architecture. We'll just cue that one up. yeah.
+
+Vaibhav (34:18.632)
+So I have a question. and I think this is probably very fascinating to many people.
+
+dex (34:23.313)
+Yep.
+
+Vaibhav (34:23.364)
+you you're generally very good at thinking about these agentic systems. where do you s how do you and your team actually come up with these new processes, these new ways to break down the problem? Is this a intuition thing? Are you guys measuring this? Are you guys like just like y y one of your engineers stops using the standard workflow? So then you're like, Well, what's the workflow they're doing? You discover this organically. Like what's the process here?
+
+dex (34:50.547)
+There's a little bit of that. It's I mean, the T D D stuff will come comes a lot from like friction we hit, where it's like the design discussion looked good and then we got into the code and it was all wrong. And we're like, okay, well then like we're not doing our job of giving you leverage, right? The whole idea is like you should be able to work with a model to get to a point where you're happy like where the outcome implementation is very likely to be correct. Because if you have a situation where like
+
+You build a TDD or a design doc, and then an engineer looks at it and they say, Great. And then you actually get to pull requests, and they're like, This isn't what we talked about, or like this has a bunch of decisions in it that weren't made. and so, like, our goal, one of our goals is, you know, can we can and like what I think your goals should be as an AI like identic engineer is like, how do you solve the problem of there's like way too much code and way too many PRs? And one of the answers is have AI review the code, which can only get you so far, or just merge without review and just don't review.
+
+the co, which I don't I'm I'm sure you all know I'm not not in favor of. or you have this option of like, okay, how do we make it so that when the PR lands, it's already ninety nine percent correct or ninety five percent correct. And so it doesn't need a ton of rework. And so it's very the review part is very easy. Do you you know what I mean?
+
+Vaibhav (36:05.436)
+Yeah. and I I mean I agree with that. as a philosophy thing. Like like what I what I really like, for example, this was probably one of my favorite things in the PR that you guys did that I would I I just wouldn't have done. Which is like when you guys make like a pull request out of Riptide, part of what you do is you actually like go and see what things deviated from the plan and there's like a process to go do that. What I actually reviewed was that section of the pull request every single time. I like, I wanna know what deviated from the plan and that's just useful for me 'cause that's how found bugs.
+
+dex (36:17.895)
+Yeah.
+
+dex (36:26.642)
+Yep.
+
+dex (36:30.611)
+Yep.
+
+Yep. Yep. But if your plan's not specific enough or your plan doesn't settle some of the things, then the PR's just gonna be whatever the model chose.
+
+Vaibhav (36:36.016)
+And like sometimes it'd be like
+
+Vaibhav (36:43.514)
+Yeah, but see the thing that's fascinating to me is actually not the plan or anything else. The fact that you chose to add that step as a part of the pull re request process where like, tell me what's different about the plan than what I implemented. And by standardizing that, that makes it really easy for me to guarantee that I expect that every time and now the quality of my
+
+Like like you said, my verification loop got faster because instead of having to read all the code, I just look for that. And I was like, if something ever surprised me, I either throw it all out and start from scratch and make a new plan, or I go iterate with it until it's correct, or I say, that's fine, like that's I can live with this consequence. And like that's actually what I found very fascinating. So it's like I think what I'm really taking away from this and I what I think other people should take away
+
+is the way that you make these systems better and like invent things like the processes that you are you guys are at human lair is I think thinking really hard about how do you how do you like remove the cognitive burden of reviewing stuff later and how do you move it earlier in the pipeline. And that's what your prompt should do.
+
+dex (37:43.186)
+Yeah. How do you move it earlier where you have where you have more leverage? And it's also like the long the further you are in the pipeline, whether something's broken or it's just done wrong, the more tokens of surface that you're reasoning through, the the harder it's gonna be for the model to get it right or to identify the right problem. You'll notice in both of these, we've made quite a lot of decisions.
+
+Vaibhav (37:53.767)
+Yeah.
+
+Vaibhav (37:57.416)
+Yeah.
+
+Yeah.
+
+dex (38:05.639)
+And we're only at seventy K tokens, which means we're like squarely in this and I'm gonna be able to go back and forth for a while and still be like under the two hundred K tokens.
+
+Vaibhav (38:07.942)
+Yeah.
+
+Vaibhav (38:15.313)
+Yeah, that's very fascinating. I I hadn't thought of it in that way. it's just like the things you do at the later stage are is more about like verification, more so than anything else. So it's like how do you add verification to later stages and how do you add like d like I think breath coverage at the earlier layers is kind of like what I'm hearing from your prompt processes. It's like d move away to either spectrum and do one of those two things.
+
+The earlier you are, do more breath. The later you are, do more verification. That's that's a really good takeaway. I think I'm I feel like I know how to design my prom not just like workflow better, but actually like my even like pipeline pro like for my agent, I feel like I would think about my prompts differently now. Because based on where they like I think this is a gen Go ahead. No, no, go ahead.
+
+dex (39:04.679)
+Yeah, that's great. Yeah, and the other Sorry, I was gonna say the the Yeah, go ahead. It's a classic AI that works where we're both shouting over each other. That's how you know it's good. no, I was gonna say like the other thing we do to figure out what needs to happen is we go sit with our customers and we watch them use our product and we talk to them and we hear from them where the friction is and where they're like, you know, we have this promise of, hey, look, we're gonna make your PR review better, but then it doesn't actually
+
+Vaibhav (39:15.343)
+No, I wan I wanna hear what you have to say.
+
+dex (39:32.797)
+happen. There's still a lot of unknowns. The model still makes mistakes. And so one of the things we've been doing is like getting into the details of program design. How do we give you high without reading the code, how do we give you something high level like this that helps you reason about the call stack and where things are being done before you actually go and read all the code? Because this is going to make sure that it's at least more directionally correct, basically.
+
+Vaibhav (39:57.286)
+Yeah, I like this a lot. I this workflow in general is fantastic. I I like the way to approach this problem.
+
+dex (39:57.57)
+Yeah.
+
+dex (40:03.741)
+No provider use a TanStack DB query add a new
+
+dex (40:13.479)
+I mean, we're rushing through this 'cause this is a short episode and like I didn't actually review the system architecture, so it may have made some like mistakes there. but you get the idea of like, hey, look, now I'm gonna get into the details of like how does this actually look and make sure that things like test seams and dependency injection and like where we're making the things and even how the files are gonna be laid out on disk are done really cleanly and they're all represented here faithfully in the program design.
+
+Vaibhav (40:40.935)
+This is cool.
+
+dex (40:42.385)
+Nice. yeah, I mean I I we can we can keep going on this, but I'm happy to open it up to questions. I will I will pop back and I'll I'll stop sharing and we can just chat and then maybe at the end we can we can go in and actually look at the docs.
+
+Vaibhav (40:57.435)
+Yeah. Has anyone got any questions for us? Feel free to pop in. I think Dexter's workflow is always very interesting to me. How long how long are you guys spending on this redesign?
+
+dex (41:10.112)
+On the redesign, like the the the the feature we're working on, or you you mean the new the new like prompt scales?
+
+Vaibhav (41:16.709)
+Yeah, the new prompt skills. Like how long does it take for you to like learn and then like deploy it and like make these updates?
+
+dex (41:24.423)
+So we'd like to get them in and start using them immediately. I think the first PRD TDD workflow made it in probably like a couple weeks ago, based on some stuff we were chatting with with one of our larger customers, where it's like, hey, if we can get the PMs to engage here, then we're doing more than just AI for the coding. We're letting AI kind of do code base grounded decisions about the whole thing. I think on Sunday night we shipped this new version, which is a big
+
+kind of overhaul to how it works. and we added this program design section, which I think is the really interesting one of like, hey, look, if you really care about code qual if you don't you don't give a shit about the code, you shouldn't use any of this, honestly. But if you care about code quality and you want to like head those decisions off and build a lot of confidence the model's going to do the right thing. Like this first question that it asked me of like, hey, do you want to use a provider or do you want to use a, you know, a Tanstack collection? Like the number of times I've seen the model like
+
+Did the design, we did the outline, I'm like, this all looks good. It goes and implements the first phase. I'm like, why the fuck are you introducing a React provider? Like, we don't use React context. We explicitly try to avoid it for almost everything because we have Zusstand and because we have these collections. And like there must be a very special but the models don't know that. The models just like, cool, I can use use effect and providers here, which are like patterns that we find make the code base really hard to reason about. And so now I'm heading that off earlier on.
+
+Rather than what we used to happen, which is like I would write the whole PR and then be like, look, it's done. I tested in between each phase and then I go look at the code and I'm like, nah, this is never getting merged.
+
+Vaibhav (42:45.851)
+Yeah. Yeah.
+
+Vaibhav (42:52.697)
+sh exactly. Yeah. That's fascinating. It's a and yeah, like Claude D definitely doesn't suffice for this. Like Claude D will always become out of date. I actually stopped having Claude D in our repo. Because like I don't have yeah, 'cause like stuff just gets out of date. It's not worth it. show me. Is it make no mistakes? If it's anything more than make no mistakes, I'm judging.
+
+dex (43:03.879)
+Really?
+
+dex (43:08.723)
+Do you want to see our Claude MD? It's it's make no mistakes, UltraThink. Let's see, what do we have? So we have the monorepo structure of just like what everything is, so that I can I can say linear CLI and knows what I'm talking about. that's like that's actually the biggest part of this is just like what are the names of the projects and where are they? we have some instructions about like how to run the tests and checks.
+
+Vaibhav (43:20.475)
+That's interesting.
+
+dex (43:36.71)
+how to run the tests for a single package, how to like actually do database migrations if you touch a database, how to query against our local dev database, how to check the logs in local development, how to use broad browser automation skills, how we like to think about work trees. Actually this should be probably removed because we don't really do this anymore. the MCP that we use to research libraries. There's like a little bit here.
+
+Vaibhav (44:05.115)
+That's so fascinating. I have I have a yeah, like I have a totally different approach here. and like the main thing is just like I find that having more stuff in the CloudMD just guarantees a failure. because like
+
+dex (44:10.683)
+Yes.
+
+dex (44:18.451)
+So we do like this important if syntax. This is this is this seems really useful in terms of like giving the model permission to ignore the instruction. and basically like it's like activate this in specific cases, but don't otherwise. It's very like the poor man's skills s system. But but yeah, okay, so you don't you don't like the Claudity, huh?
+
+Vaibhav (44:24.912)
+Yeah.
+
+Vaibhav (44:37.691)
+Yeah. Yeah. I'll show you what we do. I'll show you actually what we do if I have my I don't know, of course they're here. Like we have so it's not like we don't have files in our repo that are useful. Like we have this architecture.md file. but Yeah. And the reason for this is like basically it's like
+
+dex (44:54.929)
+Okay. So you can point it to specific files rather than having it always loaded every time.
+
+Vaibhav (45:02.895)
+I think my theory for this, and you'll notice what it actually does, this architecture MD file does not have any context around what it is. But it what it may mostly tries to answer is like this. What lives here, what doesn't, and that's really what it tries to go do. And it gives you examples, but it gives you like what should not live here. And the key part is just like if you add a new language feature, can you decide what part of the code base it should live in? And there's like rules at the bottom.
+
+They're like, what is this? And it talks in
+
+dex (45:31.911)
+This is a lot of tokens. How often do you end up pulling this into context?
+
+Vaibhav (45:35.695)
+Well, anytime you're doing like a language design, you have to like it touches a it basically touches the whole code base. Like you can't like you go through the entire compiler. Like, our code base is
+
+dex (45:41.82)
+Okay.
+
+But what if you're not like what what percentage of your features are new language features versus like fixing bugs? Yeah, okay. Okay.
+
+Vaibhav (45:49.625)
+Very few. So you don't you never load this in exactly. So if you're lo if you're fixing a bug, you don't have to load this in. But and like there's basically like this is the most important part, is like it always prefer to add a feature upstream whenever possible. And right and it basically like tells it it's like don't do these things. Like don't change these layers. Do not touch them. And like basically never add a new layer. Right? And like there's these b basically it's like it's just like just move stuff higher up 'cause it prevents
+
+dex (46:08.605)
+Nice yeah.
+
+everything lives in the AST. Yep.
+
+Vaibhav (46:20.182)
+It and like it just prevents the model from making a mistake and also like this is a good rule of thumb for a human to also know. It's like very easy to remember. Like add stuff in the AST when possible. If if you need to add the H I R or the T I R, probably don't mess with the I R or the Emit layer. And like definitely almost definitely don't add a new layer. And we say almost 'cause there are scenarios in which you have to and we've had to, but it's like like please pretty please don't kind of thing.
+
+dex (46:37.923)
+Mm-hmm.
+
+Yeah, okay.
+
+dex (46:49.448)
+Yep.
+
+Vaibhav (46:49.562)
+But this really prevents the model from like skewing, but like this is very important, but it's only conditionally important. So it's way easier to just have an architecture.md file that the model like sometimes reads if it deems important. And then it has like more tokens, but like I don't really care if it reads the whole thing. Like reading head 100 is like basically gives you all the things on here. And there's like we have a new doc that's coming in that's like our type system.
+
+dex (47:02.46)
+Okay.
+
+Vaibhav (47:13.912)
+And this prevents the model from like whenever you are making changes or introducing bugs. Like this is very important. Like it actually tells you like what the semantics of a Yeah, because every I mean sorry, that's like writing a feature, which is introducing bugs. Adding any feature is basically introducing bugs. but anyway, it's like our type system is complicated. And having a model have like a single document that actually describes like the mathematicalness of the type system and it where it fails, where it doesn't fail.
+
+dex (47:19.047)
+When you're introducing bugs.
+
+dex (47:38.259)
+Yeah.
+
+Vaibhav (47:39.259)
+the grammar actually doesn't matter. It's more about like what are the coherence rules? What makes like what makes a thing representable versus not representable? It's kind of tricky. And like understanding like what errors that will happen and what like what generics. Like that's a baseline system that's useful for the model when developing new test cases and stuff. So so like I it's like a different kind of approach to this, but I've personally found that like
+
+dex (47:59.56)
+This is cool.
+
+Vaibhav (48:06.456)
+A universal I just haven't found a good universal Claude D that works for like every type of feature we're we're working on and therefore like it skews the program more incorrectly than correctly. Most of the time. For me.
+
+dex (48:20.493)
+I I like it. Yeah, I think one of the things that we're looking at is this idea that I got from a guy at a big grocery delivery company and they
+
+He he came up with this term he calls context shards, where it's like, hey, when you're building, you he has like double digits, like 60 or 70 of these things. And basically, like during the research and design process, it's the model's job to identify which context shards are useful from the entire set. And then when you do your new session for implementation, it loads in those five to ten shards per phase, basically. And they're small, they're small snippets, you know, they're like a paragraph or like a couple examples.
+
+Vaibhav (49:02.766)
+You know what I think would be phenomenally good for a model? I actually think you guys should think about this. You know how dir env works? Where like as you CD into a directory it just like it loads environment variables for you and like sets that shit up. no it doesn't. It's
+
+dex (49:06.62)
+Yeah.
+
+dex (49:11.163)
+Yeah. Yeah, when you go in a directory it loads instructions.
+
+You know, ClaudeMD does that. Yeah, if your Claude touches files in a directory, it loads that directory's ClaudeMD.
+
+Vaibhav (49:26.71)
+but it needs to be conditional and able to override my existing thing. Does that make sense? It's y yeah, 'cause what actually exactly. That's actually
+
+dex (49:33.127)
+What do you mean? override NVARs? Like override other other contact snippets? so you don't just want additional instructions in the subder. You basically want to say like, okay, if you're working in this directory, the system prompt changes and this advice is no longer valid. It gets replaced and you need kind of a like substitution key almost.
+
+Vaibhav (49:49.762)
+Vaibhav (49:53.463)
+Yeah. That's kind of what I want. I think that's what I really want is like and it's I wouldn't even say the advice changes. Like maybe the advice becomes more specific. Is like a better way to think about it. It's like s you increase specificity as you do things. And I think that's probably what would be like super fascinating to me, like a harness system. It's like how do I like make my Claude MDs feel a little bit more dynamic and alive? Is like the better framing maybe.
+
+dex (50:02.855)
+Yep. Yep.
+
+dex (50:22.065)
+Yeah. I mean Cursor has versions of this. Like the I think even Claud Rules supports this, but it's a very under adopted feature. I don't know anyone who uses Claude Rules. Well it's inspired by Cursor Rules, and yeah, they both have this like front matter syntax where you have to basically say like if you're in a file that matches this glob pattern, then activate this rule and then it's present in your system prompt.
+
+Vaibhav (50:30.211)
+It's too hard.
+
+Vaibhav (50:35.524)
+Yeah, it's like
+
+Vaibhav (50:41.176)
+Yeah, it's like and I don't wanna think it's like I wanna th like Durand works because I just write exports and like like I do with dot n files and it just works. I don't think. I just do.
+
+dex (50:52.685)
+Interesting. So rather than having a bunch of like front matter with globs, you just want to put in each folder that matters.
+
+Vaibhav (50:58.958)
+Yeah, and then as you mess around with things it just tells you stuff in a very interesting way. So
+
+dex (51:05.555)
+Yeah. That's cool. Dude, this is a really fun episode. should we do a quick little outro?
+
+Vaibhav (51:12.058)
+See you record one.
+
+dex (51:13.851)
+Let's do it. let me sit up straight and put on my game face here. Yeah, I will.
+
+Vaibhav (51:17.99)
+Do you want a screen share? I'll put one screenshot in there.
+
+dex (51:23.453)
+Cool.
+
+dex (51:27.475)
+What do you got? What are you going for?
+
+Vaibhav (51:29.332)
+just like to talk about the design thing, you might find it fascinating, so it's like,
+
+dex (51:33.964)
+yeah. Okay, cool. all right, y'all. this week on AI That Works, we talked about kind of the evolution of research plan implement and a new technique that we found really useful in doing agentic coding, which is splitting your design phase into product design versus technical design. Vibov shared some interesting things that they do for designing the like language surface and the user-facing parts of things, and then also stepping into the technical design of the the system architecture and the contracts.
+
+We got to work on building some we took a very rough ticket here on like rebuilding this task page in human layer, and we built some interesting artifacts in terms of both product and understanding, you know, how is this gonna look and doing some mock-ups and things like that, as well as the technical design and like how is the program gonna be designed and outlining some of the key things that are important for how we're gonna do this.
+
+so really fun episode, pretty quick one. But if you need if you're thinking about how to do agentic coding and you're doing product and technical work and you want to separate those out, I think you'll have a lot of fun. thanks for joining us and amazing. Let's get into it, dude.
+
+Vaibhav (52:39.598)
+It's useful.
+
+Vaibhav (52:43.354)
+Let's do it. All right. Thank you folks for joining. Peace out.
+
+dex (52:45.651)
+All right. Thanks y'all. Good luck. See you next week. What are we doing next week?
+
+Vaibhav (52:51.81)
+There's an there is an episode. I know no we planned it. I think we might do Agent Tri it's a good one. I this one is either gonna be it it's i hopefully it'll be the software factory one, I think. I think that's what we're thinking. Okay, software factory next week. Cool. See ya.
+
+dex (52:55.175)
+Alright. That sounds great.
+
+dex (53:04.199)
+yeah. That's gonna be sick. All right. Agent Software Factory. All right y'all. Have a great week. Good luck.

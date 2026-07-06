@@ -1,6 +1,27 @@
 {
   "episodes": [
     {
+      "folder": "2026-06-23-software-factory-for-agent-tools",
+      "guid": "aitw-063",
+      "title": "Software Factory for Agent Tools",
+      "description": "Everyone's obsessed with software factories, and the core of a software factory is a persistent feedback loop - in this episode Vaibhav and Dhilan will showcase a loop they built to test new BAML language features 24/7 and improve the language based on feedback from coding agents trying to implement features.\n",
+      "event_link": "https://luma.com/agent-tools-software-factory",
+      "eventDate": "2026-06-23T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/watch?v=485FGIq8LKM",
+        "type": "video/youtube"
+      },
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=485FGIq8LKM",
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-06-23-software-factory-for-agent-tools"
+      },
+      "season": 2,
+      "episode": 63,
+      "isPast": true,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-06-16-product-specs-with-ai",
       "guid": "aitw-062",
       "title": "Product Specs with AI",
@@ -9,19 +30,20 @@
       "eventDate": "2026-06-16T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=0LPBw3NO3Jc",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=0LPBw3NO3Jc",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-06-16-product-specs-with-ai"
       },
       "season": 2,
       "episode": 62,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
-      "folder": "2026-06-09-agent-observability",
+      "folder": "2026-06-09-fable-5",
       "guid": "aitw-061",
       "title": "Hands-on with Fable 5",
       "description": "We had agent observability on the schedule, but Anthropic shipped Fable 5 about twenty minutes before we went live, so we tossed the plan and got hands-on with the new model instead. Zero prep, all live.\n\nThis is an unscripted look at exactly how we kick the tires on a fresh model release: take the hardest problem you're already deep in, hand it over, and watch whether it finds leverage you didn't. Vaibhav ran it against an in-progress design doc for the BAML VM's observability layer, Dex ran it against an old race-condition benchmark he keeps around, and we talk through what the model caught, what it missed, and why most model releases are more hype than the value they deliver day to day.\n",
@@ -1360,15 +1382,15 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 65,
-    "completedEpisodes": 60,
-    "upcomingEpisodes": 1,
+    "totalEpisodes": 66,
+    "completedEpisodes": 62,
+    "upcomingEpisodes": 0,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-06-15T17:11:45.505Z",
+    "lastUpdated": "2026-06-29T19:02:39.235Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

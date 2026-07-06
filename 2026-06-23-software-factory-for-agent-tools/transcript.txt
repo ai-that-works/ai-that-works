@@ -1,0 +1,664 @@
+Vaibhav (00:00.113)
+We don't do sponsored posts right here.
+
+dex (00:02.414)
+Look, I just want you guys to know that I'm super locked in. I'm ready to go.
+
+Vaibhav (00:09.591)
+I'm gonna take this off so you don't hit my chair. Yeah, audio's great.
+
+dex (00:10.638)
+We got audio? Tech check.
+
+Hell yeah. All right. What's up? I'm Dex. this is the AI That Works show. I'm the founder of co founder of Human Layer. We Vibov and Dylan. Vibov, what are you guys working on? What are you teaching us today?
+
+Vaibhav (00:26.759)
+Today we're gonna talk about some really weird stuff that we do.
+
+So I'm Viboff, I'm one of the co founders of Foundry. We make a programming language. And with me I've got Dylan. Yeah, I'm just the internet boundary for the summer. yeah, I was just as a wrong yeah, just as the wrong word. but Dylan built something really, really freaking cool. And I know we had to promise to talk about this like a couple weeks ago, maybe like four or five weeks ago. But it's really about software factories. everyone's talking about it. So we thought we'd take our own stab at what it means to make a software factory.
+
+dex (00:39.522)
+Just the intern, he says.
+
+Vaibhav (01:00.667)
+And we kind of have one. And I think today is I I would say it it's like a half demo, half conversation and just like a half kind of thing. We're gonna all the code is open source, you'll get to see all of it. but
+
+dex (01:13.858)
+Yeah, I think it's I think it's great. I think I think I think this idea of of I have seen I've seen a very quick demo of this, but like my understanding is like software factory is this big, scary, complicated thing. And like I think something that got still distilled out of social media recently is like, well, it's all just loops. And then it kind of lets you break down the problem into like, okay, what are the various different loops in my system and how do I turn signal from the world, whether it's
+
+the vision of the CEO or the decisions of a PM or errors in production into work for agents to do and kind of like give them this like sell ability to check their own work and and and and and self guide. And there's a hundred or a thousand different flavors of that depending on your code base and your product and your problem. And I'm really excited to hear a little bit more about one of the loops that you guys have built for a quite ambitious project, I will say.
+
+Vaibhav (02:05.371)
+Yeah, so why don't I just start off and I'll show you guys a quick preview of the kinds of things that are now possible and then we'll go in and like
+
+Let me just open something up really fast. And make sure I have my API keys loaded.
+
+Vaibhav (02:26.405)
+Okay, let's just run this code and let me just make sure everything works.
+
+Vaibhav (02:35.631)
+Okay. That's it.
+
+Vaibhav (02:39.975)
+So as many of you or as some of you know, we've been kind of cooking up something for the last few bits, which is we've been working on trying to get a full programming language working for a while.
+
+and it's finally come to form and it mostly works. So I'll show you some of the features in it really fast and I'll show you like the hardest part about this is like as we build a language, it's really really really really hard to actually make a language that is sustainably good over any reasonable time period because eventually all the thing about programming languages is not that there's just one thing on there. The problem is as you keep adding features, they keep competing with each other, and every single time you add a new
+
+new competing feature, you actually it's impossible to build a test coverage area of understanding the whole thing. So like there's a reason Python still has bugs. Like twenty five years later. Yeah.
+
+dex (03:35.214)
+You're talking about Python the language, not code written in Python.
+
+Vaibhav (03:38.586)
+Yeah, I yeah, not c I'm like Python, the language has bugs. Linux has bugs. It's because once you have a really core system, it's really hard to have it not have bugs because of how everything starts interacting with itself. So like one really simple thing that we have is like I have like I don't know, let's get numbed here. I have like a retry function over here. Right? So like here's like one language feature that starts getting really tricky. If you look at this function, foo is a function that throws a string. So if I call retry on this over here, a retry is now calling foo
+
+foo and retry is a function that takes in a lambda. Well, demo should also throw a string because if foo throws a string and I call retry on it, well I should throw whatever foo throws. So if foo goes from throwing a string to throwing like five, one I get a compiler error here, so let's just change this to int.
+
+But now demo should also throw a string or an int, because retry itself throws a string, but now foo throws an int. This is just like one super complicated feature. Took a lot of work to make it work, but there's so many ways that it breaks. Once you add things like destructors and like defer and multi-threading, all these things start competing against each other. So we realized no matter how good tests we write, no matter how much work we do, it doesn't friggin' work.
+
+And like that's where Dylan came in. He had a really, really good idea. I'll I'll open the website. Do you want to talk about it really fast? Yeah, yeah, I can kinda give the sort of high level overview of the system. But the idea is is hey, let's just have some agents try writing a ton of BAML code and and and see what breaks. And see what goes well, see what bugs we kinda come up with. And from this we can kind of get a very rich set of data on the language and you know, kind of set up a
+
+self-healing sort of loop to where we are finding issues in the language and also fixing them at the same time. And so you can see see these are kind of like some of the tasks that we give to this to these agents. And and they're pretty complicated tasks. We'll give them like you know competitive programming problems, we'll give them like, hey, build this whatever open source GitHub repository, build this in pure BAML and see what happens. And what it'll do is we'll we'll spawn an agent and it'll actually try. It'll try building
+
+Vaibhav (05:52.186)
+Building it, it'll run into issues, and it will log every single thing that it kind of runs into, everything that breaks, and what didn't work. And you know, on this website you can kind of see the full transcript and everything that kind of happened during that run. And so from that sort of information we turn it into a set of issues. So if you want to click to the left, I'll show you how issues too. Yeah, yeah, yeah. and so it'll turn it into both skill issues, so issues that it kind of identified with our BAML skill, and then language issues as well, so issues with the a actual language.
+
+and from those we can kind of set up I I guess a set of agents to go and fix these issues. And so as you can see we kind of have this loop going where it's like tribe AML, hey, I ran into this problem, let's build an issue for this, and then we can have another agent go ahead, take that issue, fix it, and then we can actually like repro see if that issue remains even after it fixes it. So it it's it's a very contained loop, but it you're able to get a lot of data out of it and you're able to sort of fix some like smaller hidden bugs in the language.
+
+so that's sort of like the high level overview. There's obviously a lot more to the system. I've been working on it since I since I sort of started here, so you know, I I think there's there's a lot to it, but that that really is kind of the core of of what Agent Tries BAML has become, which is the
+
+dex (07:06.774)
+And then and then w what happens with these issues? Do you go read them and then you paste a prompt in? Does it open GitHub issues? How does that work?
+
+Vaibhav (07:15.813)
+Yeah, so if you want to go to our linear, you can go ahead and check out views. So workspace views. And then you can go to Yeah, yeah, finally. It it was weird because everything was on Notion and so I built the whole system around Notion. And then we're hey, we're going to Linear. I'm like, great, let's migrate everything to Linear. but anyway, it w each one of these issues kinda turned into a ticket here. and you can see we have this whole sort of set of labels that we use to represent different parts of the pipeline. So I guess the very first thing is hey, we have
+
+dex (07:20.014)
+God, you guys finally moved to linear. Ha ha
+
+dex (07:31.255)
+No.
+
+Vaibhav (07:45.7)
+Have all these tickets that land. Let's just take a look at one of these. So you can just open up some of these, and you can see these are kind of skill issues, literal type there, right? and so what we can see from this issue is you can see the repro in case we want to try running it just to make sure it's it's an actual issue. you can kind of see a summary of it, and we also get a suggested fix at the very bottom here. so what we can do from this stage is we kind of add a human in the loop. So we can go ahead and add comments.
+
+To this issue. So if we don't like the suggested fix, or we're not 100% sure about the validity of the issue, or we're hey, this is actually expected behavior, maybe we just throw a better error in this situation. You can go ahead and add comments at the end of the linear ticket. And then what you're gonna do is you then set the label to redraft. So that'll just kick it off to a redraft agent that looks at your comments, says, okay, they actually want it this way, and redrafts the the issue. And so we kind of have that first cycle where it's like we have our issue, we have a human just signed like draft.
+
+redrafting it until it gets to a state where we're happy with the issue itself and also the suggested fix. So yeah, we'll have people just kind of like look through a lot of these issues, kind of say, yeah, this is a legitimate problem. Interesting. And we'll kind of just work through this first process. From there, you can kind of kick it off to like an approved state. And that will set off a cursor agent to go ahead and take this issue along with a set of other core pieces of information about BAML and create
+
+a PR to fix it. And so that's kind of like the first thing. And then once it creates that PR, there's another loop there to where if we don't like the PR, we can add comments and it'll just constantly add new commits to this PR until we're happy with the code. So it's kind of like two contained loops where we have the first one which is creating the ticket and the second one which is creating the actual code, the PR to fix it. And it it's it's worked out. I think I sent sent you ViBOV a set of issues and a set of PRs that correspond with those issues.
+
+and we've been able to actually merge in a few a few fixes for some non-trivial issues in the BAMLA language using the system, which is which is Francisco's got a good question. It's like how do we make sure that the fixing agents don't step on each other? So I think this boils down to a lot of like human in the review. So like we don't really have while humans don't really need to write the code, we do spend a lot of time making sure that humans nitpick at this code a lot. and the reason is
+
+dex (10:10.542)
+Well you have to decide what's worth working on and decide like what's a good approach 'cause I I imagine you sometimes get some that are like, This should be fixing the skill and you say, no, no, this is actually a bug and we should change the language.
+
+Vaibhav (10:24.207)
+Yeah, like this one for example is like is like I don't even know what this is. I've like it's definitely we're not gonna add this to skill.md. This is just not a skill md issue. This is like likely this is like a BAML describe issue. This probably means I'll show you exactly what I do. This probably means BAML describe for array slash map should be improved.
+
+dex (10:35.96)
+So
+
+Vaibhav (10:47.205)
+And then what you're also gonna want to do is you assign it to yourself. And once you assign it to yourself, it'll just ping you on Slack. so go ahead and and assign it to yourself and then move it to redraft. and you guys will literally just see this happen right now. So I'll just moist it to redraft and I'm done. Yeah, and so you know, this ticket will this will happen. When it's updated, it'll hit you up on Slack and be like, Hey, why don't you check out this new ticket? so yeah, that's that's the system. yeah. I wanna
+
+dex (11:10.956)
+I Okay, cool. This is great. Before before we get into any more detail, Vibov, how do you feel about like trying to draw out 'cause we've already talked about three or four different loops, and I have a bunch of questions, but I feel like if I start asking questions, we're gonna get way in the weeds before before we actually kind of like just like zoom out at at at at how this thing works at a high level.
+
+Vaibhav (11:32.678)
+Yeah, let's do that in a second. Can I show you one thing really fast? Just to give you an idea. So because I think as we show examples, we'll make it much more concrete the kinds of problems that this sort of agency system is good for. And we can talk about the architecture of it afterwards. So like for example, this is like a really simple one. In TypeScript you can use dollars exclamation mark to make something not know. We don't have that syntax in BAML. So obviously we didn't plan for good syntax errors in that language, so this is the error you used to get if you did this. Now this is
+
+Not good because if an agent writes this because BAML is basically TypeScript, we don't want that to happen. So instead, what we have is we made a fix, and the fix is this is a new compiler error that you get. Unexpected exclamation mark. BAML has no non-so a non-null assertion operator. Unwrap optionals with question mark, question mark default. or if let x equals this, because we have like destructuring in let.
+
+So, and you can see immediately as a user, I I'm like, yes, this is definitely a problem. I and you can see how an engineer may not have thought of this while they're designing the language, because this is like basically a new feature in the compiler error detection message. And this compiler error message is the thing that we audit. And then we just go skim through the code to make sure it's like did it change a file, it's not supposed to change effectively. And now we have really high confidence for a different class of issue. I think it's
+
+Vaibhav (13:00.379)
+This one was really funny. this one is so funny. I I think I don't have the do I have the linear let me open this one.
+
+This one was so silly.
+
+We have a command in BAML that allows you to basically run the command really fast. Oops. That lets you run run any shell script really quickly by just doing BAMLA run dash e and you can just write BAML code directly in here. And for some reason, we don't r I don't really know why, but when you put negative seven, any negative argument, it read as a command line argument rather than the actual code. And that just caused stuff to break. Again, like not a realistic test scenario, but one of the clawed runs over here,
+
+One of these clawed runs, while literally doing something else, it's like it was just like trying to find some repros. It just started writing a bunch of code and it it was an incidental thing that it found in the chat log somewhere in here. I can go find out where it was. Probably where the red was where the red is. Yeah, probably where the red is. Yeah.
+
+dex (13:59.171)
+Hmm.
+
+Vaibhav (14:05.969)
+You know, it's funny because when it just like when this error came up, everyone's like, No way, like this isn't this is this has to be a hallucination of the agent. And then you go and you actually try and you're like shoot. This this actually is an issue. and so it's just kinda like these trivial bugs that it's able to find that, you know, we just wouldn't it just wouldn't come up. so it's it's funny to sort of see this sort of stuff it it it there's something we should actually make it easier to search in the chat log. We should have a command F feature. Yeah. That'd be super helpful.
+
+But you can kinda see the idea of the kind of problems in there on there. let's make an excalibur fast.
+
+dex (14:41.122)
+Yeah, this is dope. Yeah. The classic classic problem of the argument starts with a dash. Although I would yeah, I would be surprised if it wasn't if it's in quotes that it's still parsed as a as a flag, but yeah.
+
+Vaibhav (14:54.787)
+Exactly. That's what I said. I was like, Dylan, this is a hallucination when he first showed me this. And I was like, it was a bug. And this is the kind of stuff that's like
+
+Again, as a human you're just like, we use a Rust library under the hood to do this. Like of course it can't be a problem. So it's like Clap should solve this. But Clap did not solve this. So we have to fix our our stuff for for for Clapp's issues. So yeah, it's it's cool. Like a lot of these bugs are like this where it's like kind of hard it's I mean it's it's obvious now, but it's very non obvious when when you first found it. and so that's kinda like the power of the system. But yeah. I thought there was one more question and then I'll
+
+We'll get to system architecture. which is like how do we decide if a task interesting.
+
+dex (15:40.126)
+open here let me send it again I don't know what happened. Try that one. It's the same link. no it has the it has a different fragment. Just just click the link again.
+
+Vaibhav (15:50.172)
+Yeah. so I think you you guys are asking like
+
+How do we decide if a task needs human column? Basically, humans are always in the loop, and this is where the architecture diagram will probably make it way more obvious. And I and I could answer that that question real quickly. It is completely driven by agents to like when it goes to the needs human column. Like if it goes through a certain number of loops, especially on the second loop where it's trying to respond to Code Rabbit and CI C D and it just keeps failing, after a certain number, it'll just move it to needs human and ping you on Slack, like, hey, the agent.
+
+just failed here. so that that is a that is an agent sort of responsibility to move it to the need human column. I'm I'm literally just gonna take all of our statuses and put them onto here. Yeah. Just so you g 'cause it's not just about designing the loop, it's also about designing the workflow behind the loop. Which we've spent a lot of time def d designing this workflow.
+
+dex (16:41.186)
+Yeah.
+
+dex (16:45.004)
+Yeah. And I'm actually gonna just start sketching out what I think is how the actual how do these things get generated, right? So you have a nightly run.
+
+Vaibhav (17:01.031)
+PR prep.
+
+Vaibhav (17:08.571)
+Needs human, and then
+
+Vaibhav (17:19.405)
+And one of the things that I think was took us a while to really conceptualize was like this whole process is actually like not just one system. So yeah, exactly. Like Dexter is basically just drawing it out. so coding exactly. So we basically produce releases. Releases are actually not it don't even trigger this. It's actually totally independent. it
+
+dex (17:42.638)
+But it runs every night or it's it's triggered off a release.
+
+Vaibhav (17:44.934)
+Nope, it just it it's triggered off a slack. We have a Slack pot that says, Hey, yeah, adds we call it BAMI. Hey BAMY, just try doing this in BAML send. And then we also have a cron job that just runs generated tabs as well. Exactly. So like But it is on the latest release always. That is So it always uses late Yeah, we don't try older releases. You can actually I
+
+dex (17:49.659)
+okay.
+
+dex (18:03.084)
+And do you give it just one challenge or do you give it like multiple it's just like literally, hey, see if you can go implement it's like one challenge at a time.
+
+Vaibhav (18:09.687)
+It's just like you can think of it as like there's a thing that creates challenges and whether it's a Slack bot or like coding challenge creator. Yeah. It basically pr everything just produces a challenge. Right? There's a there's a way to create a coding challenge. Once you have a coding challenge, then there's a way then a coding agent literally tries to go do this.
+
+dex (18:23.182)
+Yep.
+
+Vaibhav (18:32.633)
+Right. And once it once a co like and you c we we use Claude I think to go implement stuff. So Claude tries to implement stuff and we track everything. Then this thing completes at some point. I I it really did it really doesn't matter. Then a different agent analyzed chat log.
+
+It literally pulls the chat log onto here. No, we actually I don't we don't actually always give it the skill. We have both a cold start and a warm start. Where in the cold start we give it the skill and in the warm start we give it the skill and in the cold start we search we force the agent to search for it. Yeah, yeah. Yeah. The c like basically the agent just has to search for it from scratch. then we have another agent that basically runs and like I wanna use a different color here because it's a different process.
+
+dex (19:12.643)
+Nice.
+
+Vaibhav (19:19.943)
+It's like then we have another agent that's running that basically like analyzes the chat log of this clawed system and then produces produces I wouldn't say issues, it produces a summary. It's we call it trophy. Yeah, we call it a trophy. it basically produces a whole cheeky name, but yeah, it's it's called trophy. It produces a trophy. And to give you an idea what a trophy is, let's just take a look. A trophy is basically this. This is a trophy, yeah. See, it goes through, it tries to produce a report of what worked, what didn't work, what didn't work, and tries to describe this. So like let's find a more interesting.
+
+Interesting run that's like more practical. Complex master pattern array class destructuring. This is pretty cool. I think it reset that one up. So like it actually tries to go ahead and prove like findings effectively. where's the trophy? It basically produces something like this. Like this. It tries to produce this. Right.
+
+dex (20:05.698)
+Is a finding always actionable?
+
+dex (20:11.448)
+We put that on.
+
+Vaibhav (20:13.199)
+Yeah, I'll put this on the whiteboard. And this is what it produces. Right? And the idea of it is like we want to both understand a couple of things. It's not just about finding bugs. It's actually about understanding what is good and what is bad, and what is the agent finding that is good along the way. So what is what is like actually being confirmed as a positive feedback loop, and what is not a positive feedback loop over here.
+
+dex (20:33.634)
+And then we turn this into issues with the language or issues with the scale.
+
+Vaibhav (20:39.417)
+Yeah, exactly. So there's basically like issues there's like issues versus inefficiencies is the way to think about it. Where like inefficiencies are like skill related stuff and like issues are like actual bugs in the system. So it's like bugs versus inefficiencies is how you can think about the system.
+
+dex (20:47.288)
+Okay.
+
+dex (20:55.47)
+Okay. And I'm guessing only a warm start can surface issues with the skill itself since the cold start didn't have
+
+Vaibhav (21:02.351)
+No, the cold start can also the cold start is supposed to find the skill. Like part of how we to get the skills, like after you install like you do like after you install BAML, you're technically supposed to run BAML agent install dash dash claude and that installs a skill for you. So if the a the agent should be able to get that. If it's unable to find that, that's a huge problem. And like it was a problem, it's not a problem anymore. No. Yeah. Right. So like the agent should be able part of the cold start is can the agent find this command? And it's a problem that was surfaced because of
+
+dex (21:10.838)
+Yeah.
+
+dex (21:16.014)
+I see.
+
+dex (21:22.443)
+I got you.
+
+Vaibhav (21:32.295)
+With the system. so like the cold start is pretty good now.
+
+dex (21:38.05)
+Yep. Cool. Okay. And then these issues go into linear, basically. They go into
+
+Vaibhav (21:45.507)
+No. It's not as simple as that. These issues have to be deduped. Yeah.
+
+dex (21:52.089)
+That was that was gonna be one of my questions, is how do you how do you make it so these runs don't just keep surfacing the same type of issue? So is that a is that a prompt?
+
+Vaibhav (21:52.432)
+Right.
+
+Vaibhav (21:59.142)
+We dedupe. Yeah. We deduped them. It's like yeah, it's a it's a couple prompts and stuff that do this. And like you can I'll show you what I mean by issues over here, just so it like makes it very clear. See this? Every issue comes with evidence. Evidence is a specific chat log that experienced that bug. So like let's find issues that are like more than one. Probably some of the older issues will have more evidence. But yeah.
+
+dex (22:09.271)
+Yeah.
+
+dex (22:13.847)
+Yeah.
+
+dex (22:17.699)
+Yep.
+
+dex (22:24.835)
+I see. Okay, so you're kind of like normalizing this from like multiple check logs might Okay.
+
+Vaibhav (22:29.071)
+Exactly. Right over here. Like it's like it really wants string.split. Bo multiple times the agent tried to write something like string.split and it was unable to. And like why did it do that? Well probably because JavaScript string.split does something. and it just wants a simple way to split on white space. And I like, you know, that's not unreasonable for the agent to want. So like while this issue is good.
+
+dex (22:51.576)
+So yeah.
+
+Vaibhav (22:53.765)
+My problem with this is we'd probably repr I would probably reprompt this and say, hey, can you please make sure that you like go analyze what TypeScript does and tell me what we should do and mimic that behavior. Because there's no reason to deviate from TypeScript on this kind of thing. Right. and but it found it twice. It's like both in reverse words and Huffman cost. And that's not an un like both those things would highly benefit from having string dots split on white space.
+
+dex (23:07.404)
+Mm-hmm.
+
+dex (23:20.394)
+Okay. Okay, so it's actually like as you find issues, they go through a dedupe and then it's like basically it's like is already tracked, then we attach the new chat log at to that issue.
+
+Vaibhav (23:39.162)
+Exactly.
+
+Vaibhav (23:43.516)
+Right. This also helps us if if we mark an issue as like deprecated and it gets discovered again, we just get new evidence on it. So we can change our mind later. We we might be wrong about things. And this allows us to basically like start from this premise of like which is exactly what agent tries banner is like make a data driven language. Where it's like we don't have to actually go decide this. Instead of waiting for humans to report these issues like after a lot of work, we can just have it write code that humans are gonna write anyway. 'Cause let's be real, no one's writing code. And like
+
+dex (23:44.046)
+Otherwise
+
+Vaibhav (24:13.489)
+You saw this issue right over here, so like I probably got a science notification on it.
+
+A T V? You scroll down. It's it's it's linear, it's linear. It's on the scroll down. S you might need to get the linear extension on Slack. Linear updates. Yeah.
+
+And it i it will be kind of buried in there. okay. I don't know what the issue is. you know what would be cool on the Slack to checkout? If you go to AI tasks, you can kind of see how the workflow gets like like the loops are kind of shown on Slack where you can look at the replies to any of these tasks and you can see BAMI just kind of working through yeah our comments. I'll show that in a second through things like that. that might be what you're looking at. so the idea is like for example, you guys saw that I
+
+There was ticket that we added earlier that we all kind of where is this? That we added, which was assigned to me, which was I told it to go redraft this issue from like this is probably a BAML describe issue. So the agent actually went through, it reformatted and says, cool, the real issue is this. and should just describe reference semantics. And like it should just tell it the tell it exactly how it works, so that way you don't have to go worry about anything on this end.
+
+dex (25:24.365)
+Yep.
+
+dex (25:31.15)
+Sorry, I I miss maybe missed a detail, but how does this actually get added to linear? Is this a button you press in the web app or is this
+
+Vaibhav (25:38.383)
+No, all things are backed by linear. This is like a visualization on top of linear that we have. Yeah.
+
+dex (25:42.998)
+Okay, so once you have either de once you've deduped or created a new issue, that goes straight into the not started column.
+
+Vaibhav (25:49.986)
+Exactly.
+
+Vaibhav (25:54.096)
+And then it's a human's job to go ahead and basically audit this and decide are we gonna redraft this and then basically send it back? And that redrafting basically means another claude agent will try and pick it up and like decide if we need to go do something with it or not. And and that's what we just showed. Like that that is redraft. Yeah. You're just messing with the ticket until it makes sense to you. And then there's another state. Yes. Exactly. Yes. And like a claude will just put it.
+
+dex (26:16.396)
+And redraft puts it back into not started, basically. And where do you run this? Does this run in GitHub Actions? Do you have a sandbox server? Are you running your own demon? Like where what is the infra that this runs on?
+
+Vaibhav (26:29.073)
+We we have a cloud container that that that runs runs all of this. it's it's really actually just It's actually just a physical laptop that we run over here. Yeah, like i it is really containerized. For a while we just ran it on a on a MacBook. it's it's really just two containers that run. It it's it's just one that does that spawns sort of like these agent services, which are just processes, and another one that kinda acts as the the the claw sort of driver. so it's two containers. deployed we can deploy it via the web.
+
+dex (26:33.558)
+And that runs a Google Cloud or an AWS or is it
+
+Vaibhav (26:59.077)
+And then we also have it as a backup on on a on a MacBook, like a spare spare MacBook. We can just deploy it on that as well. So everything's containerized, so it's really easy to just deploy.
+
+dex (27:07.446)
+And so how does that how does that thing get how does that thing get notified that there's new work to do? Is it a webhook or is it just polling?
+
+Vaibhav (27:17.081)
+It's is Yeah, yeah. So we just go do that.
+
+dex (27:20.898)
+So linear sends a web hook to your laptop.
+
+Vaibhav (27:25.615)
+Yeah, yeah. And that's how the process gets kicked off. Yeah. Or or whatever whatever cloud server whatever cloud like we can deploy whatever. It'll just send a webhook there.
+
+dex (27:30.328)
+Interesting.
+
+dex (27:37.324)
+And you have one container that's running like a bunch of different quad sessions in parallel basically. Okay. Cool.
+
+Vaibhav (27:41.852)
+Yeah. Effectively, yeah. Pretty much, yeah.
+
+So the next thing is we put into a proof state. And approved state doesn't mean start working on it. And remember, like what you saw me do is like I took ownership of this issue in linear. Not only did I do this, I tagged myself on it. So you ask like why are agents not like always going to do this? It's like my goal is like I have a bunch of other crap to do. Now I as an engineer have a background task and I'm just like slowly driving through this pipeline and getting it to completion over time. And I'm barely I'm not really engaging with it fully. I'm like half engaging with it, but I'm really measuring the quality. So then once I'm ready to like because
+
+So I I for example may not want it to write code yet because I'm like, it is a good issue, but maybe I want it to work on it a little bit more. I want to do some other stuff, so I'll move to approved. And I'll drag it over to agent writes code and I'll start prepping the PR. Yeah, once you move it to approved, it automatically just pushes it to does now? That's nice, that's even better. Yeah, that's that's just a a cursor agent just we'll pick it up. And we have some number of cursor agents that will run at any given time. Yeah. Five. Yeah.
+
+dex (28:39.98)
+Okay, so this is an agent loop in cursor.
+
+Vaibhav (28:43.579)
+Yeah. Yep.
+
+dex (28:44.866)
+And it's like a cloud agent. Cool.
+
+Vaibhav (28:46.598)
+Yeah.
+
+And then what we have is this was an awesome stage that Dylan added, which is like cursor, we have code rabbit running on our all our PRs. So cursor will just be for once cursor submits a PR, we just let Code Rabbit submit things and cursor will just auto-resolve. Yeah or decide that they're not important and just run a loop over here. So it's it's pretty funny how we got to this because for a while we said, hey cursor, make sure to run all of our tests in your sandbox, right? Before making your PR. Run all of our tests, make sure it works. And the problem is these cursor sandboxes were taking
+
+For every run tests. And so I think it was Aaron who told me he's like, hey, just let GitHub figure it out. Let our CI CD that we set up on GitHub figure it out. So it just creates a PR right away and it waits. It just sits there and it kind of waits. And it says, hey, if CodeRabbit found any issues with it, or if we failed any checks on GitHub, we spawn another agent to then go fix those. So it's not actually the same agent. It's actually a set of different agents for different stages in the process. The first agent kind of does the whole building.
+
+Of it, and then the rest of it is like let's just respond to little nits that Code Rabbit came up came up with. Or you know, we can actually as a team comment comment on the PR and be like, I don't really like this. Well, let's spawn another agent to respond to that. Let's spawn another. And it's just kind of the sequential process of spawning agents to respond to things that come up during our GitHub CI CD. And the reason for this is because cursor sandboxes are freaking sweak. And like our code base is beefy, I'll say the least. So we have like real C.
+
+So let's make some runners. Exactly. And like it's way fas it made like the test time go down from like fifteen, twenty minutes to like four minutes, three minutes. Like yeah, like two minutes. It went down so much. Like it was. And like it was just like, yeah, yeah, we should just do that. Yeah. and that changed a lot.
+
+dex (30:21.582)
+Yeah.
+
+Vaibhav (30:37.327)
+And then eventually, when everything is green, then we say it needs a human. Like then a human actually needs to hit the merge button. We are not yet confident enough in agents to be able to auto-merge on an agent drafting a PR. Sadly, that is not true. And that sort of needs human state. It's things that are done, and it's also things that kind of just like hit a wall, too. So it's like either it needs a human to just approve the PR, or it needs a human to kind of look at, okay, let's see what went wrong in the agent. And so recently it's been more and more approved PR.
+
+But in the past it was a lot more like, well it broke, let's see why it broke, let's see what what failed.
+
+dex (31:14.754)
+So is is needs is needs human like needs human to approve as ready for merge or is it like broken and needs human or is it it it's it's like kind of both states. It's like either a human needs to approve this or a human needs to fix this.
+
+Vaibhav (31:26.583)
+Yeah. So actually under that needs human sort of like block that we have, there's two labels. There's just the actual needs human label that we have and then there's the ready to merge label. but we're just kinda generalizing there on the diagram. Yeah. that it's like this is just a state where the human will come in. but it's like yeah, we we do distinguish between the two like sort of states that it might be in.
+
+dex (31:48.993)
+So at a certain point after a certain number of loops on the PR, it just lands in needs human and the human can pull it up and look at it and be like, Okay, well the checks are still failing, so clearly I need to come fix this, versus everything is green, I just need to review it and merge it.
+
+Vaibhav (32:02.745)
+Exactly. Yeah, and we'll we set a certain number of actual loops that can run there. So if if checks are still failing after four or five agents were s were spawned to go and try fixing it, then it goes, Okay, let's just stop retrying, something's fundamentally wrong here. Let's go to need sealing.
+
+dex (32:16.608)
+Yeah, so so you have I'm I'm I'm trying to like sketch out how this like how do we call it this
+
+Vaibhav (32:25.275)
+There's like a max number of loops. There's like max turns. Yeah.
+
+dex (32:28.854)
+Yeah, so you have like max turn when you're looping through you have like max turns.
+
+Vaibhav (32:32.601)
+Exactly. Between between PR prep and agent rights mammal, there's basically like max turns.
+
+Vaibhav (32:40.295)
+So like I'll give you guys a really concrete example. Like the kinds of details that we need to go look into. And what's funny, did it actually change this? I don't know. What do you mean?
+
+dex (32:40.674)
+Sorry, Excaldra is misbehaving today.
+
+Vaibhav (32:53.209)
+I think it left a parameter named. we should. No, no, it changed it to link. but the title is wrong. yeah, it just didn't change the title. Yeah, okay. so I'll show you like the example of PRs here that we really go look at. So like we wanted a thing that's like array.fill. Like it's very reasonable to be able to do something like this. We did not have this in BAML before, BAML.array.filled, where you can just make an array of five elements where they all have zero. and that didn't really exist. So we did this. And this was actually the fix that it originally made. And
+
+Maybe you can spot this, maybe you can't, but there's a couple problems with this fix. And the first fix is I don't know what n is. Like really what I want this to be called is just length, not n. And two, they have weird. We're BAML. We can do this part in Rust for a user 'cause it's a standard library function, so we should just do that. So what Dylan did is he left a comment here. After everything was green, we just left a comment that says make this a rust function and then rename n to length. So then
+
+The agent picked it up and it actually went and did that. And it both made it a it made it a Rust function, so it's implemented Rust and renamed the parameter to length.
+
+Right. And now the thing is implemented in Rust, it's much faster, it's it just it's just gonna be better. So array dot fill dot l length is really fast in BAML now. And like the agent just wouldn't have caught that, no matter what we did. So we just have to go solve this kind of problem on behalf of our users sometimes. And that's important. Even with the best models, there's just little things that a human might pick up and be like, no, actually I think this way's better. and so it's kind of like leaving room for that intuition to actually be a part of the process, instead of like like choosing one
+
+dex (34:09.656)
+Nice.
+
+Vaibhav (34:31.089)
+or the other, either you have humans write all code or agents write all code, having it so that's kind of like a symbiotic sort of like relationship, is is really great. And so the like interesting things here that like I as a human would have definitely missed. Like we our length is I sixty four, but the maximum amount of allocations on a WASM thirty two which BAM must support is actually you is you size max. I just wouldn't have been I would have been too lazy to go fix that.
+
+dex (34:55.004)
+Ha ha ha.
+
+Vaibhav (34:55.695)
+Right. I I wouldn't even remember to go fix that. So it's like it's just there's a level of detail that agents are really good at and there's a level of detail that humans are really good at. and I wanna show one last last feature on the end at the end of this pipeline that I think made a huge update. Which is you saw this like lent thing. So we have is like return.
+
+We have this thing that's like a change log. So in every single time that we produce, right now on every single commit, we basically just produce a nightly release, and like Canary is like our stable ish version. Is like we actually have another agent doing this crazy thing that actually goes through and like actually takes every single night l release, finds all the commits that are included in it, and tries to write a small little automated change log. And what's really nice here is now as a human I can just go read this. Does this look does this look funky to me?
+
+dex (35:27.17)
+Mm-hmm.
+
+Vaibhav (35:46.459)
+And if it does, then I can look at this and say like I guess like yeah, Pyth Sam just added this where it's like generic classes can now be passed from like Node.js to BAML. I can just go look at this
+
+dex (35:56.407)
+And it writes a it writes the docs and a small example for you.
+
+Vaibhav (36:00.944)
+Yeah, exactly. So then I can look at this and be like, is this funky? And I can just tag Sam be hey, this looks funky, or I can tag ATB or BAMI and say, hey, BAMI, can you go double check this and see if it's true? Yeah. And then I can trigger a validation service. And all of this code I think is also validated through an agent. Yeah, yeah. So this change log isn't just spinning up code, it runs the whole ATB pipeline. Because the pipeline started is sort of just like let's just have agents write BAML. And there's so many different ways that you can actually use that. You want agents writing BAML for the
+
+changelogs, you want agents writing BAML here. And so we've kind of just developed the system to where now it's now just so many different services acting under the core like principle of hey we just want agents to run BAM. Like that that's kind of like what it comes down to. And like obviously some of the stuff is garbage. Like you would never put a changelog that has this note on it. It's just like a nice diagnostic improvement. So like that's why our changelog right now we're still working the final canary changelog that we expect humans to look at, how to make that better. Yeah. Canary Canary sh is going to be all human track.
+
+dex (36:54.389)
+Yeah.
+
+Vaibhav (37:00.777)
+Yeah. Like we don't want agents to be writing release. This is garbage, yeah. We like this is kinda nice, but like humans don't need to it takes it takes ten Like it's just it's this is a one liner.
+
+But this loop of having this agent loop of basically driving the whole language and the testing coverage and every single language interaction through this system has really helped a lot.
+
+dex (37:33.176)
+This is cool. We got a bunch of questions in the chat. We'll start with the interesting one is what what benefit does linear provide to this type of engineering with agents discovering? Is that is that is that just ancillary? Like why why linear? And does everybody need a linear or a linear shaped thing?
+
+Vaibhav (37:35.991)
+yeah.
+
+Vaibhav (37:47.439)
+No, it's a it's a huge difference.
+
+Vaibhav (37:53.19)
+Yeah, a hundred percent. if you're a team. and the reason is like look like we said, like some of these issues are just trash. Like the previous version of this issue was not good. It was saying it's a skill issue. It's not a skill issue, it's a BAM will describe issue. There's some agents are not good enough yet to like have that kind of nuance in there. And you likely want some human the loop to help define the problem really well. Someone needs to take ownership of that. And and any team
+
+dex (38:17.582)
+This is what we talked about last week. It's about leverage. It's like, hey, like where can you apply a little bit of human effort to keep avoid, hey, look, we did three rounds of editing and three rounds of PR checks and three rounds of of code review just to find out that the thing is broken on the other end. Like that it was completely the wrong approach.
+
+Vaibhav (38:22.32)
+Yeah.
+
+Vaibhav (38:28.753)
+Exactly. Exactly. Yeah, and like some someone on our team needs to take ownership of this and we w we don't want two people tracking the same bug. So boom, you need some issue tracking system.
+
+dex (38:40.664)
+What
+
+I I think of Linear 2 as like the the what you're using it as here is is almost like a very human-friendly state machine for tracking the state of work and state of world. Like you could do this in like any state, but you could do this in temporal, whatever it is, but linear is designed for humans to interact and you need a human-friendly tool to like one track like, you know, comment and and give feedback and control where the work is going. And two also is just like
+
+Even if this was totally headless and lights off, you you need something that tracks what state is this thing in and what type of work does it need to be. If you didn't need humans looking at it, you could probably just use a database, but this is like when you wanna be in the loop, this is a great interface.
+
+Vaibhav (39:21.967)
+Yeah, it's it's just a database.
+
+It's just a database and need some UI that your team understands of like who which pro which person has taken ownership of an issue and like that's high value for linear. Like whether it's your internal tools or linear, it doesn't it doesn't matter. Use something. And there are there are small differences with linear because right now, to be honest, all of that could probably be on Notion too. Like it's it's not too complicated the system, but there's little there's little things that make it easier to kind of build this out with linear. Like you can have sub labels, right? Like we we you can have different views. You can you can sort tabs. Like it's just it makes it a lot
+
+It's engineering you don't have to do. Yeah, it's it's just a lot easier to kind of just use it as in the way that we're using it when it offers you all of these sort of like features that you can actually add to your your your Kanban board. So it's it there's improvement improvement. Probably the most important feature in linear for me is long term. What you get is you get this history. Yeah. So what you can do is you can actually analyze the history of your linear issues and see how many issues have to be redrafted and you can see if you can categorize them and now you can build a bit different loop to make that loop to to make the original loop better.
+
+dex (40:23.182)
+To improve your initial drafts.
+
+Vaibhav (40:25.266)
+Exactly. Because you're like, what's happening? It's like, well, cool, this is the class of issues that I'm seeing in redrafting. It's like, it often is a BAML skill issue when it should be a BAML describe. Yeah. So now next time I'll just put that in the prompt. Before declaring any time it's a skill issue, write another loop to see could this instead be improved by BAML describe? And if it can, it will just do it earlier without a human in loop. So we're like, but you can only do that in history in hindsight once you've dis detected a class of issues. And for that you need automation.
+
+dex (40:50.988)
+Matias had another good question, which is like how do you break the size of the issues and like what do you use to measure it and what's the role of AI versus humans in deciding like size and scope?
+
+Vaibhav (41:01.477)
+So that's really easy, which is like we have you can see that we have easy issues and hard issues. A T B issues are not ever tagged as easy or hard for now. We just assume that they're easy. Most of them are. If they're really hard, we just move it out of the ATB pipeline and assign it to a human. Yeah. Like some stuff is just a human issue. and there just are some of those.
+
+But a lot of stuff is just like someone just needs to drive Claude to fixing that problem. So like we have like a bunch of okay, let's let's not go to one one good one is the one Avery picked up, which is the So like we have people issues. Yeah. And like people issues are like there's like
+
+Some shit is hard. Some stuff takes like like we have issues that are like it's gonna take like eight days to fix some of these. See this one empty brackets? That that's an ATB issue. Like this was found in ATB and Avery's like, yeah, yeah, this is something that we need to think about. but this st it started from from A T. Exactly. And you can see this right here. Like ATB found the issue.
+
+And like there's evidence here. Yeah. So we can click on this and like we can see what the issue is really fast. And this was ported from Notion. That's why it says error. But yeah. Yeah. And it literally has the issue of exactly what the problem is. It can go detect it and like somewhere down here. Yeah. I don't know. But like you kinda get the point. there's like right here.
+
+Like this causes runtime expected map got array. Like that's a bug. Like it should not crash. We human should go inspect this and see what caused this. So it's a very nice transition from like human to agent. and we try and keep things as agent. And a human can create an issue and make that an agent issue as well. But humans don't write I'll show you the difference in human issues and agent issues, and I'm sure everyone has seen this, so I'm sure it's very reductive. But just to be real
+
+dex (42:36.792)
+Yeah.
+
+Vaibhav (42:51.557)
+Here's a here's a human this is a this is also an age this here's a human issue. It's just not as good. It's not that it's bad, it's just like not as rich. Right, and like I'll show you the worst culprit of these human issues.
+
+dex (42:59.041)
+Mm-hmm.
+
+dex (43:08.204)
+Is the ones you wrote?
+
+Vaibhav (43:08.283)
+worst core proof of this human exactly. Like I have a huge task. It's like a this is incorrect. It's like a freaking like eight day task. It's just this is what I wrote. And it's like there's a notion there's like and the notion URL this is important for notion. Yeah that's the actual issue. You can check out to see what you wrote there. why can't I open that freaking shit system? I hate Okay, well this maybe this will open this maybe this one. I don't really know.
+
+Vaibhav (43:41.372)
+Okay, well anyway, if I open this issue you'll see and see that's absolute trash. Because like I don't write good issues. but agents write phenomenally detailed issues. So that's where I think like breaking down size and this migration of human to agent is can be really useful. I don't think so. And at least they all have the same structure too. It's nice when your issues are are structured similarly across. So it's easier to scan a bunch of them. Yeah.
+
+Any other questions? Josh is how do you attach outputs on Linear? we actually just link it. So Linear does not actually have full outputs. it just has the text blob, and then we just link it to the actual issue under the hood. because Yeah, or the PR or whatever. Everything is kinda linked through there. So you can think of like linear as like the collection of all the links, but the actual stuff lives over here. I know exactly what and like this like the source code, for example, there's no reason to put the entire source code as a whole run directly on linear.
+
+Because it's not what caused the issue. So like something in here caused the issue. So we just try and like make the CI C D a little bit nicer. So like as you're scanning through the system, you can find these bugs much, much, much faster. And you'd be like, what's the thing that failed? And we should see very, very few failures. And obviously we'll have some. But the goal is to have almost none. and like figure out exactly what his failures are. I don't know why it doesn't highlight red on the UI over here. We should fix that.
+
+But this is the kind of stuff that we find. And we like for example we had a thing called BAML describe, which describes different things. So the agent literally just run BAML describe string to help it describe to you exactly all the string methods that exist. Yeah.
+
+dex (45:15.232)
+Or the the minimap at the top is that by time of message or size? Okay. That's interesting.
+
+Vaibhav (45:20.005)
+Yeah. Time. So you can actually see like exactly where the latency is, and like see there's like a timestamp that we capture over here. Yeah.
+
+dex (45:29.667)
+That's cool.
+
+cool.
+
+Vaibhav (45:32.486)
+We should probably normalize this to be like one second just means something very special, but it doesn't really matter. Yeah, there's there's always gradual improvements. You can also check out the other view too. I mean it's not as verbose, but it's a lot more It'll talk to you like yeah it's E V. Yeah like contained. Yeah. Like a It's like okay, there's like an L S error, like, okay, whatever. and it was like it bam well SRC doesn't exist, makes sense. Exit code too. Yeah. It's like that's the error that it had this time, so I don't really care. Yeah.
+
+dex (46:01.112)
+Can you expand everything? I'm always like, yeah, you can't expand all. Yeah, there you go. Scrolling is easy, clicking is hard.
+
+Vaibhav (46:03.919)
+There used to be a button. Expand all, yeah. Yeah, that was that was that was a specifically requested feature from Five Fox. Like I wanna just expand everything. And then eventually I'm like, I'll just
+
+dex (46:12.056)
+There you go. I don't wanna click. I just wanna see the whole thing without reading any of it. I just wanna load it into my brain without reading it, right?
+
+Vaibhav (46:20.209)
+Well, that's what it looked like for a while. And then he's like, just give me the whole transcript too. Like I I don't I don't wanna have to like click open and see enough. Just give me the the entire thing like this. so yeah. how do you manage costs? we just use the best models because the thing we're trying to measure is how good is a model at writing demo code. We we do calculate the the the cost per run too. that that is something that I've I've worried about. Like you know, like you can see costs there. We'll we'll we'll keep track of how much each of these each of these runs costs.
+
+dex (46:24.642)
+Yeah. Yeah.
+
+Vaibhav (46:50.313)
+But we do just use one model right now. There's probably one last thing that's worth sharing, which is like we have a thing called an arena. So an arena is where you actually give it a bunch of candidates like skills. So like one of the things we're doing is try we're trying to make our skill better. And it turns out the best skill that we have is actually a tiny skill because Bamwell described us so much heavy lifting. Like the best skill is actually not a long skill, it's actually like the shortest skill.
+
+Now we have and like this just works. Like this is which one is this one? you added you updated this one. Yeah, yeah. We had a super micro as well. We we had a micro describe micro describe for a while was the best. Yeah, like this was the best. And like I we have another And then eventually like you can just keep playing with these arenas and set we you can literally launch these from Slack. Just like, hey, try this task, run it on all of the skills. And the skills are different branches in our skill repository. And it'll just track to see each skill, the result from it, whether it worked.
+
+dex (47:26.51)
+Interesting.
+
+Vaibhav (47:43.785)
+The number of things.
+
+dex (47:45.135)
+okay, so you take all of the versions of the like here's the docs for BAML and you try the same task against all of them and you basically like eval like and what do you what is your metric? Is it's cost and turns and whether it succeeded?
+
+Vaibhav (47:54.352)
+Exactly.
+
+Vaibhav (48:01.084)
+Yes. Cost, turn succeeded, cost, exactly. Number of issues, like it's right here. We just look at it. It's like very easy to tell. And it's interesting. You can just see what happens.
+
+dex (48:13.45)
+I see. And then you're actually looking for like did like friction is a is a model doing inference on the trace basically to try to see like, hey, is did the did the did the agent implementing the thing struggle a lot? Did it like get stuck in a hill climb trying to get something to work?
+
+Vaibhav (48:20.081)
+Yes.
+
+Vaibhav (48:25.413)
+Yeah, exactly.
+
+Exactly. Exactly. It's just there's so much data that you can just get from running agents. like there's just like small things like Bamble Describe string is truncated. So like we should just like yes, we learn some bugs from here, but we also just learn like okay, cool, this is how we can so instead of writing a skill, we just write many skills and just go data measure so our users don't even have to test what's going on. Yeah.
+
+dex (48:53.144)
+That's dope. guys, this is super interesting. Any any final thoughts or last words?
+
+Vaibhav (48:58.875)
+Go do this for yourself. It'll probably make your product better. Way faster than you will.
+
+dex (49:02.69)
+Yeah. I I really like the the key thing that I'm like love love drilling in and taking away is like you don't have to build the entire software factory at once. You don't have to mastermind this whole future system. Like you can build small even that redraft and then back to ready back to not started loop is a small thing. And you're actually stacking and layering these small isolated problems. and I think that's a really, really like
+
+Vaibhav (49:22.875)
+Yeah.
+
+dex (49:31.0)
+good approach to start getting value tomorrow or this week without saying like I'm gonna revolutionize how we ship. It's just like find places where you can use agents and then figure out where are the right leverage points for humans, where are the right leverage points for agents, and then just start building those things and plugging them into each other and then one day you'll wake up and you're, you know, 80% of all of your stuff is automated. That's awesome.
+
+Vaibhav (49:53.828)
+Exactly. Exactly. and then yeah, if you guys want link to the app, I'll post it. But it's not yet fully ready. If you happen to sneak it in the video, great for you. but I'll probably post it soon. link's not fully ready yet. The language is slowly being released. So as we release it. If you're on the
+
+dex (50:12.736)
+AI that works is built on trust. If you found it, go check it out. Please don't go posting this on social media or whatever.
+
+Vaibhav (50:17.561)
+Yeah. If you're on our Discord you'll you'll see links to it. and we'll post it around. But and we have another special C L I command coming that's actually gonna help users communicate on this as well. Yeah. One I'll leave you with one last thing that actually happens, which is like sometimes issues get fixed naturally without having to actually go do this. So we have another agent that just takes all our issues and just tests them and see if there's still issues after a certain amount of time. Yeah, it prunes the issues. And this will be
+
+Stuff just gets fixed. Like Dex, what you said is like you don't have to build it all at once. You'll just like realize certain things like we have so many stale issues. Let's just build an agent to just try the issues and see if it's like stale and then see this one? Like this was the one we fixed. And because we fixed this one, this one was also fixed. But that was notice that notice the skill issue did not deduct correctly. But it's still fixed, so we don't think about it. Okay.
+
+dex (50:57.986)
+See if it's still a problem.
+
+dex (51:09.836)
+Nice. Guys, this was super fun. Vibob, you wanna do a recap?
+
+Vaibhav (51:16.379)
+Yeah, I'll do a recap. all right, everyone, thank you for joining. We're gonna cut that out, hopefully. Anyway. hey everyone.
+
+dex (51:28.172)
+I hope they put that in. That's gotta be the first short is just you doing that on a loop.
+
+Vaibhav (51:34.119)
+Yeah.
+
+Hey everyone, I'm Bybob. And today we're gonna talk about a really fun thing that we've been building out for a while, which is how we actually go ahead and use agents to build automated processes to fix problems in our programming language. The first thing we'll share is how we have this agent automatically go through and draft a bunch of issues along the way for various problems that we auto generate. We draft those issues, we are able to go the website's going down. What a great timing for the website to go down. I I don't think
+
+dex (52:05.176)
+Too too much detail.
+
+Vaibhav (52:05.851)
+Down. Just try the first run. I I don't know why
+
+it's just slow. Okay.
+
+dex (52:13.388)
+You guys need an agent to fix the website when it's slow.
+
+Vaibhav (52:15.847)
+this is a problem in slot. I'll redo that. All right.
+
+dex (52:19.35)
+Mm-hmm.
+
+Vaibhav (52:20.719)
+Hey everyone, today we're going to talk about a really interesting tool that we've been building in-house with Dylan over here, which is how we're actually going to use agents to drive automatic improvements to our programming language. One of the first things that we do is we have agents automatically drafting issues behind the scenes and creating tasks for other agents to pick up. Agents go ahead and try and fix them. We track the entire transcript and the all the code that is produced, the actual like clawed code transcript that's happening. We find errors along the way that's happening. We have another agent analyze the system, find issues.
+
+And a whole bunch more complicated systems that eventually lead, or I should say simple systems, that eventually lead to us creating PRs that we merge and fix regularly on the team. We talk about the team processes that we use, how we use linear, and how we actually multi-threaded our team to ship effectively a highly hopefully a highly stable language over time. I'm really excited to get started. Let's get into it.
+
+dex (53:14.51)
+Let's do it boys.
+
+Vaibhav (53:16.485)
+Alright, amigos. This was fun. Thank you, Dexter, as always. And thank you everyone for joining in. Yeah. Thanks for having me, guys. Really appreciate it.
+
+dex (53:19.342)
+Alright dudes, thanks Dylan. This was dope. Thanks Vaibhav. Thanks everyone for watching. We'll catch you next time.
+

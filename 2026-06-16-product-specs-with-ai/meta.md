@@ -8,10 +8,11 @@ description: |
 event_link: https://luma.com/ai-product-specs
 eventDate: 2026-06-16T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=0LPBw3NO3Jc
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-06-16-product-specs-with-ai
+  youtube: https://www.youtube.com/watch?v=0LPBw3NO3Jc
 season: 2
 episode: 62
 event_type: episode

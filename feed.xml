@@ -16,8 +16,46 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 15 Jun 2026 17:11:45 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 29 Jun 2026 19:02:39 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[Software Factory for Agent Tools]]></title>
+      <description><![CDATA[Everyone's obsessed with software factories, and the core of a software factory is a persistent feedback loop - in this episode Vaibhav and Dhilan will showcase a loop they built to test new BAML language features 24/7 and improve the language based on feedback from coding agents trying to implement features.
+
+
+Watch: https://www.youtube.com/watch?v=485FGIq8LKM
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-06-23-software-factory-for-agent-tools
+Event: https://luma.com/agent-tools-software-factory
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=485FGIq8LKM</link>
+      <guid isPermaLink="false">aitw-063</guid>
+      <pubDate>Tue, 23 Jun 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=485FGIq8LKM" type="video/youtube" />
+    </item>
+    <item>
+      <title><![CDATA[Product Specs with AI]]></title>
+      <description><![CDATA[We've talked a lot about design discussions for planning work with AI and getting leverage before writing the code, but this process has a common pitfall: it combines product decisions (how does it work, what is the user experience) with technical decisions (how do we build it, what patterns do we follow).
+
+This complecting of concerns can cause important questions to be missed. On today's AI that works we'll dig into techniques to split out product vs. technical questions to enable less-technical folks to participate in product specification that is grounded in codebase research, and ensure technical depth is achieved without getting distracted by product questions.
+
+
+Watch: https://www.youtube.com/watch?v=0LPBw3NO3Jc
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-06-16-product-specs-with-ai
+Event: https://luma.com/ai-product-specs
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=0LPBw3NO3Jc</link>
+      <guid isPermaLink="false">aitw-062</guid>
+      <pubDate>Tue, 16 Jun 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=0LPBw3NO3Jc" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[Hands-on with Fable 5]]></title>
       <description><![CDATA[We had agent observability on the schedule, but Anthropic shipped Fable 5 about twenty minutes before we went live, so we tossed the plan and got hands-on with the new model instead. Zero prep, all live.
