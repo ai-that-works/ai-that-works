@@ -8,10 +8,11 @@ description: |
 event_link: https://luma.com/aitw-agent-observability
 eventDate: 2026-07-07T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=_WLVv1C6-VM
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-07-07-agent-observability
+  youtube: https://www.youtube.com/watch?v=_WLVv1C6-VM
 season: 2
 episode: 64
 event_type: episode

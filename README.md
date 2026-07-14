@@ -12,14 +12,18 @@
 
 <div align="center">
 <h2>🦄 <strong>Next Episode</strong></h2>
-<h3><strong>agent observability</strong></h3>
-<p><strong>Tuesday, July 7, 2026 at 10 AM PST</strong></p>
-<p><em>In this episode, we will dive into AI agent observability and answer a question every production engineer eventually faces: how do you diagnose why an autonomous agent went off the rails three days ago?
+<h3><strong>SOTA Coding Agent Benchmarks</strong></h3>
+<p><strong>Tuesday, July 14, 2026 at 10 AM PST</strong></p>
+<p><em>We've had a lot of benchmarks for coding agents for a long time. We'll talk about the past generation and the new generation, what they're doing differently, as well as... I don't know. come hang it will be good.
 
-When you are dealing with non-deterministic tools, old-school debugging habits like inserting `print("here")` statements fails to scale. We will break down the essentials of modern agent tracking, from implementing structured logging for complex tool calls to establishing robust tracing that allows you to replay and reconstruct an agent's exact decision tree.
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
 </em></p>
 
-<a href="https://luma.com/aitw-agent-observability" target="_blank">
+<a href="https://luma.com/sota-benchmarks" target="_blank">
 <img src="https://img.shields.io/badge/🦄_REGISTER_NOW-Join_Live_Session-ff4444?style=for-the-badge&logo=calendar" alt="Register Now">
 </a>
 
@@ -103,10 +107,29 @@ Before joining, get familiar with our toolkit:
         <div style="margin-bottom: 2px;">
           <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
         </div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-07-14</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#65</strong>: SOTA Coding Agent Benchmarks</div>
+        <div style="font-size: 13px; color: #666;">
+          <a href="./2026-07-14-sota-coding-agent-benchmarks">code</a> • <a href="https://luma.com/sota-benchmarks">register</a>
+        </div>
+      </div>
+    </td><td><div style="padding: 8px 0; line-height: 1.5;">We've had a lot of benchmarks for coding agents for a long time. We'll talk about the past generation and the new generation, what they're doing differently, as well as... I don't know. come hang it will be good.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+</div></td></tr>
+<tr><td>
+      <div style="padding: 8px 0;">
+        <div style="margin-bottom: 2px;">
+          <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">PAST</span>
+        </div>
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-07-07</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#64</strong>: agent observability</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-07-07-agent-observability">code</a> • <a href="https://luma.com/aitw-agent-observability">register</a>
+          <a href="https://www.youtube.com/watch?v=_WLVv1C6-VM">watch</a> • <a href="./2026-07-07-agent-observability">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">In this episode, we will dive into AI agent observability and answer a question every production engineer eventually faces: how do you diagnose why an autonomous agent went off the rails three days ago?

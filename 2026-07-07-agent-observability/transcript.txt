@@ -1,0 +1,826 @@
+dex (00:00.941)
+Yeah.
+
+dex (00:06.008)
+We we we fightin' some slop today, dude? Are we are we slop fighting? What's up dude? How is it how is AI Engineer, you fun?
+
+Vaibhav (00:08.914)
+It's time to fight the good fight. The fight is on. How's it going, man? it was tons of fun. How was it for you?
+
+dex (00:19.076)
+it was great. I was exhausted. I had a wedding the weekend before and then I had four days of conference. and then I had another wedding and I just got back and I was literally like I don't know, I was sitting around yesterday. I was like, I need to go like sit in the woods for half a day and not not talk to
+
+Vaibhav (00:33.468)
+Did you did you just reset yesterday?
+
+dex (00:36.684)
+No, I worked. I had a bunch of shit to do. I did however I did tank my fable limits by Sunday night. So my the the the the intense psychosis is is is over, yeah.
+
+Vaibhav (00:37.85)
+I know. Same here.
+
+Vaibhav (00:47.44)
+Really? what the heck happened?
+
+Yeah.
+
+dex (00:53.731)
+can you not hear me?
+
+Vaibhav (00:55.778)
+One second.
+
+All right. I can't hear you. Can you like what the f fucking
+
+dex (00:59.65)
+Yep, better. Yeah, I'm
+
+I can hear you great.
+
+Vaibhav (01:11.014)
+Let's see this, no? Hello?
+
+dex (01:13.206)
+I can hear you. Yep.
+
+Vaibhav (01:17.187)
+Nope. Piece of crap software. I can't hear you.
+
+dex (01:22.294)
+Alright, leave and come back. Leave and come back. Good kid.
+
+dex (01:34.796)
+Now you just give me. What's up y'all? This is AI That Works. This is the show where we teach you how to diagnose audio and video problems on your live stream. we're actually not gonna do any AI today. We're just gonna watch Vybov fiddle with his audio for a while.
+
+Vaibhav (01:51.141)
+One last thing, let me try and place something on YouTube really fast and see if it works.
+
+Mm.
+
+dex (02:00.148)
+And you know, when Vybov is done watching YouTube videos on the stream we'll
+
+Vaibhav (02:01.619)
+my god. I show up on time only for audio to die.
+
+dex (02:12.638)
+You know, this would be more fun to riff. Yeah, I know. We can hear I can hear Viba fine. He just can't hear anything.
+
+It's okay. You know what we're gonna do? Is we're gonna get can you hear me now?
+
+Vaibhav (02:22.943)
+Okay. Let's see.
+
+dex (02:27.8)
+Can you hear me now? No? Okay.
+
+dex (02:36.92)
+Where is the picture? AI Studio.google.com.
+
+Let's see.
+
+dex (02:51.628)
+Yes, I found it.
+
+dex (02:56.812)
+Yes, this is the this is the chat thread that is important is we gotta remind audio we gotta remind Vibob to show up on time with his audio in check. I think I like this one better, although it has too many arms.
+
+Vaibhav (03:11.679)
+Mm-hmm.
+
+dex (03:14.776)
+We'll just leave this up until until he's back. Dude, just use your just use your computer speakers.
+
+Vaibhav (03:20.957)
+I'm trying. No, 'cause then that goes really bad and we're gonna get yelled at and then you're gonna be sad.
+
+dex (03:28.532)
+I'm already sad, dude.
+
+Vaibhav (03:30.715)
+I can't hear you right now 'cause you're on speakers. But give me one more let me let me try for one more minute and if I can switch to AirPods and we're good to go.
+
+dex (03:38.722)
+Bro, I'm buying you a pair of AirPods. I tried to vib a lot of people don't know this. I tried to buy Vybov a microphone, and it got delivered to his house and then it got s the package just got stolen.
+
+Vaibhav (03:41.425)
+I have one right here. There's
+
+Vaibhav (03:54.493)
+Then I have to buy myself a microphone. Okay, well my airpods aren't connecting, so fuck that shit.
+
+Vaibhav (04:08.167)
+Okay. It appears to be open to connecting on Bluetooth. What the heck is this software, man?
+
+Vaibhav (04:19.579)
+Alright.
+
+dex (04:19.778)
+Welcome to the A V episode of AI That Works. we're gonna learn all about headphones and different audio things. you're back. All right. Charge your goddamn headphones, dude. Charge them before the episode starts.
+
+Vaibhav (04:27.237)
+We are done. I am back. I can hear you now. Everything's working. Things are I did. I did. Anyway. All right. Well sorry for the last five minutes.
+
+dex (04:41.646)
+Well, you'll just have to make it up. as I was saying, welcome to the AI That Works show, where Vibob definitely always shows up on time. my name is Dex. I am the CEO and fo co founder of Human Layer. We help you solve hard problems and complex code bases with AI. and I am joined by Vibob, the CEO c I guess he's just co founder of of Boundary ML, where they make a programming language.
+
+Vaibhav (04:50.865)
+Yeah.
+
+dex (05:08.27)
+For AI and the AI era and for AI agents. And yeah, what was your biggest takeaway from AI Engineer last week?
+
+Vaibhav (05:17.719)
+I think a lot of people are extremely stressed about the quality of their code bases over time. It seems to be a source of anxiety for almost every human I've met. From the best engineers to the worst engineers.
+
+dex (05:32.179)
+I agree. Yeah. That was kind of the whole software factory theme was like everyone had their own solution to how do we fight slop? How do we how do we let how do we use AI to help us ship code without like screwing it up? And it's like you had the people who said just do more code review agents, they said just do more linting. You had you and Eric who were both like, We need new programming languages. It
+
+Eric's languages were more like alien space languages that Jeff Huntley predicted. I think yours is a little more sane and you know, continuous innovation rather than discontinuous. But yeah, I I think software qu the twenty twenty six is gonna be the year of no more slop. By hell or high water, we are gonna figure out how to make it happen as a as a as an industry.
+
+Vaibhav (06:20.707)
+I think we're gonna have something happen. I don't know if it's gonna be no slot, but I think we're gonna get further away. And I do think a lot of people are feeling I think a lot of people are feeling a lot of the anxiety of what like their code base are devolving into. that's kinda like that was my biggest takeaway though. I have another question for you. When you had the opportunity to go talk about human letter at the conference, what do you think resonated the most?
+
+dex (06:38.284)
+Yeah.
+
+dex (06:52.812)
+I think there's this weird, like the there's this like spectrum of people's maturity with AI and their LM intuition and like their their proclivity to the hype machine and things like this, of like where are you along your journey of like, this really works, or no, it doesn't, and like it's kind of like you the midwit curve of like, no, I need six T mux sessions and I need this and I need that, and like the end of the curve is like.
+
+Nope, just read the code and make good software. And I think there's a lot of there's a lot of acceptance that, you know, I think someone came up to me and said seventy percent of the people at this at this conference are actually like early in the journey and they're like really excited about whatever is being hyped right now. And there's about thirty percent of people who have like, Yep, seen that, tried that, been doing that for a year, doesn't work, like
+
+Vaibhav (07:42.814)
+Right.
+
+dex (07:44.724)
+I am I am past that and like so I don't know. The the biggest takeaway for me is like there's such a broad spectrum of of AI and AI maturity and it's I know on this show we work really hard to kind of like cut through the hype and give you stuff that actually works and I think that's like more important now than ever. And I don't know, it's it's hard to both like it's the broader the audience and the broader like the things. This is like a teaching in general. It's like you have to you have to know
+
+who you're talking to and who you're trying to serve and it's getting complicated.
+
+Vaibhav (08:18.289)
+Yeah. I think I I just wanna shout out a few folks. Like I know a few folks came up to both me and Dex at the conference of like you guys have been longtime fans and like I've been tuning in. I was as a founder that was so cool. That was so cool to just experience and have you guys come out here. and just say hi and like it's awesome to know that it's this is a fun conversation you guys are tuning into. But for
+
+dex (08:29.388)
+Yes, you guys rock.
+
+dex (08:41.25)
+I think I got Vybov hooked. He's never been to an AI engineer conference before. And I think we're gonna get him to come to the rest of them. So if you want to hang out with us, go to the AI engineer event near we're not gonna go to every single like I'm not going to Singapore, it's too far. But if you're an AI engineer in New York, if you're an AI engineer in Miami, we're gonna try to make it to I'm I'm gonna try to make it to all of those because I I I love the crowd and it attracts really, really smart people and I always learn a ton. So if you wanna hang out with us, AI engineer.
+
+Vaibhav (08:46.087)
+It was great.
+
+Vaibhav (08:57.255)
+Yeah.
+
+Vaibhav (09:08.051)
+Yeah, agreed.
+
+dex (09:10.648)
+Good shit.
+
+Vaibhav (09:11.357)
+Hundred percent. I think for me, I had a really interesting thing when it's actually related to today's topic. So when I was talking a lot about BAML, a topic came up pretty often which is like observability. And I know Everyone talks about observability, but today I kinda wanna both whiteboard a few things and also talk about stuff from like more like first principles around observability.
+
+And really the reason that observability came up really high is because when I think about observability in today's day and age, I actually think of it as the only way to understand our code base and Daksh, I'd love your thoughts on this as we chat more. But when I think about it it's like look, I don't read every line of code anymore. I've I've been saying this for a bit. I I basically stopped reading the code. I read a lot I I read some of it. I read invariants, I read the very low layers, I'd read the API surface area, but I don't read every line of code. It's too much pain in the ass.
+
+But I'm not
+
+dex (10:07.438)
+Do you wanna see what I read?
+
+dex (10:11.628)
+No, I read we actually we added this thing to human layer recently that is like a PR walkthrough. Have you seen this? Let me find let me find a big one.
+
+Vaibhav (10:18.076)
+No, shot me.
+
+Vaibhav (10:27.081)
+Okay, while you do that. The thing the thing that I Okay, nice. nice that a screenshot and stuff too.
+
+dex (10:29.154)
+No, we gotta hear.
+
+So this is there's the comment. Wait, where is the actual description? Nope, that's not it. Sorry. Keep keep keep going. I'll f I'll find you a good one. Keep keep talking about what you read and what you don't.
+
+Vaibhav (10:39.751)
+It's okay. I'm gonna screen share really fast and we're gonna get to here. But I think when we live in a world where we don't read the code anymore, the only way to really combat that in my opinion is basically to have some understanding of what the code does post execution.
+
+it's kind of like how if you ever have website, the way that you understand how your website is working or not is not by like reading the code of the website. You literally just look at the funnel, you look at engagement rates, and that tells you all the data. But now I think we kind of have to do that for all systems. Not just not just AI systems. you got it? Yeah, go for it.
+
+dex (11:18.51)
+here, I got let me let me let me let me get you this example real quick. wait, where did it go? Did it just did it literally just close the tab? God damn it. Alright, all systems, not just AI systems.
+
+Vaibhav (11:27.647)
+Show me. All right. So like let's say we have a block of code here, and effectively it operates as like a black box.
+
+And as long as the black box keeps on like giving you like correct I guess blue box, as long as the blue box keeps giving you like correct outcomes as far as you're concerned, that's kind of all you measure. You're basically like how many of the how many of the outcomes that we do for like d user A, user B yeah, encountering this scenario, how many of them work? And at some point you go down this road, you're like, Okay, well, we have ten that are working, and at some point some user comes along and says, Hey, this stuff doesn't work, and they report some bugs.
+
+And what you really measure as an end user, at least the way I think about this, is you measure like how often is someone getting an undesired outcome out of this. And and
+
+dex (12:17.793)
+This was we started with like uptime. This was like what Appdex was, right? Appdex was this proprietary metric that now everyone has, which is like just a number from zero to a hundred. or actually it's like ninety nine point nine it's like two decimal places of like
+
+How how how how often are user getting disappointing results? And it was like a com com combination of response time and error rates and all this stuff that gave you kind of this one level picture of like, is it is it good and what percentage of people are not having a good time?
+
+Vaibhav (12:51.485)
+Very sad, you stole my thunder. That's why I drew it this way. Because my next ball was to exactly do this. It's like this is exactly how we do distributed systems. If you guys think about this. we basically have this metric, because it's impossible to know the status of a distributed system. You can only measure it as it exists at any given time. And what you really do as you become a bigger and bigger company is instead of measuring one system, you actually start measuring subsystems as well.
+
+dex (12:53.707)
+No
+
+dex (13:00.565)
+Mm-hmm.
+
+dex (13:07.02)
+Yeah.
+
+Vaibhav (13:19.949)
+and you basically start building all these metrics and all these things that say like how well is your system performing over time rather than just like a single part of your system. and now all of a sudden you've built GitHub and now have you eventually hopefully end up with five ninths of uptime, though that's very hard. and obviously as your system gets well, the problem is what ends up happening is as your system evolves, and the thing about regular software is this doesn't happen very much. Your system doesn't typically evolve. The way your users use your distribution.
+
+dex (13:36.397)
+Wouldn't that be nice?
+
+Vaibhav (13:49.466)
+distributed system is very generally stable and predictable over time. And we've seen exactly what happens when it becomes unpredictable. For example, in the case of GitHub, more code is being pushed to GitHub than they ever predicted at a rate that they could not have modeled. Like you could it is impossible to go back to twenty twenty one and say we are gonna push this much code into GitHub. It like
+
+it would be an insane bet to go make that bet. Just like it would be an insane bet to go back to twenty twenty one and say, We're gonna need this much RAM in the environment So we need to start building these factories in like twenty seventeen or twenty twenty so that we have RAM today. It's just not gonna happen.
+
+dex (14:14.392)
+Yeah.
+
+dex (14:23.692)
+Yeah. If I if I came to you in in twenty twenty twenty one and said, I'm gonna thousand X the number of software developers by twenty twenty five, you would have like, you're not
+
+Vaibhav (14:33.917)
+Yeah, exactly. It's just not gonna happen. there's like a curve and you fit the curve and you there's some like ratio that you go to this. So effectively what happens is when your distributed system no longer models your system, what ends up happening is you basically just suddenly start getting way worse uptime. And if you go back, yeah, I mean any company had a trillion dollar valuation in twenty twenty twenty nineteen was crazy. It's just not what you expected. but if you go back
+
+to this kind of system and started doing this. Think about how this works for agentic systems. We kind of have the same thing, except the big difference here is except your end user.
+
+This this funny little person over here. can I draw? How can I draw in here? Sorry.
+
+dex (15:24.43)
+You can do whatever you want, man.
+
+I loved the stick figures in your presentation. This is what Excaladra was meant to be used for.
+
+Vaibhav (15:28.851)
+This end user.
+
+I use JS Paint, just to be very clear. this end user over here, the only problem is this end user is a lot more dynamic than distributed systems are. And that makes a huge difference. Because as this end user, they're suddenly gonna push in a whole bunch of dynamic inputs into your actual agentic system or your non-det your basically your vibe-coded slop that you built over here.
+
+and like I don't say that in a bad way. I generally mean this with love. I think everyone's gonna have more vibe-coded slot than ever before. And every single time this user does this, you're gonna have a lot more reds. And the better and the better and more capable you make your system, ironically enough, the more reds you'll have. And the more reds go ahead.
+
+dex (16:20.078)
+Well
+
+Sorry, fin finish your point.
+
+Vaibhav (16:24.669)
+Well, and I the reason I say this is not because your system is bad. It's because a user is gonna start building effectively insane expectations about what your system will do and it'll just have more and more unmet expectations because what you're really doing is you're building like my god, nope, wrong thing. You're basically building this chart of like what the y what your system can do and it's going like this.
+
+But as your system gets better, the user's expectation of what your system can do is going like this. So what's really happening, and the reason that you're getting more red, is not because your system is not getting better or because the models aren't getting better. The reason that you're happening is this discrepancy is really what you're really trying to like fight. It's like what is the amount of delta that the user is perceiving between what your system it thinks your system can do versus what it can actually do. And this it's I think in the world that we're headed towards today, the user system is gonna go up.
+
+And in this world, and like my opinion is that the only way to actually understand this system is basically to have more and more probing points through arbitrary points in your software. So instead of having a single uptime number, you actually have many uptime numbers. You have many implicit understandings of exactly where your code base is failing. So then you can say something like oops.
+
+Vaibhav (17:48.948)
+So then you can say something like this. Or it's like, hey, this is our uptime for this section of the graph, but that doesn't mean it's the same exact uptime for this section of the graph. And being able to introspect your code base at this level of granularity, I think is the only way to truly go and go do this. And I'll talk about a whole bunch of like ways that we can talk about this in a second. But I just I first wanted to talk about like the ph philosophy behind this. What are your thoughts on this guy?
+
+dex (18:14.262)
+Yeah, this is this this is Andy Grove, right? This Andy Grove's whole thing was like, I mean, this was Intel a while ago. This was not really about measuring software, it was about measuring like teams and people and processes, but it's like treat it like a black box, and then when the black box no longer serves you and you have to open the box, like maybe you put windows on the box, you put little slits on where like the old school observability is like you would just like omit a couple metrics, right? You would have like four numbers that would just tell you like what's the average time to do this, what's the average rate of X, and so you're like
+
+kind of poking slits in the box and then eventually you're just like what you're saying is like it's so complicated and so random and so so like just the the amount of s different cases going in that it's it's not enough to just poke slits in. You kinda have to be able to really look at every single thing that's happening inside.
+
+Vaibhav (19:00.223)
+Yeah, and the reason for this is like the problem is once someone reports a bug, as sad as it is, this metric is only useful in hindsight. You can't have foresight about what the problems is and if you did know what the foresight is then like great, just fix the problem because just ask an agent it'll fix the solution for you. But if you
+
+dex (19:17.356)
+And this this was actually like if you wanna you wanna do a little more history here. Like so like the thing you used to have was like here, I'm gonna go off to the right here. Was like you had basically like the number the the the key the key the first thing we had was like when data was expensive and memory was expensive, we had metrics. And so you literally had like one number and you could say, you know, for for a given server, you know, the what's the error rate, right? And it would be good, and then it would pop up and then it would come down, right?
+
+Vaibhav (19:21.33)
+Yeah, go for it.
+
+Vaibhav (19:36.892)
+Yeah.
+
+Vaibhav (19:46.931)
+Yeah. I I can do it for you. I I got it. No, you gotta have artisanal art, man. Artisanal art. Anyway, go on. Okay.
+
+dex (19:47.182)
+can't I can't do the drawing thing. Hold on. We're gonna do this one. No, we're gonna do it this way.
+
+No. So then you could say, okay, for server one, it looks like this, and for server two, it looks like this. And like you would just look at like, yeah, the error rate for different things. and and and you would just draw like, you know, what is l one one number per thing you cared about, and you would have like a couple hundreds of these and you would make dashboards with this stuff. and so your your data would basically look like, you know, time stamp it was time series, right? So you would have like a timestamp, and then you have, you know, like
+
+One S, two S, three S, like into something. I don't know. These are these are all dates, right?
+
+Vaibhav (20:30.419)
+Yeah, exactly.
+
+dex (20:31.264)
+And then you would just have like values, right? And so you would say, you know, like server one. Yeah, thank you.
+
+Vaibhav (20:40.039)
+Yeah, you'd basically just collect a bunch of data for various servers or various processes or various devices and best basically try and slice and dice them in some meaningful way.
+
+dex (20:49.708)
+Yep. and so these would like value one. and then what we got to in like the mid like basically like what Facebook did with Scuba and then charity majors came and took and turned into like what like they basically she coined the term observability, right? and so observability was basically like instead of just having metrics, have what we call like wider data. Like the the journey of observability is like hardware and storage and like software gets better and more performant.
+
+And we can store more stuff without knowing what we want. And so you have like, you can store like user ID and you can store, you know, error message. And you're basically like storing this. Why is this like this? Hold on, let me left justify this. You you start storing this like event data, basically, where you have like tons and tons of fields of like team ID.
+
+region and so like basically instead of manually having to like decide what your dimensions are, like in this case you store the timestamps for servers, and then you also store the time timestamps for like you know, service, service one, service two, like basically spread across if you have if you have let's say you have like, you know, this was like old, old, old pre cluster days, but you have like server one and server two.
+
+And so the only dimensions you have were like what service was it w what server was it on? And then you have like service one running here, and you have service two running here. And let's say you only have service one over here. Does that make sense? And so you y you c
+
+Vaibhav (22:20.231)
+I got something. If you guys haven't read Boris does great talks about this and this basically just is a great teardown on why you want observable wide events. But like it basically just talks about this and talks about how you wanna go get wide events for all the unknown unknowns. And the graphics he does here are like
+
+dex (22:36.172)
+Yeah, it's way easier to debug if you can store all of the data and then go figure out what you want later and query it performantly and store it like without taking up like billions of gigs of data and etc.
+
+Vaibhav (22:44.207)
+Exactly.
+
+Vaibhav (22:48.571)
+Exactly. So this thing basically just talks about this and says why you want all this data. I'll link the our linked article. Boris is awesome. writes a really good blog post about this stuff. And why can't I send it there you go? Yeah.
+
+dex (23:00.07)
+yeah, this is better than mine. Yeah, because this lets you correlate across any dimension that you might want to care about, and you don't know what the dimension is later. If it's like it it makes it so much easier to find bugs if it's like, all the users that have this thing is true, that's that's the thing that actually correlates with the spike.
+
+Vaibhav (23:21.085)
+Yeah. And and the most important thing for everyone to really understand here is not anything specific about this. It's the most important thing to really understand here is that when you do observability of any kind, it observability is not useful at all for things you already know. Observability is useful in hindsight. When you like why do we have these uptime metrics? Why don't we just start with a standard number? And why do we break them down more? It's because
+
+When something goes down, you want to quickly be like, hey, the main system is down because the database is down. And boom, you want you wanna have that answer. You don't want to be debugging it at that time. You don't want your users or Dexter brought this beautiful agent diagram. Like our users are now not obviously just humans, so let's write this down. We'll also have agents using it. You want agents to be able to understand the spec as well. So the only thing you can find useful is effectively hindsight observability.
+
+And that's like the big that's kind of the big argument that I want to push the world towards more personally, which is you wanna be able to make your entire black box observable. Because if you don't make it observable, then you can't have a hand-set observability. And in order to do that, you have a couple of different options. And one of those options just like how do I zoom in? One of those options, like you're gonna write a bunch of code, like service, API, server, service.
+
+API that does something who I I don't know what this router does, but like like hello route.
+
+you're gonna build a bunch of these routes as you go down this road and as you build this route. One of the things that I recommend that you do for all your top level API is just like add some sort of tracing on top of it. It's super low-hanging, it's super trivial, but it will just make it so that when something goes wrong, even if you don't understand it, you can go do this and just like ask an LM to go do this, add some linter to guarantee this. and
+
+dex (25:16.801)
+That's funny. One of my first projects that I built at Sprout back in like 2015 was this thing called instrumented, where you would like it would like take the function name and it would emit like 15 metrics, basically. this was based on like Coda Hale's metrics, right? You would have like you would have a meter for like you would have like a counter for how often it is getting called.
+
+Vaibhav (25:22.846)
+Yeah.
+
+dex (25:40.654)
+throughput. You would have a timer for like the histogram of like histogram of latency. You would have a counter for errors. and so you could do thing you could compute things off of this like error rate equals, you know, throughput over errors or errors over throughput, right?
+
+Vaibhav (25:43.857)
+Let's see.
+
+Vaibhav (25:47.615)
+Sure.
+
+Vaibhav (25:58.047)
+Yeah.
+
+dex (26:01.617)
+and you could look at like the P99 and etc. And so like basically and and in in the histogram here, like the the the histogram every single thing is a different metric. P fifty, p p ninety, p ninety eight, p ninety nine, etc. and tracing is like you should talk about what tracing really is. Like you should draw a trace, or do you have a do you have a trace floating around somewhere of like
+
+Vaibhav (26:23.451)
+I do. I have a I have one that's available right now. So let me pull that up.
+
+dex (26:26.605)
+Yeah. 'Cause I would say like distributed tracing was the next hot thing after we got into wide data sets. Like that was the thing that people built on top of wide data sets was like Otel traces, open telemetry traces.
+
+Vaibhav (26:35.539)
+Yeah. So I'm I'm just gonna show something because that's probably easier. So like for example. Yeah, I'll just run this. For example, it doesn't really matter what this pipeline does. I'm just gonna run this really fast. But yeah, I mean it's called generate images, so I really hope it generates images. otherwise named poorly. But you're seeing a bunch of functions here. This function
+
+dex (26:42.273)
+You got a waterfall? You got a waterfall for me?
+
+dex (26:50.229)
+This is like some image gen thing, right?
+
+dex (26:56.049)
+Ha ha ha.
+
+Vaibhav (27:03.842)
+this function for example, you can see what it does. It basically is like
+
+It generates an image, then evaluates an image, and then while the score is low, it does that in a loop and eventually returns the image that it finds. if it's less than three attempts. So you kind of get the gist of what the code is doing. But I'm gonna show you what what we really want with tracing. Because once you have tracing, there's a lot of things in here. Obviously, this is using a lot of functions that we don't know. We haven't read the code for any of these. We don't know what HTTP calls we're making. We have no almost no introspection on any of this data. And you're getting a sneak peek that could
+
+dex (27:32.481)
+Yeah. In the old days, if I wanted to in the old days if I wanted to debug this, I'd be like jumping to definition and clicking around and like, okay, let me go read this function body to understand what happens. Okay, let me go click into another function to understand what happens and like building this all into my head of like, okay, how do these things fit together? Where are the slow parts? Where are the error prone parts? etcetera.
+
+Vaibhav (27:50.44)
+Yeah, exactly. And when I really why is it running so many? I have three attempts. Did I have a I'm dumb. I don't ha increase attempts by one. Firstly, like I i so I just want to show again, like how do you find bugs with tracing? Well I at the very least I'm dumping this is this is tracing actually. I'm dumping out the tracing values here. But first things first, let's let's cancel this function.
+
+dex (28:00.322)
+Yeah.
+
+dex (28:05.154)
+Well this is log this is most this is logs.
+
+Vaibhav (28:20.103)
+I'm sorry, we don't have plus plus because plus plus is silly. We should probably add plus plus. as I go do this, I'm gonna cancel this.
+
+dex (28:30.988)
+Yeah, your agent tries BAML didn't find that?
+
+Vaibhav (28:33.631)
+I didn't run this anyway. so as I run this, the first thing to notice is like one really nice thing that you get with really nice tracing is you can build really nice tools like this. You can clearly be like and watch the image evolve.
+
+dex (28:46.958)
+Okay. Can we start can we start with the trace before we go to the UI you built on top of the trace? Yeah, here we go.
+
+Vaibhav (28:55.401)
+We'll just do full screen, let's open the flame graph and just look at this thing.
+
+let's go here. So the first thing I changed the code.
+
+dex (29:04.142)
+Yeah, so if you scroll down you have this waterfall thing, right?
+
+Vaibhav (29:07.379)
+Yeah, and the waterfall thing basically tells you exactly how much you're spending and what things. And if you've ever seen like a flame graph or something like that, you can think of as a sorry, I'm gonna rerun this because I lost source maps. Yeah, I lost the f source maps.
+
+dex (29:20.27)
+Yeah, it's a big old trace.
+
+dex (29:25.721)
+because you edited the file.
+
+Vaibhav (29:26.187)
+yeah yeah. So we have we're we'll work on doing this. But when this runs. This time it's bounded to three, so it should be faster. But like the first value of tracing that you really get is like the minute you start tracing, finding bugs is so much easier.
+
+Because the minute you can find bugs is how do you find bugs? Well, even as the program was executing without waiting for completion, I realized that something is off here because it should take three attempts, and boom, I can trace it very fast. So if you think about your production applications and users getting un unexpected behavior, if you can expose tracing to your users or something like that, your users can actually help diagnose and build the right system automatically. Let's go here. what is going on? Sorry.
+
+dex (30:12.269)
+Alright, we're gonna run it one more time.
+
+Vaibhav (30:12.317)
+Okay. One more time. Beta software. but and I'll talk about OTEL and stuff in a second too. And I'll talk about LM tracing as general, 'cause LM tracing I think is slightly different than regular tracing, but I think it's people are treating as too different than regular tracing. it's different in some senses, but mostly the same.
+
+dex (30:28.277)
+Yeah, how many how many hotel how many startups are just hotel rappers billing themselves as like, well, this is special, you need you need to do it differently for LMs?
+
+Vaibhav (30:33.203)
+Dude. Yeah, it's like and I'll talk about OTEL in second. I have a ho huge bunch of gripes at the hotel. But it I think the key part that you really want to have is when you go look at this flame graph and you go start understanding what the code is actually doing.
+
+You wanna be able to really quickly understand exactly where time is being spent, where error rates are happening, what's not happening as you expect. and like you can imagine this is just a dimension. We Dexter talks about wide events. You wanna understand cost. You wanna understand how many times you call something out. And like you also wanna
+
+dex (31:07.479)
+Well technically technically cost and time are metrics and the dimension is like function name or or module or whatever it is.
+
+Vaibhav (31:13.359)
+Yeah, okay. Yeah, sure. You wanna be able to index by a function name or something else. But like obviously you're gonna use packages that you don't own. You wanna be able to understand what packages you don't own that are being called by the system and be able to really quickly like grab through them without having to go debug anything, but not have to look at them every single time.
+
+But what you really want is the minute think about how an LM works. And think about how all of you are going to think about this code. None of you actually know what happens under the hood in these functions. You just know at some point we call it generate image. But now you can actually really quickly see what you call a generate image. It calls L it calls a thing called dot prompt. It calls a thing called dot call function. And eventually it goes to all of this. It gets some environment variables over here. and eventually, eventually.
+
+It calls htp.send and it makes an htp request. And you can even see very fast that the bulk of the time is actually being spent on like this where'd it go? on this actual send request over here. There's another one. waiting for okay, because there's an await here or something. But the bulk of his time is actually being spent, sorry, the bulk of his time is actually being sent on this like underscore send, which send calls under the hood.
+
+And without you sorry, this is latency on the right side, this is when it started. This is like the time step when it started. And you can quickly see exactly where it was being called without understanding this. So without any guessing, without digging through the code base, without understanding the code ahead of time, with tracing and really in-depth tracing, you can actually go through and figure out exactly what's happening and where your bug might be. And I think this is really the magic of what we want with these sort of systems. Like when we go back to like these total black boxes that we don't understand.
+
+You really want to go back in hindsight and say, How the heck do I understand what happened when things went wrong? Well, what do you do? You pull up you need to pull up some sort of tracing system and the usefulness of this is merely a function of how much tracing you were able to tag on when you shipped the code. Does that make sense, Dexter?
+
+dex (33:15.308)
+Yeah, and I I I yeah, and I I I think of like the difference between tra like what I would have done before, and like where we'd spent a lot of time in twenty fourteen, like SSHing into servers and like tailing and grepping logs for stuff is like logs was the earliest version of this. You had logs and then you had metrics, and then like now the like the the story is like okay, logs, metrics, traces, that's the full observability story, and they all have kind of different purposes and different levels of granularity.
+
+Vaibhav (33:21.62)
+Yeah.
+
+Vaibhav (33:26.559)
+Yeah.
+
+Yeah.
+
+dex (33:41.261)
+But yeah, no, it w I remember when we turned on New Relic in twenty fourteen and it was like, now I don't have to read the logs and put in special logging to figure out what's slow because the trace is just gonna capture everything and be like, Yep, this is the bad SQL query. This request made forty different SQL queries and this is the one that's slow, and then you're like, cool, let me go fix that.
+
+Vaibhav (34:01.064)
+Yeah, exactly. And I think that's a general list. And like every now and then for certain types of functions you wanna capture both the inputs and the outputs. Sometimes you only wanna capture the inputs. Sometimes you only want the outputs. Sometimes you want the error rates and everything else. And I think this granularity of being able to choose what you want is basically effectively what you want to happen. And it I think the closest that go ahead.
+
+dex (34:20.846)
+Well the trace and it it seems like the tracing, like the idea behind tracing is like you actually want to keep everything because the the idea of a trace is like when we run traces in production in in human layer, we we do a pretty high sample rate. Like the the traces are not about like, hey, I need to debug every single individual request. It's like I need to understand the shape of this thing, and I need like a very quick again, it's all about like how do you how do you create things that are easy for humans to consume and visualization is a huge part of that.
+
+Vaibhav (34:27.871)
+Yeah.
+
+Vaibhav (34:33.886)
+Yeah.
+
+dex (34:49.506)
+How do I make it obvious without me having to read logs or think or read charts and graphs and just be able to see immediately like, that's the thing that's slow? Actually, Coda Hale has another really good talk about this of like how do you build tools for humans? How do you build tools where it's like I can use my what is it like system one thinking? The thing that like looks at a wall that is white and like knows it's white without even having to like process it, versus like the part of my brain, if you ask me to multiply two three digit numbers, I gotta like turn on and like focus.
+
+Vaibhav (34:58.493)
+Yeah.
+
+dex (35:18.072)
+And so how do you make as much of this as possible just like obvious without like engaging the analytical part of your brain until you you wanna save that energy for the most important stuff. And if you can if you can make it easy to tell just by looking at something, then like that's that's a great tool for humans.
+
+Vaibhav (35:18.398)
+Yeah.
+
+Vaibhav (35:34.151)
+Yeah, and you can kind of see exactly what's happening here. Like the inputs, the images are basically evolving over time. And it's very easy to go grasp that without reading a single line of tracing. But effectively all of it needs to be powered by something that is extremely rich. So any question an agent asks, like you want the agent to ask, like, did I call send? Did I did I make an HTT request? And you as a human don't want to think about this. You literally want the agent to be like, hey, search through all the function calls that I made in this call stack. Was any of them http.send?
+
+And how many times was htb.send called? And boom, all of a sudden you have answered. yeah, yeah.
+
+dex (36:06.658)
+You're talking about feeding traces to an agent, not to a human. Basically like less the visual part, but more the like, okay, how do I give my agent the ability to like, cool, here's a thing someone complained about, go look through the traces and figure out what the problem is.
+
+Vaibhav (36:19.589)
+Exactly. So like if I'm a human and I'm looking at this, it's like this is useless. Let's be real here. Like this is like I'm useless is a such a strong word.
+
+I I often find myself when I interact with Claude and I have a giant document in front of me. I'm like, Claude, can you please give me the last three the three most important things I should read in this document? And just let Claude do a lot of the digestion for me. I think and really should I read the whole document, yes. And for really important documents I do read the whole document.
+
+But same with traces. It's impossible for me to expect that I'm gonna I'm I as a human I'm gonna go debug this unless it's like critical to some major f thing that's happening. Almost definitely what's actually gonna happen is I'm gonna ask Claude, Hey Claude, can you tell me what's going on so I can go read this on on I can go read this and inspect this on my own.
+
+and like I want Claude to like tell me what line I should jump to, for example, instead of reading it on my own. So when I think about I think this is like the big highlight that I wanted to go show everyone is like when you think about how to build tracing for your system, trace every little thing you can, store every little thing that you can get access to. And like obviously I'm very opinion on this. Like we built the whole thing around tracing. But even in your own code, like just do it. Spend the cost, spend the thing, because like your system is almost definitely gonna have unexpected redness.
+
+on here and if you don't have these introspection points you have zero chance of being able to debug the issue later and we had this really clever idea for example storing values is very expensive it slows down the program it it does a whole bunch of stuff if you wanted to copy these values and copy them somewhere so like if you're ever familiar with like how
+
+dex (37:58.958)
+That's right, you may be making a you may be making a network request to send the traces somewhere. And if you have very high performance application, then you're now using some of your network IO, some of your CPU cycles just to record the other things that that might be slow.
+
+Vaibhav (38:04.679)
+Yeah.
+
+Vaibhav (38:17.501)
+Yeah, or saving to disk or anything like that. So like what you really want to do is by default you don't want to capture values at all. And then unless something is like extremely dynamic. So in our case, the compiler knows whenever you're interacting with a function that calls an LLM. Boom. As soon as you interact with an LLM, we store the input outputs. And of course we do a bunch of deduping. So if you pass the same image around, we don't like copy and paste the image like sixty times.
+
+But this is kind of how you can get extremely fast performance without having to worry about performance effectively. And that makes a huge difference in terms of like being able to like introspect a program without any extra work. We know fetch calls are like interacting with external systems, so fetch calls get recorded. We also know headers are really risky, so by default we don't save headers. so like API keys and
+
+dex (39:06.381)
+Maybe authentication and stuff in there, yeah.
+
+Vaibhav (39:08.463)
+Exactly. So we just like store them. We know environment variables are risky, so any environment variable value gets automatically omitted. And there's a lot of things like that that we just do by default to make it safe. And like if you're using sentry or something else, they do the similar kinds of stuff. But most tracing systems I think are built for error handling and most proactive telemetry systems are built very much like users have to opt into it. And I think that's really the fundamental flaw in most tracing systems, which is users have to go write something like
+
+For every single function, you gotta like write this thing. And if you're writing LMs writing all your code, then like maybe an LM will write add trace here. But is it really also gonna write trace there? Probably not. And now you just have a missing tracing system.
+
+dex (39:52.524)
+Yep. And you could even do the the the the even the dumber if you just do at log, right? If you just want to log like timestamp and when the function was called and its arguments, right? Like you could write all of this stuff and you could build it, but doing this in a performant way, in a way that is like the same across every service you run, is like there's entire platform teams. I remember when we got we kind of like went from pets to cattle at at at Sprout, it was kind of like, okay, instead of having a server and it runs these four things and this server over there runs those four things.
+
+Vaibhav (39:58.081)
+yeah.
+
+dex (40:21.345)
+We need like a generic service based thing, which always has the same metrics endpoints and health check endpoints and emits the same like standard set of things. I mean, this was what the Google SRE book was all about. It was like, hey, look, we're gonna have a team and they're gonna be on call to help you with your services. And if things go down, they'll fix them for you. It's it was trying to solve the the the you know, engineers ship something and then DevOps DevOps has to r s sys admins have to maintain it. It was like cool.
+
+If you build a service, you're on call for it. The engineers have to like own the reliability of their stuff. But the SRE team has tools. And if you meet a certain bar, if you like inject all of the shared logging patterns and tracing patterns and you do all the things, then SRE can take that service over and run it for you. and doing this at scale in a way, it's like there's entire, there's entire giant teams inside any large tech company that's all their job is to like,
+
+Vaibhav (41:07.335)
+Yeah, exactly.
+
+dex (41:16.631)
+How do we equip people with tooling to help them make their stuff more observable? And how do we make it so that we can actually help even if we don't really know if we haven't read all the code inside the service?
+
+Vaibhav (41:28.297)
+Yeah. And you kinda wanna be able to write stuff like this.
+
+Vaibhav (41:37.083)
+user dot images that generate image where orgs dot thing dot length is greater than fifty and latency metrics
+
+Vaibhav (41:56.012)
+you kind of when you really think about what you want out of tracing, I think this is the future of what we really want. We want to be able to write questions like find me everything where it took more than one second, where the length or like what I really what I would probably do is like
+
+dex (42:08.717)
+Thing thing here is the prompt, right? It's like the thing you asked to generate, right?
+
+Vaibhav (42:12.689)
+Yeah, well thing is like, yeah, I guess this is the input argument to this function specifically.
+
+dex (42:17.109)
+Yeah. It's a it's a really good variable name, dude. I really like it.
+
+Vaibhav (42:20.455)
+The I am I am known for my high quality code. but arg is just like this is just the name of the parameter of this function. But what you really want over here is you wanna be able to write this kind of query. And you want all of this to be type safe. You wanna be able to say like output is always gonna be an image, so it has base sixty four. And you want the SQL code to tell you that. You wanna know arg has a thing called thing, has a parameter called thing, and thing is a string type. 'Cause if you can do this, now an LM can write this. I mean
+
+dex (42:24.439)
+Ha ha ha.
+
+dex (42:45.825)
+so you want type safety on your on your queries as well? You wanna be able to kind of like have a schema to query against where any anybody can kind of quickly riff this out or an agent can quickly riff this out and basically like ver instead of doing like grep or reading whole files, you wanna be able to really just pull out the things you care about.
+
+Vaibhav (43:02.075)
+Yeah, and you want this to look effectively as similar to your as similar to your code as possible. So like I have generate image. You want this to basically mimic exactly what this code is.
+
+And you want it to look very close to your code because then if an agent can query the code base out of it, then what you end up with is a way where like telemetry actually like means something very reasonable. And then this tight loop of when you're probing this actually means that hey, this we can find all the red instances in the first thing because generate image failed here. So now we know obviously everything downstream is obviously gonna fail as well. And I think that's the kind of tight loop that you need with observability. And when I talk about observability, that's what I think people should be building for their systems.
+
+should trace everything. They should go ahead and make sure their tracing is tied very closely to lines of code. And now you can start measuring everything, starting to collect stuff. Now I'm gonna show one last thing. You know about OTEL. Everyone knows about OTE. I'm gonna show you OTEL. and I and like if you've ever seen OTEL this is kind of roughly what it's so okay I'll I'll show you that yeah I'll show it to you.
+
+dex (43:58.766)
+Mm-hmm.
+
+dex (44:07.147)
+getting the hotel rant? I've gotten a piece of this. I'm ready for the the formalized version of it.
+
+Vaibhav (44:13.373)
+So when you do OTEL, firstly OTEL does something amazing, which is it has wide events. Thank God. That's amazing. The problem with OTEL, however, is that when you do wide events and you start doing tracing, you start collecting all this data, Otel is not very how did I put this? Rich is a nice way to put this. And the reason OTEL's not
+
+dex (44:36.449)
+Like the the density of information is low, right? You're using a lot of JSON, using a lot of keys, and and like okay, yeah, you have the start time Unix now.
+
+Vaibhav (44:40.123)
+Exactly. And you're hoping that the person and you're hoping that the person that wrote something wrote it in a very standardized way. And most importantly
+
+dex (44:49.099)
+Yeah. It feels like OTEL is is just like a bunch of opinions on top of wide events, right? It's like, okay, cool, like yes, you're gonna have arbitrary things that you can attach to this, like attributes or properties, but also like if you include these exact fields like span and parent span and trace ID and stuff, then you can get these like specific specific visualizations.
+
+Vaibhav (44:57.427)
+I wanna
+
+Vaibhav (45:08.753)
+Yeah, exact and OTEL is really good supports the spans. But the real thing is when you think about what types Otel accepts, this is what Otel accepts. String, Boolean, int float, sequence of stir, sequence of bool, sequence of int, sequence of float. And the fact of the matter is because this is the type of things that Otel accepts, what people end up doing most of the time is they do JSON. Literally what they do. JSON dot I don't know.
+
+dex (45:32.717)
+Put like sixty four JSON in there. Yeah.
+
+Vaibhav (45:38.655)
+Is it loads or like parse or two string two string from like a value?
+
+dex (45:43.031)
+Don't pretend like you haven't written Python in a while. I know you know the Pow Python it it's dumps.
+
+Vaibhav (45:47.08)
+I actually don't know what it is. there you go. Dumps. JSON.dumps for value. And now you get you basically just store the JSON value as a string and then you decode it on the receiving end and hope that's correct JSON. And what this Exactly. Which means no querying, which means that also think about how much data you're sending across the wire. So we talked about performance. And like normally I hate talking about performance because
+
+dex (45:58.722)
+Which means you can't query it.
+
+Vaibhav (46:14.803)
+Performance is one of the performance is not a thing that most people should ever care about. But when you're doing a massive amount of observability and you want to literally observe every single thing that you're passing through the wire, if you're sending like let's say you're sending like like one hundred bytes of actual data, but then you JSON you turn it to a JSON string and this blows up to about like times eight, like eight hundred bytes.
+
+This is strictly going to affect your uptime. It's strictly gonna affect your performance rate of every single piece of software. So when you blow something up by eight X in terms of the amount of data you're sending across the wire, you could suddenly stop being able to trace everything. And now you're making trade-offs of shit, do I OTL this one or do I o-tell something else? And it's always a zero sum game on what you choose to OTL and what you choose to go around this. So when you actually think about how you want to do high performance telemetry, there like you said, there are entire companies that do this. And if you look there's like if you guys haven't
+
+this e eBPF is like one way to do this. We're like I don't know if it's on here. We're basically like tracks the system traces to know exactly what call stacks you're using and where you're spending time without your process being hammered.
+
+dex (47:25.405)
+yeah, this this lets you monitor basically without without doing syscalls, like it lets you it lets you understand what's happening in the kernel stack without actually like leaving user land.
+
+Vaibhav (47:36.667)
+Exactly. So it makes your code faster because you do this. And the reason people are trying to solve these problems from many different angles is because
+
+In a world of LMs where agents write all the code and everything is non-deterministic, tracing is the only way to understand all the data. The problem is you also want tracing to have a really good understanding of your shape of data. Like you want it to understand and be able to write this kind of query, and you can't do that unless you actually like embed tracing into your app. So like my whole pitch today is like go write a fuck ton of traces in your code base and just vibecode the head out of it and make it really easy for agents to go query everything here.
+
+So if agents can query everything here, every time you get a re-user bug, you can build a really nice feedback loop to like ship your updates much faster. That was the whole point of today's conversation around tracing and observability. please go do it. and likely, I suspect you should probably not do it yourself, it's a waste of time. Buy some vendor that gives you tracing and just like plug it in and make sure they're performant and make sure they capture extremely rich data and make sure they give you agent integration on it.
+
+dex (48:38.957)
+I like it.
+
+Vaibhav (48:42.015)
+Cool. That's all I really have to say.
+
+dex (48:45.549)
+That's all I have to say about that.
+
+Vaibhav (48:48.551)
+I'll do one more thing. if we're doing we're doing like small onboarding sessions. I know Dexter came to one of them. if you guys sign up here, we can get you hooked up and try it out if you actually want to try like the new tracing stuff that we do. we do it like roughly every Thursday. But we're we're exploring this space a lot. Tracing is like one of the things I'm deeply, deeply passionate about right now.
+
+because I wanna make it fast and I wanna make it low memory and I wanna make it rich. And I wanna have no trade-offs.
+
+dex (49:18.433)
+Well, and and this comes back to that whole idea of like what a lot of people are hacking together. I think I saw something probably last week of like, here's how I review code. And what I do is I let the agent just vibe it out and riff it out, and then I have it create an HTML file per folder that explains the changes in that folder at a high level in a way that I can kind of it's like zooming out of the code and give give me a way to digest a two thousand lines of code in a minute.
+
+Vaibhav (49:44.969)
+Okay.
+
+dex (49:47.928)
+And then if I wanna drill in, I can, but I wanna get like the shape of everything. And then they give feedback on each report for each module or each file, and they proceed that way. And then eventually they might dig into the code and stuff. and it seems like you're kind of just trying to productize this of like, hey, look, before you like you will probably still end up reading code sometimes in important places, but before you go dig into the lines, how can you be 10x or 100x more efficient with your time and your mental energy?
+
+to get understanding of what is happening. And I think that's where like dynamically visualizing the code at the programming language level is a really like powerful idea for like, okay, how do we understand what's happening as quickly as possible and maintain the ability to go drill down into the code, but also have this option to just kind of like, cool, I don't need to read that. I trust that. That that that's as as as designed as expected. And it's provable. It's not an LM read something
+
+and then decided and might have hallucinated or might have misunderstood it's like deterministic based on the syntax that was written.
+
+Vaibhav (50:52.915)
+Yeah, and like Dylan actually had this great tweet a while ago where he was talking Yeah, exactly. Yeah, yeah, exactly. Dylan had this great tweet where he's like the way he codes now, he's just he does basically like show me the call stack. And this is basically just hoping that Claude Code gives you this. And he's basically building a tracing system in some ways. He's just trying to trace the system
+
+dex (50:55.649)
+I love too. This is in my presentation.
+
+dex (51:10.989)
+Well, this is part of planning, right? This is before the code is written. He's like, Cool, like, okay, whatever we're gonna go build, I don't need to see every line of code, but I need to understand the type signatures and the the objects that we're making and how all these things fit together, because there's still I mean, a lot of people are happy to look at a mermaid diagram and say, like, cool, this looks good, and look at sequence diagrams and say this looks good, but what we're finding and I think a lot of people are finding is that LMs are actually like
+
+Even with system architecture defined and aligned, and you and the you and the model have made a plan for this, you can still end up with really bad code, sloppy code, bad interfaces, like objects that overlap each other, all these things that make your software harder to maintain in the long term and make it get you to the point where it's like, if I change something over here, it breaks something over there, and you just get like slowed down and kneecapped by the like deterioration in code quality.
+
+Vaibhav (51:39.229)
+Yeah.
+
+dex (52:02.455)
+So, like this is a layer that we are working a lot. Also in human layer with this concept called like a technical design doc. I think we did an episode about this a couple of weeks ago of like, no, you should get into that level of basically anything that you can't trust the LLM to get right 99% of the time, it is worth your time to align at this level of abstraction because five minutes or 10 minutes doing this can save you hours when you get to code review and you're like, yes, it's it's correct and it works, and I went to the website and it's good.
+
+But I know as someone who's like worked in large code bases for ten years, okay, this is actually like not gonna set us up for success in even the medium term, not even long term. Like in in four weeks, you're probably gonna start to regret that you merged that. And so it's like, cool, ca where can we find leverage? Where can we kind of like make it so that instead of reading code for an hour, I can read a doc for five minutes? Or see a visualization.
+
+Vaibhav (52:52.093)
+Yeah. And what's really what's really interesting about this is it's basically just like a spectrum, right? Like you start from you effectively start from
+
+Vaibhav (53:09.959)
+You effectively start from like a different place depending on what you're trying to build.
+
+And like at some point what you do is you s you have tracing during planning. Then you have tracing what the heck happened? Then you have tracing like during during like code, effectively like while the code is ac while the code is like written. so you have tracing during planning or design phase, then you have tracing during the code, and then you kind of have the last layer which is like you kinda want tracing, where do you go?
+
+Vaibhav (53:47.87)
+You kinda want tracing like during execution is the way I'd I draw this out. And it's kind of like we're all basically talking about the same thing. You basically have this like spectrum of tracing that we're trying to build. And the only reason you don't see my Slack. Sorry. Pull this up. Window entire screen. There we go.
+
+dex (54:01.65)
+sorry, I only see your slack.
+
+dex (54:17.055)
+Yep. Okay. Yeah, this makes a ton of sense.
+
+Vaibhav (54:17.093)
+and this is kinda what I was trying to draw, right? It's like this is kinda like the spectrum of what we're doing. And the reason that we're all doing this is really simply because these systems are non-deterministic and the only way to build like extremely rich systems is literally to go ahead and build different levels of introspection as you go do this. You need tracing and design.
+
+dex (54:38.209)
+Yep. If you can't see it, yeah, you can't YOLO it. You can't you can't just write it without being able to see it because like we're I mean, it's almost like a learning thing. Like we're all learning what the frontier here looks like. And part of that it's the same thing we do vibe evalves, right? It's just like just go run the thing and see what it's like because you need to develop intuition.
+
+Vaibhav (54:56.435)
+Yeah. And this is still a vibe. Like there's no way Dylan knows every line of code that's happening in these boxes. There's probably more functions than these boxes. He just at a high level makes sure the key parts are correct. And by doing this
+
+dex (55:08.673)
+Should have Dylan come on and do do an episode and he can talk about this and how he got here. Yeah. I mean he has his own podcast about how to do good engineering now, so you know, I will I'll I will work on him. Yeah, we did one podcast with Reese Sullivan, and suddenly he goes and is like, we're gonna do one too now. It's great. It's a good show. You should go watch it. The first two episodes are out, they're they're a lot of fun. Yeah. Yeah.
+
+Vaibhav (55:12.382)
+I'd actually be really curious about this. Yeah. Yeah, I feel like that'd be fun.
+
+Vaibhav (55:20.664)
+Ne
+
+Vaibhav (55:28.671)
+It is fun. I actually really enjoy watching their show. It's it's also a different thing. it's Dylan. you can look him up on Twitter. Here you go. it's yeah. He's yeah. I really like their content. but like effectively like this whole episode is about observability.
+
+dex (55:39.105)
+Yeah, he's a cloud he's like a principal engineer at Cloudflare, super smart dude.
+
+Vaibhav (55:49.286)
+Everyone is giving you different levels of observability. Your job as an engineer is to go figure out what works for you and figure out how you can add different layers so you can go from tracing during design, tracing during visualizing the code, and understand your code so you don't have to read every line of code and tracing post execution. So your agents can understand what actually happened and does does all of this eventually loop back? I don't know how to do the arrows, Dexter. but a loop back five click click.
+
+dex (56:13.537)
+Five five click click.
+
+Click, click.
+
+Vaibhav (56:18.855)
+Nope. Can you do it for me? Thank you. So so like 'cause then what you can do is you can feed back an agent into this loop. you can't do it either, got him. you what you can do if you build this tracing system. Well you can do if you build a really nice tracing system is you can go back and feed these logs in and say, Hey Claude, what's missing in the design that made the actual trace not be the call site you tried to draw me?
+
+dex (56:22.455)
+Ha ha ha.
+
+dex (56:29.217)
+No, it's 'cause my window I was on the wrong error mode.
+
+Vaibhav (56:45.671)
+And now Claude can actually close the loop and you can build a better and better system that and again, it's all about alignment, so you can have alignment in what you expected versus what happened.
+
+dex (56:57.729)
+Good. I like it. That's a good episode. do you want to do the outro?
+
+Vaibhav (57:02.259)
+Let's do it. I guess I'll screen share and talk about it. All right. there's a lot of images here. while we're here and I do record the outro, if anyone has questions, feel free to post it in there and then we can talk about that in a second.
+
+dex (57:16.685)
+Or I guess it's an intro, not an outro, but
+
+Vaibhav (57:19.707)
+Yeah. I'm gonna put this over here. put this over here. Okay.
+
+Hey everyone, today's episode is going to be about observability. And the thing I find most fascinating about observability is how we actually went through and were able to go and build these black boxes now with code that we either don't read or are non-deterministic because they use LLMs and therefore have some level of expected failure and hit rates. And the most close analogy that we really relate to is distributed systems and how we actually built distributed systems. We go a little bit into the history of how we did metrics, wide logs, and use
+
+User expectations to eventually build a fully probing system. One of the cool things that we talk about is how to actually build full tracing execution and what an example that looks like so that you can get full call stacks and really deeply have both you and Claude introspect your code traces. But the most important part is the value of tracing, which is how you can go from design to code to post execution and build a closed loop system that helps you better align with your agents. Let's get started.
+
+dex (58:26.007)
+Let's do it, baby.
+
+Vaibhav (58:28.285)
+All right. any questions about anyone before we turn this thing off?
+
+Vaibhav (58:36.903)
+We'll wait fifteen seconds. And then we'll go.
+
+dex (58:37.153)
+Luck y'all.
+
+Look at your look at look at your damn data, as Hamel Hussein would say.
+
+Vaibhav (58:44.797)
+Yeah. Daksha, what kind of tracing do you guys do at at Human Layer?
+
+dex (58:50.989)
+we use a wonderful platform called Century and all of our code is we have kind of a shared library that goes into every service and we do
+
+Trace sampling, we do metrics, we do error reporting, we do events eventing, all of our logs get captured as well. And we have a skill called application reliability engineering, which tells Claude to one, use what I we're calling like RLM mode, where your parent model is only using sub agents. The sub agents are not dumber or anything, it's the same model as the parent space, but it's basically like you keep your context pretty sparse at the top.
+
+And you prompt the sub agents to fetch logs, to check sentry, to all this like kind of like data that can be quite like not it's very sparse, right? Like it's a ton of tokens to find the thing. And then we basically tell it, like, cool, launch sub agent, do this, we'll launch a couple sub agents to go look into these things, but you're just reading the subagent summaries. You're never going to and then it will generate an outage or
+
+incident report and it does mermaid diagrams with gan charts and timelines and all this stuff. So that's that's how we dug debug stuff is you know we point our agents at at the systems and a lot of these platforms like Honeycomb and Sentry. We also we also use Honeycomb 'cause some of our like open source stuff that we run from off the shelf is is instrumented with for for Honeycomb and not for Sentry. So we got a big grab bag of everything and we just throw agents at it and it works pretty well. It's you know
+
+Vaibhav (01:00:10.504)
+Yeah.
+
+dex (01:00:13.087)
+Saves a lot of time. You know, every once in a while, you know, Claude likes to get excited and come to conclusions that are false, as we as we all know. so it's like, just tell me what happened. Don't don't tell me what's wrong, just tell me what happened and I will like or at least like surface like ten different things that could be wrong. And like obviously the last four will be bullshit because it's just like trying to do the completion and making stuff up, but
+
+Vaibhav (01:00:22.943)
+Don't make decisions. Yeah.
+
+dex (01:00:35.369)
+yeah, keeping it from jumping to conclusions is hard, but it's like, okay, how do we how do we use LLMs to kind of take a lot of really exactly what they're good for, right? Transforming a lot of data and summarizing it into a small amount that's digestible.
+
+Vaibhav (01:00:48.701)
+Yeah, I think that's perfect. All right. Let's close it out, man. Always good to see you. I'll catch you soon.
+
+dex (01:00:51.022)
+Amazing. Thanks everybody. Catch you later, dude.
+

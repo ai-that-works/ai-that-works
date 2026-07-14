@@ -16,8 +16,28 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 06 Jul 2026 19:39:56 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 10 Jul 2026 15:23:33 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[agent observability]]></title>
+      <description><![CDATA[In this episode, we will dive into AI agent observability and answer a question every production engineer eventually faces: how do you diagnose why an autonomous agent went off the rails three days ago?
+
+When you are dealing with non-deterministic tools, old-school debugging habits like inserting `print("here")` statements fails to scale. We will break down the essentials of modern agent tracking, from implementing structured logging for complex tool calls to establishing robust tracing that allows you to replay and reconstruct an agent's exact decision tree.
+
+
+Watch: https://www.youtube.com/watch?v=_WLVv1C6-VM
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-07-07-agent-observability
+Event: https://luma.com/aitw-agent-observability
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=_WLVv1C6-VM</link>
+      <guid isPermaLink="false">aitw-064</guid>
+      <pubDate>Tue, 07 Jul 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=_WLVv1C6-VM" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[Software Factory for Agent Tools]]></title>
       <description><![CDATA[Everyone's obsessed with software factories, and the core of a software factory is a persistent feedback loop - in this episode Vaibhav and Dhilan will showcase a loop they built to test new BAML language features 24/7 and improve the language based on feedback from coding agents trying to implement features.
