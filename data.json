@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-07-21-no-vibes-july",
+      "guid": "aitw-066",
+      "title": "No Vibes Allowed - July Edition",
+      "description": "This week on the podcast we will be hosting another session of our No Vibes Allowed series. Join us to see how everyting we've talked about get implemented in real code to solve real problems in our codebases.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/no-vibes-jul-26",
+      "eventDate": "2026-07-21T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-07-21-no-vibes-july"
+      },
+      "season": 2,
+      "episode": 66,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-07-14-sota-coding-agent-benchmarks",
       "guid": "aitw-065",
       "title": "SOTA Coding Agent Benchmarks",
@@ -17,7 +37,7 @@
       },
       "season": 2,
       "episode": 65,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1423,7 +1443,7 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 68,
+    "totalEpisodes": 69,
     "completedEpisodes": 63,
     "upcomingEpisodes": 1,
     "workshops": 3,
@@ -1431,7 +1451,7 @@
       1,
       2
     ],
-    "lastUpdated": "2026-07-10T15:23:33.821Z",
+    "lastUpdated": "2026-07-20T17:07:19.270Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

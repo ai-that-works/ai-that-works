@@ -158,3 +158,8 @@ node_modules/
 2026-04-11-unconf-sf/output/*
 !2026-04-11-unconf-sf/output/xposts/
 !2026-04-11-unconf-sf/output/xposts/**
+
+# Claude Code local skills/agents
+skills-lock.json
+.claude/skills/
+.agents/
