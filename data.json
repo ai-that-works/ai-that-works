@@ -29,10 +29,11 @@
       "eventDate": "2026-07-14T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=X5mI1ZVxaIc",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=X5mI1ZVxaIc",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-07-14-sota-coding-agent-benchmarks"
       },
       "season": 2,
@@ -1444,14 +1445,14 @@
   ],
   "meta": {
     "totalEpisodes": 69,
-    "completedEpisodes": 63,
+    "completedEpisodes": 64,
     "upcomingEpisodes": 1,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-07-20T17:07:19.270Z",
+    "lastUpdated": "2026-07-20T17:14:12.134Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

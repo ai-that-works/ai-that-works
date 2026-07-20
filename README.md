@@ -129,7 +129,7 @@ Meet the Speakers🧑‍💻​
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-07-14</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#65</strong>: SOTA Coding Agent Benchmarks</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-07-14-sota-coding-agent-benchmarks">code</a>
+          <a href="https://www.youtube.com/watch?v=X5mI1ZVxaIc">watch</a> • <a href="./2026-07-14-sota-coding-agent-benchmarks">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">We've had a lot of benchmarks for coding agents for a long time. We'll talk about the past generation and the new generation, what they're doing differently, as well as... I don't know. come hang it will be good.

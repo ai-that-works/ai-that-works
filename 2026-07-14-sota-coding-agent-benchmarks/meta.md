@@ -12,10 +12,11 @@ description: |
 event_link: https://luma.com/sota-benchmarks
 eventDate: 2026-07-14T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=X5mI1ZVxaIc
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-07-14-sota-coding-agent-benchmarks
+  youtube: https://www.youtube.com/watch?v=X5mI1ZVxaIc
 season: 2
 episode: 65
 event_type: episode

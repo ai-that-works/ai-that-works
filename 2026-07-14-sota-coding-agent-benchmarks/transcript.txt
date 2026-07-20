@@ -1,0 +1,788 @@
+Vaibhav (00:01.068)
+Hello, how's it going folks?
+
+dex (00:01.554)
+Alright. Okay, so I'm sorry we're late. Every every week for the past six months I've opened my calendar and there has been a link on the calendar invite and I have clicked it and it has brought me to the studio.
+
+Vaibhav (00:12.972)
+Hey, hey, I just wanna say, I get no excuses for being late. You get no excuses for being late today, Dexter. Hey, Kevin sent the calendar invite. Sorry, we can't no blame culture, no blame culture. We're good.
+
+dex (00:21.724)
+No, because you're supposed you sent the calendar invite. All right.
+
+dex (00:30.408)
+Well, no, we're allowed to blame each other. We're just not allowed to blame producer Kevin.
+
+Vaibhav (00:33.676)
+That's true, that's true, that's true. You are a li I indeed. Kevin we can't blame. Kevin is a beast.
+
+dex (00:38.516)
+It's actually we're gonna start doing the show at ten thirty soon and just every every six months we just start later and later and later. Yeah, exactly.
+
+Vaibhav (00:41.902)
+Every six months, eventually it's gonna be a midnight show.
+
+dex (00:50.428)
+cool. What's up guys? I'm Dex. I'm the CEO and co founder of Human Layer. we build a IDE and platform for using coding agents to solve hard problems. I'm joined by my co host Vibov.
+
+Vaibhav (01:03.022)
+What's up guys, I'm Bybov, and we make a programming language which is designed to be agent first instead of just optimizing for human convenience.
+
+dex (01:11.348)
+Amazing. And today on the AI That Works show, we are gonna talk about state of the art coding agent benchmarks and how do we know that coding agents are good and how do they work under the hood? And what is what is deficient about benchmarks in the past, what are the new benchmarks doing? and I'm curious to hear from Bybob if he thinks it's enough.
+
+Vaibhav (01:39.202)
+I mean you've shared a lot of your thoughts with me and you already know how much I agree. So sadly this is not gonna be an agre an episode of arguing. But you will get some thoughts from both of us. I mean obviously.
+
+dex (01:46.45)
+Nah, we'll find something to argue about.
+
+dex (01:52.158)
+sorry, let me pull this up. Yep, I'm just getting a whiteboard.
+
+Vaibhav (01:53.378)
+You want to start us off?
+
+Okay. I think just to while Dexter does that, just to catch everyone up, like why are we talking about benchmarks? Why are we talking about coding agents and harnesses? It really goes from like this meta point that I've I I have been feeling, I Dexter has been feeling, and I suspect many of you have been feeling as well, which is our code is turning to fucking shit. It's like it it's asymptotically approaching like total slop, no matter what you do, where you do it. And I think a lot of what we want to talk about today.
+
+has to deal with some of the post training loop and the system that goes into it and the way that we're measuring code and why both Dexter and I feel that it's effectively inevitable that all code will turn to stuff turn to shit unless we do something about it. And something drastically different than what we're doing today. Is that a good summary for what we're gonna try and approach that today?
+
+dex (02:49.543)
+Yes. yeah, so we can we can zoom out a little bit and talk about the problem. I'm gonna just share a tab we'll share the window. That's fine. I'm not gonna do a ton of coding today. Maybe if this if this one pops off
+
+Vaibhav (03:00.648)
+do you wanna share the screen? Because the YouTube sorry.
+
+dex (03:06.069)
+you wanna share the screen? because of the the zoom and shit?
+
+Vaibhav (03:07.546)
+because of UT yeah, yeah, yeah. The editing. Yeah. That's so funny. I've been tweeting about this on Twitter a little bit and like every single person is the thing that I find most funny is like there's this people that have acknowledged that the code is gonna turn to slop and we need to do something about it. And there's these people that are in denial that are like, no, we should still be artisanally writing code and using agents to write code is wrong. And like it doesn't matter how you feel about it, the world will take the path of least res resistance.
+
+dex (03:30.374)
+Yep.
+
+Vaibhav (03:36.812)
+You are a software engineer because you are lazy. That is what makes phenomenal engineers. And a coding agent is the laziest way to produce code. So we will use them.
+
+dex (03:46.963)
+Yep.
+
+cool. So like this is kind of the basic idea of like this is what the future should look like, right? And you have this like closed loop and then you have like people over here, right? And so as a person you decide what you want to build, 'cause like
+
+dex (04:05.895)
+I don't know, you can't just say AI go make something, right? You have to tell it what you want. and you create some description document, whatever it is, of like what you want to do, give it to an agent, goes to production, while it's running you get feedback in and the idea is basically like when AI gets smart enough, you will just ask for stuff and this whole loop will run and you will get production grade software and it will work great and people will pay you money for it, etcetera.
+
+Make sense? Very simplified. We've talked about this a lot. I talked about this at AI Engineer. I'm not gonna go into more detail here. But this is the basic kind of loop that we are playing with. Does it make sense? Would you add anything here? cool. So I want to talk about the agent part, right? because we've got a lot of like.
+
+Vaibhav (04:42.635)
+Yep. No?
+
+Vaibhav (04:48.789)
+Also just to be I'll add one last bit of color, which is if you go back to that dashboard, we put agent there. That is still true with humans. Nothing is different. The loop is the same. Whether it's a human writing the code or it's a agent, it's the same system. It's just that it happens a lot faster when it's an agent. So we need to do more things about it.
+
+dex (04:52.381)
+Yeah.
+
+dex (05:00.541)
+That's true.
+
+dex (05:06.983)
+Yes.
+
+Yes. And this includes all of your testing, code review, et cetera. There's something that happens that gets new code into production, basically. so this is not a yeah, this is spans DevOps and all these all these different things. so I want to look at basically like we're gonna look at a leaderboard for terminal bench. So terminal bench is a benchmark that is basically the way these benchmarks work is you give the model a challenge. So you have some challenge like, you know.
+
+Vaibhav (05:12.981)
+Yeah. It's like the full thing, yeah.
+
+Vaibhav (05:32.767)
+Vaibhav (05:38.817)
+I actually have one on my computer if you wanna if you want me to pull it up. I have a couple benchmarks loaded.
+
+dex (05:38.833)
+Right, fizz buzz.
+
+dex (05:45.172)
+you have the you have the data. Let me let me do the high level and then and then and then and then we can do it. so you give this to an agent. the agent writes code.
+
+Vaibhav (05:48.299)
+Yeah, I do. Yeah.
+
+dex (06:00.731)
+And then actually.
+
+and then you have a verifier, right? So there's something that is built into the challenge that is basically did it pass or fail? And so this will either say, okay, it passed, right?
+
+or
+
+dex (06:27.367)
+Getting there. Or it failed. And then you take all these scores on, you know, I think terminal bench is like a couple thousand challenges, and you see what percent did it pass on. and so here is all of the basically like the agents and the models and how they scored on terminal bench.
+
+dex (06:51.155)
+Do have the data set here? Yeah. So I just want to look at like what is one of these
+
+dex (06:59.677)
+So many of these. All right, we'll look at instruction. So this is configure get server that I can run on my computer, git clone. so this is yeah. so the solution here we have like basically like here is the correct way to do this. here's like the script that a model should run. Basically, this is benchmark data. we put a we put a GUID in here basically, so that this GUID gets sent to all the labs. And so all the labs know.
+
+If you see this GUID in a in a piece of data, do not train models on it because it's going to ruin the benchmark. And there's a lot that happens under the hood. This is like an interesting, is like because if you train the models on the benchmark code, right? Suibench is based on Django. And most of the models have seen the Django code base. So it's not a very good way to evaluate whether the models are smart versus whether they can just remember the solutions. And then we have our tests. So here's our verified SH.
+
+Vaibhav (07:47.329)
+Yep.
+
+dex (07:55.326)
+Where we actually go try to use the git server and then we output whether it worked or not. so here's the test, there's like the make sure it has the output here's the outputs, and then the verify. And so basically the the flow is we do this for a thousand challenges and then the model gets a score. Does it make sense so far, ViB? Yep. cool. and so terminal length is
+
+Vaibhav (08:16.077)
+I think you're describing it really well.
+
+dex (08:22.333)
+fairly new. I'm gonna kinda talk through kind of like what I will call like Gen Zero, which was this thing called Sweep Bench. And which was just, you know, problems from Django.
+
+Vaibhav (08:36.065)
+Yeah, they expanded it, but roughly it's still the same concept. It like tries to find a GitHub issue that is open, basically replays and like Sweet Ventures the simplest version, goes back to that version of the commit and sees if the model is able to solve the commit.
+
+dex (08:36.743)
+So yeah. Yeah.
+
+dex (08:50.131)
+Pass. Yeah, so we take a GitHub issue from the pass, we give it to the agent, and we basically take the issue and we take the like code base checked out to that shop.
+
+Vaibhav (08:56.503)
+Commit. Yeah. Yeah.
+
+dex (09:01.459)
+And we give we put the agent in the code base before the issue was fixed. It writes some code and then the verifier is some logic of like, did it solve the problem in the way the human solved it?
+
+Vaibhav (09:06.732)
+Yeah.
+
+Vaibhav (09:13.901)
+Yeah, and I think they use humans in the beginning, right?
+
+dex (09:18.259)
+What do you mean they use humans in the beginning?
+
+Vaibhav (09:18.461)
+Or was it always agentic? Like they used humans to evaluate it in the beginning and now they use an agent loop? Or was it always agenc? I don't remember.
+
+dex (09:24.733)
+Well so human humans would hand curate this list of issues basically. They would go through all the issues and they would go understand what the solution was and what the change was and turn it into this data set. So like you have the actual Django like GitHub history. And we're saying Django, obviously like we train on lots and lots of repos now, but this is just like the very first version of this from like twenty twenty four.
+
+Vaibhav (09:30.221)
+Okay, I got it. Yeah.
+
+dex (09:51.719)
+and then this goes into here. And the Sweet Bench and then there was a thing called Sweet Bench Verified, which was like a little bit like it was it was actually human like better human curated.
+
+Vaibhav (09:53.602)
+Yeah.
+
+dex (10:04.145)
+And actually, I was gonna try to get Rishi on here. He's the author of Sui Marathon. but he's in Korea right now. So if this episode goes off and you guys want to do more on this, we can do a follow-up with Rishi. this is tracking so far. Cool. the kind of like next generation I would call it, like Gen 1 ish, is like Suibench, multilingual. So this is like what a lot of like new like
+
+Opus and and and codex and and and all these models are kind of checked against. And again, like it's important to know that like verifiers are different from training, and we'll get into how the training works as well. But it's like the first thesis is like the benchmarks cannot evaluate whether this loop will produce slop. They can evaluate whether an agent can solve a one-off ticket and and like make the test pass, but they cannot evaluate like long-term, is the code getting worse in terms of maintainability.
+
+And the frontier ones are getting better there, but they're not quite there yet. So I'm gonna look at Sweet Bench Multilingual. We'll look at a couple of
+
+Vaibhav (11:08.542)
+I've got I've got a benchmark too if you want check it out. You want me to show it? Yeah. And this one I know really well, so it's easy for me to talk about.
+
+dex (11:12.077)
+yeah, you wanna you wanna take over the screen chair and Charles?
+
+Vaibhav (11:20.876)
+Alright, can you guys see my screen? There we go. So like this was one benchmark that went a little viral. It's called like Program Bench. And like I think this is the post that like launched it. Where does it was Max? This is a post that launched it. And I was like, the creators of Suite Bench actually made a new benchmark called Program Bench. And at first glance you're like, it's built by Meta, it's built by the same guy the Suite Bench. It's a good benchmark. But and it's fascinating. All the models go zero at it. And like obviously this this stuff goes viral because people start looking at this. They're like, it looks legit.
+
+and then most recently there's another tweet that talked about how like soul crushes sweep crushes program bench. But the thing I want you guys to think about is it's really important to think about if this if these benchmarks actually model your own workload. And if it doesn't, then it doesn't matter how good the models are.
+
+And to give you an example for what this benchmark does, it's actually, in my opinion, the silliest thing. And the way it's implemented is again, like it yes, it measures something, but what it measures is questionable. What it does is it takes like open source repos, it anonymizes them, so it changes the binary name to be like some default random binary name, and tells an agent, mimic this binary. Like write a program to mimic this binary one-to-one. And that's it. That's the only instruction that it goes with.
+
+no additional context, no additional goal, just mimic the binary. and it tries in various languages, it has different containers, so it tries to if if this is written in lazy git is written in go, then it tries to match go to go. And it says type is written in Rust, so it recommends that the agent use rust. So it does have some sort of synergy. But
+
+At least in my opinion, a lot of these benchmarks are kind of they're measuring the wrong thing, like Dexter says. They're really measuring like an incredibly short term outcome. Which is the hard part about building good. Yeah, exactly.
+
+dex (13:05.821)
+Well they and they treat it they treat it like a black box, right? They treat it as like, Okay, let's get to the solution and like it doesn't matter if it's like easy to maintain afterwards.
+
+Vaibhav (13:15.666)
+Yeah. And I think the thing that a lot of this misses out on is this whole concept that like software is actually not about mimicking software. Software is not about can you get to the result. Software is about can you continuously solve the problem that the users are going to have with your software? And like adapt your software and like have a long-term perspective on your software that is not gonna require you to rewrite everything and re-invent everything from scratch every single day.
+
+dex (13:42.13)
+Yeah. And I I will add, like, this as usual, this is AI that works. This is going beyond the demo. This is not about vibe coding. if you are building a side project that t 12 people will ever touch, you probably have very you probably have very little in common with like a team working on an enterprise system trying to keep a 10-year-old codebase alive for another quarter, or even a two-year-old code base alive, and get it to the next thing and adapt to the latest changes and everything's moving really quickly. And so, like, this is a thing we've talked about in software.
+
+Vaibhav (13:54.932)
+Yeah, do whatever you want.
+
+Vaibhav (14:04.374)
+Yeah.
+
+dex (14:11.735)
+maybe not out loud on this show, but like the goal is not position. The goal is velocity and maybe acceleration. Is like how fat like the whole point is that software will change. So good software is constantly changing and moving. And when you use bad software, it's probably because it's not changing fast enough. When you use Salesforce, it feels like a bad application. sorry, Salesforce, but everyone agrees on this. and that's
+
+Vaibhav (14:39.05)
+Hey, hey, hey, hey, hey. But it ha it has lasted for twenty plus years 'cause it's deeply entrenching. Great business, not great software. Two different things. Yeah.
+
+dex (14:45.541)
+It's deeply entrenching, they have all kinds of hooks and lock-in and ecosystem stuff. Great business, not great software. But it's like the reason why it feels bad is because they can't move fast anymore. Whether like they they either chose not to, or like it's like you your ability to innovate will impact the quality of your software. And if it is slow for you to make changes to it, then it will get worse over time instead of getting better. So you have to you have to maintain visibility on not just your position of like where are you, what is the current state of the software.
+
+but your velocity, how fast and how safely can you change it without and again, like lots of things slow down software. It's like, we ch every time we change that module, we have a we have an incident. It's like, cool, people are gonna be less likely to change it. It's gonna change less and they're gonna be more careful and they're gonna be spending their time fixing incidents instead of the other things.
+
+Vaibhav (15:26.22)
+So
+
+Vaibhav (15:32.044)
+Vom C asks a really good question. Like what metrics are you folks considering for coding performance velocity these days? And I think that's a really great way to think about this. and I think the way I think about this is actually like before AI. So my first work experience was at Microsoft. I'd never worked on a large team before that. I mean I'd worked like interned at Meta, so they had different build systems. Meta's whole philosophy is break things, move fast. Like move fast, break things, right? Like they I put break things first because you know, you break things all the time.
+
+dex (15:48.445)
+Yep.
+
+Vaibhav (16:01.119)
+But Microsoft was when I first joined like real like corporate software. And we had like real and like we were still working like a research group, so slightly different. But even then, like there were days when I walked in literally at like nine AM and I would be like, shoot, my build my build didn't build overnight and I would just go home because it was gonna take eight hours to build. Like sync and merge and build. So I'd just go home. There's literally nothing for me to do at that time on the whole day. and
+
+It was a massive code base and like engineering speech was slow. And I honestly thought that was like the state of software. And then I went to Google. And Google is this magical land of software development. And I don't know how else to put it because nothing will ever get in your way of producing code. They have like a whole org whose only job it is to make sure that every other engineer produces code. So when I think about like this coding perform coding performance and velocity.
+
+For me, it's about how fast can you continuously release and merge code to production. That is the only gate that I you should measure. And like how fast are your customers able to see like live changes? Is that how you think about it, Dexter?
+
+dex (17:09.019)
+Yeah, that sounds that sounds great. I actually just started writing this down. yeah, so how fast can you write and release changes? Right? Yeah, two users. Yeah, it's not done when the code is done, it's not done when it's merged, it's not done when it's deployed, it's done when it's in users hands shipping value. So we'll change this release value to users. I'll say users just in case we're doing free stuff, but
+
+Vaibhav (17:13.279)
+There you go.
+
+Yeah. Nice. Two customers. Specifically two customers. Like s yeah, two users. Users Yeah.
+
+Exactly. Yeah, exactly.
+
+Vaibhav (17:35.731)
+Yeah, 'cause i yeah, exactly. It's still useful to make free stuff fast.
+
+dex (17:40.571)
+And then we'll get into acceleration in a bit, but you know, if you know basic physics, w y y you know where we're going.
+
+Vaibhav (17:44.681)
+Yeah. But this is like in my mind, you I can see your riverside, by the way. Can you hide that?
+
+dex (17:51.859)
+yeah, sorry.
+
+Vaibhav (17:53.162)
+Yeah, in my mind, this is like the only thing to measure as a software engineering team. So that means like if your CI C D takes like an hour, fix that. If your testing t is flaky and you have no confidence in your system, fix that. and then eventually, go ahead.
+
+dex (17:59.369)
+Yeah.
+
+dex (18:03.271)
+Yep.
+
+dex (18:10.865)
+Yep. And actually, me measuring velocity has gone through its own kind of like generations of of what it means, right? It used to be like lines of code shipped, right? And then eventually it was like pull requests shipped because that like is maps a little bit better. But these are all kind of like legacy ways of like which teams are moving and then we got story points, right?
+
+Vaibhav (18:22.915)
+yeah, yeah.
+
+Vaibhav (18:30.709)
+Yeah.
+
+Vaibhav (18:34.534)
+my god, please stop.
+
+dex (18:39.921)
+Yeah, the o the old way of doing this.
+
+Vaibhav (18:40.669)
+we did eventually
+
+We did eventually find this, like product metrics, which I think is a better way.
+
+Like things like post hoc and stuff.
+
+dex (18:50.769)
+Yes. Because that's actually like trying to get to measuring the outputs. Like so like the way I think about it is like inputs, outputs, outcomes, right? And so an an input would be like, you know, inputs is like lines of code shipped. Outputs is like new features shipped.
+
+Vaibhav (19:15.562)
+Yeah.
+
+dex (19:15.813)
+And then outcomes is like customer can do XYZ workflow in twenty minutes instead. Yeah. Instead. Yeah, and then it's like basically like it's like customer outcomes drive business outcomes, right?
+
+Vaibhav (19:21.629)
+Or like churn or retention or revenue. Yeah.
+
+Vaibhav (19:31.307)
+Exactly. Yeah. And like the only thing at least there's if you're a business writing software, the top of the line is business outcomes. If you're a person putting software into the open source, then you stop at customer outcomes. but like you effectively also have business outcomes. I just don't think it's fair to call it the same thing 'cause you're looking for different it's a different kind of thing. Like RipGrep is a customer outcome, but I would say it's actually a business outcome. Like RipGrep is an amazing piece of software.
+
+dex (19:59.026)
+Yeah, but who gets no one makes money off of rape grab. Yeah. I mean Anthropic makes money off of rape grab, technically.
+
+Vaibhav (20:01.31)
+That's okay though. It it in my opinion it's I would still define
+
+Yeah, they get to turn more TPS because of ripcrap instead of crap. Exactly.
+
+dex (20:11.589)
+Yeah, exactly. exactly. Less time waiting for grep, more time waiting for inference. I wanna I wanna talk about something that happened kind of like in the mid twenty tens. we got this thing called Dora, which is like DevOps research something, I don't remember. I don't remember what it stands for.
+
+Vaibhav (20:26.239)
+Okay.
+
+Vaibhav (20:34.612)
+Yeah. yeah, yeah.
+
+dex (20:37.693)
+But basically they came with these four they looked at like you know thirty thousand thirty thousand thirty K plus developers. Now I think now it's way up over over a hundred thousand. They do this survey every year. It was a team, it started a puppet, they got acquired by Google at some point. Now they all work for Google Cloud. and the original authors of the book have been have have moved on. But basically they found these like four key metrics that like every like Fang company was good at.
+
+Vaibhav (20:45.994)
+Sure. Yeah.
+
+dex (21:06.151)
+Basically, like every company you look at and like holy crap, they are just printing money. Like the darling c children of the of the like twenty tens, like software era. so this I think the the book came out in twenty eighteen. but you have basically four metrics, which is like batch size, and we actually take this as like deployment frequency. companies that ship a lot of small things faster do better than companies that ship large things less
+
+so it's like small batch size or high deploy frequency. So like how often are you actually shipping changes to production? it was like short lead time. So it's like time from X to deployed in prod. And this one's a little iffy, right? So so lead time can be I'm getting a little off topic here, but this is great to go over. lead time can be either like time from PR merged to deployed in production.
+
+Or it could be like time from I have an idea to it is built into a feature and shipped to production. The idea is like teams that are really, really good are really good at taking things from somebody's head and getting them in customer hands as quickly as possible. and then we have low change failure rate. So that's like the odds, you know, percent chance, percent of PRs that caused bugs, incidents, and then time to recover.
+
+Vaibhav (22:35.316)
+Dex, I'm gonna this is very fascinating, but I think you have something much more interesting to say, which is different ways to measure these benchmarks. I I wanna make sure we get to cover that. 'Cause that is actually I think the most interesting part about this. The history is really I know, that was my bad. That was my bad.
+
+dex (22:38.94)
+Yeah.
+
+Yes.
+
+Yeah. Yeah.
+
+Listen, you're the one who grabbed the question out of the chat. But yes, when we talk about velocity, it's important to kind of have an idea of like what does this mean because I think like these are coming back to the questions, like these are things that we can't measure models on today. Like we don't I mean, I guess we can measure the size of their change and how fast they got it into production, but like the benchmarks don't measure this.
+
+Vaibhav (23:02.792)
+Yeah.
+
+Vaibhav (23:10.994)
+Yeah. There there's this other thing that I think you told me at least, which is the feedback time in which you can measure certain cycles is like the feedback time for this is like s seconds to get this data point up here. Same for this and for this it's like minutes 'cause agents write code now. Right. So like minutes. we measure in the order of like let's say like even long running agents are running for two hours, three hours. It's still like three hundred six sixty it's like
+
+less than 360 minutes usually. Right? Lines of code you can get in like less than like fifty s less than what less than one minute basically to go get to go get this stat even for like giant code bases. Customer outcomes take like like days to weeks.
+
+dex (24:02.769)
+Yeah. To get like real data on.
+
+Vaibhav (24:02.804)
+to go measure. And then the business outcomes take like quarters to months, quarters to years.
+
+dex (24:08.229)
+Yeah, exactly. So yeah. It's a lot easier to measure th near the top than it is near the bottom. But anyways, I wanna I wanna talk about our our our benchmarks here.
+
+Vaibhav (24:15.444)
+Yeah.
+
+dex (24:23.109)
+And the basic idea here is like you have so so you have Suite Bench Multilingual and Terminal Bench. And I actually want to look at one of these. So this is this is Suitebench Multilingual. This is the table of all of the problems. And so each of these comes off of a random repo, Golang projects, Ruby projects, all kinds of stuff. so yeah, if you go to DocuSaurus is a TypeScript project, and so you have a problem statement here, which is like, hey, there's income there's like problems with the broken links check.
+
+and there's hints here as well, which are sometimes past the model. This is like the issue thread. This is other humans commenting on the GitHub issue before the PR gets made. and then fail to pass is basically so so g going down a little one more level of detail, the verifier is basically we have fail to pass, which is like did it fix the did it fix the bug?
+
+And then we have
+
+dex (25:26.963)
+Pass to pass, which is something like
+
+dex (25:34.419)
+What is it? It's
+
+dex (25:39.422)
+Did it not break anything else? Right? And so this is like the very basic like set of validations. And then I think here we also have, yeah, so we have the patch that the model did. this is like the golden patch. This is like the correct answer to the problem. And then we have a test patch basically. So like the actual flow here is
+
+dex (26:03.421)
+So give me I just gotta go take care of something really quickly, sorry.
+
+Vaibhav (26:08.38)
+Okay. We'll cut this out of the clip. I I assume it's very important, so I'll answer the questions meanwhile. Yeah, go do that. It's fine. do coding agents still show the question is do coding agents still show clear anti patterns that are easy to verify programmatically, or are most of the bad results coming from vague areas that are hard to measure? In my experience
+
+dex (26:11.293)
+Yeah.
+
+dex (26:14.743)
+it's very important. I have a guy here to to fix some desks.
+
+Vaibhav (26:37.084)
+the hardest part about measuring code over time and patterns is never the stuff that you can catch with a linter. Like you can just put linter rules and like you guarantee things about code bases. Like at Google they have a thing called like you have to be certified in a language to be able to merge. Are you back? Okay. TLDR I think it's mostly about like software architecture. Like the real bad slop actually gets in when you have fundamentally bad architecture.
+
+dex (26:51.121)
+Yep. Yeah, back.
+
+dex (26:59.559)
+Yeah, and we're actually gonna get into some of the things these new benchmarks do, is they get more towards what can we verify deterministically or with models to get better than this just did it fix the test? does that make sense? and so I want to talk about kind of like three new approaches. they're they're all kind of similar. so one of them is Sweet Marathon, which is like we're kind of measuring the the model's ability to
+
+To to to solve hard problems over time. it's like rewrite all of Kubernetes in Rust, and then we ask the model to work on this for like I wanna say like some of these are like 400 hour challenges. And so you're a little bit getting f closer to like, okay, it's gonna run this loop a bunch of times and like make sure that like af after it's written thousands of lines of code that it can still maintain its own code base.
+
+so I think that's pretty useful and interesting. so just longer. So we have like a couple dimensions, right? So we can have like what makes modern benchmarks better?
+
+dex (28:17.471)
+so you can have longer tasks. the other thing that we're doing also is like more black box testing. If you look at some of these sweep bench multilingual ones, some of these test patches are very opinionated. So they're not just validating the behavior, they're actually validating that the model solved it in exactly the way that like the human would have solved it. and I'm gonna find let's see. Yeah, so.
+
+so here's our test patch. It like it asserts the exact attribute that it actually there was this like null pointer exception in in a Ruby project basically. and so this is the exact fix that we wanted to happen. because we had some like undefined method empty. There's a hundred ways you could have fixed this null pointer exception. This was the one that the human chose. Does that make sense? And so like
+
+Vaibhav (29:11.207)
+Yep. Yep.
+
+dex (29:13.371)
+You're you're really not just evaluating did the model solve the problem, but did the model solve the problem in the way the human did? And so a lot of these benchmarks do a little bit more black box. They're like, Cool, make this thing from scratch and we're gonna poke it from the outside and we don't care about
+
+Vaibhav (29:24.871)
+Yeah. Yeah. And then I think the most fascinating thing is actually like the next level of this, which is if you go from taking it from like a black box for longer running task, you end up in this really interesting world where you're no longer trying to solve one problem. Like software is actually like basically discovering problems as you go.
+
+dex (29:27.363)
+yeah. Yeah.
+
+Vaibhav (29:51.272)
+Right. Like when we started to build BAML, we didn't know every feature that we were gonna add up front. But we discovered them. And the the interesting part is how much work do we actually have to do and how flexible and how good was our initial insight to make sure that the core system we built allows us to not have to rebuild everything all the time.
+
+dex (29:51.688)
+Yeah.
+
+dex (30:12.561)
+Yeah. And this actually gets to a key like challenge, what like like where where even modern benchmarks fall short.
+
+dex (30:23.131)
+Is like in real software like you've done, you've basically like you're you're figuring out the problems as you go. Whereas all these benchmarks, because there's no human loop, because we're not changing the prop we're not evolving the problem as the model is working, it already knows the end state. So it doesn't have to make its code base like adaptable to changes. Does that make sense?
+
+Vaibhav (30:33.779)
+Yeah. Yeah.
+
+Vaibhav (30:38.375)
+Yeah.
+
+Vaibhav (30:44.505)
+Yep, exactly. Cause it's not and it's not optimizing for that. And like just like for example, like for example, when we had certain features, sometimes we're like, crap, we might do this in the future. So therefore we should maybe do like ten percent more work. So doing that in the future is not a hundred percent more work.
+
+and that's a really and if I think about like the best software engineers, what makes someone really good is that level of that intuition is just good. And I I don't know how to measure that. There's no there's no objective truth to it. But when you've ever met a great software engineer, you're like, Holy crap, how do they think of that in that way? And how do they just
+
+dex (31:20.829)
+Yeah. How did they how did they know how did they have the intuition to know that like this was the right way to build the thing to make it so that we'd be able to evolve it and change it later? there's also a lot of software engineers who overdo that, of course.
+
+Vaibhav (31:28.506)
+do this like later. Yeah. Yeah. And like the good engine
+
+Yeah, and that's why I said the best ones are the ones that don't like for example a a really simple example is Git. Think about how much the core principle of Git has changed. It hasn't. That's what makes Linus a frickin' legend. Right? It like that's fundamentally what Yes, there's not a lot of software in the world that lives up to that level of like rigor. So like if you wanna be a legend, like if you and like if you want to build software at agent speed, the problem is you just took thirty years of software development.
+
+dex (31:44.883)
+Yeah. Yeah.
+
+Vaibhav (32:04.593)
+And now you have to be like, we're gonna learn the same amount over thirty years in one year. That's a problem with shipping fast and like shipping at agent speed in my opinion. And I think that's what you were trying to describe the benchmark problem as.
+
+dex (32:14.823)
+Yep.
+
+dex (32:19.121)
+That it's part of it. so I there's there's other things that make these modern benchmarks better. and I actually want jump to a slide we have on frontier code. And the idea is like the reason wh the models all they're graded on is like did the test pass? Which is why you get things like this. You get like weird like double typecasts, you get like wrapping things in error exceptions because like
+
+Vaibhav (32:37.715)
+Yeah.
+
+dex (32:41.807)
+In a one shot problem, there's no penalty, there's not even a good way to penalize it. Like I couldn't write a linter deterministic I mean, you could if you tried really hard, but it would be very specific. Like you can't write a linter that generally finds patterns like this and says, No, that's wrong and gives back pressure to the model.
+
+Vaibhav (32:42.141)
+Yeah, that's code.
+
+Vaibhav (32:57.829)
+Also it very well could be right. In many scenarios, this might be the right thing to do.
+
+dex (33:01.401)
+Sometimes this is right. Exactly. You'd have a lot of false positives or false negatives on on either side of that. there's a really interesting one called Frontier Code. they do two interesting things. actually I'll say three interesting things. So we talked about like the problem with this like sweet bench multilingual is like a lot of the test cases require the model to not just make the test path, but like write the code in the way that the human would have written it without knowing what's in the test, right? Because you can't tell the model what the tests are.
+
+Vaibhav (33:04.616)
+Yeah.
+
+dex (33:30.827)
+and so like a thing that the the Frontier Code folks did that's really interesting is one, they have like an adjudicator, I call the adjudicator model, read the written code and
+
+Vaibhav (33:47.113)
+Okay, for the simpletons like me, can you tell me what adjudicator means really fast? Okay, cool, thank you.
+
+dex (33:52.286)
+Call a judge model. Thank you. Sorry. Look, they picked the name, okay? We'll we'll we'll we'll we'll dumb it down for all the smart people here. so compare to the golden patch, right? So we take we take them the code the model wrote. In addition to, so let's yeah, let's go back over here. We'll get the the better one here. and so like frontier code looks a lot like
+
+Vaibhav (34:01.894)
+Ha ha ha.
+
+dex (34:20.779)
+shoe history. We're still like checking out a code base to a SHA or starting a sometimes it's starting a project from from scratch, but like humans curate this data set. The agent goes and writes code. We still do this verify, right? Did it solve the problem? We have the regressions, which is like, did you do it without breaking in anything else?
+
+dex (34:49.725)
+Then you have the
+
+What do we call it? we have the judge model. It kind of matched the solution. And instead of all these be like pass failed, these all give you just like a score. Right? So all of these contribute to your score.
+
+dex (35:16.379)
+And then we also have a quality judge, right? So in here we actually have so as part of the as part of the benchmark, you have the like golden solution that doesn't go to the agent, but it's used here. You also have like a list of code quality rules. So like something like, you know, you have like C like memory things or whatever. It's like written rules, a prompt or a skill that goes into the quality judge. And the quality judge also looks at that code, right? So this goes into all these steps.
+
+Vaibhav (35:31.1)
+Okay.
+
+Vaibhav (35:35.53)
+Mm. Sure, yeah. Yeah.
+
+I like that.
+
+dex (35:45.971)
+And then they have a very cool thing, which is like we haven't talked about mutation testing on this show before. but we also have a like did do the new tests fail on the pre-patch code? so the agent writes code and it writes tests. we actually ignore the agent's tests for these things because we don't want the model changing the test to make the stuff pass. And so when the when these verifiers run, we actually like
+
+Vaibhav (36:04.824)
+Mm.
+
+dex (36:15.75)
+zero out any changes the model made to the tests. But then for this step specifically, we actually take its tests and run it without the code that it changed. And we see do those tests fail? Because otherwise the model's just writing tests that test nothing. And that contributes to the score as well. So I we've spoken a lot. Sorry, go ahead.
+
+Vaibhav (36:34.13)
+Like basically it's like how good was it as yeah. It's like how good is it is it at both like assessing the true test cases that it should have tested?
+
+dex (36:42.172)
+Exactly. Wha what what what quality are the tests and like how well does it it's almost like a proxy, like how well does it actually understand the problem? because yeah, go ahead. I was just gonna say, like nothing l like it is not the only thing that will tank your code quality and maintainability, but a bunch of tests that don't test anything meaningful and then you go to change something and those tests fail and you have to figure out, okay, do I need to change the test or did I actually break something? Like that is one of the main things that slows down both people and LLM.
+
+Vaibhav (36:49.83)
+You know what's so go ahead. No, go ahead. I had it totally off off yeah.
+
+dex (37:11.284)
+is having like meaningless bullshit tests.
+
+Vaibhav (37:15.59)
+Yeah. that's freaking awesome to say. I'm glad it's working. anyway. you know what's really interesting about this? And like maybe I'm just weird. Every time I look at benchmarks, it l I lose more and more faith in the whole loop. and like and like and like it's funny because like I think about this and like there are no benchmarks for human engineers. I mean there are like hacker rank and stuff.
+
+dex (37:33.918)
+Yeah.
+
+Vaibhav (37:43.891)
+But like, let's be real, those don't really mean anything to me. Like, no I'm never like, you're rank one in hacker rank, you must be able to make the best products in the world. I'm like, cool, you can solve hard algorithmic problems really fast in this constrained environment. Yeah. It doesn't solve the software engineering problem, which is very different. Right? and it obviously like some of the best are probably pretty good at hacker rank. I suspect like I suspect John Carmack would have been good at this. regardless. But like
+
+dex (37:54.59)
+Yeah, you can do math.
+
+Vaibhav (38:13.198)
+When I there's no good benchmark for them. And really the what's like what do I think of as the good benchmark for a software engineer? The only benchmark for a good software engineer, in my opinion, is whether or not other people have recommended them. And everything else pretty much is a really bad proxy. Right? Like if someone I trust has recommended someone, that is pretty much like an instant yes. I trust them really well. but like
+
+dex (38:33.236)
+Okay.
+
+Vaibhav (38:40.89)
+A leak code problem is a really bad proxy. A discussion over like and effectively, like what do I really get? When like why do I think Daksha is a great engineer? It's because we've spent hours together discussing systems together. And I know the way you approach yeah, and built we've also built things together, but more so just like the way that we've talked about the way that you've discussed problems and broken them down shows me that you know how to think at that later. I'm like, I would love to work with you and like discuss things with you. It makes me better. And
+
+dex (38:44.146)
+Yep.
+
+dex (38:52.85)
+And building things.
+
+dex (39:08.594)
+Yeah, we need thinking bench.
+
+Vaibhav (39:11.332)
+Maybe, but really I think what I want is I just want more people to tell me what model is good over time. And eventually if someone I trust tells me what model is good, I'll just use it. And these models have gotten good enough these models have gotten good enough to where like we don't really need the same benchmarks. We just need other people to tell us what's good. And like you basically kinda can crowdsource.
+
+dex (39:20.269)
+I see.
+
+dex (39:33.0)
+Why do you think I spend all day on Twitter, dude? Why do you think we do this show?
+
+Vaibhav (39:35.234)
+Yeah. Yeah. We're just crowdsourcing. PS, soul is freaking amazing right now at design docs. It is nothing comes close. it doesn't matter though. Like if you can burn the token then you have the bandwidth. It is the best for doing design docs. Fable is still quite good at performance engineering, though sadly, it cannot come up with some of the ideas.
+
+dex (39:40.594)
+Yeah. Yeah, soul's great. it does use too many sub agents and skills, but
+
+Vaibhav (40:00.866)
+that I can, so I still have some value over the models. Maybe not in three months though. But
+
+dex (40:05.842)
+Yeah. anyways, I have I have two more points and then we can wrap this up. number one is I don't think I think if LLMs were good judges of code quality, outside of d like you obviously you can have a pull request bot and you can say like, cool, does it follow this pattern, does it follow this pattern, does it break this rule? Like you can explicitly encode your rules into a prompt or into a deterministic linter.
+
+Vaibhav (40:10.683)
+Go for it.
+
+dex (40:30.6)
+That's great, but I don't think that is sufficient. and I don't think you can have a generic judge. Like, I've I've asked LM so many times, like, how can we make this code quality better? And the answers are all bullshit. Because basically, the same way that these like benchmarks work is shaped very similar to how we do verifiers. Like, to to do an RL verifier, to actually change a model, to change its weights to be better at solving these sorts of problems, we need to be able to like evaluate the performance.
+
+Vaibhav (40:42.693)
+Yeah, dude.
+
+Vaibhav (40:57.178)
+Mm-hmm.
+
+dex (41:00.554)
+Performance. And so, like, if you're going to do thousands and thousands and thousands of runs with millions of millions of nodes of compute to train a model, like you cannot have a human scoring and the architectability of the solution. You have to use these like judge type things, you have to build these deterministic verifiers. And so if you cannot like build a judge that is that is good at judging code quality, then the knowledge of code quality will never end up in the weights, which means the LLMs we built in this way will never actually be.
+
+Vaibhav (41:24.357)
+You can't Yeah.
+
+dex (41:30.437)
+Be able to just like we are constrained to the things we can teach during RL, basically. Like the models will keep getting really, really good at anything we can teach during RL. And so solving problems and doing performance engineering, anything with good feedback is really, really like easy to train on. But like the thing is, is like this idea of like the model writes code over here, and then like other models and other humans touch it. And like, let's say there was a problem back here.
+
+Vaibhav (41:46.319)
+It's easy. Yeah.
+
+dex (41:58.717)
+And then months later, something is like going wrong, like bug incident due to sloppy code.
+
+Vaibhav (42:04.507)
+Yeah. Well yeah, because you had a traffic spike at that point.
+
+dex (42:09.65)
+You had a traffic spike or just like the slot piled on week over week over week, and then you had like actually a real problem. But it was really like the pattern got set back here. This can be like weeks or months. Like the the basically like the feedback cycle of like did fucking haiku think you broke the rules is really, really fast. Is like
+
+Vaibhav (42:13.611)
+yeah.
+
+Vaibhav (42:19.863)
+Mm-hmm.
+
+Vaibhav (42:29.233)
+And and really I think what you're trying to say is like you the model baked in a core pattern here that it replicated in two other features downstream where it shouldn't have because it just modeled your existing code base. And then this one was the le
+
+dex (42:39.218)
+Yep. And then maybe even a human came in and tried to fix something scrappy. And the point is like the the thing the the thing we want to penalize is all the way back here, but the like the way we actually realize it was bad is such a complicated and like lossy process that one, it's like it's hard to even notice in your real code in production, let alone to build a verifier that can do it millions of times in a row on millions of test problems.
+
+Vaibhav (42:50.128)
+Yeah.
+
+Vaibhav (42:57.061)
+Yeah.
+
+Vaibhav (43:07.419)
+Yeah. Also like most humans wouldn't have caught this. It's not even that. Like most like the people that are building these verifiers are researchers. And like no n
+
+dex (43:11.122)
+Yeah.
+
+dex (43:15.474)
+Yeah, we don't all have Linus reviewing our code being able to like, you're gonna hate yourself for that in six months.
+
+Vaibhav (43:21.359)
+Yeah. Like it and like there's a reason that not every engineer can like write like code that maintain like most code dies after six months. Right? like like just do it has a half life very that depreciates very fast. Very, very few engineers can like have this level of foresight. So like even if we did want to build this sort of benchmark, you'd first need people that can recognize enough enough people that can recognize enough of this data and enough of these patterns to give it feedback.
+
+dex (43:30.292)
+Yeah.
+
+dex (43:38.547)
+Yep.
+
+Vaibhav (43:50.247)
+To then build software that can recognize these patterns is even harder. Because you have to be able to put into words. And like the as sad as it is, the best engineers that I've ever met that can do some that have incredibly long horizon skills, I've never had them be able to verbalize why something is wrong. They're just like it just feels funny. And then they can tell you exactly how yeah. And it's Yeah.
+
+dex (44:09.127)
+Yeah, you have an intuition. And someday we will figure out how to bake that into the weights of models.
+
+And things like this are getting better. Like we've identified this is a pattern that causes problems. We've identified that like, okay, we can try to verify or or or train models on various like quality heuristics that can be like pars and understood in a limited scope. But this whole idea, so this is like if I was gonna build a benchmark, I'd build a benchmark where the model had, you know, a roadmap of twenty features to build, but it didn't know about each sequential. It just got one ticket at a time and had to evolve the code base over time without knowing what's coming next.
+
+Vaibhav (44:21.574)
+Yeah.
+
+dex (44:46.133)
+Mm-hmm.
+
+Vaibhav (44:46.5)
+Yeah. And I it almost had to predict. It's almost like the harness and every task is told. Just think really fast if I need to model for other things that might be relevant in the future. Don't do the work, just make it possible to extend it if we need to. And if we need to is the magic phrase and like I if you say that prompt, I know what the model will do, it'll just start up it'll turn it into Java. And I don't want that in my code base either.
+
+dex (45:01.329)
+Yep.
+
+dex (45:09.127)
+Yep. Yep. So that was most of what I wanted to talk about. Is just like here's why this is farther off than maybe it feels like 'cause the models are getting a lot better along the dimension of like solve a one off problem.
+
+Vaibhav (45:13.913)
+It's really
+
+Vaibhav (45:24.996)
+Yeah.
+
+dex (45:27.069)
+But they are not getting much better at like maintain a code base over time.
+
+Vaibhav (45:31.183)
+Yeah. And also just to give people a little bit more hope, I don't think we're saying that everything is doomed, stop using agents, at all. We're not even close to saying that. If you think about like how many teams actually have the kind of engineer that like Alinus on the team, like how many distinguished engineers does the org at like Microsoft and Google have? There's not that many of them. And it's okay. We survived. In fact, most teams are built of S D ones, S D twos, and a couple seniors. And we do
+
+dex (45:39.603)
+Yeah.
+
+Vaibhav (46:01.2)
+Pretty well at shipping software with that level of thing. So I think we can go really far still. There's a lot of low hanging optimizations for still solving one off problems. That adds a lot of value.
+
+dex (46:12.221)
+yeah, no, it's great. And if you know how to steer the model, it's like this is all about like understanding and building intuition of like what are the models really good at and what are they really bad.
+
+Vaibhav (46:20.24)
+Yeah.
+
+dex (46:20.569)
+at and how can you shape all of the problems and all the things you work on so that you're doing the things that the models are bad at and the models are doing the things the models are good at and that's how you get leverage and that's how you that's like the real way to ship more at high quality is to continue like find the ways to insert yourself where you do a little bit of work and then the model can like you greatly increase the likelihood that the problem looks to the model like this thing that it's really good at.
+
+Vaibhav (46:49.178)
+Yeah. You said it best, man.
+
+dex (46:52.508)
+sick. I think that's all I got. Should we do questions?
+
+Vaibhav (46:53.442)
+I can't wait till we have better benchmarks though. Yeah, I mean I'm really excited to get better benchmarks. I think some people out there will be thinking about this. I do hope some engineering folks decide to move more into research. and like think about how to transition some the software knowledge into the research and benchmarking.
+
+dex (47:14.055)
+Yep. what else we got?
+
+Vaibhav (47:15.318)
+let's see what you wanna record the outro while we do this? I'll check the questions and I'll yeah.
+
+dex (47:21.395)
+sure.
+
+Vaibhav (47:25.836)
+I have a good answer for this one. But I'll wait till you record the outro first. Or the intro.
+
+dex (47:29.139)
+All cool. We're gonna do the outro and then we'll do questions.
+
+all right, y'all. So today on AI That Worked, we talked about the basic loop in software. We talked about early benchmark patterns and how we used to grade and judge models. We looked at a bunch of examples of a couple different generations of benchmarks, including some new ones in 2026. We actually had a nice little side tangent on how to measure software velocity and how like the importance of being able to move fast is more important than like shipping any one individual thing. And then we talk about what makes these modern benchmarks better, how Frontier.
+
+From cognition invokes a bunch of extra verification things to score the model's code and the test that it wrote. and then we talk about kind of like where modern benchmarks fall short and what they still can't measure, including long horizon penalties, like, hey, you wrote something six months ago and it turned out to be a bad decision, and six months later it's causing tons of problems. Very hard to evaluate that. and so
+
+Hopefully you learn a lot about software benchmarks and how models are evaluated, and it helps you reframe your workflows and think about how you work with AI on a deeper level. So I'm excited to get into it.
+
+Vaibhav (48:40.006)
+Dude, we're gonna get better and better at these recordings over time. It just reps, man. Reps under reps under the belt. It's pretty good. Bomzi had a question. I've personally noticed that models are bad at losing full sight of what to converge on, especially when subtasks go into a deep rabbit hole. How are you folks beating this pattern?
+
+dex (48:47.366)
+Just do reps.
+
+Vaibhav (49:02.562)
+I have I can I'd love to know your decks. I can tell you what we do. We try really hard to make sure that the type system models things in a way that's really hard to do the wrong thing. So for example, I had this task yesterday where I was doing a translation from like BAML to go and adding Go support to the new language. And one of the things that we have to do is how we do name translation. And like w when we do code gen, you can imagine parameter names have to be code gen from BAML to go.
+
+And we have keywords that Go has. Go we have we don't have keywords that Go has, like the Go keyword. So if someone names the variable Go, we can't call it Go in our language. So making that a more foundational system so that the type system can never get it wrong makes it so that there's no one-off cases. So I'll spend extra edge work recognizing these problems and like enforcing the type system.
+
+dex (49:54.791)
+Yeah, I think I think more generally, like the the faster and cheaper you can make your bass back pressure. I mean, Bamchi's talking about convergence, which is like I think of convergence as another like view on the concept of back pressure of like the model's going to function almost as a control loop. This is how Ralph worked too, is like, okay, we have our desired state of the world, which is like there are no linter errors and all of our back pressure is thumbs up. And then we have our current state of the world, which is like, Okay, this is broken. And so like the tighter you can make that loop, whether it's a type checker
+
+or a linter, and then a little bit slower is your unit testing suite, a little bit slower is your integration testing suite. Way slower is having a human like open a browser and click around and try it. so it's like yeah keeping things on track is like keeping them focused on the goal. Now if if if you have a sub agent that's just like poorly prompted by the parent model and it's just off in a corner doing something weird.
+
+Vaibhav (50:35.397)
+Yeah.
+
+dex (50:45.446)
+I mean you gotta prompt your parent model better, you gotta prompt your parent model to prompt its sub sub agents better. so I don't I don't have a I don't have a strong feed there, but it's like the more you can keep a agents focused on a deterministic sort of back pressure of like, hey look, we're in this state, we need to get to that state, here's how you can check your work, the less likely you are to get off track. And if they forget that, you might be in the dumb zone and need a new context window.
+
+Vaibhav (50:48.399)
+Yeah.
+
+Vaibhav (51:11.193)
+Yeah. Basically get good and like pay attention and don't just if you the more parts of your code base that matter, the more attention you have to pay. And the less parts of them matter, the l more you can let it do its thing.
+
+Cool. I Zeke, you are absolutely right. yeah, hopefully everyone has a good time. I think that's it for questions. Doesn't look like we have too many more. So
+
+dex (51:31.1)
+Callback. That's what we call a callback.
+
+dex (51:40.03)
+give us a shout out. We'll post this episode. hit us up on Twitter. if you like this episode and maybe we'll do a little follow-up and go a little deeper on some of the other stuff. But hopefully this gave you some more intuition on how these things work and why they're bad at the things they're bad at and why they're good at the things they're good at and helps use AI more effectively.
+
+Vaibhav (51:59.141)
+All right, I will see you soon, Dexter.
+
+dex (52:01.18)
+Peace out amigos.
+
