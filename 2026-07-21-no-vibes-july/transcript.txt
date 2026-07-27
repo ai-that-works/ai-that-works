@@ -1,0 +1,352 @@
+@dexhorthy (00:03.394)
+Hell yeah.
+
+@dexhorthy (00:10.706)
+we're live. You are too tall, amigo. yeah. Should we make it w Yes. We're we're in our new office and we don't have a lot of chairs. so we're doing this podcast standing. Here we Which means it's I know how we can do this. I'll sit I'll stand closer. Yeah. You stand further away. actually might be better the other way around. Yeah, there we go. Now we're no, this isn't gonna work. we'll figure this out. You know what? If you can stand in, I'll get a chair and I can sit down.
+
+We'll just do this. We're gonna see how far we can go. we are live in person in San Francisco at Human Layer HQ. Coming at you live. This is the AI That Works podcast and where we teach you how to do cool shit with AI that actually works.
+
+Yeah, my name's Vibob. We build a programming language that's agent first and human second. And my name's Dex. and what do we do? we're building GitHub for design docs. We're building the future of how software engineers collaborate on the production of software.
+
+It's gonna be really sick. It's gonna be fun time. and today we're gonna talk about that. we do this series sometimes called No Vibes Allowed, where we just hang out and stream and like build shit code on the stream. and so we're gonna do that. And we're I guess we're starting early. That's yeah. This is the new solution. This is how we start on time, guys, is we we fly vibe off to SF every Tuesday to do the podcast. man, dude, that'd be a long commute. Yeah. okay, so the thing I wanna work on today actually is I'm working on a feature I have it kind of spec'd out.
+
+But I want to kind of just like walk through it and like get your feedback along the way. Because basically, like the challenge we have, and I actually like spec'd this out with some some with with permission, some boundary data, which is basically like what are the things the people on your team are telling the agent over and over?
+
+@dexhorthy (01:59.63)
+Okay. Like explaining that your main branch you don't have a main branch, canary is main. Yeah. And people have to tell that to the agent all the time. and eventually you'll probably get it in your quad of me or something. But like the sorts of things that like get said the most and then basically making that accessible to the agent either always on or like finding It's kind like a memory system. It's kind of like a memory system, but I don't like calling it memory because it's
+
+We're calling memory. We're calling it context shards, but it is it is memory. It's the non memory memory. Yes. Okay. I I think the so I'll be honest, when I think about memory systems and why they don't work well for me. Yeah.
+
+Is Claude aggressively adds memories. Yes. And once it adds memories, it tries to follow that pattern in new code bases. Yes. And that is often not what I want. I'm in a work tree, I'm doing some stuff. Yeah. And the presence of a memory is exactly what you're talking about. It's about distribution of how often it's said really certifies like whether or not it needs to be ingrained in the system. When does that get activated? And is it in a skill or is it in the Claude MD or is it in a like prompt that you
+
+Page like slash command that's not model invokable. Well, even more so than that, the thing that I find most fascinating is actually, like I said, the volume-based memory system. It's like the thing that adds something to memory is not a single decision by claw that says update my memory file. Yeah. It's actually analytics over time that slowly pop up my memory file. So what I get is lag. Yeah. I get a lagging indicator for what my memory is, but what I get in return is my memory is never useless.
+
+And I think that is a very fascinating idea. It's twenty percent useful memory, like twenty percent of the possible memories, but all really useful and applied at the right time is way better than everything you might want to remember applied all the time. And even even if it's you know, yeah, exactly. Exactly I'd rather have correct memories. I the idea. Yeah. Let's talk about it. So let me pull this up. I'm gonna make sure before I share my screen, I'm gonna make sure I have the right one. I have an idea.
+
+@dexhorthy (04:03.316)
+shit. Now they get two views of us in different ways. Okay. Well my camera's view. I'm gonna look better on this camera. yeah, your camera's definitely better than mine. Yeah. We'll also edit what I want. okay, so We've got a few people in the chat by the way. hopefully you guys are gonna have fun watching us actually code today, as opposed to what we normally do, which is talk about stuff. Are you ready to go? I'm about to share and find the
+
+when I when I really think about it's fascinating. I you know what's happening when Claude first added memories, I loved Claude memories. But now I actually hate it more often than not. I actually often tell it in my prompt, stop adding stuff to memories. we just full disable it. We literally like when you run Claude in human layer, the memory is just off. Yeah, well 'cause it's annoying. Here's the thing I run into. this is a real thing that happened. Yeah. Which is I was running I was building this new
+
+System for us where we wanted to add a new environment variable that's like does something about like our disk caching system to make the BAML compiler very fast. So I added an environment variable like BAML disable ca disk cache or something. And it added that, but then saved it towards memory. And now every single feature I add, it tries to add freaking environment variables to it to make that like a feature flag for whether a thing is on or off.
+
+Everything should be on by default except for this one feature and for some reason Claude is now like obsessed with adding environment variables. So I have to deslop everything and remove all these end bars. Yeah. Because because one time you wanted to add an end
+
+Exactly. Like the user loves N bars. Exactly. And like what are you doing? so this is an example like that we were looking at like BAML sessions basically. It's like okay, cool, when you're doing serialization, start from the Rust data and work backwards. Yeah. To build the pack CLI, run it this way. Before implementing a CL like and so there's instructional things of like how I want you to behave, and then there's informational things that are more like it's it's not it's not steering. I I don't know if this like do you think this distinction is useful or is it all just memory?
+
+@dexhorthy (06:07.158)
+It's all the same thing. Okay. Like I don't I don't what's the difference in instruction and information? Help me understand that. Information is like context that the model might not have. Like, there's a team over there working on this thing. It's not like so you should behave in a certain way. It's just that's a v versus instruction is like never do this or always do this or make sure you do this or like here's how to do X. You know what I mean? Don't see the difference. Yeah, okay. As a user I don't see the difference at all and I don't want to think about the difference. Okay, that's great. The the other thing that I will say is
+
+Firstly, everything you show there is correct. So that's awesome. Yeah. the other thing that I will say is, so Code Rabbit has a very similar feature. Yeah. And the thing that I always struggle with with these features is they keep on add- it's a purely additive set. So the first 10 look good, but then after about two months of using it, what I run into is at the end of two months, I'm like, all you have is you've just added everything.
+
+The it's just like it's just an ever growing said now I've like three hundred things I have to look through to be like are they all correct or not? Eventually I stopped looking and they've all c pe they've all effectively converged into being the same as clawed memories. Yeah. So how do we fight that problem? Do you guys have a solution for that? Yeah, so I mean the the idea, right? So the the thing that we're looking at here is sorry, that's wrong. Your your mock UIs are really nice by the way. Yeah, I told it to read our styles.
+
+So the the idea is like these mocks basically have like you can opt in, you can like always on. You can opt in at the task line. that doesn't work. so so so for the first slice of this, it'll be like you can either have them always on, but you have to triage them. You have to decide if they're good or not, otherwise it's like useless. And then eventually you can create a PR and then it's always available in your repo, basically. It's like so you we basically look at your sessions and pull out things that you say all the time.
+
+you can share them with your team at which point then other people can turn them on and off or turn them always on. And then when you really want to bake it, then you create a PR. But it's like this like staged adoption where you can like pilot and playtest this stuff as you're I mean it's lot of work and it's a lot of decision making. And it's like really I think it only appeals to people who like really know what the hell they're like are super AI power users and know exactly what they want in their context window. But this is like kind of how we're thinking about it. Okay. So I like this concept. And like for everyone watching, like when I think about
+
+@dexhorthy (08:33.406)
+I think probably the most useful thing here that people should be thinking about is when you're designing a feature like this, you'll notice that Dexter has actually done a very, very, very big design on top of every single user interaction on this. Yeah. And that's what makes it so easy to have this conversation. Yeah. Like this I brought up a point. He's already pre-thought that point. He has he has a solution. Now we can talk about if it's good or not. And you can just dismiss this. And my thought is like when you dismiss it, it goes away for about 30 days and then basic like it won't show up again.
+
+in for 30 days and so we have like a thing that extracts them and says here's things the user has dismissed. But if you're still saying this to the model all the time, it's worth checking in 30 days later of like, hey, you're still telling Claude this thing all the time. Are you sure you don't want this in your like memory set? It's it's mo it's more like a yeah, it's like a fire and forget. Like remind me later if this is still true. Yeah, exactly. It's just like snooze this basically. okay so we remove the instruction versus versus
+
+You know what would help me. Yeah. if you told me why you added something. Yeah, so here so here's what we have detected from inference found repeated steering, create a PR and fresh branch from Remote Master. And so we actually have like a highlight of like here's the thing you keep saying. Recurring internal research workflow across t twelve sessions. Repeated requests to strip unnecessary comments. You know what I mean? Okay.
+
+And so like always on just get injected in your system prompt. And then like I I think there's a world I kind of this is another thing is like I kinda wanna touch the problem before we plan too much here, because I don't know what I'm gonna want until we actually like play with it. You know what I would love here when I think about it from an end user perspective? Yeah I kinda want this just to be running in the background and I just want it to ping me on Slack whenever it adds stuff and removes stuff, and I just want to interact within Slack. Interesting. Okay. Cause like I don't want to have another messaging letter, because this is basically like notifying me.
+
+It's a new inbox. It's an inbox of stuff that you can And I have new fucking inbox of stuff and I don't want a new inbox. Give me the inbox I already used, which is Slack. You don't want to wake up in the morning and be like here's all the things that we found that might make your life better today. No. Just tell me that it's Slack.
+
+@dexhorthy (10:41.206)
+Because I go I wake up and I check Slack every morning, I check Discord every morning. And then you want like basically this UI in Slack of like, yep, turn this on, or like, no, I hate this, or Yeah, and then like I by the time I prompt stuff on my phone or 'cause I prompt from Codex now on my phone. Yeah. Like I just can just like
+
+Just have it in there. Yeah, create a PR for this one. I want this available. I don't even need to create a PR. Yeah? Like I'm okay with just like yes, no, yes, no, yes, no. Make it really simple for me. Yeah. I mean the PR thing part of why I liked it is like I don't like when I use SAS platforms, I don't like it ever when anything is owned by this. Like if I can control it in my code, it should be a frickin' JSON file on my code base or a markdown file in my code base.
+
+Yeah, but like I'm looking at this, it's like you have my shard and shared shards. I would prune this personally even more and simplify and I would say there's only shared shards on my team. Yeah. And like hold me to a so one of the things that we do on our team is I don't allow people to have like people can do whatever they want, but things in the repo must be extremely high standard. Yeah. And I think if you're trying to build context shards, it's so easy for it to turn to slot. Yeah. So if you want it to be a high standard, just be like
+
+There's only one context shot for your whole team. Only put things in here that are truly for everyone on the whole team. But then it's just your then then it's just your quad MD. I mean so the idea is. Yeah, exactly. So what you're doing is you're helping me make sure that my quad MD stays up to date much, much faster. The thing is that there's parts of this that are only sometimes relevant. Like there's parts of this that are sometimes gonna be like, I only care about this. It's super useful advice if we're working on the HIR. But if we're not touching HIR, then I don't want it in my Sure, but that but that's still true for my whole
+
+team it has nothing to do with me versus my team i see so just everything should be automatically shared yeah like the bar for doing this that would be like again I think the the best products are ones that are opinionated
+
+@dexhorthy (12:36.726)
+I'm just worried about like so like that's for you. I I I do know there's teams who are a little bit less open about their workflows where someone might want to like review the the things that are based on what they have said to Claude, maybe like somewhat like Well, I would love it to be based off what my whole team is saying to Claude. It's like I agree over everything. Yeah. So it's like, yes, if five people on my team are doing the same thing, probably the sixth person should also do that. Yeah. Right?
+
+D does that make sense? Like to me the when you when I got really excited about this, the thing that got me really excited is you made this concept where you're gonna say our Claude MB is gonna be based off a volume of what things are v happening over large volumes of system prompts and interaction with the model. Yeah. And I merely am one person. Yeah.
+
+My team is eight more people. And so it's like, okay. I can get that data way faster. And that means I can optimize my workflow way faster. Yeah, okay. And yeah, and then you have the problem of like three people get the same thing and they all try to share it and there's three slightly different versions. Yeah, so like what I really want is like one version of truth.
+
+@dexhorthy (13:44.111)
+for my whole team. And that is like I talked about this in my AI engineer talk. Like our Claud D is things that are always true. Yeah. And that's that's what I want. Like when I heard like this feature I that's why I got too excited. Yeah. I was like, okay, cool. I I want something for my whole team. Okay.
+
+That makes sense. I yeah, I still so there's like two dimensions of this. There's like mine versus shared versus committed to the repo, and then there's also like always on versus like conditionally activated basically. Always on versus Yeah, yeah, yeah. Yeah. Conditionally activated versus always on, I agree with. Okay, cool. It's like given what task I'm working on, maybe it's a subset of tasks. And that's a simple classifier prompt. That you can run really, really quickly. But now you're delaying the lag time. boot up time.
+
+I don't think so. You are? Because before you inject something into a pr into a session, I something has to decide. Yeah. Whether what subsets get included where. Yeah, so the thought is we just basically do inference over your if you're doing research, like we do inference over your research talk, we do inference over your research. Yeah, but now you may reasonable one more slower. No, we do it in the background parallel.
+
+Sorry, let's say I have like a hundred contact shards in my team. Yep. Twenty yeah, three like sixty percent of them are task specific. Yeah. And forty percent of them are global. Before I can start my main task, I need to process all sixty percent and see which of them are going to be relevant to that task. Yeah, and you actually probably don't know that when you create the task.
+
+Like I don't want you to decide. I want to model Exactly, that's what I mean. But I mean it's basically like as you're working, you get like memories activated based on the contents of the conversation. Either the contents of the conversation or the artifacts you generate or things like. Yeah. So it's more it's not like it's not like you're modifying the system prompt, you're just injecting more context in for me automatically. I this is what how everything in human layer works.
+
+@dexhorthy (15:34.164)
+Right, there's like the main chat and then there's a supervisor model that understands the workflow and understands best practices and like coaching you through it and so it can select these things out for you as well. That's cool. I wish we had recorded.
+
+do you mean recorded that? so like that's ha that's basically for me that's like milestone two. Like milestone one is just get this wired end. You we're recording this. Yeah, I know. Okay. You said yeah, I wish you reading No, but I mean recorded it to type into Claude, but Yeah, that's fine. Well we really need is a mic everywhere, so everything in the world records everything. Yep. But okay, now now that we're talking about the specific feature, let's take a step back and zoom out. Yeah.
+
+Let's take a step back and zoom out. And like for everyone else that's working on features like this, this is a this is both a UI problem, this is a system design problem at the same time. It's an AI engineering problem. Yeah, it's an AI engineering problem. It's like there's consistent engineering around it. Yeah. And I'm sure many of you have the same problems with your team. And I know there's different approaches to this, but I'll tell you the formula that I why I think this is gonna work and why we'll make some progress on this. And this is very similar to what we do on our team as well, which is
+
+The the first person to kind of take on a problem takes on a heavy, heavy responsibility to really deep think on this problem. And that's what Dexter did already. He came in with all these mock-ups, he came in with thought design principles, he came with user scenarios, he contextualized it to me specifically, and says this is the for the BAML team. And so not every example is tuned for the BAML team, but some of it enough are that I'm like, I immediately s the first image he showed me like anchored me, like with our canary branch, for example, instead of Maine.
+
+And our reason for being Canary versus Maine like Amazon 1.0 yet. I this is the other thing, yeah, is like if you can show if you can show a custom this is like product engineering 101. It's like your first goal is like figure out if something is worth building before you go put a lot of time into it. And like Marty Kagan talks about this in this like thing called product discovery, where there's like four levels of prototype where it's like you have like a wireframe, like a whiteboard drawing or like a napkin sketch, and then you have like something that is like Figma-shaped or HTML.
+
+@dexhorthy (17:38.428)
+mockups which is just like hey here's a thing that here's kind of what it looks like. Like you've heard lots of stories of people who like raised a seed round on Figma mock-ups or sold a million dollar deal on Figma mock-ups. Now with AI I don't want to see a damn wireframe. I want to see the HTML. Yeah exactly but historically the the historical context of like where this comes from is like hey if you can sell the product on Figma mock-ups without building it and then go build it because someone already signed a deal to pay you a million dollars for it, that is way better than spending six months of your time building
+
+something end to end really good. That's like the first. There's another one which is like a high fidelity prototype, which is like it's fake data but it's interactive. You can like click around and play with it and understand it. And it's like all of these things are things that you should be like riffing out and putting in front of customers. This is how you figure out what people want and what people are willing to pay for quickly. This is lean startup, this is like inspired design, this is all like this is good product engineering. Yep, exactly. So like when we
+
+One the next step you want to do is once one person has deep thought it, then you involve like one to two more people on the team that you collaborate with and you actively like engage in a conversation with them. But they have to first read the doc. The only thing we're not doing here is I didn't go read all the context that Dex already generated, or like at least he didn't produce a document for me to read. That's because we're on a live stream. But
+
+On our team, and I know in Dux's team, they read the doc first before they have a conversation. And then now you can have a conversation about it. And then that same person goes back and does another update of everything. And once you've aligned on the final user outcomes and the real like framing of the problem, the in basically the probing points in which users are gonna poke at the system and experience it, it's really easy to then trust someone on your team to go.
+
+And implement everything. Yeah. But you need a framework to have this conversation with. And like once And it's like, this is gonna be 50,000 lines of code or 20,000 lines of code. It's like it's worth us, but like it's worth us spending 20 minutes to get aligned on like what it is and how it's gonna work. It is so much cheaper. Like we just made so many decisions that are going to change the shape of the solution by 20 or 30 percent. And how much harder would it be to change that after I had gone and actually built it? So I'm gonna do this thing also that I like to do. It's like with really big features, everyone's like,
+
+@dexhorthy (19:58.066)
+my god, I'm exhausted, I'm making all the decisions. I don't even know the tech, like I don't know what challenges I'm gonna hit. And this is this idea of like you wanna like still speed run to like touching the frontier. Yeah, you don't hit it. Touching the frontier of the problem. And so it's like once you have like the basic shape, I actually just want to get really clear on the high-level shape, and then I'm like, cool, we're gonna take this big PRD that covers everything, and then we're going to cut off like what's the first milestone. And I'm only gonna drill deeper into technical stuff on that first milestone. You actually have a very different workflow.
+
+Over here than me. Yeah, well, I'm not building fucking garbage collectors, dude. No, no, not in that sense. Just like the like you basically, so what you do is you do super broad and then you start like verticalizing. It depends how big it is, right? Like for most features, I will do the PRD and then I will do the technical design and then I will go do the slices then. But for something that is this big, yeah. Where I'm just like, I know that I would get value out of a smaller version of it. If you if you can I it's sometimes it's hard to identify that in the product design phase. Yeah. And sometimes you need to actually.
+
+Get into the tech details to realize, like, okay, we can plumb this endpoint into end and test it with curl before we do anything else. And so, like, the the yeah, exactly. my god, high effort is really cooking right now. but yeah, so you're not are you you're a soul guy now? I like Soul for a lot of stuff. I mean, I we have we have Fable as well. I I haven't like Fable's really good for certain things. My my biggest take on Fable is like Soul solved a lot of the problems that I think a lot of
+
+GPT models, which was like they're very robotic and very like I mean it's still very wordy and it's still kind of like info dumps on you way more information than you want to hear. have you seen Dylan Mulroy's bro skill? yeah that's bro just like talk to me like a fucking human being. no targeting. Yeah. so yeah the but yeah basically like it's much better than all the other models were it knows how to actually talk kind of like a person.
+
+Let's see what this is. There we go. This is a little tighter. Okay, so we have here's the user view, which is like you just turn them on. All you can do is turn them on. All you can do is see the shards for your team and turn them on. And then let's see. Generated context shards. Yeah, basically this is our admin view. Basically, we want to test this feature, so I'm gonna build a view in the admin where we can kind of review them and make sure they're good before we actually like send them and make them visible to your Can just make it Slack? What?
+
+@dexhorthy (22:21.838)
+Well, so this is for me. This is for me as the human layer builder. This is like what I think you should how I think you should build experimental AI features is don't like spend months building evals and getting it perfect. Like view all the generations and then be like, okay, that one's good, that one's good, that one's good. I'm gonna go change the prompt because this one sucks. And like basically build up your eval set before you just put all the fire hose in front of customers and like hope it doesn't suck. Vibe-based evals are a hundred percent the way to go, man.
+
+@dexhorthy (22:52.108)
+Yeah, skipping dismiss is fine. yeah, and then you get your eval case. You're like, okay, this was bad, let me make a test case, and then you can give it to a model and just be like, cool, go change the prompt until this one passes and all the other ones still pass. That's cool. I I I would also be really happy if you just ran this as a batch like once a day, twice a day, whenever you wanted. Like yeah, exactly. No, I like we'd started just doing it like nightly. sorry, I should really tell it.
+
+Use okay.
+
+@dexhorthy (23:30.584)
+Thank you for adding queuing by the way. the queuing is fantastic. Yeah. I'm just gonna start this over.
+
+@dexhorthy (23:40.782)
+How big is mouse on one do you even know? we just looked at it. It's the thing that we that thing, okay. Is that it's not is it the UI and the back end?
+
+yeah, it's the UI device, it's threading the whole thing through end to end. So we're in a detectionable design of basically running something nightly to detect them, showing them in my internal admin panel, allowing me to just make them visible to your or
+
+@dexhorthy (24:06.68)
+And that's like the start that's like the very first bit of function. And then everything grows out from that. Cool. okay, while this thing is running, I'm curious about people that are on the stream. Do you guys feel like you that you do similar kind of workflows with your team? Does this work? Or do you guys find that you often just let it rip and it's very solo
+
+I'll let that happen. What should we be reading while we wait? we can read this PRE that it made for a slice of So nightly run generates candidates, humilar admin can find and release the candidates. Release shard appears for organizations at the top level context shards page. User can turn always on, on, or off for themselves. Demon includes the shard when that user launches or continues the session. The running agent receives a shard as part of his context. Okay. That's pretty good.
+
+one canonical team library with personal enablement. Yeah, so you have one library for your team and then users can turn them on and off for themselves. Imad's comment. We'll be happy to see a graph of that workflow. yes, that is so we're doing the technical design doc now. and so yeah.
+
+Process fan out. actually Kyle's gonna tell me to use ingest. Okay, can you use it? Use ingest. let's just make a a new web service that runs as part of the turbo stack and we'll deploy it in Docker. But don't worry about deployment right now, we're just gonna get it running locally. Leave deployment out of scope.
+
+Yeah. I could just run on a cron. I if you're not using voice to drive your agents, please start. Please, please start.
+
+@dexhorthy (25:55.648)
+You get way more detail in there than you can while you type. and you'll just dump more. Most people are not as good typers as they are speakers. Okay, while this is running, I'll show you guys something kind interesting.
+
+@dexhorthy (26:21.334)
+yes, Whisperflow's great. there's a lot of options out there but just use any of them. Whisperflow's fantastic. We got a super whisperer fan right over here. I'm using Whisperflow right now, dude. you are? I mean I pay for both of them. Okay. how do you define what's good and what's not for the workflow for the workflow for the team?
+
+Okay, so I have an idea. While we do this, why don't we whiteboard agent side. Yeah, send me the thing. I think it's gonna be interesting for everyone out listening. for like how we actually go do this. Send me a link, let's whiteboard. Or I can whiteboard on your computer, I guess. I mean we have cloud whiteboard for us is part of what I was gonna show. yeah, we'll have cloud whiteboarding.
+
+Let's start with actually a whiteboard. So let's let's start with like mermaid diagrams with how much fork. On a for on a fork. I don't want to do this. I want the main thread to be running. Well, it's gonna ask questions one at a time. So Okay, well we we're gonna have those questions while the main while the background thread is. I'll whiteboard. I'll whiteboard while you answer questions. All I'll send you Send me the link.
+
+I think there's actually a Claude Excala skill now. Yeah. I'm gonna stop sharing it. I'll just slide this to you. This is so funny, man. Literally only the top of my head is it because you're too tall. here we can move this camera down. It's fine, no no, I'm good, I'm good, I'm good, I'm good. No, no, get your face in there. I don't wanna be in the frame, dude. I hate it. No, yeah.
+
+Bro you think I did a podcast 'cause I want to be on TV? Dude you did podcast so I don't have to be on TV. I did a podcast because I like hanging out with you. That's honestly that's half that's halfway why we did this. Yes.
+
+@dexhorthy (28:04.32)
+It's so funny the way that we started doing this. and just like a random Tuesday. We're like, let's just do it. Fuck it. Okay.
+
+You in? Yes. And then let me get the screen share going. Where's my freaking there it is. Okay. While you answer some questions, I'm gonna screen share this stuff and then see what people think. Cool. Okay. do you have the chat on one of the windows? I'm trying to find it. There we go. There we go. Why did this the slash bro skill, I'll we'll pull that up in a second. And Dylan has it, it's very easy. okay. So what we have over here is a pretty simple system, where our goal is the following.
+
+@dexhorthy (28:49.454)
+Why are your colors always weird, dude? Dude, I don't know. I I'm always doing something bad in Excala. Okay, so when we have a s system, what do we have? Our main system is gonna be we have our agent loop. And this is like it's not the human layer main agent. We also have like a supervisor agent over here.
+
+@dexhorthy (29:11.402)
+And the way the supervisor agent works in HumanLair, let me know this is correct, is the user actually interacts with the main agent or the supervisor agent. So you're interacting with the main agent. The supervisor agent is doing is just doing inference on parts of the conversation. So it's either getting the final assistant message for certain types of tasks, it's getting all user assistant messages for other types of tasks. but it's basic it's not really an agent. It's just a bunch of little inference calls that we do structured output on.
+
+Yeah, so we basically have a supervisor that's running all the time. That's basically like micro analyzing your prompt. It's classifying the conversation, it knows what part of the workflow you're in, it knows what's next, so like when the agent is saying like, Hey, we're gonna here's the next step, it can actually like cause buttons to show up in the UI.
+
+cause suggestions to show up in the UI to help you understand like how to use the workflow. Yeah. So what we really want to do now is we want to say that, hey, ideally I want I I want to call this an agents.md or a cloud.md, it doesn't really matter.
+
+But what I really want is a file or a database layer or something that is going to be injected into my that is going to be injected into my agent loop automatically at some cadence. But as many of you know, the problem with this whole system is my agent's IMD file is always going to become out of dated over time. There's not a choice. It will definitively become out of date. Yep. And the whole proposal of Dexter's idea here is what if we're the supervisor of an agent, not just looking at your agent.
+
+But actually looking at
+
+@dexhorthy (30:47.148)
+Something kind of I see. Yeah, you're so you're drawing out like how do we generate the things. Yeah, exactly. That's what a few people were asking about. So I was like, let me just like kind of copy and paste this so then people get the idea. So now you have user A, user B, user C, and user D. And you can easily imagine that I take the same subsystem that we built over here, and I build another supervisor agent.
+
+@dexhorthy (31:13.742)
+who's actually kind of like looking at all of these. And there's many different ways to build this out, so like please bear with me, but I'm just drawing like
+
+Some concept here. Yep. Let's pull all those sessions in. And basically we don't actually have to look at the whole trace. We actually mostly just looking at the user like the user and usually the user and assistant messages is like pretty token efficient and gives you enough con like we don't need all the tool calls and all the files and stuff because all we're looking at is like, okay, cool, what does the user keep freaking saying? And like maybe what's a little bit of context around it. Exactly. So this is basically a thing that produces Are you sharing your screen by the way? I am. I think I'm sharing my screen. I hope I'm sharing my screen, otherwise what's Yes, you are.
+
+Yeah, that's great. Okay. Okay. and then this thing is a thing that basically if you think about it, all its only job is it's gonna produce a list of
+
+session like let's call this like session statements.
+
+And it's gonna produce an array of that. And then when you when you think about what is a class of s session statements, write these down. you cannot write code like this. This code has to be left aligned because that is illegal. Yep. centered code? we should make an IDE that all the code is. Should be like the first programming language that looks good when you center the code. And the well and the rule is you're not supposed to read the code, so we make it really uncomfortable. It's all right-aligned, actually. It's like, yeah.
+
+@dexhorthy (32:40.318)
+Okay. So what is a session statement gonna have? It's likely gonna have like like a like a fact. Let's call this a fact. and it'll also have likely a like like a history or like let's say like citation. And a citation will have a couple of things. Let's call this like a citation type.
+
+And a citation type will have a couple of things. It's gonna have a what what would you say a citation set? It's gonna have a who is like it's gonna be like a person ID or like person name or ideally, but we'll just call it a person ID because it's gonna be the identifier of who said it. And it'll likely have like the message, like the quote directly, which is like with the string. And then on top of that, I will also want like the conversation
+
+context which is gonna be a string which is more like a summary of what I want conversations context and this is more like a summary for why the quote was included.
+
+Because I want the quote of exactly what the person said. I want the fact. I want to know who said it and I want to have the conversation summary. Like what was the context going on at the time that made the person say the thing? Yep. And I want this to be an array because I want to know how many pe how many citations that I have of that same fact. this is great because you're gonna paste this into my chat. I'm going to. Amazing. Yeah. and then we don't have the dangerously allowed gang prompting yet, but soon we're gonna be able you're gonna be able to just pull up my session and paste messages to my agent. Yeah. And then we're doing the most important part.
+
+Because if I just vibe added this in, because this is a vibe added feature today. Yeah. If this is a vibe added feature today, we we would we we can't just like directly inject this to our agents.md for every single user. Yeah, we need to do like a rollout. We need to do a rollout. And the rollout is basically ask a human to whitelist. Yep. allow list. Thank you. deny list. Yep. session statements.
+
+@dexhorthy (34:50.74)
+And this is I'm gonna make this blue because this is a human loop process. Yep. And once it goes into a human in the loop, the most amazing part is we don't actually have to update the agents on Mv file. Because we are a human layer and we actually own this eco this ecosystem over here. We can just inject things into your system prompt programmatically. Exactly. Which is how we do lots of magic already.
+
+So then we just inject it into your system prompt once it's approved, and now we are all happy campers. And this is going to work. Yeah. does this system diagram kind of explain to everyone what we're doing and how I'm going to make the coding experience of every single person on my team better without having to maintain stuff and how I can do easy rollouts with the agents.md without having to check stuff in. Because I have to check in agents.md. I'm gonna run it you can do a very similar process where you just check this in. But what this does.
+
+is at any given time any user using my system will always have the best and latest agents on MD.
+
+Sorry, I know I rambled for a while. It was good. So we're starting to get our design doc coming together with diagrams and stuff. So this is what the wait, there's a question here. What the human need to decide? Could you give an example, please? yes. So like what does a human need to decide? So once it gets a session statement. Yeah, let's let's write an example of this, which is like always put always force push, right? Like one of the statements could be like, yeah.
+
+Never so never use dash dash no git commit dash dash no dash verify. Right.
+
+@dexhorthy (36:28.268)
+So that's the And the model the model might see that in a session because you someone said it to the model. And now the question is like, do I want this on for all my sessions? Do does every person on my team want this on for all my sessions? On all of their sessions? Yes. another one is like what you said is like always use NVARs for thing. And it's like, okay, the model pulled that out, but it's actually not a good memory to have. So you might just dismiss that and just say, like, nope, never suggest this again.
+
+Adding a BAML underscore Nvar needs to be an extremely high bar. Well, so this is interesting because the story you told was actually you told it to add a BAML star Nvar. Yes. And that became another thing, and that was the thing that we like denialisted basically. Like you were like, I need to strike that from memory.
+
+Yes, but that's a one-off thing, but I can't imagine this being a more like persistent memory. Yes. that has user benefit. And and we can only ever have ten total and bars. No, you gotta have more than that. Exactly. The bar is really high. Okay. so adding one means
+
+We can't add others. And you can see kind of what I'm doing here. So one immediate thing I'm realizing here, Dexter, is I actually don't want a human to allow this or deny list. I kinda want a human to be able to iterate in this loop. But you want to give feedback too. I want to get feedback like, hey, I you can imagine a memory about an N bar coming up, and I want to say, actually, this is the real N bar, this is the real N bar rule. Yeah, you want to basically be able to create meta memory.
+
+defines how memories are created. I don't even care about that. Okay. I just want to like prompt it and say, hey, this is what I actually want this rule to be. Can you update it? Yeah. And like can you scan through all our agent logs and see if there's a memory that means relevant in that direction. Yeah. So instead of this being like an automatic system, I think a pipeline where I can put in a prompt
+
+@dexhorthy (38:35.008)
+goes okay what are all the memories we have here's the one the user's talking about here's what they said about it here's the suggested next action which is either like okay merge this into this existing one or just dismiss it like you kind of have like a suggested action or maybe a different way to think about this is the things that trigger this are cron yep but another thing that can trigger this is like a slack message yeah like I can message this thing and do like hey can you make a memory about this and it will literally find all the conversation that are relevant to it and add it in.
+
+And obviously the last thing I can do is like human like memory feedback can also trigger the system to rerun. And the memory feedback is kind of coming from here. Yeah, I mean the way I picture this also is like all of this can be built as code, right? Like it can be a config file in your repository, which means that it can be like
+
+All of those things can be like if I have a coding agent in Slack, I can just tell the coding agent to modify the configuration. Like this is less about a like we wanna store all your memories and manage them for you, and it's a lot more about like we want to give you
+
+pipeline to create the right thing. Exactly. And that's that's the hard anyone can write shit into Claude MB or write a skill that dynamically reloads different sets of context. The hard thing is like how do you source that from e everything, every all the smart people on your team, how do you distill that knowledge in so that they can all benefit from each other's like things that they know. And you'll notice over here the key part that we're really talking about is having many triggers to the same system. One is a cron trigger.
+
+Another one? Get ch I wish we had chairs too. Get good. I want chairs. Okay. I'm back. guys, please buy human layer so he can buy chairs. Buy human layer so we can get chair actually the chairs are coming. I just talked to a guy. Okay. They were supposed to be here on Friday.
+
+@dexhorthy (40:22.234)
+but no, in all seriousness, what you want to think about when you build these agentic loops is always like what is the thing that triggers them? And the first thing that you had was cron. Yep. But as we start talking, it's almost intuitive that I can trigger this as a Slack message. I can trigger this via a memory feedback layer. Whenever I say this memory is good or bad, maybe I wanna say I want to steer the memory more. Yeah. That triggers the supervisor agent in a better way.
+
+Vignesh has got a good question. Is the inner supervisor the same as the outer supervisor with session statements, or did I miss something? So when you think about these supervisors, it's not so much that they're different or the same. The goal of this supervisor is to like think of it this way: help the user make progress. That's what this supervisor's primary goal is in life. It's only trying to do one thing. It's trying to help the user make some progress as it does this. Bing to front.
+
+It's just trying to help the user. wait, what the heck?
+
+@dexhorthy (41:24.558)
+It's just trying to help the user be a little happier and like make progress with this main agency. This supervisor's role is identify identify shared shared technical facts. Yep. as and that's a bad way to say this if we think about this more, I'm sure we can find this. Yep. Is doing this. So like even if it's the same agent, even if it's the same model, they just have different missions in life.
+
+Yeah, that's what it is. It's like I mean people talk about like multi-agent and agent swarms and front end agent versus back end agent. And like it's all it's all that same like context engineering. Like if you give the agent exactly one job, it will do the job better. Versus like, hey, here's a bunch of like the very squ I mean, well don't get me wrong, cloud and codecs are incredible pieces of software. It's like the general purpose agent that can kind of do everything. Yeah. but if you want to do this like
+
+quickly, cheaply, efficiently, effectively, and like push the boundary of like not I care less about price and time since we're gonna run as async overnight, but if you want to push the boundary of like make it as good as frickin' possible, then like all of the noise you get in a generic agent harness is overkill and you can just do one prompt and one structured output. And the real way to think about this for everyone is like think of it this way.
+
+I am willing to spend, let's say I'm willing to spend like for this agent, let's do cost in red, because cost should be red.
+
+For this agent, let's say I'm willing to spend like $100 for my main agent loop for any given thing. I'm probably willing to spend around $10 for this system to run to make my main agent do better. Maybe I'm willing to double it, who knows? But I'm probably not willing to pay the same price as this system. It's worth more to me than the primary agent work. But the subsidiary agent is still worth a lot of value and I'm still willing to pay for it. I definitely am not willing to pay $100 for this agent because its goal is just.
+
+@dexhorthy (43:20.304)
+different keeping my agents.md up to date and that's valuable, yeah, but not in the same way that it's yeah different. So you want to make sure that you're thinking about your you might still use the same model, but maybe what I'm doing is I'm running this in batch mode. And therefore like this runs like batch mode. And it's like yes it's
+
+It's laggier. But like whenever I run with the quilt. But as long as this as long as this thing is learning one new thing every day, it's it's gonna be it's gonna be t twice as good within a couple of weeks. Exactly. Yeah. And I'm I might cron might be like, in cron mode I wanna run batch mode. But in Slack mode, because the user messaged me
+
+I want to be faster and I want to run instantly. Yep. So like it's all these cost and latency and these engineering trade-offs that you're really making that you need to think about when you're building a system. Yep. And then we haven't even talked about is like decaying out like context shards of like, hey, look, we have another supervisor that reads all the active shards for a session and figures out which ones are like haven't actually been used in a while. Yeah. So there's there's wait, let's go Vignesh is another question. But now wondering, is the inner supervisor like controlling the agent with the
+
+user conversation delegating to the agent. So what the supervisor agent does in in human layers here I can actually if you pull the whiteboard I'll I'll draw it. Yeah.
+
+Yeah. Okay. So basically what happens is like you have your agent running. and like one example of one thing that it does is like, so you have your you know user message, you have some tools, so let's say the user message was like make make a design doc.
+
+@dexhorthy (44:58.358)
+And so it does some tools and it writes a file. and then it says, like, cool, I made the doc and that's like R six open questions, right? That's an assistant message. I'll type that out.
+
+and so what happens is one of these tools is a write, right? And so it writes this file, design doc. And what happens when it does a write is we have a post tool use hook that goes to our API, hook calls API.
+
+And our API says, did you write did your doc look like this? Did it have type design discussion? We parse the front matter. And we say, is it a design discussion in the actual document? If yes, it goes into this pipeline where we basically send it to a tiny model. are there any open questions? Little tiny model that just reads the you know 200-line markdown doc. And then if
+
+If yes, then it does nothing. We do nothing. This just this response just returns. If well we also we also sync the artifact to the cloud, but that's not an agent thing. If no, then in the response to the write call, we inject additional context and says, you know, additional context, all design.
+
+decisions are resolved, remember to prompt the user to go to the outline phase. Yeah.
+
+@dexhorthy (46:32.512)
+And so we we stick this into the supervisor agent is actually just this tiny little query to haiku based on this pipeline off a document. But what it means is that the agent gets back contacts that is like, that's right. So even if this is a super long conversation where we're going multiple compactions and everything, the supervisor agent, as it were, keeps the main agent that the user is chatting with on track without the user having to be an expert in the workflow or the skills or how they work. And the real benefit that you can think about as an end user here is that.
+
+It's basically like at some point the model will come back and say, I finished all this stuff. Here's what I would recommend doing next. And then you have to type in yes, go do that. Yeah. What this lets you go do as a supervisor agent is it lets you you can inject little nudges in. And it's basically saying it's basically doing that work for you. So you can learn workflows for longer and longer and longer.
+
+It's like do you remember the research used to come back to research doc with open questions? Yeah. And we added another nudge, like if the research doc has open questions, be like, cool, go find the answers to the open questions. And that just happens automatically without you having to type anything. Exactly. So it's basically removing some work from the human so I can let a workflow run for a longer time period and come back less frequently. Yes. Which, as models get better, is getting more and more feasible every single week. Right. The thing that goes away eventually is like when models get better at longer content.
+
+actually get better using sub agents, then something like the RLM model, like the recursive agent, where you just have a model that calls sub agents that call sub agents. Yeah. is like probably where this is all going. But again, like what we're all what we're all here about is like, hey, look, there's a lot of hype and like what's the discipline about what works today and how can you build systems that are ten X better than what everyone else does.
+
+So hopefully at this point you guys understand what this main supervisor does. Yeah. And like Dexter's model for coming up with a n and again, supervisor is such a bad word for it because like it makes it sound so much more complicated. Yeah. It's literally just this. It's like a butt it's like it does 15 little pipelines that run at certain based on certain tool calls that the agent made to like help it steer and stay on track. Exactly. It's literally all anyone that tells you they have a supervisor agent, that's all they have. They just have a couple of prompts that they send out to a model and that does stuff that injects more prompts to the main loop. Yep.
+
+@dexhorthy (48:40.522)
+this is the same when we were talking about this with voice agents. Yeah, it's the same thing. You just nudge the system in the direction you want to go with like other other offline systems. Yeah. And what's really interesting about this is right now the way you guys have this working is this is a synchronous loop. Yeah. You actually could make this an asynchronous loop. Right? Where it just gets injected at some point. Exactly. And like those different trade-offs and different wins with that, but it's something that you can easily do. Yep. Okay. and now when you guys hopefully see this, this is basically the same.
+
+concept as this, but instead of the goal being help the user make prog make progress for longer, this goal is identify shared technical facts. And we can write a simple, a very, very simple L on function. Yeah, what prompt would you write for this? I literally would just have I wouldn't. I would just literally write here. You would just be like here's the structured output. Here's structure to get this out. Yeah. They can eval and figure it out.
+
+Yeah, and this should be really easy to do. Yeah. And the reason that I wouldn't write a prompt here is the core thing that I would actually build is this memory feedback system that could say, given a human's message, go back and go run this. Yep. probably the only difference I would do is I'd probably add a small little like embedding system to make sure that I'm not pulling in every single message. Yeah, yeah. You could do a little bit of s or even like regex based slicing. Like if if someone's saying like use the X skill, we consider moving it, or like we we cut we trim them for context. No, I would just use
+
+I would just slice everything into like shards and just like pull that up. Yeah, and just give them like a top K, like top 50 or whatever it is. Yeah, or like top 100, top a thousand, it doesn't matter. But yeah, this thing you've highlighted here of like the iteration loop of like how does a user give feedback without breaking their workflow is actually really interesting. And like Kyle talks about this for our like iterated loops that we do in our GitHub actions of like, hey, yeah, you have a slash iterate, which like one fixes the mistake the model makes.
+
+And also adds it to memory. And like Cloud has this too. If you put hash in front of a thing, it like a it like takes the advice and it adds it to Cloud today. And like I said, what I really want here is like the way that the user feedback comes is I just want this stuff to come to me in a Slack message or an email or something every day. Something that you can check that something that's already in your other inboxes that you Yeah, and it takes me fifteen minutes or like ten, five minutes every day to be like saying.
+
+@dexhorthy (50:57.302)
+And obviously these have higher citations. I can build another AI system on top of this to like verify this and like make sure like is this actually fact? Is this true? Right. Is this the recent thing? Is this a thing that's been true for three months? Yeah. Like I can just go like I can just put a clawed code session on figuring out all this and then just present to me information. Yep. And I'm not using my clawed code credits maximally all the time, every single day. Yep. So like if you can like run that through my credit system, even better.
+
+Alright, I can just burn tokens to make that work. Like I think I say this all the time on my team, just burn the frickin' tokens. Burn all the tokens in the world. Until we're spending way too like and then one you wake and you're like, we're spending too many tokens on that. That's great. You found your bottleneck. Like, cool. If it's still val if it's not valuable, turn it off. And if it's still valuable, then you invest time to engineer it and make it like performing. Yeah.
+
+How you handle cueing things like multiple sub agents waiting for the supervisor agent response? We talk about queuing in a different one. We will probably talk about queuing later. Yeah. Also the supervisor agent is incredibly fast. It runs in like under a second. So it's not it's not it's it's not the bottleneck, let's put it that way. Yeah. Like the agent suge sub agents themselves send inference prompts to Sonnet and Opus on every turn, which is like by definition slower than sending something to Haiku. Yeah, exactly.
+
+When you build really focused prompts, you just get way better systems and you can make latency not a problem. Yep. Sick.
+
+you wanna skim through this design doc real quick and then we can Did you give it my Excalibur? I did not, but you added a bunch of features that I don't want to put on. man, give me those features. Give me those features. No, we're doing the first vertical slice. This is when your product when your PM demands more features, you gotta be like, cool. You wanna you wanna touch it first and make sure it's worth doing. No no, I have a different velocity now. I just give c I just give cla soul or fabled entire feature list on day one. Just have just go do it. Just go do it. Yeah, it's so easy. anyways I don't let it make the design choice of hey,
+
+@dexhorthy (52:53.352)
+I don't let it make the design choice of do you want this or not? Like this will take three days. I'm like nah, it's gonna take three thousand more tokens, just burn them. Did you see our new artifact viewer is keyboard first by the way? that's cool. And I can hit A to like approve this. You know I don't know how to do I don't know
+
+Yeah, but I'm I'm a pleb. I barely know how to use VS Code. Vim is like above my pay grade. That's fine.
+
+but yeah, so we were basically like working through the I was answering a couple questions and like we haven't gotten into the program design stuff, but like this is system architecture. The stuff is easy of like what database tables are we gonna use, like how do the transactions work, that kind of stuff before we actually get into like what are the method signatures and the types and things like that. That's cool. But anyways, this is how we build things these days. hope this was helpful. and when are you gonna ship this feature by? depends on what
+
+Ship the other cool feature that I don't know if I've shown that. you saw this last night, the diffs feature. yeah, the diffs feature is kind of cool. Yeah, yeah, yeah. I think I the diff feature is very, very cool. Yeah, I'll show you guys. We do a little shilling as a treat sometimes. but basically we have
+
+If you have a if you have a session that is actually making code changes, you can see the diff right here in human layer. And if someone else runs a session in this task, they can also like contribute to the diff. They can see the diff. So this is streamed up to the cloud. The basic idea here is like why have pull requests that are like this one moment in time when like anybody on the team can come to your Kanman board and just see, hey, what is everybody working on? What's the diff on that thing yet? And like what is the what are the files changed and just be able to kind of like
+
+@dexhorthy (54:29.23)
+Finally bringing files into your nice. We files. Yeah. We don't have all the files. We only have the diffs, and the way we built it is really interesting. But yeah, coming soon. you can actually opt into this today, but it's a little janky, so do so at your own risk. But it's coming together pretty nicely. That's awesome. is there plan to make human layer available on Windows? so what you can do is you can run the if you go to our docs.humanlayer.com, there are docs on the remote daemon. And so if you have any Linux box anywhere, like
+
+You can get an EC2 box or like a server under your desk, and you can run the daemon there, and it will orchestrate your cloud sessions and codec sessions there, and then you can control it from a browser. The answer is no, I guess. There's no desktop app on Windows, but we are the remote daemon story is getting better and better every week. We're now able to in a couple days, we'll be able to do work trees on your remote server. So you can like spin up a bunch in parallel on a remote server, which is really exciting. Cool.
+
+People have tried WSL and had mixed results. if you pop into our Discord, there is a there is a thread of people who are trying to get it working on WSL. Cool. I think that's what we've got. If you have any questions, let us know. But hopefully you all had a bunch of fun and you learned something a little bit new about how we do systems and how we have conversations about tech. Do we have to do an outro? yes, your turn. Alright.
+
+I always end up doing the outro. It's easier. I'm that I'll be the out. It's really easy for me if you do the outros. okay, y'all. Today was basically a really like in-depth live stream of a new feature we're working on in Human Layer called context shards, which is basically a memory system for your agents. Yeah, let's pause. Let's pull up the screens and then you can do it afterwards. Alright.
+
+So today we did a deep dive live stream coding and working on specs for a feature called context shards, which is a new thing we're working on in Human Layer that basically will let us like pull memories out of your agent sessions and then expand expose them to your team. We talked quite in depth about where's the Excaladra? Sorry, editing team.
+
+@dexhorthy (56:42.03)
+That one.
+
+@dexhorthy (56:50.018)
+Here we go. my god. Okay.
+
+If you're on the stream you can you can just leave. okay. Put we talked all about the Why are you starting from scratch? No.
+
+Stitch it together. Okay, cool. Yeah. We talked all about the internal supervisor agent that powers the human layer workflows, how we're expanding that to build a supervisor across multiple agent sessions, using structured outputs to generate potential memory candidates, and then building human loop workflows to expose those to users. all in all, it was a really fun time. What else did we get? We started doing the technical design here and walking through the basics of like how you how do you slice off the first part of this feature and start actually iterating on it. So super fun time.
+
+Time Bybal got a lot of feedback. We actually ended up changing the feature a lot from what I had spec'd out based on his feedback. So hopefully you learn a lot about how you can use AI to prototype products and sit sit in front of your users and get a lot of good feedback. with with fucking no. Alright, this is gonna be fun. Let's go do it. Let's go. Alright, thanks guys. Emad, do you implement the system for your teams today or is it something in the future? the memory system is not live
+
+@vaibcode (58:10.614)
+Me. Okay, cool, sorry. okay, so the memory system is not live today. We were literally live designing that on the fly as we were doing it today. But when you think about whether or not like the engineering process that we did is literally what both of our teams do. Like one person takes ownership, one person then shares that with more relevant people on the team, there's a synchronous design discussion about it after some baked-in reading time.
+
+And then at the end, that same original person goes and drives it to actual completion and like makes engineering workflow better. So that's that's the that engineering process is very real. Highly, highly recommend you all start adopting something like that as well.
+
+Cool. Thank you guys.
+

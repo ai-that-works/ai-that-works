@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-07-28-your-model-is-already-obsolete",
+      "guid": "aitw-067",
+      "title": "Your Model is Already Obsolete",
+      "description": "In the last month alone: Opus 5, Sonnet 5, Grok 4.5, Kimi K3, GPT-5.6, Gemini 3.6. Any one of them might make your agent smarter or your system cheaper. That's the fun part. The less fun part is that every model you're running in production today just got a month closer to its retirement date.\n\nModel deprecation is one of the only outages you get advance notice of, and teams still manage to take it as a surprise. This week on the podcast we show you how to make model swaps into a non-event instead of a p0.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/easy-model-swaps",
+      "eventDate": "2026-07-28T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-07-28-your-model-is-already-obsolete"
+      },
+      "season": 2,
+      "episode": 67,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-07-21-no-vibes-july",
       "guid": "aitw-066",
       "title": "No Vibes Allowed - July Edition",
@@ -9,15 +29,16 @@
       "eventDate": "2026-07-21T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=rTn8Vhdt-Jo",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=rTn8Vhdt-Jo",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-07-21-no-vibes-july"
       },
       "season": 2,
       "episode": 66,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1444,15 +1465,15 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 69,
-    "completedEpisodes": 64,
+    "totalEpisodes": 70,
+    "completedEpisodes": 65,
     "upcomingEpisodes": 1,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-07-20T17:14:12.134Z",
+    "lastUpdated": "2026-07-27T18:33:57.414Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

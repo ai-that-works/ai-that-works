@@ -12,9 +12,11 @@
 
 <div align="center">
 <h2>🦄 <strong>Next Episode</strong></h2>
-<h3><strong>No Vibes Allowed - July Edition</strong></h3>
-<p><strong>Tuesday, July 21, 2026 at 10 AM PST</strong></p>
-<p><em>This week on the podcast we will be hosting another session of our No Vibes Allowed series. Join us to see how everyting we've talked about get implemented in real code to solve real problems in our codebases.
+<h3><strong>Your Model is Already Obsolete</strong></h3>
+<p><strong>Tuesday, July 28, 2026 at 10 AM PST</strong></p>
+<p><em>In the last month alone: Opus 5, Sonnet 5, Grok 4.5, Kimi K3, GPT-5.6, Gemini 3.6. Any one of them might make your agent smarter or your system cheaper. That's the fun part. The less fun part is that every model you're running in production today just got a month closer to its retirement date.
+
+Model deprecation is one of the only outages you get advance notice of, and teams still manage to take it as a surprise. This week on the podcast we show you how to make model swaps into a non-event instead of a p0.
 
 Meet the Speakers🧑‍💻​
 
@@ -23,7 +25,7 @@ Meet the Speakers🧑‍💻​
 ​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
 </em></p>
 
-<a href="https://luma.com/no-vibes-jul-26" target="_blank">
+<a href="https://luma.com/easy-model-swaps" target="_blank">
 <img src="https://img.shields.io/badge/🦄_REGISTER_NOW-Join_Live_Session-ff4444?style=for-the-badge&logo=calendar" alt="Register Now">
 </a>
 
@@ -107,10 +109,31 @@ Before joining, get familiar with our toolkit:
         <div style="margin-bottom: 2px;">
           <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
         </div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-07-28</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#67</strong>: Your Model is Already Obsolete</div>
+        <div style="font-size: 13px; color: #666;">
+          <a href="./2026-07-28-your-model-is-already-obsolete">code</a> • <a href="https://luma.com/easy-model-swaps">register</a>
+        </div>
+      </div>
+    </td><td><div style="padding: 8px 0; line-height: 1.5;">In the last month alone: Opus 5, Sonnet 5, Grok 4.5, Kimi K3, GPT-5.6, Gemini 3.6. Any one of them might make your agent smarter or your system cheaper. That's the fun part. The less fun part is that every model you're running in production today just got a month closer to its retirement date.
+
+Model deprecation is one of the only outages you get advance notice of, and teams still manage to take it as a surprise. This week on the podcast we show you how to make model swaps into a non-event instead of a p0.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+</div></td></tr>
+<tr><td>
+      <div style="padding: 8px 0;">
+        <div style="margin-bottom: 2px;">
+          <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">PAST</span>
+        </div>
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-07-21</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#66</strong>: No Vibes Allowed - July Edition</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-07-21-no-vibes-july">code</a> • <a href="https://luma.com/no-vibes-jul-26">register</a>
+          <a href="https://www.youtube.com/watch?v=rTn8Vhdt-Jo">watch</a> • <a href="./2026-07-21-no-vibes-july">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">This week on the podcast we will be hosting another session of our No Vibes Allowed series. Join us to see how everyting we've talked about get implemented in real code to solve real problems in our codebases.
