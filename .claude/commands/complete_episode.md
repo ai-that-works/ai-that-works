@@ -13,14 +13,14 @@ Update the just-completed episode README and meta.md with YouTube link, thumbnai
    - Run the script: 
    ```bash
    cd 2026-02-17-automating-aitw
-   uv run python src/youtube/get_videos.py
+   uv run python -m src.youtube.get_videos
    ```
-   - The script will print the unicorn video with the highest episode number (format: "title: url")
+   - The script prints the most recently published full-length video (format: "title: url"), followed by a few older full-length videos as alternates. Episodes are detected by duration (20+ minutes), since clips are titled the same way episodes are.
    - Parse the output to extract the title and URL
    - Display the video title and link to the user in a clear format
    - Ask the user: "Is this the correct podcast recording video? (yes/no)"
    - If yes: save that URL and description to use for the rest of the command
-   - If no: ask the user to provide the correct YouTube URL and the episode description manually and use them instead
+   - If no: offer the listed alternates, or ask the user to provide the correct YouTube URL and the episode description manually and use them instead
 
 3. **Get the Folder for the Just Completed Episode**
    - Each episode has a folder in the repo with the date followed by the title (e.g., `YYYY-MM-DD-kebab-case-episode-title`)
@@ -82,7 +82,7 @@ Make sure there is a `transcript.txt` file in the directory. If there isn't, ask
 Use the provided information to run the cli:
 ```bash
    cd 2026-02-17-automating-aitw
-   uv run python src/email/generate_email.py --title <provided episode title> --description <provided description> --transcript <path to transcript> --output <path to episode directory>
+   uv run python -m src.email_generator.generate_email --title <provided episode title> --description <provided description> --transcript <path to transcript> --output <path to episode directory>
 ```
 
 9. **Convert to a email.md**

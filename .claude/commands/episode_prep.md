@@ -28,7 +28,7 @@ Ask the user for the following:
 Use the provided information to run the cli:
 ```bash
    cd 2026-02-17-automating-aitw
-   uv run python src/thumbnail_creation/cli.py --title <provided episode title> --description <provided description> --episode-number <provided episode number>
+   uv run python -m src.thumbnail_creation.cli --title <provided episode title> --description <provided description> --episode-number <provided episode number>
 ```
 This will generate an outputted image and subtitle. Give the user:
 - The generated subtitle
@@ -37,7 +37,7 @@ This will generate an outputted image and subtitle. Give the user:
 Ask the user if they are satisfied with the result. If not, ask them what they don't like about it. Then run:
 ```bash
    cd 2026-02-17-automating-aitw
-   uv run python src/thumbnail_creation/cli.py --title <provided episode title> --description <provided description> --episode-number <provided episode number> --current-subtitle <the subtitle that was just generated> --feedback <the user's feedback>
+   uv run python -m src.thumbnail_creation.cli --title <provided episode title> --description <provided description> --episode-number <provided episode number> --current-subtitle <the subtitle that was just generated> --feedback <the user's feedback>
 ```
 The system will automatically categorize the feedback as relating to the subtitle, the image, or both, and regenerate accordingly. Keep repeating this feedback loop until the user is satisfied with the image.
 
@@ -52,7 +52,7 @@ The system will automatically categorize the feedback as relating to the subtitl
 Run this script:
 ```bash
    cd 2026-02-17-automating-aitw
-   uv run python src/riverside/cli.py --title <provided episode title> --description <provided description> --episode-number <provided episode number> --date <provided date> --guests <additional guests if any. if none, do not add this argument>
+   uv run python -m src.riverside.cli --title <provided episode title> --description <provided description> --episode-number <provided episode number> --date <provided date> --guests <additional guests if any. if none, do not add this argument>
 ```
 This will create the riverside event.
 
@@ -63,7 +63,7 @@ Tell the user to go turn on the livestreams and upload the generated image in Ri
    - If the provided episode title does not start with "🦄 ai that works: ", prepend that to the episode title and use that as the new episode title going forward.
    - Navigate to the `2026-02-17-automating-aitw` directory and run the script
    ```bash
-   uv run python src/luma/cli.py --name <episode title prepended by 🦄 ai that works:> --description <provided episode description appended with the Meet the Speakers...> --date <episode date> --cover-image-path <absolute path to outputted image from step 3> --luma-url-suffix <provided luma url suffix>
+   uv run python -m src.luma.cli --name <episode title prepended by 🦄 ai that works:> --description <provided episode description appended with the Meet the Speakers...> --date <episode date> --cover-image-path <absolute path to outputted image from step 3> --luma-url-suffix <provided luma url suffix>
    ```
 
 8. **Create new episode meta.md**

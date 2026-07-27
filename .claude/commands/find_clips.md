@@ -25,7 +25,7 @@ Gather the following information from the `meta.md`.
 Run the following script:
 ```bash
 cd 2026-02-17-automating-aitw
-uv run python src/clip_extractor/cli.py --transcript <path to transcript> --title <episode title> --description <episode description> --output <path to episode's directory>
+uv run python -m src.clip_extractor.cli --transcript <path to transcript> --title <episode title> --description <episode description> --output <path to episode's directory>
 ```
 
 ## Important Notes

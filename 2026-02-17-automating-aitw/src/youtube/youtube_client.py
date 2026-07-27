@@ -1,12 +1,27 @@
 """YouTube API client for fetching channel videos."""
 
 import os
+import re
 from dataclasses import dataclass
 from datetime import datetime
 from typing import List, Optional
 import urllib.parse
 import urllib.request
 import json
+
+
+def _parse_iso8601_duration(duration: str) -> int:
+    """
+    Convert an ISO 8601 duration (e.g. 'PT55M23S') to seconds.
+
+    Returns 0 if the string can't be parsed.
+    """
+    match = re.fullmatch(r"P(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", duration or "")
+    if not match:
+        return 0
+
+    days, hours, minutes, seconds = (int(g) if g else 0 for g in match.groups())
+    return days * 86400 + hours * 3600 + minutes * 60 + seconds
 
 
 @dataclass
@@ -18,6 +33,7 @@ class Video:
     published_at: datetime
     description: str
     thumbnail_url: str
+    duration_seconds: int = 0
 
     @property
     def url(self) -> str:
@@ -115,7 +131,7 @@ class YouTubeClient:
 
         # Get video details
         video_params = {
-            "part": "snippet",
+            "part": "snippet,contentDetails",
             "id": ",".join(video_ids)
         }
 
@@ -130,9 +146,13 @@ class YouTubeClient:
                 video_id=item["id"],
                 published_at=datetime.fromisoformat(snippet["publishedAt"].replace("Z", "+00:00")),
                 description=snippet["description"],
-                thumbnail_url=snippet["thumbnails"]["high"]["url"]
+                thumbnail_url=snippet["thumbnails"]["high"]["url"],
+                duration_seconds=_parse_iso8601_duration(item.get("contentDetails", {}).get("duration", "")),
             )
             videos.append(video)
+
+        # The videos endpoint doesn't preserve the search order, so re-sort
+        videos.sort(key=lambda v: v.published_at, reverse=True)
 
         return videos
 

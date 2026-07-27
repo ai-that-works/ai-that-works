@@ -16,7 +16,7 @@ Make sure there is a `transcript.txt` file in the directory. If there isn't, ask
 Use the provided information to run the cli:
 ```bash
    cd 2026-02-17-automating-aitw
-   uv run python src/email/generate_email.py --title <provided episode title> --description <provided description> --transcript <path to transcript> --output <path to episode directory>
+   uv run python -m src.email_generator.generate_email --title <provided episode title> --description <provided description> --transcript <path to transcript> --output <path to episode directory>
 ```
 
 ## Step 4: Convert to a email.md
