@@ -1,0 +1,63 @@
+{
+  "IncumbentGPT4o": {
+    "accuracy": 0.9666666666666667,
+    "p95_latency_ms": 2783.0914999358356,
+    "cost_per_call": 0.002563333333333333,
+    "repeats": 2,
+    "failures": [
+      "office_coffee_supplies: category: expected Meals, got Other"
+    ]
+  },
+  "CandSonnet5": {
+    "accuracy": 1.0,
+    "p95_latency_ms": 4439.9705830728635,
+    "cost_per_call": 0.004128233333333333,
+    "repeats": 2,
+    "failures": []
+  },
+  "CandGPT4oMini": {
+    "accuracy": 0.8,
+    "p95_latency_ms": 2545.7251670304686,
+    "cost_per_call": null,
+    "repeats": 2,
+    "failures": [
+      "airport_taxi_with_tip: line_items: expected 2, got 1",
+      "catering_beats_venue: category: expected Meals, got Other",
+      "coworking_day_passes: category: expected Other, got Software",
+      "office_coffee_supplies: category: expected Meals, got Hardware",
+      "room_service_exceeds_room: category: expected Meals, got Travel",
+      "zero_tax_stated_explicitly: tax: expected a value, got omitted"
+    ]
+  },
+  "CandGPT55": {
+    "accuracy": 0.95,
+    "p95_latency_ms": 9518.284625024535,
+    "cost_per_call": 0.008868,
+    "repeats": 2,
+    "failures": [
+      "client_dinner: line_items: expected 2, got 3",
+      "service_charge_and_real_tax: line_items: expected 1, got 2"
+    ]
+  },
+  "CandGemini36Flash": {
+    "accuracy": 1.0,
+    "p95_latency_ms": 5865.03762495704,
+    "cost_per_call": 0.0020655,
+    "repeats": 2,
+    "failures": []
+  },
+  "CandGemini35Flash": {
+    "accuracy": 1.0,
+    "p95_latency_ms": 5196.462333085947,
+    "cost_per_call": 0.0023025999999999997,
+    "repeats": 2,
+    "failures": []
+  },
+  "CandGemini35FlashLite": {
+    "accuracy": 1.0,
+    "p95_latency_ms": 798.6698750173673,
+    "cost_per_call": 0.0005645499999999999,
+    "repeats": 2,
+    "failures": []
+  }
+}

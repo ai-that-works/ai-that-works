@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model matrix — accuracy vs cost, with p95 boundaries</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; }
+
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --grid:           #e1e0d9;
+    --axis:           #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-1: #2a78d6;   /* beats the incumbent outright */
+    --series-2: #eb6834;   /* the incumbent */
+    --series-3: #1baf7a;   /* ties accuracy, not cost */
+    --neutral:  #898781;   /* falls short — ink, not a series hue */
+    --good-ink: #006300;
+
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 32px 24px 64px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+      --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+      --neutral: #898781; --good-ink: #0ca30c;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1: #1a1a19; --page: #0d0d0d;
+    --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+    --neutral: #898781; --good-ink: #0ca30c;
+  }
+
+  .wrap { max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 22px; line-height: 1.25; margin: 0 0 6px; font-weight: 640; letter-spacing: -0.01em; }
+  .sub { font-size: 13.5px; color: var(--text-secondary); margin: 0 0 4px; max-width: 68ch; }
+  .meta { font-size: 12.5px; color: var(--text-muted); margin: 0 0 22px; }
+
+  .panel {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px 6px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .panel > h2 { font-size: 14px; margin: 2px 4px 2px; font-weight: 620; }
+  .panel > .cap { font-size: 12.5px; color: var(--text-secondary); margin: 0 4px 8px; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 4px 4px 12px; }
+  .controls .label { font-size: 12.5px; color: var(--text-muted); margin-right: 2px; }
+  button {
+    font: inherit; font-size: 12.5px; line-height: 1;
+    padding: 7px 11px; border-radius: 7px;
+    border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer;
+  }
+  button:hover { background: color-mix(in srgb, var(--text-primary) 6%, transparent); color: var(--text-primary); }
+  button[aria-pressed="true"] { background: color-mix(in srgb, var(--text-primary) 10%, transparent); color: var(--text-primary); font-weight: 600; }
+
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .tick { font-size: 11px; fill: var(--text-muted); }
+  .axis-title { font-size: 12px; font-weight: 600; fill: var(--text-secondary); }
+  .mark-label { font-size: 12px; fill: var(--text-primary); paint-order: stroke; stroke: var(--surface-1); stroke-width: 3.5px; stroke-linejoin: round; }
+  .mark-label.dim { fill: var(--text-secondary); }
+  .bound-label { font-size: 11px; font-weight: 600; fill: var(--text-muted); paint-order: stroke; stroke: var(--surface-1); stroke-width: 3.5px; stroke-linejoin: round; }
+  .val-label { font-size: 11.5px; fill: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .hit { fill: transparent; cursor: pointer; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 10px 4px 8px; font-size: 12.5px; color: var(--text-secondary); border-top: 1px solid var(--border); margin-top: 6px; }
+  .legend .item { display: flex; align-items: center; gap: 7px; }
+  .legend .swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .legend .swatch.hollow { background: transparent; border: 2px dashed var(--neutral); border-radius: 50%; }
+
+  .tooltip {
+    position: absolute; pointer-events: none; opacity: 0;
+    transform: translate(-50%, calc(-100% - 14px));
+    transition: opacity .1s linear;
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.16);
+    padding: 9px 11px; min-width: 180px; font-size: 12.5px; color: var(--text-secondary); z-index: 3;
+  }
+  .tooltip .tt-name { display: flex; align-items: center; gap: 7px; color: var(--text-primary); font-weight: 620; margin-bottom: 6px; }
+  .tooltip .swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .tooltip dl { margin: 0; display: grid; grid-template-columns: auto auto; gap: 3px 14px; }
+  .tooltip dt { color: var(--text-muted); }
+  .tooltip dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-primary); }
+
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  caption { text-align: left; font-size: 12.5px; color: var(--text-secondary); padding: 0 0 8px; }
+  th, td { text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--text-muted); font-weight: 560; font-size: 12px; }
+  tbody td { font-variant-numeric: tabular-nums; color: var(--text-primary); }
+  tbody td:first-child { display: flex; align-items: center; gap: 8px; }
+  td .swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .tablewrap { overflow-x: auto; }
+  .note { font-size: 12px; color: var(--text-muted); margin: 10px 4px 8px; max-width: 72ch; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+
+  <h1>Accuracy vs cost, bounded by p95 latency</h1>
+  <p class="sub">Cheaper is left, more accurate is up — so the top-left corner wins. The dashed boundaries are the incumbent's cost and accuracy; the latency budget rules out anything too slow to ship.</p>
+  <p class="meta">Expense-extraction eval · 2 repeats per case · <code>results/matrix.json</code></p>
+
+  <div class="panel" id="scatterPanel">
+    <h2>Cost × accuracy</h2>
+    <p class="cap">Marker area is p95 latency. Models over the selected latency budget are drawn as hollow outlines.</p>
+    <div class="controls">
+      <span class="label">p95 latency budget</span>
+      <button data-budget="1000">1s</button>
+      <button data-budget="3000">3s</button>
+      <button data-budget="5000" aria-pressed="true">5s</button>
+      <button data-budget="0">off</button>
+    </div>
+    <div id="scatter"></div>
+    <div class="legend" id="legend"></div>
+    <div class="tooltip" id="tip"></div>
+  </div>
+
+  <div class="panel">
+    <h2>p95 latency, against the same boundaries</h2>
+    <p class="cap">Each bar is one model's p95. The dashed rules are the 1s / 3s / 5s budgets.</p>
+    <div id="bars"></div>
+  </div>
+
+  <div class="panel">
+    <h2>The same data as a table</h2>
+    <div class="tablewrap">
+      <table>
+        <caption>Sorted by accuracy, then cost per call.</caption>
+        <thead>
+          <tr><th scope="col">Model</th><th scope="col">Accuracy</th><th scope="col">Cost / call</th><th scope="col">p95 latency</th><th scope="col">vs incumbent</th><th scope="col">Failures</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="note">Cost for <strong>GPT-4o mini</strong> is <code>null</code> in the source data, so it has no position on the cost axis; it sits in the hatched “cost unknown” gutter at the left and is excluded from cost comparisons.</p>
+  </div>
+
+</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const RAW = {
+    "IncumbentGPT4o":        { accuracy: 0.9666666666666667, p95_latency_ms: 2783.0914999358356, cost_per_call: 0.002563333333333333, failures: 1 },
+    "CandSonnet5":           { accuracy: 1.0,                p95_latency_ms: 4439.9705830728635, cost_per_call: 0.004128233333333333, failures: 0 },
+    "CandGPT4oMini":         { accuracy: 0.8,                p95_latency_ms: 2545.7251670304686, cost_per_call: null,                  failures: 6 },
+    "CandGPT55":             { accuracy: 0.95,               p95_latency_ms: 9518.284625024535,  cost_per_call: 0.008868,              failures: 2 },
+    "CandGemini36Flash":     { accuracy: 1.0,                p95_latency_ms: 5865.03762495704,   cost_per_call: 0.0020655,             failures: 0 },
+    "CandGemini35Flash":     { accuracy: 1.0,                p95_latency_ms: 5196.462333085947,  cost_per_call: 0.0023025999999999997, failures: 0 },
+    "CandGemini35FlashLite": { accuracy: 1.0,                p95_latency_ms: 798.6698750173673,  cost_per_call: 0.0005645499999999999, failures: 0 }
+  };
+  const SHORT = {
+    IncumbentGPT4o: "GPT-4o (incumbent)", CandSonnet5: "Sonnet 5", CandGPT4oMini: "GPT-4o mini",
+    CandGPT55: "GPT-5.5", CandGemini36Flash: "Gemini 3.6 Flash", CandGemini35Flash: "Gemini 3.5 Flash",
+    CandGemini35FlashLite: "Gemini 3.5 Flash Lite"
+  };
+  // Label placement, tuned by hand: the four models at 100% accuracy share a row,
+  // so they alternate above/below rather than sitting side by side.
+  const NUDGE = {
+    CandGemini35FlashLite: "above",
+    CandGemini35Flash:     "above",
+    CandSonnet5:           "above",
+    CandGemini36Flash:     "below",
+    IncumbentGPT4o:        "below",
+    CandGPT55:             "left",
+    CandGPT4oMini:         "right"
+  };
+
+  const INC = RAW.IncumbentGPT4o;
+
+  const MODELS = Object.keys(RAW).map(function (k) {
+    const d = RAW[k];
+    const costKnown = d.cost_per_call !== null;
+    let role;
+    if (k === "IncumbentGPT4o") role = "incumbent";
+    else if (d.accuracy >= INC.accuracy && costKnown && d.cost_per_call < INC.cost_per_call) role = "wins";
+    else if (d.accuracy >= INC.accuracy) role = "ties";
+    else role = "short";
+    return {
+      key: k, label: SHORT[k], accuracy: d.accuracy, latency: d.p95_latency_ms,
+      cost: d.cost_per_call, costKnown: costKnown, failures: d.failures, role: role
+    };
+  });
+
+  const ROLE_VAR = { wins: "--series-1", incumbent: "--series-2", ties: "--series-3", short: "--neutral" };
+  const ROLE_TEXT = {
+    wins: "Cheaper and at least as accurate as the incumbent",
+    incumbent: "The incumbent (GPT-4o)",
+    ties: "Matches accuracy, costs more",
+    short: "Less accurate than the incumbent"
+  };
+  const col = function (m) { return "var(" + ROLE_VAR[m.role] + ")"; };
+
+  const BUDGETS = [1000, 3000, 5000];
+  let budget = 5000;
+
+  // ---------- helpers ----------
+  const SVGNS = "http://www.w3.org/2000/svg";
+  function el(name, attrs, text) {
+    const n = document.createElementNS(SVGNS, name);
+    for (const k in attrs) if (attrs[k] !== null && attrs[k] !== undefined) n.setAttribute(k, attrs[k]);
+    if (text !== undefined) n.textContent = text;
+    return n;
+  }
+  const esc = function (s) { return String(s).replace(/[&<>]/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]; }); };
+  const fmtPct = function (v) { return (v * 100).toFixed(1).replace(/\.0$/, "") + "%"; };
+  const fmtMs = function (v) { return (v / 1000).toFixed(2) + " s"; };
+  const fmtCost = function (v) { return v === null ? "n/a" : "$" + v.toFixed(5); };
+
+  // ---------- scatter ----------
+  const S = { w: 940, h: 520, l: 132, r: 30, t: 46, b: 62 };
+  const GUTTER = 62;                                  // "cost unknown" strip, left of the axis
+  const X = { min: 0, max: 0.0095, ticks: [0, 0.002, 0.004, 0.006, 0.008] };
+  const Y = { min: 0.78, max: 1.005, ticks: [0.80, 0.85, 0.90, 0.95, 1.00] };
+  const sx = function (v) { return S.l + (v - X.min) / (X.max - X.min) * (S.w - S.l - S.r); };
+  const sy = function (v) { return S.h - S.b - (v - Y.min) / (Y.max - Y.min) * (S.h - S.t - S.b); };
+  const rOf = function (ms) { return 8 + Math.sqrt(ms / 10000) * 12; };   // area-proportional-ish, floor 8px
+
+  const tip = document.getElementById("tip");
+  const scatterPanel = document.getElementById("scatterPanel");
+
+  function showTip(m, px, py) {
+    const box = scatterPanel.getBoundingClientRect();
+    const svgBox = document.querySelector("#scatter svg").getBoundingClientRect();
+    const k = svgBox.width / S.w;
+    tip.style.left = (svgBox.left - box.left + px * k) + "px";
+    tip.style.top = (svgBox.top - box.top + py * k) + "px";
+    tip.style.opacity = 1;
+    tip.innerHTML =
+      '<div class="tt-name"><span class="swatch" style="background:' + col(m) + '"></span>' + esc(m.label) + "</div>" +
+      "<dl>" +
+      "<dt>Accuracy</dt><dd>" + fmtPct(m.accuracy) + "</dd>" +
+      "<dt>Cost / call</dt><dd>" + fmtCost(m.cost) + "</dd>" +
+      "<dt>p95 latency</dt><dd>" + fmtMs(m.latency) + "</dd>" +
+      "<dt>Failures</dt><dd>" + m.failures + "</dd>" +
+      "</dl>";
+  }
+  const hideTip = function () { tip.style.opacity = 0; };
+
+  function drawScatter() {
+    const svg = el("svg", { viewBox: "0 0 " + S.w + " " + S.h, role: "img",
+      "aria-label": "Scatter plot of accuracy against cost per call, with incumbent boundary lines and a p95 latency budget." });
+
+    // "better than the incumbent" region: cheaper AND at least as accurate
+    svg.appendChild(el("rect", {
+      x: sx(X.min), y: sy(Y.max), width: sx(INC.cost_per_call) - sx(X.min), height: sy(INC.accuracy) - sy(Y.max),
+      fill: "var(--series-1)", opacity: 0.07
+    }));
+
+    // gridlines
+    Y.ticks.forEach(function (t) {
+      svg.appendChild(el("line", { x1: S.l - GUTTER - 14, y1: sy(t), x2: S.w - S.r, y2: sy(t), stroke: "var(--grid)", "stroke-width": 1 }));
+      svg.appendChild(el("text", { class: "tick", x: S.l - GUTTER - 22, y: sy(t), "text-anchor": "end", "dominant-baseline": "middle" },
+        Math.round(t * 100) + "%"));
+    });
+    X.ticks.forEach(function (t) {
+      svg.appendChild(el("line", { x1: sx(t), y1: S.t, x2: sx(t), y2: S.h - S.b, stroke: "var(--grid)", "stroke-width": 1 }));
+      svg.appendChild(el("text", { class: "tick", x: sx(t), y: S.h - S.b + 18, "text-anchor": "middle" },
+        t === 0 ? "$0" : "$" + t.toFixed(4)));
+    });
+
+    // axes
+    svg.appendChild(el("line", { x1: S.l - GUTTER - 14, y1: S.h - S.b, x2: S.w - S.r, y2: S.h - S.b, stroke: "var(--axis)", "stroke-width": 2 }));
+    svg.appendChild(el("text", { class: "axis-title", x: (S.l + S.w - S.r) / 2, y: S.h - 14, "text-anchor": "middle" }, "Cost per call (USD) — cheaper is better →"));
+    svg.appendChild(el("text", { class: "axis-title", x: 18, y: (S.t + S.h - S.b) / 2, "text-anchor": "middle",
+      transform: "rotate(-90 18 " + ((S.t + S.h - S.b) / 2) + ")" }, "Accuracy — higher is better →"));
+
+    // cost-unknown gutter
+    const gx = S.l - GUTTER - 8;
+    svg.appendChild(el("rect", { x: S.l - GUTTER - 14, y: S.t, width: GUTTER, height: S.h - S.b - S.t,
+      fill: "var(--grid)", opacity: 0.35 }));
+    svg.appendChild(el("line", { x1: S.l - 12, y1: S.t, x2: S.l - 12, y2: S.h - S.b,
+      stroke: "var(--axis)", "stroke-width": 1, "stroke-dasharray": "2 3" }));
+    svg.appendChild(el("text", { class: "bound-label", x: gx, y: S.t + 12, "text-anchor": "middle" }, "cost unknown"));
+
+    // ---- boundary lines ----
+    const bx = sx(INC.cost_per_call), by = sy(INC.accuracy);
+    svg.appendChild(el("line", { x1: bx, y1: S.t, x2: bx, y2: S.h - S.b,
+      stroke: "var(--series-2)", "stroke-width": 2, "stroke-dasharray": "6 4" }));
+    svg.appendChild(el("text", { class: "bound-label", x: bx + 7, y: S.t + 12, "text-anchor": "start",
+      fill: "var(--series-2)" }, "incumbent cost $0.00256"));
+    svg.appendChild(el("line", { x1: S.l - GUTTER - 14, y1: by, x2: S.w - S.r, y2: by,
+      stroke: "var(--series-2)", "stroke-width": 2, "stroke-dasharray": "6 4" }));
+    svg.appendChild(el("text", { class: "bound-label", x: S.w - S.r, y: by - 8, "text-anchor": "end",
+      fill: "var(--series-2)" }, "incumbent accuracy 96.7%"));
+
+    // ---- marks ----
+    const sorted = MODELS.slice().sort(function (a, b) { return b.latency - a.latency; });  // big behind small
+    sorted.forEach(function (m) {
+      const px = m.costKnown ? sx(m.cost) : gx;
+      const py = sy(m.accuracy);
+      const r = rOf(m.latency);
+      const overBudget = budget > 0 && m.latency > budget;
+      const c = col(m);
+
+      const g = el("g", {});
+      const circ = el("circle", { cx: px, cy: py, r: r, "stroke-width": overBudget ? 2.5 : 2 });
+      if (overBudget || !m.costKnown) {
+        circ.setAttribute("fill", "var(--surface-1)");
+        circ.setAttribute("stroke", c);
+        circ.setAttribute("stroke-dasharray", m.costKnown ? "5 3.5" : "3 2.5");
+      } else {
+        circ.setAttribute("fill", c);
+        circ.setAttribute("stroke", "var(--surface-1)");   // 2px surface ring on overlapping marks
+      }
+      g.appendChild(circ);
+
+      const pos = NUDGE[m.key];
+      const place = {
+        above: { x: px,           y: py - r - 8,  anchor: "middle", base: "auto" },
+        below: { x: px,           y: py + r + 16, anchor: "middle", base: "auto" },
+        left:  { x: px - r - 8,   y: py,          anchor: "end",    base: "middle" },
+        right: { x: px + r + 8,   y: py,          anchor: "start",  base: "middle" }
+      }[pos];
+      g.appendChild(el("text", {
+        class: "mark-label" + (m.role === "short" ? " dim" : ""),
+        x: place.x, y: place.y, "text-anchor": place.anchor, "dominant-baseline": place.base
+      }, m.label));
+
+      const hit = el("circle", { cx: px, cy: py, r: Math.max(r + 10, 20), class: "hit" });
+      hit.addEventListener("mouseenter", function () { showTip(m, px, py); });
+      hit.addEventListener("mouseleave", hideTip);
+      g.appendChild(hit);
+      svg.appendChild(g);
+    });
+
+    const host = document.getElementById("scatter");
+    host.innerHTML = "";
+    host.appendChild(svg);
+  }
+
+  // ---------- latency bars ----------
+  function drawBars() {
+    const B = { w: 940, h: 300, l: 176, r: 74, t: 30, b: 40 };
+    const max = 10500;
+    const bx = function (v) { return B.l + v / max * (B.w - B.l - B.r); };
+    const rows = MODELS.slice().sort(function (a, b) { return a.latency - b.latency; });
+    const band = (B.h - B.t - B.b) / rows.length;
+    const bh = Math.min(18, band - 8);
+
+    const svg = el("svg", { viewBox: "0 0 " + B.w + " " + B.h, role: "img",
+      "aria-label": "Horizontal bar chart of p95 latency per model with 1s, 3s and 5s budget lines." });
+
+    [0, 2000, 4000, 6000, 8000, 10000].forEach(function (t) {
+      svg.appendChild(el("line", { x1: bx(t), y1: B.t - 6, x2: bx(t), y2: B.h - B.b, stroke: "var(--grid)", "stroke-width": 1 }));
+      svg.appendChild(el("text", { class: "tick", x: bx(t), y: B.h - B.b + 18, "text-anchor": "middle" }, (t / 1000) + "s"));
+    });
+    svg.appendChild(el("line", { x1: B.l, y1: B.t - 6, x2: B.l, y2: B.h - B.b, stroke: "var(--axis)", "stroke-width": 2 }));
+
+    BUDGETS.forEach(function (b) {
+      svg.appendChild(el("line", { x1: bx(b), y1: B.t - 12, x2: bx(b), y2: B.h - B.b,
+        stroke: "var(--series-2)", "stroke-width": 2, "stroke-dasharray": "6 4", opacity: b === budget ? 1 : 0.4 }));
+      svg.appendChild(el("text", { class: "bound-label", x: bx(b), y: B.t - 18, "text-anchor": "middle",
+        fill: "var(--series-2)", opacity: b === budget ? 1 : 0.55 }, (b / 1000) + "s budget"));
+    });
+
+    rows.forEach(function (m, i) {
+      const y = B.t + i * band + (band - bh) / 2;
+      const over = budget > 0 && m.latency > budget;
+      svg.appendChild(el("rect", {
+        x: B.l, y: y, width: Math.max(2, bx(m.latency) - B.l), height: bh,
+        rx: 4, fill: col(m), opacity: over ? 0.28 : 1,
+        stroke: over ? col(m) : null, "stroke-width": over ? 1.5 : null, "stroke-dasharray": over ? "5 3.5" : null
+      }));
+      svg.appendChild(el("text", { class: "mark-label" + (m.role === "short" ? " dim" : ""),
+        x: B.l - 12, y: y + bh / 2, "text-anchor": "end", "dominant-baseline": "middle" }, m.label));
+      svg.appendChild(el("text", { class: "val-label", x: bx(m.latency) + 8, y: y + bh / 2, "dominant-baseline": "middle" },
+        fmtMs(m.latency)));
+    });
+
+    const host = document.getElementById("bars");
+    host.innerHTML = "";
+    host.appendChild(svg);
+  }
+
+  // ---------- legend, table, controls ----------
+  const rolesPresent = ["wins", "incumbent", "ties", "short"].filter(function (r) {
+    return MODELS.some(function (m) { return m.role === r; });
+  });
+  document.getElementById("legend").innerHTML =
+    rolesPresent.map(function (r) {
+      return '<span class="item"><span class="swatch" style="background:var(' + ROLE_VAR[r] + ')"></span>' + ROLE_TEXT[r] + "</span>";
+    }).join("") +
+    '<span class="item"><span class="swatch hollow"></span>Hollow = over the latency budget, or cost unknown</span>';
+
+  const sortedTable = MODELS.slice().sort(function (a, b) {
+    if (b.accuracy !== a.accuracy) return b.accuracy - a.accuracy;
+    return (a.costKnown ? a.cost : Infinity) - (b.costKnown ? b.cost : Infinity);
+  });
+  document.getElementById("tbody").innerHTML = sortedTable.map(function (m) {
+    let vs;
+    if (m.role === "incumbent") vs = "—";
+    else if (!m.costKnown) vs = "cost unknown";
+    else {
+      const dAcc = (m.accuracy - INC.accuracy) * 100;
+      const x = INC.cost_per_call / m.cost;
+      vs = (dAcc >= 0 ? "+" : "") + dAcc.toFixed(1) + " pts, " +
+           (x >= 1 ? x.toFixed(1) + "× cheaper" : (1 / x).toFixed(1) + "× dearer");
+    }
+    return "<tr><td><span class='swatch' style='background:" + col(m) + "'></span>" + esc(m.label) + "</td>" +
+      "<td>" + fmtPct(m.accuracy) + "</td><td>" + fmtCost(m.cost) + "</td><td>" + fmtMs(m.latency) + "</td>" +
+      "<td>" + vs + "</td><td>" + m.failures + "</td></tr>";
+  }).join("");
+
+  document.querySelectorAll("[data-budget]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      budget = Number(btn.dataset.budget);
+      document.querySelectorAll("[data-budget]").forEach(function (b) {
+        b.setAttribute("aria-pressed", String(Number(b.dataset.budget) === budget));
+      });
+      hideTip(); drawScatter(); drawBars();
+    });
+  });
+
+  drawScatter();
+  drawBars();
+})();
+</script>
+</body>
+</html>

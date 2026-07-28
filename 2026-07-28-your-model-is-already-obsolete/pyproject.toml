@@ -1,0 +1,22 @@
+[project]
+name = "model-swap-harness"
+version = "0.1.0"
+description = "Throw a model at it: a regression-gated model swap harness"
+requires-python = ">=3.12"
+dependencies = [
+    "baml-py==0.223.0",
+    "python-dotenv>=1.0.0",
+    "typing-extensions>=4.12.0",
+    "pydantic>=2.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.uv]
+package = false

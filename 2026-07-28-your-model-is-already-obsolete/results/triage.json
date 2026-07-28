@@ -1,0 +1,48 @@
+{
+  "incumbent": "IncumbentGPT4o",
+  "candidate": "CandGemini35FlashLite",
+  "pool_size": 50,
+  "agreed": 45,
+  "disagreements": [
+    {
+      "document": "LINEAR - INVOICE 2288\nStandard seats, 18 @ 8.00 .......... 144.00\nSubtotal ........................... 144.00\nTOTAL .............................. 144.00\nReverse charge applies.",
+      "fields": [
+        "category"
+      ],
+      "incumbent_output": "{\"vendor\":\"LINEAR\",\"category\":\"Other\",\"line_items\":[{\"description\":\"Standard seats\",\"quantity\":18,\"unit_price\":8.0,\"total\":144.0}],\"subtotal\":144.0,\"tax\":null,\"total\":144.0}",
+      "candidate_output": "{\"vendor\":\"LINEAR\",\"category\":\"Travel\",\"line_items\":[{\"description\":\"Standard seats\",\"quantity\":18,\"unit_price\":8.0,\"total\":144.0}],\"subtotal\":144.0,\"tax\":null,\"total\":144.0}"
+    },
+    {
+      "document": "UDEMY BUSINESS - INVOICE 5512\nAnnual team licence, 1 @ 3600.00 .. 3600.00\nSubtotal .......................... 3600.00\nTOTAL ............................. 3600.00",
+      "fields": [
+        "category"
+      ],
+      "incumbent_output": "{\"vendor\":\"UDEMY BUSINESS\",\"category\":\"Other\",\"line_items\":[{\"description\":\"Annual team licence\",\"quantity\":1,\"unit_price\":3600.0,\"total\":3600.0}],\"subtotal\":3600.0,\"tax\":null,\"total\":3600.0}",
+      "candidate_output": "{\"vendor\":\"UDEMY BUSINESS\",\"category\":\"Software\",\"line_items\":[{\"description\":\"Annual team licence\",\"quantity\":1,\"unit_price\":3600.0,\"total\":3600.0}],\"subtotal\":3600.0,\"tax\":null,\"total\":3600.0}"
+    },
+    {
+      "document": "WAITROSE - RECEIPT 22190\nOffice fruit box, 4 @ 24.00 ......... 96.00\nSparkling water, 12 @ 1.20 .......... 14.40\nSubtotal ........................... 110.40\nTOTAL .............................. 110.40",
+      "fields": [
+        "category"
+      ],
+      "incumbent_output": "{\"vendor\":\"WAITROSE\",\"category\":\"Other\",\"line_items\":[{\"description\":\"Office fruit box\",\"quantity\":4,\"unit_price\":24.0,\"total\":96.0},{\"description\":\"Sparkling water\",\"quantity\":12,\"unit_price\":1.2,\"total\":14.4}],\"subtotal\":110.4,\"tax\":null,\"total\":110.4}",
+      "candidate_output": "{\"vendor\":\"WAITROSE\",\"category\":\"Meals\",\"line_items\":[{\"description\":\"Office fruit box\",\"quantity\":4,\"unit_price\":24.0,\"total\":96.0},{\"description\":\"Sparkling water\",\"quantity\":12,\"unit_price\":1.2,\"total\":14.4}],\"subtotal\":110.4,\"tax\":null,\"total\":110.4}"
+    },
+    {
+      "document": "CATERED BY CLARE - INVOICE 2201\nWorking lunch, 25 @ 14.00 .......... 350.00\nRoom hire, 1 @ 400.00 .............. 400.00\nSubtotal ........................... 750.00\nVAT 20% ............................ 150.00\nTOTAL .............................. 900.00",
+      "fields": [
+        "category"
+      ],
+      "incumbent_output": "{\"vendor\":\"Catered by Clare\",\"category\":\"Other\",\"line_items\":[{\"description\":\"Working lunch\",\"quantity\":25,\"unit_price\":14.0,\"total\":350.0},{\"description\":\"Room hire\",\"quantity\":1,\"unit_price\":400.0,\"total\":400.0}],\"subtotal\":750.0,\"tax\":150.0,\"total\":900.0}",
+      "candidate_output": "{\"vendor\":\"CATERED BY CLARE\",\"category\":\"Meals\",\"line_items\":[{\"description\":\"Working lunch\",\"quantity\":25,\"unit_price\":14.0,\"total\":350.0},{\"description\":\"Room hire\",\"quantity\":1,\"unit_price\":400.0,\"total\":400.0}],\"subtotal\":750.0,\"tax\":150.0,\"total\":900.0}"
+    },
+    {
+      "document": "AIRBNB - RESERVATION HMKQ2\nApartment, 5 nights @ 132.00 ....... 660.00\nCleaning fee, 1 @ 65.00 ............. 65.00\nSubtotal ........................... 725.00\nService fee, 1 @ 88.00 .............. 88.00\nTOTAL .............................. 813.00",
+      "fields": [
+        "n_items"
+      ],
+      "incumbent_output": "{\"vendor\":\"AIRBNB\",\"category\":\"Travel\",\"line_items\":[{\"description\":\"Apartment, 5 nights @ 132.00\",\"quantity\":5,\"unit_price\":132.0,\"total\":660.0},{\"description\":\"Cleaning fee, 1 @ 65.00\",\"quantity\":1,\"unit_price\":65.0,\"total\":65.0}],\"subtotal\":725.0,\"tax\":null,\"total\":813.0}",
+      "candidate_output": "{\"vendor\":\"AIRBNB\",\"category\":\"Travel\",\"line_items\":[{\"description\":\"Apartment\",\"quantity\":5,\"unit_price\":132.0,\"total\":660.0},{\"description\":\"Cleaning fee\",\"quantity\":1,\"unit_price\":65.0,\"total\":65.0},{\"description\":\"Service fee\",\"quantity\":1,\"unit_price\":88.0,\"total\":88.0}],\"subtotal\":725.0,\"tax\":null,\"total\":813.0}"
+    }
+  ]
+}

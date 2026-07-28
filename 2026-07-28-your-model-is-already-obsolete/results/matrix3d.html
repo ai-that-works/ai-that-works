@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model matrix — cost × latency × accuracy</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; }
+
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --grid:           #e1e0d9;
+    --axis:           #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --series-4: #eda100;
+    --series-5: #e87ba4;
+    --series-6: #008300;
+    --series-7: #4a3aa7;
+
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 32px 24px 64px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --page:           #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --grid:           #2c2c2a;
+      --axis:           #383835;
+      --border:         rgba(255,255,255,0.10);
+      --series-1: #3987e5;
+      --series-2: #d95926;
+      --series-3: #199e70;
+      --series-4: #c98500;
+      --series-5: #d55181;
+      --series-6: #008300;
+      --series-7: #9085e9;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --page:           #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --grid:           #2c2c2a;
+    --axis:           #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    --series-7: #9085e9;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; }
+
+  h1 { font-size: 22px; line-height: 1.25; margin: 0 0 6px; font-weight: 640; letter-spacing: -0.01em; }
+  .sub { font-size: 13.5px; color: var(--text-secondary); margin: 0 0 4px; }
+  .meta { font-size: 12.5px; color: var(--text-muted); margin: 0 0 20px; }
+
+  .panel {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .toolbar {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    padding: 10px 12px; border-bottom: 1px solid var(--border);
+  }
+  .toolbar .spacer { flex: 1 1 auto; }
+  button {
+    font: inherit; font-size: 12.5px; line-height: 1;
+    padding: 7px 11px; border-radius: 7px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--text-secondary);
+    cursor: pointer;
+  }
+  button:hover { background: color-mix(in srgb, var(--text-primary) 6%, transparent); color: var(--text-primary); }
+  button[aria-pressed="true"] { background: color-mix(in srgb, var(--text-primary) 10%, transparent); color: var(--text-primary); }
+  .hint { font-size: 12px; color: var(--text-muted); }
+
+  .stage { position: relative; }
+  canvas { display: block; width: 100%; height: 560px; touch-action: none; cursor: grab; }
+  canvas.dragging { cursor: grabbing; }
+
+  .tooltip {
+    position: absolute; pointer-events: none; opacity: 0;
+    transform: translate(-50%, calc(-100% - 14px));
+    transition: opacity .1s linear;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.16);
+    padding: 9px 11px; min-width: 176px;
+    font-size: 12.5px; color: var(--text-secondary);
+    z-index: 3;
+  }
+  .tooltip .tt-name { display: flex; align-items: center; gap: 7px; color: var(--text-primary); font-weight: 620; margin-bottom: 6px; }
+  .tooltip .swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .tooltip dl { margin: 0; display: grid; grid-template-columns: auto auto; gap: 3px 14px; }
+  .tooltip dt { color: var(--text-muted); }
+  .tooltip dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-primary); }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 6px 16px;
+    padding: 12px; border-top: 1px solid var(--border);
+    font-size: 12.5px; color: var(--text-secondary);
+  }
+  .legend .item { display: flex; align-items: center; gap: 7px; }
+  .legend .swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  caption { text-align: left; font-size: 13px; color: var(--text-secondary); padding: 0 0 8px; }
+  th, td { text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--text-muted); font-weight: 560; font-size: 12px; }
+  tbody td { font-variant-numeric: tabular-nums; color: var(--text-primary); }
+  tbody td:first-child { display: flex; align-items: center; gap: 8px; }
+  td .swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .fails { font-size: 12.5px; color: var(--text-secondary); }
+  .fails li { margin-bottom: 3px; }
+  .section { margin-top: 28px; }
+  .section h2 { font-size: 14px; margin: 0 0 10px; font-weight: 620; }
+  .tablewrap { overflow-x: auto; background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+  .note { font-size: 12px; color: var(--text-muted); margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+
+  <h1>Model matrix — cost, latency and accuracy in one space</h1>
+  <p class="sub">Each model is one point: cost per call across, p95 latency into the page, accuracy up. Lower-left-and-high is better.</p>
+  <p class="meta">Expense-extraction eval · 2 repeats per case · <code>results/matrix.json</code></p>
+
+  <div class="panel">
+    <div class="toolbar">
+      <button id="spin" aria-pressed="true">Pause spin</button>
+      <button id="reset">Reset view</button>
+      <span class="spacer"></span>
+      <span class="hint">Drag to rotate · scroll to zoom · hover a point</span>
+    </div>
+    <div class="stage">
+      <canvas id="c"></canvas>
+      <div class="tooltip" id="tip" role="status" aria-live="polite"></div>
+    </div>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="section">
+    <h2>The same data as a table</h2>
+    <div class="tablewrap">
+      <table>
+        <caption>Sorted by accuracy, then cost per call.</caption>
+        <thead>
+          <tr><th scope="col">Model</th><th scope="col">Accuracy</th><th scope="col">p95 latency</th><th scope="col">Cost / call</th><th scope="col">Failures</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="note">Cost for <strong>CandGPT4oMini</strong> is <code>null</code> in the source data; it is drawn on the cost = 0 wall with a hollow marker and is not a measured value.</p>
+  </div>
+
+  <div class="section">
+    <h2>Failures by model</h2>
+    <div class="tablewrap">
+      <div class="fails" id="fails"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const RAW = {
+    "IncumbentGPT4o":      { accuracy: 0.9666666666666667, p95_latency_ms: 2783.0914999358356, cost_per_call: 0.002563333333333333, repeats: 2, failures: ["office_coffee_supplies: category: expected Meals, got Other"] },
+    "CandSonnet5":         { accuracy: 1.0,                p95_latency_ms: 4439.9705830728635, cost_per_call: 0.004128233333333333, repeats: 2, failures: [] },
+    "CandGPT4oMini":       { accuracy: 0.8,                p95_latency_ms: 2545.7251670304686, cost_per_call: null,                  repeats: 2, failures: ["airport_taxi_with_tip: line_items: expected 2, got 1","catering_beats_venue: category: expected Meals, got Other","coworking_day_passes: category: expected Other, got Software","office_coffee_supplies: category: expected Meals, got Hardware","room_service_exceeds_room: category: expected Meals, got Travel","zero_tax_stated_explicitly: tax: expected a value, got omitted"] },
+    "CandGPT55":           { accuracy: 0.95,               p95_latency_ms: 9518.284625024535,  cost_per_call: 0.008868,              repeats: 2, failures: ["client_dinner: line_items: expected 2, got 3","service_charge_and_real_tax: line_items: expected 1, got 2"] },
+    "CandGemini36Flash":   { accuracy: 1.0,                p95_latency_ms: 5865.03762495704,   cost_per_call: 0.0020655,             repeats: 2, failures: [] },
+    "CandGemini35Flash":   { accuracy: 1.0,                p95_latency_ms: 5196.462333085947,  cost_per_call: 0.0023025999999999997, repeats: 2, failures: [] },
+    "CandGemini35FlashLite": { accuracy: 1.0,              p95_latency_ms: 798.6698750173673,  cost_per_call: 0.0005645499999999999, repeats: 2, failures: [] }
+  };
+
+  // Short display labels for on-canvas direct labelling.
+  const SHORT = {
+    IncumbentGPT4o: "GPT-4o (incumbent)",
+    CandSonnet5: "Sonnet 5",
+    CandGPT4oMini: "GPT-4o mini",
+    CandGPT55: "GPT-5.5",
+    CandGemini36Flash: "Gemini 3.6 Flash",
+    CandGemini35Flash: "Gemini 3.5 Flash",
+    CandGemini35FlashLite: "Gemini 3.5 Flash Lite"
+  };
+
+  const MODELS = Object.keys(RAW).map(function (k, i) {
+    const d = RAW[k];
+    return {
+      key: k,
+      label: SHORT[k] || k,
+      slot: i + 1,               // categorical slots assigned in fixed order, never cycled
+      accuracy: d.accuracy,
+      latency: d.p95_latency_ms,
+      cost: d.cost_per_call,
+      costKnown: d.cost_per_call !== null && d.cost_per_call !== undefined,
+      failures: d.failures
+    };
+  });
+
+  // ---- axes -------------------------------------------------------------
+  const AX = {
+    x: { key: "cost",     title: "Cost per call (USD)", min: 0,    max: 0.010, ticks: [0, 0.0025, 0.005, 0.0075, 0.010], fmt: function (v) { return v === 0 ? "$0" : "$" + v.toFixed(4); } },
+    y: { key: "latency",  title: "p95 latency",         min: 0,    max: 10000, ticks: [0, 2500, 5000, 7500, 10000],      fmt: function (v) { return (v / 1000).toFixed(1) + "s"; } },
+    z: { key: "accuracy", title: "Accuracy",            min: 0.75, max: 1.0,   ticks: [0.75, 0.80, 0.85, 0.90, 0.95, 1.0], fmt: function (v) { return Math.round(v * 100) + "%"; } }
+  };
+  const norm = function (a, v) { return (v - a.min) / (a.max - a.min) - 0.5; };
+
+  // ---- theme ------------------------------------------------------------
+  const root = document.querySelector(".viz-root");
+  let P = {};
+  function readTheme() {
+    const cs = getComputedStyle(root);
+    const g = function (n) { return cs.getPropertyValue(n).trim(); };
+    P = {
+      surface: g("--surface-1"), text: g("--text-primary"), sec: g("--text-secondary"),
+      muted: g("--text-muted"), grid: g("--grid"), axis: g("--axis"),
+      series: [1,2,3,4,5,6,7].map(function (i) { return g("--series-" + i); })
+    };
+  }
+  readTheme();
+  const colorOf = function (m) { return P.series[m.slot - 1]; };
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { readTheme(); requestDraw(); });
+  new MutationObserver(function () { readTheme(); requestDraw(); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  // ---- camera -----------------------------------------------------------
+  const HOME = { yaw: -0.62, pitch: 0.42, zoom: 1 };
+  let cam = Object.assign({}, HOME);
+  let spinning = true;
+
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d");
+  let W = 0, H = 0, scale = 1, cx = 0, cy = 0;
+
+  function resize() {
+    const r = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    scale = Math.min(W, H) * 0.72;
+    cx = W / 2; cy = H / 2 + H * 0.04;
+    requestDraw();
+  }
+  new ResizeObserver(resize).observe(canvas);
+
+  function project(x, y, z) {
+    const cyw = Math.cos(cam.yaw), syw = Math.sin(cam.yaw);
+    const xr = x * cyw - y * syw;
+    const yr = x * syw + y * cyw;
+    const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
+    const s = scale * cam.zoom;
+    return {
+      x: cx + xr * s,
+      y: cy + (yr * sp - z * cp) * s,
+      depth: yr * cp + z * sp        // larger = farther from the eye
+    };
+  }
+
+  // ---- drawing helpers --------------------------------------------------
+  function line(a, b, color, width, dash) {
+    ctx.save();
+    ctx.strokeStyle = color; ctx.lineWidth = width || 1;
+    if (dash) ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    ctx.restore();
+  }
+  function haloText(str, x, y, color, font, align, baseline) {
+    ctx.save();
+    ctx.font = font; ctx.textAlign = align || "center"; ctx.textBaseline = baseline || "middle";
+    ctx.lineJoin = "round"; ctx.lineWidth = 3.5; ctx.strokeStyle = P.surface;
+    ctx.strokeText(str, x, y);
+    ctx.fillStyle = color; ctx.fillText(str, x, y);
+    ctx.restore();
+  }
+
+  const HALF = 0.5;
+  // unit-cube corner helper: u,v,w each -0.5 or 0.5
+  const pt = function (u, v, w) { return project(u, v, w); };
+
+  function drawFloorAndWalls() {
+    const xs = AX.x.ticks.map(function (t) { return norm(AX.x, t); });
+    const ys = AX.y.ticks.map(function (t) { return norm(AX.y, t); });
+    const zs = AX.z.ticks.map(function (t) { return norm(AX.z, t); });
+
+    // floor plane at z = -HALF
+    ctx.save();
+    ctx.fillStyle = P.grid;
+    ctx.globalAlpha = 0.22;
+    ctx.beginPath();
+    const f = [pt(-HALF,-HALF,-HALF), pt(HALF,-HALF,-HALF), pt(HALF,HALF,-HALF), pt(-HALF,HALF,-HALF)];
+    ctx.moveTo(f[0].x, f[0].y); for (let i = 1; i < 4; i++) ctx.lineTo(f[i].x, f[i].y);
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+
+    xs.forEach(function (u) { line(pt(u, -HALF, -HALF), pt(u, HALF, -HALF), P.grid, 1); });
+    ys.forEach(function (v) { line(pt(-HALF, v, -HALF), pt(HALF, v, -HALF), P.grid, 1); });
+
+    // back walls: whichever x-plane and y-plane are farther from the eye
+    const farX = pt(-HALF, 0, 0).depth > pt(HALF, 0, 0).depth ? -HALF : HALF;
+    const farY = pt(0, -HALF, 0).depth > pt(0, HALF, 0).depth ? -HALF : HALF;
+    zs.forEach(function (w) {
+      line(pt(farX, -HALF, w), pt(farX, HALF, w), P.grid, 1);
+      line(pt(-HALF, farY, w), pt(HALF, farY, w), P.grid, 1);
+    });
+    ys.forEach(function (v) { line(pt(farX, v, -HALF), pt(farX, v, HALF), P.grid, 1); });
+    xs.forEach(function (u) { line(pt(u, farY, -HALF), pt(u, farY, HALF), P.grid, 1); });
+
+    return { farX: farX, farY: farY };
+  }
+
+  function drawAxes(far) {
+    const tickFont = "11px system-ui, -apple-system, 'Segoe UI', sans-serif";
+    const titleFont = "600 12px system-ui, -apple-system, 'Segoe UI', sans-serif";
+
+    // x ticks along the FRONT y-edge (the one that projects lowest on screen)
+    const frontY = pt(0, -HALF, -HALF).y > pt(0, HALF, -HALF).y ? -HALF : HALF;
+    const frontX = pt(-HALF, 0, -HALF).y > pt(HALF, 0, -HALF).y ? -HALF : HALF;
+
+    line(pt(-HALF, frontY, -HALF), pt(HALF, frontY, -HALF), P.axis, 2);
+    line(pt(frontX, -HALF, -HALF), pt(frontX, HALF, -HALF), P.axis, 2);
+
+    AX.x.ticks.forEach(function (t) {
+      const u = norm(AX.x, t);
+      const a = pt(u, frontY, -HALF), b = pt(u, frontY * 1.11, -HALF);
+      line(a, b, P.axis, 1);
+      haloText(AX.x.fmt(t), b.x + (b.x - a.x) * 1.4, b.y + (b.y - a.y) * 1.4, P.muted, tickFont);
+    });
+    AX.y.ticks.forEach(function (t) {
+      const v = norm(AX.y, t);
+      const a = pt(frontX, v, -HALF), b = pt(frontX * 1.11, v, -HALF);
+      line(a, b, P.axis, 1);
+      haloText(AX.y.fmt(t), b.x + (b.x - a.x) * 1.4, b.y + (b.y - a.y) * 1.4, P.muted, tickFont);
+    });
+
+    // z axis on the far corner where the two back walls meet
+    const zx = far.farX, zy = far.farY;
+    line(pt(zx, zy, -HALF), pt(zx, zy, HALF), P.axis, 2);
+    const outSign = pt(zx * 1.1, zy * 1.1, 0).x < pt(zx, zy, 0).x ? 1 : -1;
+    AX.z.ticks.forEach(function (t) {
+      const w = norm(AX.z, t);
+      const a = pt(zx, zy, w), b = pt(zx * 1.06, zy * 1.06, w);
+      line(a, b, P.axis, 1);
+      haloText(AX.z.fmt(t), b.x + (b.x - a.x) * 2.4, b.y + (b.y - a.y) * 2.4, P.muted, tickFont,
+        outSign > 0 ? "right" : "left");
+    });
+
+    // axis titles
+    const xt = pt(0, frontY * 1.42, -HALF);
+    haloText(AX.x.title, xt.x, xt.y, P.sec, titleFont);
+    const yt = pt(frontX * 1.42, 0, -HALF);
+    haloText(AX.y.title, yt.x, yt.y, P.sec, titleFont);
+    const zt = pt(zx * 1.12, zy * 1.12, HALF * 1.12);
+    haloText(AX.z.title, zt.x, zt.y, P.sec, titleFont, outSign > 0 ? "right" : "left");
+  }
+
+  let hits = [];   // screen positions for hit-testing
+  let hovered = null;
+
+  function drawPoints() {
+    const items = MODELS.map(function (m) {
+      const u = norm(AX.x, m.costKnown ? m.cost : 0);
+      const v = norm(AX.y, m.latency);
+      const w = norm(AX.z, m.accuracy);
+      return { m: m, u: u, v: v, w: w, p: project(u, v, w), base: project(u, v, -HALF) };
+    });
+    items.sort(function (a, b) { return b.p.depth - a.p.depth; });   // far → near
+
+    // droplines + floor shadows first, all beneath the marks
+    items.forEach(function (it) {
+      line(it.p, it.base, P.axis, 1, [3, 3]);
+      ctx.save();
+      ctx.globalAlpha = 0.35; ctx.fillStyle = P.axis;
+      ctx.beginPath(); ctx.ellipse(it.base.x, it.base.y, 4, 2, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    });
+
+    hits = [];
+    items.forEach(function (it) {
+      const c = colorOf(it.m);
+      const r = 9;
+      ctx.save();
+      ctx.beginPath(); ctx.arc(it.p.x, it.p.y, r, 0, Math.PI * 2);
+      if (it.m.costKnown) { ctx.fillStyle = c; ctx.fill(); }
+      else {
+        ctx.fillStyle = P.surface; ctx.fill();
+        ctx.setLineDash([3, 2.5]);
+      }
+      ctx.lineWidth = it.m.costKnown ? 2 : 2.5;
+      ctx.strokeStyle = it.m.costKnown ? P.surface : c;   // 2px surface ring on overlapping marks
+      ctx.stroke();
+      if (hovered === it.m.key) {
+        ctx.setLineDash([]); ctx.lineWidth = 2; ctx.strokeStyle = P.text;
+        ctx.beginPath(); ctx.arc(it.p.x, it.p.y, r + 4, 0, Math.PI * 2); ctx.stroke();
+      }
+      ctx.restore();
+
+      const labelFont = (hovered === it.m.key ? "600 " : "") + "12px system-ui, -apple-system, 'Segoe UI', sans-serif";
+      haloText(it.m.label + (it.m.costKnown ? "" : "  (cost n/a)"),
+        it.p.x, it.p.y - r - 9, P.text, labelFont, "center", "bottom");
+
+      hits.push({ key: it.m.key, x: it.p.x, y: it.p.y, r: r + 8 });
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const far = drawFloorAndWalls();
+    drawAxes(far);
+    drawPoints();
+    pending = false;
+  }
+
+  let pending = false;
+  function requestDraw() { if (!pending) { pending = true; requestAnimationFrame(draw); } }
+
+  // ---- animation --------------------------------------------------------
+  let last = null;
+  function tick(ts) {
+    if (spinning && !dragging) {
+      if (last !== null) cam.yaw += (ts - last) * 0.00013;
+      draw();
+    }
+    last = ts;
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // ---- interaction ------------------------------------------------------
+  let dragging = false, lastPos = null;
+  canvas.addEventListener("pointerdown", function (e) {
+    dragging = true; lastPos = { x: e.clientX, y: e.clientY };
+    canvas.classList.add("dragging"); canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener("pointerup", function (e) {
+    dragging = false; canvas.classList.remove("dragging");
+    try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+  });
+  canvas.addEventListener("pointermove", function (e) {
+    if (dragging) {
+      cam.yaw += (e.clientX - lastPos.x) * 0.008;
+      cam.pitch = Math.max(-0.35, Math.min(1.25, cam.pitch + (e.clientY - lastPos.y) * 0.006));
+      lastPos = { x: e.clientX, y: e.clientY };
+      requestDraw();
+      return;
+    }
+    const r = canvas.getBoundingClientRect();
+    hitTest(e.clientX - r.left, e.clientY - r.top);
+  });
+  canvas.addEventListener("pointerleave", function () { setHover(null); });
+  canvas.addEventListener("wheel", function (e) {
+    e.preventDefault();
+    cam.zoom = Math.max(0.55, Math.min(2.2, cam.zoom * (e.deltaY > 0 ? 0.94 : 1.06)));
+    requestDraw();
+  }, { passive: false });
+
+  const tip = document.getElementById("tip");
+  function hitTest(mx, my) {
+    let best = null, bestD = Infinity;
+    for (let i = 0; i < hits.length; i++) {
+      const h = hits[i];
+      const d = Math.hypot(h.x - mx, h.y - my);
+      if (d <= h.r && d < bestD) { best = h; bestD = d; }
+    }
+    setHover(best);
+  }
+  function setHover(h) {
+    const key = h ? h.key : null;
+    if (key !== hovered) { hovered = key; requestDraw(); }
+    if (!h) { tip.style.opacity = 0; return; }
+    const m = MODELS.find(function (x) { return x.key === key; });
+    tip.style.left = h.x + "px";
+    tip.style.top = h.y + "px";
+    tip.style.opacity = 1;
+    tip.innerHTML =
+      '<div class="tt-name"><span class="swatch" style="background:' + colorOf(m) + '"></span>' + esc(m.label) + '</div>' +
+      "<dl>" +
+      "<dt>Accuracy</dt><dd>" + fmtPct(m.accuracy) + "</dd>" +
+      "<dt>p95 latency</dt><dd>" + fmtMs(m.latency) + "</dd>" +
+      "<dt>Cost / call</dt><dd>" + fmtCost(m.cost) + "</dd>" +
+      "<dt>Failures</dt><dd>" + m.failures.length + "</dd>" +
+      "</dl>";
+  }
+
+  document.getElementById("spin").addEventListener("click", function () {
+    spinning = !spinning;
+    this.setAttribute("aria-pressed", String(spinning));
+    this.textContent = spinning ? "Pause spin" : "Resume spin";
+    requestDraw();
+  });
+  document.getElementById("reset").addEventListener("click", function () {
+    cam = Object.assign({}, HOME); requestDraw();
+  });
+
+  // ---- formatting + non-canvas views ------------------------------------
+  function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]; }); }
+  function fmtPct(v) { return (v * 100).toFixed(1).replace(/\.0$/, "") + "%"; }
+  function fmtMs(v) { return (v / 1000).toFixed(2) + " s"; }
+  function fmtCost(v) { return v === null || v === undefined ? "n/a" : "$" + v.toFixed(5); }
+
+  document.getElementById("legend").innerHTML = MODELS.map(function (m) {
+    return '<span class="item"><span class="swatch" style="background:' + colorOf(m) + '"></span>' + esc(m.label) + "</span>";
+  }).join("");
+
+  const sorted = MODELS.slice().sort(function (a, b) {
+    if (b.accuracy !== a.accuracy) return b.accuracy - a.accuracy;
+    return (a.costKnown ? a.cost : Infinity) - (b.costKnown ? b.cost : Infinity);
+  });
+  document.getElementById("tbody").innerHTML = sorted.map(function (m) {
+    return "<tr><td><span class='swatch' style='background:" + colorOf(m) + "'></span>" + esc(m.label) + "</td>" +
+      "<td>" + fmtPct(m.accuracy) + "</td><td>" + fmtMs(m.latency) + "</td><td>" + fmtCost(m.cost) + "</td>" +
+      "<td>" + m.failures.length + "</td></tr>";
+  }).join("");
+
+  document.getElementById("fails").innerHTML = sorted.map(function (m) {
+    if (!m.failures.length) return "<p><strong>" + esc(m.label) + "</strong> — no failures.</p>";
+    return "<p><strong>" + esc(m.label) + "</strong> — " + m.failures.length + " failure" + (m.failures.length > 1 ? "s" : "") + ":</p><ul>" +
+      m.failures.map(function (f) { return "<li><code>" + esc(f) + "</code></li>"; }).join("") + "</ul>";
+  }).join("");
+
+  resize();
+})();
+</script>
+</body>
+</html>
