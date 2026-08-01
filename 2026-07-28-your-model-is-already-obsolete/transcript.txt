@@ -1,0 +1,966 @@
+@dexhorthy (00:00.961)
+What's up, guys?
+
+Kevin Gregory (00:02.562)
+Hey, can you see Vivov? I I can't see him.
+
+@dexhorthy (00:04.607)
+I cannot see Vibob. He is muted. I know I was late to the green room, but it appears Vybob is still late to the live stream, which means I win.
+
+Kevin Gregory (00:15.862)
+There you go.
+
+@dexhorthy (00:16.215)
+What's up y'all? This is AI That Works. We got producer Kevin on for a very specif special episode. we are probably gonna wait for vibe off, I guess.
+
+Kevin Gregory (00:21.325)
+Come on.
+
+@dexhorthy (00:32.075)
+Kevin Gregory (00:32.204)
+Yeah, we should we we should wait for Vivov. Give him give him another minute or two. We don't wanna sit here for too long.
+
+@dexhorthy (00:35.053)
+We can wait for
+
+All right, all right. Bro, did you see Slopcode Bench? Have you seen this thing? I'm obsessed with this benchmark. I think Slopcode Bench Pilled is gonna be the new like bitter lesson pilled where it's like you have to have embraced this concept in order to like have a serious conversation about speci in this case specifically like AI coding agents.
+
+Kevin Gregory (00:45.078)
+Mm no.
+
+Kevin Gregory (00:57.176)
+Yeah.
+
+Kevin Gregory (01:01.846)
+Man, if only you had a like a a platform or a podcast where you could talk about this kind of thing. I know. Next week's episode.
+
+@dexhorthy (01:07.331)
+I know, right? Well, you know what? I had to I had to go to the UPS store for two hours yesterday to deal with a bunch of legal shit, 'cause I'm selling my condo. So I missed the planning episode yesterday. So I didn't get to I didn't get to put in my my vote for we should talk about slop code bench, but I know this episode today, we've been like planning it for a while and I know it's gonna be really good and I'm really excited for it. and man, this is we're getting really good at stalling, dude. This is great.
+
+Kevin Gregory (01:15.693)
+That
+
+Kevin Gregory (01:25.516)
+Next week.
+
+Kevin Gregory (01:37.078)
+I mean, should we go ahead and and do the intros and what we're gonna talk about today?
+
+@dexhorthy (01:38.659)
+I don't know.
+
+@dexhorthy (01:43.253)
+No, I'm gonna hijack the intro and give people the the headline news, and then we'll get into the episode topic. So very exciting. let's see. So I posted an article on Twitter called benchmarking the new frontier, which is all about this benchmark called Slop Code Bench, which makes the model basically like solve multiple problems in a row in the same code base, so it inherits its own sloppy code at every step.
+
+And some of these like benchmarks have like I think this one here, the first one has like eight or nine steps in it. And so the model has to keep trying to like basically keep the code base maintainable as it's building stuff. And it was on the top top page of hacker news for a front page of hacker news for a while yesterday. It looks like it might finally be off. But you can go read it and participate in the thread. Where'd it go?
+
+Kevin Gregory (02:31.181)
+Mm.
+
+@dexhorthy (02:42.69)
+Slop code bench. Yeah, benchmarking Opus V on Slop Code Bench. Yeah, ton of cool, ton of cool conversation here about this. and what we basically found was that Opus V writes let's see. It did a better job solving the problems, but the most interesting result to me was that it wrote twice as much code and almost all of that was tests. So Opus V, be careful.
+
+Kevin Gregory (02:45.825)
+Mm-hmm.
+
+Kevin Gregory (03:11.063)
+Fascinating.
+
+@dexhorthy (03:12.394)
+It's probably gonna write a lot of sloppy tests. I mean, there's other many other interesting things here, mostly that like this is an unsaturated benchmark, and that and that you know Opus V got a 23% 4.8 I only ran three problems. So on the original ran this, they ran this on all the problems. I am not made of time or money, so I didn't do that. but when they first published the paper in March, Opus 4.6 got 17, GPT 5.4 got 11.
+
+Kevin Gregory (03:29.367)
+Mm-hmm.
+
+@dexhorthy (03:40.47)
+I gotta rerun this with Soul and Fable. I didn't I was just kinda riffing on Friday, so we didn't actually do it. But very interesting findings and I don't know what we have scheduled for next week, but maybe we'll do a little deep dive on that.
+
+Kevin Gregory (03:55.576)
+Yeah, I can tell you we don't have anything scheduled for next week, so we're gonna have to we're gonna have to figure that out. So it looks like looks like we're ahead of we're ahead a week now.
+
+@dexhorthy (03:58.376)
+Yeah.
+
+Yeah, and we'll probably I think by then I can probably get our results out for a larger problem set with Fable, with Soul, and we're gonna try to find some reserved compute for Kimby K three as well so that we don't get rate limited on whatever platform we're using. Yeah, it's gonna be exciting. I did a research, dude. I haven't done a lot of I haven't done a lot of like full fat AI research, but do you have your phone? Do you have I Bob's number? Can you call him?
+
+Kevin Gregory (04:18.733)
+That would be so cool. That'd be cool. Yeah.
+
+Kevin Gregory (04:28.275)
+Just in builder mode. he said he'll be on in ten and he said that two minutes ago. So we should just get started. Let's do it.
+
+@dexhorthy (04:36.532)
+Okay. all right, let's get started then. Kevin, you wanna tell us what we're talking about today?
+
+Kevin Gregory (04:41.826)
+sure, should we do intros first? I I think everyone yeah. I mean everyone knows you.
+
+@dexhorthy (04:44.192)
+Okay, sure. I'm I'm Dex. I'm the CEO and co-founder of Human Layer. we build the world's best way to use AI agents to solve hard problems and complex code bases called Human Layer. we got Kevin over here who is one of the best AI engineers that I know. he's done a couple episodes with us before. His eval's project in what was it, a Streamlet app? Yeah, super sick. Like just like one of the
+
+Kevin Gregory (05:07.708)
+streamlet app, yep. That was fun.
+
+@dexhorthy (05:12.116)
+Cleanest, tightest, like no fluff, just like here's how to get your make your AI pipelines better. and all the way down to the like labeling of the data set. So very esteemed. Kevin runs all the AI automations that make this show work, including putting out the emails, including setting up all the all the release notes, including writing scripts for the shorts. Like, he's just he's done he's done all of it. and so
+
+We're super stoked to have him here. And every once in a while he pops in and does an episode and drops some drops some great knowledge on us from his work in the fields as kind of an iC AI engineer solving like production problems at like how how big is Evolution IQ?
+
+Kevin Gregory (05:42.925)
+Yeah, it's a lot of fun.
+
+Kevin Gregory (05:52.961)
+gosh, we've got I think something like a hundred and fifty engineers or a hundred and fifty employees, somewhere between one fifty to two hundred employees, and most of us are engineers, maybe half to seventy percent.
+
+@dexhorthy (05:57.451)
+Okay.
+
+@dexhorthy (06:05.11)
+Real real software teams, not me and Vibob's tiny, you know, five ten five ten, fifteen person startups.
+
+Kevin Gregory (06:08.682)
+That's right. Big
+
+That's right, that's right. Big c big company. Yeah, and we were required gosh, a year and a half ago at this point for seven hundred and thirty million. So that was a fun yeah, that was a fun I think a little bit, a little bit, yeah. Yeah. I wasn't I wasn't mad, it was a good year, I gotta say. Yeah.
+
+@dexhorthy (06:21.004)
+Holy shit.
+
+Did you get paid on that?
+
+Little bit? Nice.
+
+@dexhorthy (06:31.852)
+Yep. cool. I don't know. Did I dunno if that was the full intro or if you got anything else. maybe give us some context about why we're talking about what we're talking about and then we can get into it. And let me I'll go make a whiteboard while you're doing that.
+
+Kevin Gregory (06:42.804)
+Sure. So what we're talking
+
+Great. Yeah, so what we're talking about today is essentially model deprecation and model obsolescence. So something that we dealt with a lot at Evolution IQ is we use our we use Gemini models very, very heavily in our all of our workflows. We're a Google shop, everything's going to GCP and and Vertex AI. And because we deal with we work so what EIQ does is we build claims guidance systems for disability and workers comp insurance carriers. So we see a lot of PII and PHI come through.
+
+Our systems. And so we need to have a really secure environment where LMs can process that. And our answer to that has been keep everything in Google Cloud via Vertex AI. So we've done pretty much all of our production workflows are in either Gemini Pro or Gemini Flash, most of most of which are in Gemini Flash. And we initially started, when we first started building these workflows, it was late 2023 and we were using Text Bison.
+
+Then Gemini 1.5 Flash came out, and so we migrated everything to Gemini 1.5 Flash. And then I think it was September of last year when or thereabouts, maybe it was July. Sometime last year, Gemini 1.5 Flash was deprecated, and you had to switch to Gemini 2 and 2.5. And then I remember distinctly there was a moment where Google had announced they that they were they had announced the deprecation.
+
+For 2.5 flash before they had even released 2.5 flash. So they had a planned release date and a planned deprecation date that was they were both in the future. And keeping up with all of like all of our workflows depended on these models. And keeping up with constant model deprecation became a real headache for us because we had all these workflows based in these models. And so we had to come up with a way to
+
+Kevin Gregory (08:43.222)
+Build a system that can easily swap models and give you the evals that you need on the dimensions that you need, and just a harness where you can kind of throw new models at it and see like how does this actually perform? Can I just swap it in, or do I have more work that I need to do? So that's kind of the that is the the inspiration for this episode. And so what we're gonna be talking about today is kind of another way.
+
+To do that, and then we did it our way. This is kind of a different way to do that. That's I think really flexible and kind of answers a lot more questions that that we didn't that we couldn't really we just had some organizational constraints, kind of just the way our things work, that we weren't able to to implement kind of this this solution. And I think this really kind of pays for itself in three ways. When you have it's basically the question that you want to answer is you want say, okay, if a new model comes out.
+
+Can I use it? Right. And so you need a harness that you can just throw a new model at and essentially get a yes-no on. And if it's a no, what do I need to do to get it to a yes? And that kind of pays for itself in, I think, three ways. One is these like every model that we are using in all of our workflows now will be deprecated at some point in the future. We're living in a world where there are just so many new models coming out, and you know, you can't just
+
+In the olden days you could have an XG boost and that XG boost as long as it was still performing well, you could just keep it going. We can't do that anymore. The deprecations are coming, and if our workflows depend on whatever models they depend on, at some point we will have to change and we will be forced to change unless you're self hosting. So that's yeah.
+
+@dexhorthy (10:27.338)
+I was gonna say, the the the headline for last week has been open source solves this, doesn't it?
+
+Kevin Gregory (10:34.612)
+It does, and that's actually something that we're switching to now. Specifically because it has been such a headache, we're switching to self hosting open source models. But but open source does solve this, right? But the there's still the other two pieces. Another is hey, a new model came out. Will it improve my workflow? Right? So the same harness can answer that question. And then the third question is say you're running Opus or Sonnet, like will haiku work?
+
+Right? It's cheaper, it's faster, like is it good enough? How much cheaper? How much faster? So you need a harness that can answer all these questions. And it's it's the same question, just kind of phrased three different w ways, right? The question of how will a new model perform in my workflow has three different applications.
+
+@dexhorthy (11:21.196)
+Yeah.
+
+@dexhorthy (11:25.306)
+I love it. That's great. are you able to access the whiteboard? I think I put it in the studio chat. You don't have to draw. I'm happy to just transcribe as you're talking, but if you wanted to draw it, that is open to you.
+
+Kevin Gregory (11:25.664)
+So that's that's what we're talking about. Yeah. Mm-hmm.
+
+Kevin Gregory (11:33.57)
+you put it in the studio.
+
+Kevin Gregory (11:39.429)
+all right. Yes, I can open it.
+
+@dexhorthy (11:42.368)
+Or if you want to just drop screenshots in and stuff. Or if you want to share your screen and I can drop screenshots in. but yeah, how does tell us about this tell us about your your recipe. How do we how do we cook with this?
+
+Kevin Gregory (11:53.952)
+Yeah. so the the first thing that you need to do is you need to define like what you care about, right? What the obvious one is accuracy, right? Like does it actually perform well? So but you need to define the di the dimensions along which you're going to grade these models. The I think the obvious three are accuracy, cost and latency.
+
+Let's those are the the big ones. So you define those three, and then you build up a series of test cases. And again, this is all just like really high level. You'll build you build up a series of test cases to to measure those three. And then you run your incumbent on you have a harness that runs your incumbent on those test cases, and you can just swap a new model in and it compares against your.
+
+Your current are the incumbent performance. And it can tell you performance or accuracy did this, cost did this, latency did this.
+
+@dexhorthy (13:01.396)
+Okay, the slop code bench thing was actually kind of a nice amount's boost to what we're talking about of hey, Opus five came out, I wanna see how does it compare to the other models that we were using before.
+
+Kevin Gregory (13:08.638)
+Exactly.
+
+Kevin Gregory (13:12.201)
+Well that's the that's the thing that like yeah, I it's it's funny because you know, we we've been talking about this episode for a while. And when we first talked about it, I I looked at the models that have come out. I'm like, it like it's a shame we can't do this now. And this was a couple months ago, 'cause all these models have come out, you know, recently. And now here we are, and that is even more true now than it was then, right? In the past month, I mean, Soul has come out, Grok four point five, Gemini three point
+
+@dexhorthy (13:33.397)
+Uh-huh.
+
+Kevin Gregory (13:41.682)
+Six, Cyber, I'm I'm forgetting a bunch, Opus 5, Sonnet 5, right? All these new models have come out in the past, just in the past month. And I mean Haiku 5, I imagine is going to come out at any point now because that's still on 4.5. But new models are coming out all the time. And we need some sort of easy way to say, hey, like one, like is my agent or my workflow better with this model? And then two, like, if I'm still running.
+
+Sonnet four or sonnet four point five, like that is going to get deprecated sooner rather than later. And so every time a new model comes out, that's a sign that, hey, my I need to I need to keep up.
+
+@dexhorthy (14:14.87)
+Yep. Yep.
+
+@dexhorthy (14:21.931)
+Mm-hmm.
+
+Kevin Gregory (14:23.989)
+So yeah, so it's funny that you started with Opus V, right? because that is exactly the kind of problem that we're we're looking at. And I think another thing one thing that's important about the harness is swapping out the model is pretty easy, right? It's that's easy to do in general. What's hard is defining what success looks like, right? So maybe you say
+
+I want this to be strictly at least as good as my incumbent model. Maybe you allow a 5% like, okay, well, if it goes from 95% to 90%, that's still okay. So th that definition of figuring out what does the acceptable bar look like, that is the hardest part of this, I think. And so that is the easy you should make that the easiest thing to change in your harness. So you can just easily change out these different thresholds.
+
+Run it and you get your answer.
+
+@dexhorthy (15:26.326)
+Well and this was also we I think we talked about this at Vibal was talking about like image gen, right? Is like you don't just wanna know like to start you wanna see one number, right? This is why all these things like even if you look at the I'll grab a screenshot.
+
+@dexhorthy (15:52.629)
+Sorry. excuse me while I pull this up. yeah, here's the table I'm looking for. right, like usually you get a table like this, right? Which is like, okay, you have a bunch of different categories, like they have strict pass, isolated pass, core pass, partial pass.
+
+Kevin Gregory (16:08.971)
+Mm.
+
+@dexhorthy (16:17.002)
+And then you can see, okay, like GPT 5.5 got a 14.8%. You can see Opus f Opus 4.7 got an 8.2%. And like this, like for me, this first column is the most interesting one of like can the model ace the problem and actually get everything correct? And what percentage of the of the problem is gonna do that? But there's all these other data, like cost and time, and also they have these like quality metrics here. and so I guess like
+
+Kevin Gregory (16:35.327)
+Mm.
+
+Kevin Gregory (16:41.119)
+Mm-hmm.
+
+@dexhorthy (16:44.928)
+the the the general idea is is is this one around like okay cool like what is our what is our like north star right because if if you if you drop in a model and you are getting 20 or let's say you were getting 90 and you drop in a new model and you get 50 that's a very easy like nope we are not it is whatever the amount of work it might take to make this thing get back to 90% is probably not not not what
+
+Kevin Gregory (16:59.007)
+Mm-hmm.
+
+Kevin Gregory (17:03.241)
+Right.
+
+Kevin Gregory (17:10.591)
+Right. Right. And you know, it's something else that's interesting is when a new model comes out, I mean I'm I also just glanc glance at the benchmarks to see is it is it generally better than the other model. But I mean you and Vivov just did an episode about these state of the art benchmarks having what should you say limited purchase power, right?
+
+@dexhorthy (17:38.669)
+Well and it's also the the the interesting about benchmarks is like every model now can get a ninety nine percent on sweet bench. And every model now can get like an eighty to ninety percent on on frontier frontier code or not frontier code on on sweet bench multilingual. And the frontier code averages, I think, for opus five point five was like fifty five percent and like Seoul is like sixty percent or something like this. Like I don't I don't know the exact numbers, but the idea is like for some benchmarks we want them to be truly unsaturated, right? Which means like
+
+Kevin Gregory (17:39.357)
+Their A signal.
+
+Kevin Gregory (18:07.531)
+Mm.
+
+@dexhorthy (18:08.384)
+Hey, look, like there is a lot of room for improvement. And in Slop Code Bench, it's like, most models get in the 10 to 20% range. If you're a model builder or you are someone who cares about, like, okay, what is the frontier? What is the hardest problem we can solve? Then you want an unsaturated benchmark. But when you're building your evals for yourself, you probably actually want a very saturated benchmark because your whole goal is to get to 99% accuracy or 99.9% accuracy.
+
+Kevin Gregory (18:34.589)
+Mm-hmm. Right. And even looking at the state of the art benchmarks or the release benchmarks, that only has limited utility because you don't care you don't actually care about the performance on those benchmarks. You care about the performance in your workflow. And so if you had
+
+@dexhorthy (18:48.064)
+Right, exactly. The general benchmarks are very rarely to like likely to give like good enough signal on on the exact work that you're doing, which is out of distribution and is necessarily almost like evals become very proprietary to your company. Like they're an important part of your IP, your intellectual property.
+
+Kevin Gregory (18:53.035)
+Exactly.
+
+Kevin Gregory (19:04.873)
+Right, right. Right. And another interesting question here is how how do we get our test cases, right? and so I think I mean there the obvious answer is just label a bunch of data, right? You get data, you label data, you sample data from production to to make sure your as your system, you know, as time goes on, the data, the shape of the data doesn't change.
+
+@dexhorthy (19:32.836)
+yeah, let's let's talk about that. Like what is what is your actual actual loop for doing that in in this method? So you have like some app running in production and you have some like code base and then you have some users somewhere using your thing, right?
+
+Kevin Gregory (19:43.691)
+Mm-hmm.
+
+Kevin Gregory (19:51.338)
+Right, right.
+
+@dexhorthy (19:55.331)
+These colors, but and you kind of have this loop of like okay, you you you manage and then I guess like we can add one more. We can have your like engineering team. What color do they get? I guess they can be blue. And so you have users using production and giving you feedback, and then you probably also have some kind of thing where like you're just pulling data from production on some regular basis, and all of these things happen to be like changes in your code base, which contains, you know.
+
+Kevin Gregory (19:56.959)
+I love it.
+
+Kevin Gregory (20:12.424)
+Mm-hmm.
+
+@dexhorthy (20:25.516)
+your prompts, your pipelines, and your evals.
+
+Kevin Gregory (20:28.734)
+Right. Exactly.
+
+@dexhorthy (20:31.83)
+I'll call test cases since evals is a little bit but yeah, okay.
+
+Kevin Gregory (20:37.002)
+But something that I think and I'm curious to get your take on this, Dex, I you can kind of cheat a little bit with this because labeled data is expensive. you do need a golden set and you need to evolve a golden set over time, but
+
+When you're doing something like changing out a model because of a deprecation or improvement or whatever, the question that you're trying to answer is not actually how accurate this model is. It is how does it compare to the current model in production? So for instance, so you can just do essentially a diff, right? So if you have a model where, say, you're running
+
+Sonnet four or Gemini 2.5. Let's say Sonic 4 because it's easier to say. Sonnet 4, and you run Sonnet 5 against it. If the results agree one to one, you don't if Sonic 'cause Sonnet 4 is in your production system right now, and if it's good enough and Sonnet 5 agrees, you can run these diffs on a thousand cases really, really, really easily, or 2,000 or whatever, because you don't actually need to hand label any of the data. Right? So you can get a very, very
+
+@dexhorthy (21:47.446)
+Because you already did it.
+
+Kevin Gregory (21:49.15)
+quick yeah, you can get a very quick signal about
+
+Is this really how similar is this to my current system? And if it's the answer is very, very similar, again, the once you've defined what good enough is, right? So you say it's okay if it differs in two percent, five percent, whatever the cases, you have to decide that. And then once you decide that, like just checking those diffs is really fast and really cheap. And the ones where they differ.
+
+@dexhorthy (22:17.282)
+What do you mean by checking those divs?
+
+Kevin Gregory (22:20.53)
+So looking at the difference in output from your incumbent model with your candidate model, if they're the same, right? If all of the results are the same, then there are no diffs, right?
+
+@dexhorthy (22:37.186)
+What what does our output look like in this case? Is it a is it a structured object? Is it a plain text summary? Like like hel help me understand like just like a little bit more the the shape of the inputs and the outputs to this problem. Like what is an what is a what does an average test case look like?
+
+Kevin Gregory (22:46.642)
+Yeah.
+
+Kevin Gregory (22:51.348)
+That's that's a
+
+Yeah, I mean that's a great point. what I what we do is all not all a lot of what we do is structured extraction. So, because we're extracting medical facts, we're extracting surgeries, we're extracting doctors' names, stuff like that. So it's structured extraction. and so that's a pretty straightforward case of, you know, right versus wrong or these two are equal. Free text summary is a lot more challenging.
+
+@dexhorthy (23:25.354)
+Right, because because in JSON data you can have you can have an object and you can say, you know, like patient name something, you know, you know diagnosis is some like enum or whatever it is. I I I don't know.
+
+Kevin Gregory (23:25.362)
+And there's
+
+Kevin Gregory (23:32.991)
+Mm-hmm.
+
+@dexhorthy (23:43.327)
+And so you can take this like long, like sort of like unstructured maybe it's an image or a scan of a doctor's notes or whatever. I'm I'm being very very loose here. But you want to see can I turn this if I if I take this input document, does it generate this structured JSON? And you basically just have like a thousand of these, you said, right?
+
+Kevin Gregory (23:51.988)
+Yeah. No, it's yeah.
+
+Kevin Gregory (24:03.421)
+Yeah, or however many you want, right.
+
+Kevin Gregory (24:08.246)
+And hand labeling those, getting a golden data set from those is expensive. Right? That's hard. 'Cause you have to have people
+
+@dexhorthy (24:16.032)
+Right, of having a human read it and then go fill out a form and then you save that somewhere and then it becomes a test case. Yep.
+
+Kevin Gregory (24:19.933)
+Mm.
+
+Exactly. That's that's time consuming and expensive. Running two LLMs in parallel on a thousand documents and just comparing the JSON output is very fast and cheap.
+
+@dexhorthy (24:26.742)
+Yep.
+
+Kevin Gregory (24:38.737)
+And so and that gives you your initial answer of how similar is the output from these, right? So that gives you that answer. It doesn't tell you about like the latency and speed and cost. I mean you can't you can do that analysis, but that is kind of a a a shortcut for test cases. And and ones where they disagree, those are the ones I that I think are probably the most interesting cases that I would kick to a human or an engineer or or an ex a SME, have that person label it.
+
+And then add that to your golden data set for like future
+
+@dexhorthy (25:13.03)
+so you look at where Sonnet four and Sonnet five disagree and you hand those to a human or some some set of them to like confirm whether it's like, okay, is Sonic actually worse at this or did Sonic actually do a better job but it just didn't match what we wanted to extract?
+
+Kevin Gregory (25:20.659)
+Yeah.
+
+Kevin Gregory (25:29.211)
+Exactly. 'Cause my
+
+instinct is that those are the interesting cases, right? Those are the hard problems that we need to make sure kind of all of our future models are able to solve correctly as well.
+
+@dexhorthy (25:42.837)
+Okay, cool. So we have our outputs old, we have our outputs new. And then we have by looking at both of these, we have like basically like three we have like two sets. We have the ones where like same answer and then we have ones where we have like a different answer.
+
+@dexhorthy (26:03.99)
+and so we can then so the pass rate gives us a very like gut check, like are these about the same? But then these actually give you you take these like this set of different answers and you kind of like can go through and like relabel it or like confirm label it or something.
+
+Kevin Gregory (26:22.311)
+Right. And then that gets added to your kind of ongoing golden data set. And that's a good way to build a golden data set over time.
+
+@dexhorthy (26:30.102)
+And then this goes into your we'll do this, we'll do the two thousand test cases as like one thing that gets used across both of them, right?
+
+Kevin Gregory (26:34.215)
+yeah, nice.
+
+Mm-hmm.
+
+@dexhorthy (26:40.172)
+Cool.
+
+@dexhorthy (26:46.442)
+Interesting. Okay.
+
+Kevin Gregory (26:46.685)
+Curious what you think. Yeah.
+
+@dexhorthy (26:49.846)
+no, this makes a ton of sense. I mean like the the theory makes sense. I'm curious, like, what have you found that works really well to kind of operationalize this, right? Because like I have a bunch of prompts in our system and you know they all use specific models to look at coding agent sessions and then decide if they are
+
+Kevin Gregory (27:00.989)
+Mm-hmm.
+
+@dexhorthy (27:10.55)
+Decide if they are sorry, I was gonna write diff.
+
+@dexhorthy (27:16.426)
+decide decide if they are whatever it is the next step is being suggested or whatever guidance we need to give the user and like I could go make another version of them and like run the tests and get a pass number or a list of things but like nothing there is actually like snapshotting the outputs. I think I think that's what makes like evals different from from a lot of like like we like to say like evals are basically just unit tests, right? And it's the same concept of like
+
+Kevin Gregory (27:21.863)
+Mm-hmm.
+
+Kevin Gregory (27:42.473)
+Yeah.
+
+@dexhorthy (27:43.51)
+Hey, look, like you want to be able to push a button and know in some amount of time, like, hey, all of the things that worked last week still work this week. without having to go test a thousand different prompts, like type them into the app literally.
+
+Kevin Gregory (27:52.243)
+Mm-hmm.
+
+Kevin Gregory (27:58.194)
+Right. Yeah. No, I would I wouldn't I've never thought about it framed that way, but I would yeah, I would definitely agree that
+
+@dexhorthy (28:06.646)
+Yeah. We used to do we did a we did a migration project when I was at Sprout. I wasn't like on this project, but they presented it at like the engineering meeting where we had this like old API in Django, which is a Python framework, and we had like moved some like ten endpoints to Java. Right? And so it was like, okay, the highest volume endpoints, we wanna use a like a higher performance programming language that's easier to optimize and easier to maintain and has like
+
+Kevin Gregory (28:20.777)
+Mm-hmm.
+
+@dexhorthy (28:36.204)
+Strict type checking. This was in 2015. So like there was no type there was no types in Python. It like it was like basically a research paper that no one had done anything with yet. and so we had this and and we did this. And basically what we did was we like took a sample of real production traffic. So like in in your logs, you have like git slash endpoint and the response. actually you just had git slash endpoint, post slash endpoint, et cetera, et cetera. You had like, you know.
+
+Kevin Gregory (28:53.321)
+Mm-hmm.
+
+@dexhorthy (29:03.328)
+thousands of requests. You could just pull these from the logs. So like when the app is being used, pull a ton of examples of this. And then what we would do is this was our data set.
+
+Kevin Gregory (29:13.448)
+Mm-hmm.
+
+@dexhorthy (29:15.498)
+And then what we would do is we would we wrote a script that would basically
+
+@dexhorthy (29:22.53)
+It was like step one was like replay the requests against the Python.
+
+Two replay the same requests.
+
+against the Java. and you would get out of this, you would get like basically you would get a like progressive diff. Whereas like if the like HTTP status was different, we would kind of like abort any more like diffing. Basically like okay if one of them got a 200 and one of them got a five hundred then like cool we have to like go fix that. And then it was like the response body. and then we would diff that.
+
+Kevin Gregory (30:02.599)
+Mm-hmm.
+
+@dexhorthy (30:04.15)
+And then there was literally just like a giant table of cases of all of this data of like status. my god, okay, let's do this. Status body. And then we also had like a latency number, right?
+
+Kevin Gregory (30:21.18)
+Mm.
+
+@dexhorthy (30:24.684)
+so we skipped the manual labeling part of this. We just like took real production traffic and like pushed it through the system. After there was like manual labeling, but it was like someone wrote five test cases for like they wrote one happy path test case for each endpoint. and so it was like this would be like a pass, this would be a fail, and then we would have like latency old, latency new.
+
+@dexhorthy (30:52.276)
+And so like obviously if this was slower it would fail. or I guess I guess we can have like latency we can have like also like a latency pass, right?
+
+Kevin Gregory (30:56.391)
+Mm-hmm.
+
+@dexhorthy (31:05.802)
+And if there was a body failure, you could like expand this row and you would actually see like the the actual diff. I don't know if I'm gonna be able to draw a diff, but you would be able to see basically like hey cool, the old one had
+
+@dexhorthy (31:27.392)
+You know, this a bunch of stuff was the same and then you would have like, okay, the old one has, you know
+
+Kevin Gregory (31:30.226)
+Mm-hmm.
+
+@dexhorthy (31:37.932)
+The old one had this stuff in it and and then the new one had this is really dumb to try to do this in Excala, but you get where I'm going with this.
+
+Kevin Gregory (31:48.86)
+Yeah. I'm impressed how fast you're coming up with this on the fly.
+
+@dexhorthy (31:53.818)
+I mean, like I said, I didn't come up with this. I just watched some someone smarter than me go do it.
+
+Kevin Gregory (31:57.499)
+No, I mean come up with a way to do this in Scala Draw on the fly.
+
+@dexhorthy (32:03.34)
+You know, it's one of my one of my lame superpowers. and so you could go, any engineer could go and look at this and they could say, like, okay, that's a false I don't care if the timestamps are different, like we actually don't care. We actually ended up building systems to like strip out all the things that like didn't need to be diffed. Basically, it's like, okay, if these two things are different, basically just like slurp all the fields we don't care about out of the JSON and just diff the meaningful stuff. And then, you know, you would have a giant table of these things.
+
+Kevin Gregory (32:19.698)
+Mm-hmm.
+
+@dexhorthy (32:33.226)
+Right. So you'd pass fail, you would have, you know, the hundreds or thousands of cases here of like different things that an engineer could go in and you know go inspect. And they literally just did this. They just ran this and they pulled in new traffic every week. And when it was all green, then they did the cutover. Then they moved all the traffic to the new service. But they basically got to like ghost test this thing in I don't
+
+Kevin Gregory (32:55.984)
+Yep, exactly.
+
+@dexhorthy (33:00.544)
+I don't know how they did the post request, right? Because you can't take customer traffic and like redo because it it was like sending tweets and you don't actually want to like resend a tweet. So there's some there's some art here of like how do you how do you give the system under test kind of like make sure it's not actually interacting with the out outside world because otherwise you're like doubling the amount of traffic. But yeah, this was this was how we did it. And I imagine doing this with AI is like very similar where you basically get a big table full of divs.
+
+Kevin Gregory (33:07.282)
+Yeah. Right.
+
+Kevin Gregory (33:16.86)
+Yeah. Yeah. Yeah.
+
+Kevin Gregory (33:29.542)
+Yeah. Yeah. That's that's how I would continually kind of build my golden data set. yeah. So I've got so I built kind of a really small version of this system. I have a demo, Dex. Yeah.
+
+@dexhorthy (33:40.982)
+You have a demo for us? Amazing. I don't know why you're letting me share the screen the whole time.
+
+Kevin Gregory (33:48.166)
+Because you're just you're you're just that good at Excala. All right. let's see.
+
+@dexhorthy (33:53.046)
+That's not what I end up being known for.
+
+Kevin Gregory (33:57.49)
+Okay, so
+
+Let's see, let's orient ourselves first.
+
+Kevin Gregory (34:09.01)
+So what we have is this is structured extraction. I've got a bunch of test cases just pretending to extract receipts. This is all this is all made up data. And the point here is not which model is better, because again, this is made up data. So when one model is is it says it's wrong, it might actually be correct. So it's this isn't a lesson on which model would I suggest using. This is just how do you build a system that can answer these questions.
+
+So we have a bunch of test cases here, right? I think there are 30 test cases. And then in our clients, we have what we can see. So a lot of what's interesting is when I was kind of playing around with this, our a lot of our repo uses GPT-40, which is not deprecated technically. The endpoint is still alive, but it has disappeared from OpenAI's website. The pricing information is really hard to find.
+
+It like they pretend it doesn't exist even though it still does. For now. I'm sure it'll be deprecated eventually. So if we're pretending that we have a system that's running on GPT-4.0 and we say, hey, like I know it's gonna be deprecated, or there are a bunch of new models that have come out, let's see how they perform. We have all these can Yeah, yeah, definitely. I forget I forget how big my screen is. Okay, is that good?
+
+@dexhorthy (35:25.378)
+Can you zoom in the code a little bit, by the way? Thanks.
+
+Yeah. That's yep.
+
+Kevin Gregory (35:36.008)
+Alright, so we see here's our incumbent, and then we have a bunch of candidates, right? So we have 4.0 mini, which you would just replace if if you want you know faster or cheaper. We have more a GPT-5. And you can just make whatever clients you want. and so then we have our actual prompt, which
+
+Is just essentially extract the expenses from this receipt and we have the expense policy that gets dumped into the prompt. Very straightforward. Mm-hmm. Right. And then so going back to kind of what we decided, what we talked about before, of like what do we care about and what do we consider failure or success to look like, right? I
+
+@dexhorthy (36:12.759)
+Yep.
+
+@dexhorthy (36:17.398)
+Okay, so you got your instructions and then you got your your output schema.
+
+Kevin Gregory (36:35.323)
+Said, I care about accuracy, the cost, and latency. Those three dimensions are what I want to measure all these new models against. And I created a budget class that has the max, so these are our like our gates, our thresholds, right? So max accuracy drop aloud is zero. Max cost multiple, 20% more, and latency, P95 latency, 50% more.
+
+And again, like you can this is a hard part of deciding what good enough looks like, I think. Right? I think that's the hardest part of this. Because you can change this to whatever you want, right? You can change this to 0.9. And the point is that is, I would argue, kind of the most important part of this, and also the hardest. And so you make it really, really easy to change things and to swap other numbers in. So this is the budget. And then
+
+@dexhorthy (37:30.836)
+Okay.
+
+Kevin Gregory (37:34.364)
+We if we go to our the gate, we have yes. Yes, exactly. And what you can do is you can create a gate that has these checks. So here we've got a data class called check, and you can see okay, if I go up to the definition of the data class, right, we have the name.
+
+@dexhorthy (37:38.272)
+Okay, so this is your Python harness that is actually like executing these evals.
+
+Kevin Gregory (38:01.581)
+Okay, which is essentially pass or fail, and then details. And then we have the overall result of the the gate, so to speak.
+
+@dexhorthy (38:09.718)
+Mm-hmm.
+
+Kevin Gregory (38:11.759)
+And all you have to do is you have the accuracy check. And then you define OK as less than or equal to that max accuracy drop that we just looked at. And you have the same for latency. And then cost. I had to create a little helper function for cost because if I just did it like the other two, an unpriced model would have passed. And we don't know, we don't want that. So this has a little kind of
+
+@dexhorthy (38:23.477)
+Okay.
+
+Kevin Gregory (38:41.307)
+Right, if cost per call is none or baseline cost per call. So if either of the models cost per call is none, then you know we fail it essentially. So this is just three checks. And what's what's nice about this is it's
+
+@dexhorthy (38:52.738)
+Okay.
+
+Just surfacing to the person who's reviewing the results. Like, by the way, we can't give you any info on cost here. We cannot tell you that it is a cheaper or yeah. Okay.
+
+Kevin Gregory (39:02.425)
+Exactly. Mm-hmm. And and this works really, really well because you can see how easy it is to add another check. Right. If you wanted to check, I I don't know, like the median latency and in in addition to P ninety five, you would just add another check, you would add it to the budget, and then you would have to then add it to your gate.
+
+@dexhorthy (39:28.652)
+Okay.
+
+Kevin Gregory (39:30.017)
+and so the CLI actually runs it and we can I can show you what that looks like. So let's see. So let's see I've got a couple commands. Let's see, it's UV around Python.
+
+Kevin Gregory (39:51.505)
+So this is when I ran everything
+
+@dexhorthy (39:53.238)
+This is inspecting the data.
+
+Kevin Gregory (39:56.038)
+I'm sorry?
+
+@dexhorthy (39:56.887)
+This is inspecting the data you already collected.
+
+Kevin Gregory (40:00.175)
+Yes. So this I mean it's cached, so I w wouldn't wouldn't have to sit here and watch it run, right? But
+
+If it's not cached, it would run all the different models that we had as our candidates. It would run them against the gates we just looked at, right? And so we can see here, this is our candidate, right? Obviously, latency and cost, 1x, that's a good check, right? and we can look at all everything else here, right? So we can look at okay, so sonnet got a perfect accuracy, but the latency is two, it's it's
+
+@dexhorthy (40:18.464)
+Mm-hmm.
+
+@dexhorthy (40:26.551)
+Yeah.
+
+Kevin Gregory (40:38.374)
+two X latency and one point six times the cost. That's too expensive. Right? And we can and and there's another command that'll and slow. It's twice this it's twice the time, half the speed.
+
+@dexhorthy (40:44.896)
+Yep. And it's slow.
+
+@dexhorthy (40:53.888)
+Not worth a three point three percent accuracy increase.
+
+Kevin Gregory (40:59.758)
+Right. Or maybe it is. Right? I would I would say it's not and it's probably not, but that's the kind of thing like you know your system.
+
+@dexhorthy (41:06.07)
+Right. If you're if you're running a B to C company with millions of users and a one percent difference means a million dollars, then maybe it does make sense.
+
+Kevin Gregory (41:15.628)
+Exactly. Maybe it does make sense. And that's that's the hard part. And that's why this is so interesting, right? Because you can easily swap these numbers out and you can get you'll this entire table will change. and for this instance, three point five flashlights only won out one. It it's act it's faster, cheaper, and better. So it wins on all three dimensions. But again, these are just made up numbers, so it might actually be worse. Who knows? but the latency and costs are real.
+
+@dexhorthy (41:43.942)
+you didn't actually run this?
+
+Kevin Gregory (41:45.966)
+I did run it, but I didn't hand label all the test cases. So yeah, the test cases are generated. but the latency and cost numbers are real.
+
+@dexhorthy (41:50.188)
+I see, okay, okay.
+
+@dexhorthy (41:58.925)
+Yeah. Cool. How many test cases is this?
+
+Kevin Gregory (42:00.698)
+But thirty. It's thirty. Yeah, yeah. But what's neat is if you do this, right? If you run uv run python harness dot yeah, dot show gate, and then you do you can change the latency. Actually let's just run show gate, and that shows everything that passed or failed, right? So I've got two
+
+@dexhorthy (42:03.522)
+Thirty test cases, nice.
+
+Kevin Gregory (42:30.714)
+Two gates that I defined in the budget. One is survive the swap, which is yes, we can kind of just swap it in. Another is does it actually drop our costs, right? Like if you know that's the that answers the question: can we replace things with haiku or flashlight? So where was I? It doesn't matter. so you can see.
+
+@dexhorthy (42:33.377)
+Yeah.
+
+@dexhorthy (42:52.938)
+Okay, so you could and that that's useful if you want to run this against a hundred models basically with a small test set and just basically say like, Cool, I don't wanna I don't wanna read a table of a hundred results, just filter it to, you know, max latency is X or Y.
+
+Kevin Gregory (43:06.489)
+Mm.
+
+@dexhorthy (43:07.746)
+Max cost is, you know, fifty percent or less of the baseline.
+
+Kevin Gregory (43:12.1)
+Right. Right. and then what you can do is you can just change one of the variables. So you can do latency three point zero and say, actually I'm okay with the latency being three. And you see Gemini f right three times as slow. Here, Gemini three point five flash and three point six flash now pass. Right? So you can change that.
+
+@dexhorthy (43:28.354)
+Three times.
+
+@dexhorthy (43:38.134)
+So you have really rich data for every single execution to be able to do this, huh?
+
+'Cause you need to know the P ninety five, right?
+
+Kevin Gregory (43:46.564)
+Yeah. Yeah. But that's not that hard. It's not that hard to get those if
+
+@dexhorthy (43:51.126)
+Can can we look at what the data looks like? Like is this just like a big JSON blob?
+
+Kevin Gregory (43:56.871)
+where yeah.
+
+@dexhorthy (44:02.814)
+Okay, okay, cool. So it's actually just aggregate for the run. You're not you're not storing the result of every single case, right? Okay. And you're you're checking the actual like logic failures basically.
+
+Kevin Gregory (44:08.843)
+No, no, no, no. Yeah, I'm not caching every case.
+
+Mm-hmm. Yeah.
+
+@dexhorthy (44:18.464)
+Nice.
+
+Kevin Gregory (44:18.864)
+So but again, right, this is what makes this really nice is you can play with these parameters and you can instantly see which ones pass, which ones fail.
+
+@dexhorthy (44:32.054)
+Have you tried plotting this in in in three D space or four D space? You should do you have do you have Opus V on here? Do you have do you have a Claude Code shell?
+
+Kevin Gregory (44:38.062)
+No, I haven't. I have not.
+
+Kevin Gregory (44:45.964)
+do I.
+
+@dexhorthy (44:47.874)
+This is always my favorite. I they they've gotten quite quite surprisingly good at data visualization. Like can you build yeah, go for it.
+
+Kevin Gregory (44:53.434)
+That is surprising. All right.
+
+W what what should I what should I ask?
+
+@dexhorthy (44:59.97)
+let's let's say can you build me a visualization of matr you do like at matrix dot JSON?
+
+@dexhorthy (45:13.01)
+JSON like in three D on a on a gri I don't know, in three D as an HTML as a static HTML file.
+
+Yeah, let's try it.
+
+Kevin Gregory (45:27.622)
+So while it's doing this, another thing that you can do that I tried and that didn't work for my specific case is BAML has a prompt optimizer built in. So if you so one of the things I played with was, you know, like we said, Sonnet 5 was perfectly accurate, but a lot slower and more expensive. So you can run the optimizer on just the token input, the input and output tokens. And so
+
+what you you can build into your harness, like 'cause in our case, three point five flashlight wins on all axes. So you're like, great, just swap it out. Right. But if we d
+
+@dexhorthy (46:04.748)
+Drop it in. but if you have like what is it, they call it like the Pareto frontier of like one of them is the cheapest, but another one is the fastest and the other one is the most accurate, then you can kind of try to optimize across those.
+
+Kevin Gregory (46:10.955)
+Exactly.
+
+Exactly. Exactly. And if you're stuck in a situation where your model is deprecating and you have to switch a model, and so you have to decide between you know these different situations where no one strictly wins, you can run that JEPA optimizer and it can take those different pieces of the frontier and create what is you know ideally an optimized prompt that
+
+@dexhorthy (46:24.481)
+Yep.
+
+Kevin Gregory (46:43.513)
+That is your kind of your best of all three.
+
+Kevin Gregory (46:49.125)
+So that's a really neat thing that you can do. And the whole point of this is model deprecations are announced far in advance. And that can either be a two week scramble where you're trying to change everything. It can be a P0 or it can be 30 minutes or an hour on a Tuesday morning, right? So you it's you know these things are gonna get deprecated, and so you
+
+@dexhorthy (47:13.536)
+Yep.
+
+Kevin Gregory (47:19.279)
+Build your systems in a way that expects it and makes it easy to upgrade is the lesson of this whole thing.
+
+@dexhorthy (47:27.094)
+Yeah? No, this is great. I mean this is this is the proper engineering, right? I don't know. I I've worked with some teams in early human layer days. We did a we did some more like forward deployed of like working with larger companies of like, hey, how do we figure out a AI problem that it was like
+
+The the engineers were just like kept trying new prompts and new models and new tricks. They're just like, can we get this to work? Well, does it work over here? And it was like, okay, one day like one like of the product managers like test cases was working. And then a week later, like three of them were broken, and there was three other ones that were now working, and you're just kind of like flailing a little bit. all right, tell it to open it in your browser.
+
+Kevin Gregory (47:47.3)
+Mm-hmm.
+
+@dexhorthy (48:08.862)
+and what I do is it was like you need to label some data. You need someone to like make a spreadsheet of like thirty of these cases. Not that I it's gonna take you a day or two, it's gonna suck. But then anytime anyone makes a change, you'll be able to get one number that says this is crazy.
+
+Kevin Gregory (48:17.093)
+Mm.
+
+Yeah.
+
+Kevin Gregory (48:26.437)
+Wow.
+
+@dexhorthy (48:28.192)
+Yeah, I think you can drag it around too, and there may be like hovers and stuff. Yeah. So there's flash right all the way up in the very top corner.
+
+Kevin Gregory (48:30.233)
+Dude that is bananas.
+
+Kevin Gregory (48:39.224)
+yeah, yeah, you can see that.
+
+@dexhorthy (48:41.994)
+I mean this is this is not that useful of a v visualization because they're all kind of clustered together. But yeah, this is the this is the these are some of the things you could do.
+
+Kevin Gregory (48:48.271)
+Well but but they're they're not though, all right? I mean these all are, but you can see five point five is way over here. Flashlight is up here, and four point or four mini is way down here because we don't have the costs, so it kind of just doesn't measure on that axis. But still, like this is really cool. And if I were presenting this to a non-engineer or a PM or you know, engagement manager or solution, someone who's
+
+@dexhorthy (48:55.766)
+Yep.
+
+@dexhorthy (49:01.238)
+Yep. Yeah, yeah. Yeah.
+
+Yeah.
+
+Kevin Gregory (49:17.473)
+not in the code every day, this is how I would present it. Absolutely. If I needed to make a case
+
+@dexhorthy (49:22.102)
+Yeah, I would probably say there is a there's a projection of this of like, okay, just take the ones that got a hundred percent accuracy and show them on a two D grid versus whatever else you're looking at. But like yeah, in general, like the the models have gotten good and so it's like again, you can't you can't build this visualization if you don't have the data.
+
+Kevin Gregory (49:32.291)
+Yeah, yeah, yeah. That's fair.
+
+@dexhorthy (49:42.231)
+And you can't generate the data unless you know what accuracy looks like. I mean, latency and costs are easy, right? Those get basically like any any any programming language, any model can just like vibe out latency and cost stats. But like the accuracy stats is the really hard part. And like without that, none of this is really that useful.
+
+Kevin Gregory (49:44.197)
+Mm-hmm.
+
+Kevin Gregory (49:59.129)
+Right. And I think my temptation as an engineer is to just is to not want to label data because it's boring and it takes a while. But it is very, very important to have a golden labeled data set.
+
+@dexhorthy (50:14.774)
+Yep. Someone says try do a two D viz on accuracy versus cost with P ninety five boundary lines.
+
+Kevin Gregory (50:25.605)
+Okay. Let's see.
+
+Kevin Gregory (50:35.352)
+It was
+
+@dexhorthy (50:35.436)
+What else we got in the chat? What else do guys want to see? We're gonna play we're gonna play Spend Spend Kevin's Tokens. My favorite game. And P ninety five boundary lines.
+
+Kevin Gregory (50:39.386)
+Yeah.
+
+Kevin Gregory (50:45.335)
+And it was P ninety five late.
+
+@dexhorthy (50:53.516)
+Amazing. Anyways, yeah, this is super helpful. I mean, like, it's kind of the same thing we say every two or three months we come back on the show and be like, look at your data, label your data, test your stuff. And like again, like we said, even on the very early Evals episode,
+
+Kevin Gregory (50:53.625)
+It's fun. Yeah.
+
+@dexhorthy (51:11.664)
+exactly what Vomsey said. Is there an intuitive way to know which models would work for your use case instead of going through evals every time? Like, yes, before you go build a giant label data set, you should do a little bit of vibes. You just like paste the same paste one one case that you care about of like, hey, let me just drop this photo of a driver's license and do the same prompt with five different models and just read the outputs and see what's different, or like diff the outputs across the models. And like that intuition is always useful and it's always worth like building up.
+
+Kevin Gregory (51:28.549)
+Mm.
+
+Kevin Gregory (51:32.121)
+Mm.
+
+@dexhorthy (51:39.765)
+And then again, we did with the with the with the JP Morgan like emails or the the Enron emails thing of like we did one to test it and then we did 10 and then we refined it a little bit and then we did a hundred and we refined a little bit more. And so it's like, yeah, you should always start from vibes and you should always look at the actual data, and then you slowly grow your leverage as you get more confidence and you go from fifty percent to eighty percent to ninety percent to ninety-five percent to ninety-nine percent.
+
+Kevin Gregory (51:44.835)
+Mm-hmm.
+
+Kevin Gregory (52:05.576)
+One other thing is when you say go on vibes, right, the as you continue doing this, the cases where the models have disagreed in the past become really, really good cases to check vibes on it at the beginning of when you have a new model come out.
+
+@dexhorthy (52:20.064)
+Yep. Rustem has a question any advice on how to do this with summaries instead of structured data? Like if the outputs of your model are unstructured?
+
+Kevin Gregory (52:27.34)
+Yeah.
+
+That's a great question. Summaries are hard. I mean you can do there there are a couple of of ways you can do it, I think, depending on the goal of your summary. and one and the most obvious thing to do is an LLM as a judge. So you have an LM as a judge, just pick which is a quote unquote better summary and you make sure that you have a a a really fleshed out definition of what makes a summary better for your use case.
+
+And then you just have it essentially pick which you know which model is better. and then the second one is depending on, and this is kind of I think rare and maybe more kind of niche, but if you have a summary that has a lot of structured information in the summary, you can then ex have a another layer that just extracts the summary the the structured information.
+
+That is what you check. So you make sure none of the important information is hallucinated or lost. And again, that's more specific, but I have seen that use case before where you have you know, you're writing, say you're writing emails where you have information pulled in from a lot of different contracts or things like that. that's essentially a summary, but what you really care about is that the structured information in that email is correct.
+
+@dexhorthy (53:46.593)
+Yeah.
+
+Kevin Gregory (53:55.896)
+But I'm I'm curious to hear Dak if you have any other thoughts as well.
+
+@dexhorthy (53:58.229)
+Yeah, it's something basically along those lines, right? I mean and and we did this in the like doing evals on a on a on the email data set too is like you will want to turn it into structured data at some point. I think some people have for I think most people understand that asking a model to score something on like a one to ten scale like doesn't really work that well.
+
+But that but that if you can tell the model like, okay, does it have this characteristic? Does it have this characteristic? Does it include this data point? Okay, how many times does this thing is this thing mentioned? And you can basically turn the even if the answer is is is free text and the thing your product exposes to users is free text, you can still do structured output on that unstructured data so that you can process it in a program. and we do this for ranking algorithms all the way we run the AI Tinkerers website, right? Is like everybody who signs up for an AI Tinkerers event.
+
+Kevin Gregory (54:48.504)
+Mm-hmm.
+
+@dexhorthy (54:54.712)
+gets a zero to a thousand score across a bunch of different dimensions and it's like how often like are you pushing to GitHub and like do you have like software engineering in your LinkedIn and all this stuff to try to tell like are you an active builder who's going to have interesting things to share and interesting things to teach the other people? But it all comes down to like take this giant blob of data of like unstructured and structured and in this whole mix and turn it into like a like scores on a giant rubric, right?
+
+Yes or no, Boolean clo or like enum classifiers, maybe counting, things like that. Some of it you don't even need a model for, right? You can take, hey, cool, like go get this person's commit history, turn that all into a number completely deterministic, and then just include that in the score. but you want to make the actual output of the the accuracy score be as deterministic as possible, whether the model's output is structured or whether you do structured output on top of what the model output.
+
+Yes. I think this is how like the very early days of like generic eval platforms for chatbots would do is like they would always give you like a a sentiment score. And it's just like if the user seems angry, you get you get you get one enum and if they seem happy you get another enum and like that goes into the score of how is the chatbot doing.
+
+Kevin Gregory (56:14.049)
+Yeah. Yeah. Interesting. Yeah.
+
+@dexhorthy (56:16.31)
+so that's the name of the game. That's the same show the same show every single week is do structured outputs. There is no magic. Everything in AI engineering is structured outputs. everything else is just more abstractions that you might not need.
+
+Kevin Gregory (56:22.475)
+that's
+
+Kevin Gregory (56:31.843)
+That's right. Just window dressing around that. And that's how you make AI that works.
+
+@dexhorthy (56:34.85)
+Amazing. Amazing. I'm gonna take a screenshot of this. I'm gonna put it in the whiteboard and then we're gonna do the outro.
+
+Kevin Gregory (56:41.003)
+Awesome. Cool. Let me know when you're done and I'll stop sharing.
+
+@dexhorthy (56:43.699)
+actually do you wanna go back to the code and I'm gonna grab one more screenshot.
+
+@dexhorthy (56:50.818)
+Amazing, yeah, this is great. Perfect. Okay.
+
+Kevin Gregory (56:55.607)
+Right, I'll stop sharing.
+
+@dexhorthy (56:58.21)
+Let's do it.
+
+Okay, so today on AI That Works, we got producer Kevin on talking about how he builds evals for models because sometimes the model you're using gets deprecated and you need to know if a new model or a different model is going to solve your needs.
+
+And ideally, you don't want this to become a fire drill in your company. And the way you do that is you set up your product in your deployment, you have production, you have your code base, you collect data, you look at user reports. And the most important thing you do is you want to build up a test case. So when the new model comes out, you can have your 2000 test cases, you can look at the outputs from the old and the new one, you can diff them, you can see where they're the same, you can see where they're different. You maybe even review them manually and relabel them and keep growing your test case. almost all of this ends up being structured output.
+
+So have raw data or documents or images.
+
+And then you know that some structured output should come out of it. we talked about some like kind of prior art here and API migration. and then Kevin showed off a bunch of cool code of generating basically a matrix of scores on cost and latency and accuracy for a bunch of different models versus a baseline. And then we did some riffing at the end to get is the is the thing in the way the whole time? Damn, that's gonna suck. no, no, because we just showed the tab. Okay, great. editor, please cut that part. and then we did some riffing with Claude.
+
+@dexhorthy (58:16.654)
+At the end to visualize the data, which was also super fun. So a lot of good alpha in this one. I hope you guys enjoy it. Kevin, thank you so much for coming and let's get into it.
+
+Kevin Gregory (58:29.665)
+Dude, you killed that outro. Crazy. Yeah.
+
+@dexhorthy (58:31.906)
+Thanks, Matt. All I do is hang out. yes, Camilla, the code will be pushed. It is on Kevin's workstation, but it will be in the AI that works repo, just like every a s every other episode. We will push the code. and we will include the Excalibur whiteboards in too.
+
+Kevin Gregory (58:36.746)
+Absolutely.
+
+Kevin Gregory (58:40.395)
+In like five minutes. Yep.
+
+@dexhorthy (58:47.674)
+thank you all so much for coming. next week's episode we might talk about Slop Code Bench. We might talk about something else. We got a lot of fun topics in the hopper. Kevin will be yelling at me and Vibov on Slack to get us to pick something and then we will publish it and we will tell you what it is. But I guarantee you it's gonna be dope. So thank you all for coming and we'll see you next week.
+
+Kevin Gregory (59:07.767)
+Bye everyone.
+
+@dexhorthy (59:08.864)
+And I I think we just have to leave because Vybob's not here to like end the stream. So this is just gonna continue indefinitely until until he pulls up his laptop and and leaves the stream. So that'll be fun. Dude, this is great. Are you gonna stop butt? I don't have a stop button. dude, hit stop. Let's see it.
+
+Kevin Gregory (59:16.909)
+Poor our port editors.
+
+Kevin Gregory (59:21.187)
+Okay. What there's a stop button. What does a stop button do? Is that gonna I got a stop button. You ready? Alright, three, two, one.

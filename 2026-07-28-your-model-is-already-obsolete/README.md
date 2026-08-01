@@ -5,6 +5,8 @@
 
 [Sign up on Luma](https://luma.com/easy-model-swaps) · Tue 2026-07-28, 18:00 UTC
 
+[![Your Model is Already Obsolete](https://img.youtube.com/vi/Y-I9m5YsAcs/0.jpg)](https://www.youtube.com/watch?v=Y-I9m5YsAcs)
+
 ## The idea
 
 Throw a model at the harness. It runs your test cases and reports
@@ -111,7 +113,19 @@ spec and is written first — to reproduce the segment, delete
 - [2025-05-20 — Policies to Prompts](../2025-05-20-policies-to-prompts/)
   — why the expense policy lives in the prompt.
 
+## Key Takeaways
+
+- **Obsolete and deprecated are different problems, and mixing them up makes teams complacent.** `gpt-4o` has no announced OpenAI retirement date, but it's been de-listed from the models index, comparison page, and pricing page while the endpoint keeps answering calls at $2.50/$10. Deprecated means there's a deadline on the calendar. Obsolete means something better already exists and nobody's forcing you to move, so nobody does.
+- **The question isn't "is this model good," it's "is it worse than what I'm already running."** Diff a candidate's outputs against your production model on the same test cases instead of scoring it against an absolute accuracy bar. If a new model agrees with the incumbent on 28 of 30 cases, you only need to hand-review the 2 where they disagree.
+- **A missing price defaulted to zero silently passed four out of five candidates.** When a model's cost data wasn't in the lookup table, the code defaulted it to `0.0`, so every unpriced candidate looked free and sailed through the cost gate. The fix was refusing to judge at all when the price is unverified, not picking a better default.
+- **Single-run evals produced two confidently wrong answers before anyone caught it.** These models aren't deterministic on the same input twice, so running each test case once gave a clean, false signal about which model was better. The harness now runs three repeats per case by default.
+- **The regression budget is something you drag, not something you set once.** A table scoring candidates on accuracy, latency, and cost against the incumbent changes shape the moment you loosen the latency tolerance, flipping models from fail to pass. When nothing strictly wins on every axis, that's the case for handing the frontier to an optimizer instead of picking a winner by hand.
+
 ## Resources
 
 - [Discord Community](https://boundaryml.com/discord)
 - Sign up for the next session on [Luma](https://lu.ma/baml)
+
+## Whiteboards
+
+[![Whiteboard 1](./whiteboard-1.png)](https://app.excalidraw.com/s/7wpIFUaymM3/fSqrmyWct4)

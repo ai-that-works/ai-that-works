@@ -14,10 +14,11 @@ description: |
 event_link: https://luma.com/easy-model-swaps
 eventDate: 2026-07-28T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=Y-I9m5YsAcs
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-07-28-your-model-is-already-obsolete
+  youtube: https://www.youtube.com/watch?v=Y-I9m5YsAcs
 season: 2
 episode: 67
 event_type: episode
