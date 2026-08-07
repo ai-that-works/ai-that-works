@@ -16,8 +16,32 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 01 Aug 2026 14:08:01 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 07 Aug 2026 21:28:45 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[SlopCodeBench]]></title>
+      <description><![CDATA[On the podcast this week, we will examine a new AI coding benchmark called SlopCodeBench (SCBench), which aims to evaluate how software is truly developed. While typical benchmarks evaluate models using single-shot solutions against specifications, they fail to address the long-term difficulties of software development. Creating an initial solution is simple; the real challenge lies in extending, refactoring, and maintaining code over time. SCBench addresses this gap by requiring frontier models to continually build upon their own previously generated code across multi-checkpoint trajectories.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+
+
+Watch: https://www.youtube.com/watch?v=Yh4eL60Ncxs
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-04-slop-code-bench
+Event: https://luma.com/slop-code-bench
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=Yh4eL60Ncxs</link>
+      <guid isPermaLink="false">aitw-068</guid>
+      <pubDate>Tue, 04 Aug 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=Yh4eL60Ncxs" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[Your Model is Already Obsolete]]></title>
       <description><![CDATA[In the last month alone: Opus 5, Sonnet 5, Grok 4.5, Kimi K3, GPT-5.6, Gemini 3.6. Any one of them might make your agent smarter or your system cheaper. That's the fun part. The less fun part is that every model you're running in production today just got a month closer to its retirement date.

@@ -12,10 +12,11 @@ description: |
 event_link: https://luma.com/slop-code-bench
 eventDate: 2026-08-04T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=Yh4eL60Ncxs
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-04-slop-code-bench
+  youtube: https://www.youtube.com/watch?v=Yh4eL60Ncxs
 season: 2
 episode: 68
 event_type: episode

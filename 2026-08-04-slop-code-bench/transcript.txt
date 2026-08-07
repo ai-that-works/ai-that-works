@@ -1,0 +1,914 @@
+@vaibcode (00:00.824)
+So hello everyone. as expected, I am late, but today Dexter is also late, so I defer the blame to a shared mutual lateness.
+
+@dexhorthy (00:03.023)
+Hey folks.
+
+@dexhorthy (00:11.705)
+Well I literally I literally pinged Vibov and I said, Are you gonna be on time today? And he said, Yes, definitely. And then I showed up five minutes early and Vibov pinged me. He's like, I was wrong, I lied, actually my laptop is dead.
+
+@vaibcode (00:21.066)
+And I had my
+
+@vaibcode (00:34.119)
+I am surprised how long it takes for laptops to charge in twenty twenty six. Someone needs to work on battery tech, man.
+
+anyway, today's episode I think is gonna be incredibly fun. so I'm gonna give a little a brief intro and then we'll get right into it.
+
+@dexhorthy (00:50.011)
+Mm-hmm.
+
+@vaibcode (00:50.254)
+For those of you who didn't know, I'm Vivov. This is my co-host Dexter, and this is the AI That Works podcast. We where we try and talk about real working AI systems as much as possible. Dexter here runs a company called HumanLair, where they help people solve hard problems and difficult code bases using coding agents. I work on building BAML, which is a new programming language that's agent first. Today's episode is about benchmarks. Give us
+
+@dexhorthy (01:15.523)
+Again, we're gonna do another benchmark show.
+
+@vaibcode (01:19.5)
+Benchmarks are one of my I think there's a reason that they come up so often. And probably for me, the reason that benchmarks come out so often is in a world of total anxiety where everything is unknown, the only thing that we can really know is like some number that someone shares. And we hope that we can trust them. And for me what I run into is I trust them most of the time. But
+
+I think what it really boils down to is can you understand the benchmark? So there's this new benchmark going around called Slop Code Bench, made by Greg. I b Gabe. Not gre Gabe. Gabe Orlansky.
+
+@dexhorthy (01:51.43)
+Gabe. Gabe Orlansky, the University of Wisconsin Madison, a wonderful school in a wonderful town for Wisconsin.
+
+@vaibcode (01:58.604)
+There you go. and Dexter's been talking about it a little bit on Twitter, so you've probably heard about Slopcode Bench at this point. But as we talk about it
+
+@dexhorthy (02:05.915)
+I think it was on the front page of it was on the front page of Hac Hacker News when I posted the like initial results last week.
+
+@vaibcode (02:11.637)
+All right, Mr. Humble Bragg. but
+
+I think the thing about today is we're gonna dive deep into it. We're gonna really ask some questions. I haven't had the opportunity to dig into it nearly as much while I've letting some of the posts. Dexter has been deep in the weeds. So today's conversation is gonna be a fun lecture by Dexter Dexter sharing with us what Slop Code is bench is about. You'll hear me interrupt, ask questions along the way. I welcome you all to come ask questions as well. And let's just poke at Dexter's brain and see what we learn about Slopcode Bench.
+
+Is that a good enough intro for you, Dexter? Have I stalled enough time? Okay.
+
+@dexhorthy (02:44.803)
+it is incredible. You have stalled wonderfully. why don't you give people two fun announcements? What's going on this weekend? And I will be I'll be ready to share in about a minute.
+
+@vaibcode (02:55.659)
+Okay. for those of you that are in San Francisco, we have a special thing going on. if you haven't seen already, let's go to Bav Gupta. and then let's go to Dexter Horti uh's profile.
+
+And you will see a fun little tweet where we are running our unconference. We've got some amazing speakers coming out. The UN conference is unlike other conferences. We don't have we have some pre-planned speakers from people that we know already give great talks. But most of the content is actually driven by the attendees. You sign up, you go to a whiteboard, you submit what things you want to talk about, and every speaker just chooses who they want to hear from next. And we kind of let the conversation flow as it is. This is a thing that we started doing last year. It was one of my favorite events, and it clearly is some other
+
+Folks enjoyed as well. And if you guys are interested, you can find this either QR code or you can find Dexter's post or my LinkedIn post and sign up and come attend. We do kind of keep it somewhat curated. And for some of the events, we'll try and record the talks and post them if if the speakers are okay with it. But it is Chatham House rules, and that's kind of how we get the best talks coming out because when you can say anything and you know it's not gonna be cited against your name, you can be honest and you can share real war stories.
+
+@dexhorthy (04:05.595)
+People
+
+@dexhorthy (04:09.595)
+People are people are willing to share a lot more interesting stuff when they can do it off the record.
+
+@vaibcode (04:16.115)
+Exactly. and this is kind of the goal. Get the best engineers we know, get the best founders we know, and put them into a space. Sadly no VCs, I apologize in advance. But if you're an engineer in your coding, this is hopefully a fun week one way to spend a Saturday.
+
+@dexhorthy (04:32.089)
+Incredible. Great intro. you can find that if you go search our Twitter feeds or whatever, or you can scan the QR code. The recordings are up, you can go see it. let's talk about slop code bench. Amazing. So I am going to share we'll just do
+
+So I just posted the article just a second ago. but let's do a little bit of Excala real quick. I wanna find
+
+What was it? Slop?
+
+@vaibcode (05:08.215)
+Quick if you want to give a talk like Dexter a screenshot the Excaladra and now you know what diagrams he's gonna have in his next talk and steal them.
+
+@dexhorthy (05:12.323)
+Yeah, exactly. So we talked v recently about how coding coding agent benchmarks work, and the old world of like write fizz buzz and C and the agent writes it and then we have a unit test that checks it, and like the way we build these benchmarks is basically like we use did a human merge this PR off an open source repo as the signal of like the labeling of the data. and then we curate those cases and then we create a verifier and
+
+Based on the test that the human wrote, basically. and then we talked about basically like the newer benchmarks that do some interesting things like LLM judge models and things like this. but the my biggest problem is like software is really discovering problems as you go. but most benchmarks just give you the whole problem up front. Slopcode bench is a benchmark. and I'll pull up the website here. Slopcode bench is a benchmark that is explicitly designed
+
+One, to be really hard and to be unsaturated by today's models. And two, to show the mod to give the model increasing complexity of problem over time. So that as it works, you end up Let me pull this up. As it works, you end up basically every time the model does a challenge, it inherits the previous code base. And this one actually doesn't have the thing that I like. so basically the way it works is like you give it an initial spec.
+
+And then it writes some code. And then you say, actually, we also want to add support for something else. And then it writes more code on top of the existing code. And you give it more features and more. And some of these some of these challenges have like eight plus checkpoints. And so every single time that the problem starts easy and then gets harder and weirder as you go. And you're not just measuring can the model solve a hard and build a complicated thing, but if you just if it's if it doesn't know what's coming.
+
+@vaibcode (06:53.217)
+Yeah, and
+
+@dexhorthy (07:07.461)
+Does it create a mountain of slop that makes it harder and harder for it to actually make progress?
+
+@vaibcode (07:12.589)
+Yeah and the goal here is really it seems like to mimic traditional software patterns. We're like Well Yeah, you have some intuition but you don't know. And I think what's interesting here is like when you're trying to train a coding model, it's really hard to put that intuition about where the product is going in the training data. And that's kind of fascinating because the only thing you can measure is did it work? Which is different than will it work long term.
+
+@dexhorthy (07:16.751)
+This this is how real teams build things. You don't know the whole thing up front.
+
+@dexhorthy (07:38.479)
+Yeah. Will I be able to add new thing? Yeah, because it's it's it's both position and velocity, right? Is like ca does it do the thing I want today? And will it be easy to add new things, change things and update it?
+
+@vaibcode (07:49.367)
+Do you have a do you have a concrete example of a test case here that we can look through just so we can ground ourselves a little bit more concretely?
+
+@dexhorthy (07:58.277)
+with pleasure. So where's the article? so I actually in the appendix of this article, we have all of the ev all of the challenges. so XJQ is an interesting one. Is like you basically for one, you build like JQ for XML that reads like XML or HTML from standard in and does like basically selecting things out and then rewrites it. Then it adds support for CSS selectors.
+
+@vaibcode (08:09.857)
+Okay.
+
+@vaibcode (08:16.478)
+no. Sorry.
+
+@dexhorthy (08:26.854)
+Then it does JSON objects and arrays, then you would read from a file instead of standard in and accept like UTF eight, and then you add JSON export. So it it goes from being a like pull stuff out of XML to like build a generic serializer and deserializer. Yeah.
+
+@vaibcode (08:41.761)
+That's cool. I mean the only mistake here is they use XML, but you know, other than that it's pretty good. I agree. No, I'm joking, I'm joking, I'm being s I'm being stupid.
+
+@dexhorthy (08:47.822)
+It's an interesting problem. Right? It's toy problem, right? I love XML. Bro, you put XML in your prompts all the time. I've seen it. You used to. We're gonna go pull up cracking the prompting interview, and I'm gonna go find footage of you using XML in a prompt. The Circuit eval is an interesting one too. I I so one of the things that the first time I did this benchmark, I did just three of them. and I did not use like
+
+@vaibcode (08:56.171)
+No, I don't I don't believe in XM well yeah, I did. And then the models got better. Yeah.
+
+@vaibcode (09:15.426)
+Yeah.
+
+@dexhorthy (09:16.602)
+the frontier frontier models. We just did like Opus five against Opus four point eight and Sonnet five. and you see Opus five got a twenty five percent pass rate, twenty three percent pass rate, and the other one's got like a six percent pass rate, which is basically the strict go ahead.
+
+@vaibcode (09:31.999)
+And just yeah, and just to help me understand, when you say pass rate, so for example, you just showed me can you sh can you open two tabs side by side so you can show me the pass rate and then the checkpoint things too? so man, you gotta get yourself some some ray cast. I'll sh anyway, that's a separate thing, I'll show you later.
+
+@dexhorthy (09:37.008)
+Yes.
+
+@dexhorthy (09:43.633)
+Yeah.
+
+@dexhorthy (09:50.31)
+What? Gross. No, I use a I use an adult I use a proper window manager for adults, sir.
+
+@vaibcode (09:57.214)
+that's actually pretty interesting. I don't know how to do that. That sounds advanced. So when I look at these checkpoints and when I look at pass rates, help ground me. What do what does that mean? What is a pass rate here?
+
+@dexhorthy (09:59.633)
+Yeah. Yeah. Yeah.
+
+Yeah. So so a pass rate is basically I'm actually gonna go find this picture from the like run in progress. So basically what we care about is strict pass rate. So the model's gonna go through and do all the on the right one, you wanna zoom it in?
+
+@vaibcode (10:16.633)
+Can you can you widen the right one?
+
+okay. Never mind.
+
+@dexhorthy (10:27.381)
+what were you asking?
+
+@vaibcode (10:29.566)
+I was gonna say can you make the screen fifty fifty instead of thirty sixty? But yes. Okay.
+
+@dexhorthy (10:34.22)
+no, we're just gonna look at this one. So basically what happens is the model does the first challenge. and these are all partial passes. Basically, like it did not it did not pass every single like there's basically do like black box testing. Every every checkpoint emits either like a CLI to run or an a HTTP server that like serves results or whatever it is. and so Opus four point eight did the first challenge and did not pass every test.
+
+Opus V for the first three challenges in Circuit Eval was able to pass a hundred percent on all of them. And then starting in challenge four, it started to accumulate defects. and so the strict pass rate is basically like how for how many of them is every single test in the suite running? And so for the second challenge, you can see like Sonnet and Opus actually nailed the first one, but then they failed the next one. and so this is the idea is like.
+
+Okay, even if you get, you know, let's say you get like number four, you've you solve all the new challenges, but you break something from number three, then you fail the strict pass. We don't know the mechanism and the breakdown of which test failed here. I mean, I have the data, but I haven't put it in the report. but does that kind of answer your question of like what pass rate means?
+
+@vaibcode (11:50.609)
+I see. So strictness. Okay, so there's like loose pass rate of like have I passed this checkpoint? And there's strict pass rate, have I passed this checkpoint and every historical checkpoint in the past? Got it.
+
+@dexhorthy (11:58.968)
+And all the previous ones. Yeah, the the loose pass rate they call it isolated pass rate. And you can look at this in the in the paper results here.
+
+@vaibcode (12:04.512)
+That makes sense. and like that's it's kinda like it's kinda like when coding agents when coding agents work, it's like what am I really solving for? Have I solved the current s problem in front of? And have I accidentally not broken anything in the past? Cool. That makes sense. We see this in Rust code bases a lot where it runs like the current a packages test, but then it runs the entire test suite at the very end, which it which yeah.
+
+@dexhorthy (12:18.465)
+Exactly. and so you can see here like yeah.
+
+@dexhorthy (12:27.577)
+Yeah, you want to make sure you didn't regress anything, right? So in this case, like when when they ran this in March, the best model was GPT five point three codecs, or actually five point four, but like Codex actually won the isolated pass rate. It was able to like win more of the challenges and solve the whole problem, but Opus four point six won the strict pass rate where it's like it it fixed things without regressing.
+
+Does that sense? Cool. so coming back to the the data on pass rates, right? So in the old world, we had a twenty three percent pass rate. in the in the with the frontier models we got a little bit better. and so here's the like strict pass rate for all the checkpoints.
+
+@vaibcode (12:54.806)
+Yes.
+
+@dexhorthy (13:19.331)
+So they also released new numbers. So GPT 5.5 got 14.8% strict pass rate. we found that Soul, Fable both tied at 33%. And then I ran Kimmy on modal and base ten just to like kind of I just I had two providers access and they both sponsored inference for this, so I figured I would run them both. It's actually very interesting. Like the modal one technically got got a better strict pass rate, but the base ten one like got way more. And like my takeaway here is like
+
+@vaibcode (13:34.529)
+Yeah.
+
+@dexhorthy (13:47.069)
+They're both great providers. We only did one run. Like this is not statistically significant. you should use both of them. Thanks to both of them for sponsoring the inference. I had actually kept the modal one a secret, just in case I didn't want to say which provider it was, in case one of them did way worse, I would rather like give them that feedback in private. But they were both like in the same arena.
+
+@vaibcode (13:52.299)
+Yeah.
+
+@vaibcode (14:03.985)
+no, I think you just give the data, man. You you gotta be honest with what it is. It's it's the best thing you can do for everyone else using
+
+@dexhorthy (14:11.184)
+Listen, I would feel bad if someone at either company was like, Hey, we gotta give Dex some free inference so we can run this benchmark and then I published the results and they got roasted, right? Like I would rather give them the opportunity to like fix the provider and and run it again. But anyways, this is not statistically significant.
+
+@vaibcode (14:24.499)
+Yeah, yeah. Especially if it especially if it's like a lot of these things are like basically a core engineering issue sometimes that are really easy to just patch.
+
+@dexhorthy (14:31.534)
+Exactly. So anyways, technically the the modal one did a little bit better. but like the interesting thing here is you can see like they all add defects as they go. So a defect is like a failing black box test case where like basically you just count as they go over over time. Sol really sucked at this one in particular. and in general like it was kind of the worst, although on this medium one it actually did the best out of all of them. Does this chart make sense?
+
+@vaibcode (14:51.327)
+So
+
+@vaibcode (14:59.945)
+You know, I have a very I mean this chart makes sense, but I have a very interesting question. So here's my question here. I think a lot of software engineering is solved by having really good understanding of the problem that you're solving up front. So while it's true that you're incrementally adding more software, what I would be really, really curious about is what if I gave the whole spec up front of every single problem and then I try and solve it.
+
+@dexhorthy (15:15.482)
+Yes.
+
+@dexhorthy (15:25.791)
+you want to compare compare the defect rate of whole the whole thing. That's super interesting. I hadn't even thought of that.
+
+@vaibcode (15:29.097)
+Yeah, and my s my suspicion my suspicion would be that every single model would nail it significantly better up front than it will on incremental progress. And I
+
+@dexhorthy (15:42.374)
+Damn. I have I have three like things I want to try next, but that was not one of them, and I think I'm gonna incorporate that. I'll I'll get into like the ways I think this benchmark could be improved or made more interesting or add more dimensions, but that's a really good one. I like that.
+
+@vaibcode (15:55.37)
+That's like my first insight here because I'm like, what do the best engineers do? The best engineers provide all the context up front. And if that happens to be true, then really the takeaway is not that these models are bad at long horizon. It's that the humans that are the best at using the models are the ones that can predict the future the best. Which has mostly been true in most of software.
+
+@dexhorthy (16:16.432)
+That actually is in conflict with my belief, which is I believe the best engineers, by some definition of engineer, like the best product engineers, ship small things, iterate fast, get feedback and like assume that the customer knows more about the problem than they do.
+
+@vaibcode (16:33.887)
+That probably comes from the different domains that we work in. And like mostly I've worked in like hardware, like algorithm design and a lot of like resource constrained environments, like distributed systems. distributed systems are another example of that kind of workload. Like in distributed systems, you don't have to ask the customer what to do. You can kind of like if you're able to predict the workload, you can design the right architecture for this. And your intuition for designing the right architecture is how closely can you predict the kinds of workloads you have to deal with. And if you mispredict that, you know, you're not having nine.
+
+@dexhorthy (17:05.724)
+But my take is like, okay, if the customer would be happy with two nines of uptime, then just get it in their hands as quickly as possible. because there's certain things where it's like, my god, that takes ten seconds, that's terrible, but then you find out like nobody gives a shit if it takes ten seconds because it's happening in the background overnight.
+
+@vaibcode (17:19.851)
+But I think that's what I mean. That's like t part of the resource constraints.
+
+@dexhorthy (17:23.728)
+Yeah. Yeah. So I mean, yes, you can sit and think think for days at a time and try to come up with the perfect problem and perfect solution and perfect architecture. but I think there's there's there's there's other ways to approach building software. anyways, that's an interesting thing that we should dig into.
+
+@vaibcode (17:30.656)
+Yeah.
+
+@vaibcode (17:40.65)
+Yeah. I mean up for also for a lot of product oriented software, th sitting and thinking is usually the wrong approach. Like like just to be very clear, like what I'm saying only applies to like infrastructure, it applies to like core, like performance engineering. It really applies to like product design.
+
+@dexhorthy (17:49.359)
+Exactly.
+
+@dexhorthy (18:01.551)
+Yep. So, anyways, getting back to the data, like you can see here, it's all over the place. Like modal Kimmy won this challenge, Soul won this challenge. sorry, defects left open is bad. So Fable Kimmy Kimmy won this one, Fable won this one, Fable won this one, Kimmy won this one, GPT won this one. Yeah, this is it's very interesting to see, like, they're kind of all over the place. And again, like
+
+@vaibcode (18:03.709)
+Unless you're like Nikki.
+
+@vaibcode (18:22.101)
+Fable's pretty good, man.
+
+@dexhorthy (18:30.041)
+I didn't run the whole benchmark. I only run s ran six challenges. I think they have like something like thirty or forty challenges now. so if I get more money in time we'll kinda run this for a broader I every time I run this I kinda double the size.
+
+@vaibcode (18:40.821)
+This Okay, I have a question. This really deviates away from my personal use case where I found that Sol is quite good at a lot of tasks. Why do you think that this it's failing here? It feels like Sol is i quite worse in a lot of ways. at this problem.
+
+@dexhorthy (19:00.173)
+It is interesting. It only yeah, it only it only took the prize. It only got first place on Circuit Eval. And it did quite worse on a couple of them. So it's inter I actually am with you, man. I use Soul for everything. I I am so sick of the Fable like the way it talks and Opus V the way it talks that I'm just like I will deal with shitty UIs and polish them myself by hand and like go look at the CSS in the browser because Fable's better at that, but I don't I'm sick of talking to Fable.
+
+@vaibcode (19:11.093)
+Yeah.
+
+@vaibcode (19:18.793)
+Ha ha ha.
+
+@vaibcode (19:29.769)
+Ha ha ha.
+
+@dexhorthy (19:31.728)
+so it's interesting. Yeah, I don't know the mechanism behind it. what's really interesting is I I had it build up the basically like what is the zoom in on this part of this. maybe I can open a new tab. I love Twitter. here we go. So the first one the first chart is like the final defect rate. And I had to I had to take it as like the percentage of defects just because the gray dots from the previous run had fewer exercises, so we couldn't use the
+
+@vaibcode (19:42.495)
+Can't zoom in, man.
+
+@dexhorthy (20:00.323)
+raw defect count because the new models the the frontier models did more problems. but you do see this kind of like inverse curve relationship. But you do see that like both Kimmy models are underneath the fable curve, more or less. I mean depending on where you draw it.
+
+@vaibcode (20:03.678)
+Yeah.
+
+@vaibcode (20:16.094)
+Wait, wait, wait. Show me go down what is the bottom thing? What is the bottom okay. I see.
+
+@dexhorthy (20:19.643)
+So the bottom is cost. This is like for every one of these dots is a single challenge. And so you have like what percentage of the test did it fail? And then how much did it cost?
+
+And so there's kind of this inverse relationship here where you're going like, you know, obviously s spending more can tend to correlate to better better like test results, but even Fable on on one of the cheap ones has this.
+
+@vaibcode (20:42.932)
+Yeah. It seems
+
+It seems very correlated.
+
+@dexhorthy (20:49.145)
+Yeah, it's s there's something going on here. So I don't know. I it might be fun to like draw the lines through here, but it's yeah, it looks like an asymptote going down to zero, which is kind of what we would expect.
+
+@vaibcode (20:56.828)
+I mean literally just looks like spend more money and solve more problems. More money, less problems.
+
+@dexhorthy (21:01.187)
+Yeah, in general, yeah. I mean, so so this is another thing is like this is all just using a prompt they called just solve. So they have a couple different prompt options you can pass in. and some of them are just like, here's the challenge, go solve it. They have another prompt that is like plan and then implement, which is like go read the code, write a plan, and then go solve it. And basically what they found is those perform pretty much exactly the same. But there's other things here where it could be like.
+
+@vaibcode (21:25.93)
+Ha ha
+
+@dexhorthy (21:29.467)
+Cool, do a Ralph loop and be like, Cool, solve it, then review the code, then solve the code review. and you could actually see like, if I spend more money, do I get better results?
+
+@vaibcode (21:34.142)
+You know
+
+@vaibcode (21:39.35)
+It's interesting to me. you're posting you you said something very fascinating, which is you asked them all to write a plan and then solve it and you ask them all to just solve it and like it doesn't matter. effectively it's kinda what Yeah.
+
+@dexhorthy (21:49.402)
+I don't I haven't looked at the I haven't looked at the results, I only skimmed them, so like they're put a big asterisk on that, but my understanding was that the that the just saw that the the plan and then implement didn't make a like big enough difference to to be like a thing you should recommend.
+
+@vaibcode (22:05.18)
+So I have I'm sure that you have lots of opinions on that, as Mr. as Mr. RPI. but when I think about it, I have what's fascinating is I too have stopped using plan mode in a lot of situations. I mean I I chat with the model and I interact with it and design with it, but it's different than like traditional plan mode, is what I would say.
+
+@dexhorthy (22:08.815)
+Yeah.
+
+@dexhorthy (22:27.973)
+You build what is what did we call this? It's the design
+
+@dexhorthy (22:36.633)
+It's a Fred Brooks thing, who is the guy who wrote Mythical Man Month.
+
+@vaibcode (22:43.188)
+You're zoomed in so much my eyes are hurting. But I bel Thank you. Sorry. I couldn't do it. anyway, while you look that up. And I think as these mo as the
+
+@dexhorthy (22:46.191)
+Sorry.
+
+Design concept. Yeah, this thing. Talks about a design concept, which is basically like the thing that is kind of locked up in the context window. It never gets written down into a file, but it's your shared understanding with the model.
+
+@vaibcode (23:05.98)
+Yeah, and what's really fascinating to me is I think most folks that are doing planning, the the problem is the planning is a is a prompt steered by the harness providers. And the prompt is only so good for the average workload. And at some point Exactly
+
+@dexhorthy (23:21.647)
+Right, they have to make it as generic as possible, versus you being able to just tell it, write a file that has these sections and these headers and works this way.
+
+@vaibcode (23:27.962)
+Ex and I think that's kind of why like I found myself not wanting to plan all the time, except for things that like sometimes require planning.
+
+@dexhorthy (23:37.743)
+But like you could also just say like ask me questions until you have until we're aligned and then write a doc that looks like this.
+
+@vaibcode (23:42.825)
+Yeah. Or I d or I talk about like the surface area and not really the full execution plan because if the surface area is well agreed upon, then it's easy to go up anyway, I I just found that interesting. what what are your thoughts on that? Like upon hearing that at first, where it's like the plan didn't make a huge t impact.
+
+@dexhorthy (23:58.308)
+I mean, so I think I actually had this insight a couple months ago, which was basically like last summer, about a year ago, when we first started talking about RPI and for like the three months before that, so in the last like take like fifteen months ago through like twelve to ten months ago, people got really into planning and I realized like I think the actual mechanism behind that was having the model write a plan first, even if you didn't reset the context window. 'Cause what you're talking about is like
+
+advanced context engineering of like, hey, let's get all this into a doc and then I'm gonna clear the context and start over, do do whatever it is. maybe you're not clearing the context. The point is is like planning was a way to get the model to work for longer. If you said go build me a SAS, it would like do a little bit and then it would pause and come back to you. but if you wrote a plan, it would kind of keep working until the whole plan was written. And so that let you be a little more hands off, a little less in the loop. now these models are kind of very, very RL'd to work for longer. So I think like that
+
+@vaibcode (24:30.704)
+Yeah.
+
+@vaibcode (24:37.641)
+Yep.
+
+@dexhorthy (24:54.713)
+benefit of planning is now gone. Like it's not useful anymore.
+
+@vaibcode (24:58.782)
+Yeah, that's actually a really good insight on like why planning was useful in the beginning. It was like a checkpointing system in the beginning, but now it's like not that value is gone.
+
+@dexhorthy (25:06.511)
+Yeah. It was a it was a way to like in increase the scope of the problem that the model would do unattended. Now, turned out what we ended up wanting to do was only do one part of the plan at a time and do the Ralph Wiggum style thing of like, cool, launch a sub agent to do part one, then I'm gonna check it, then launch another sub agent to do part two, or like basically like doing each phase in its own context when.
+
+@vaibcode (25:13.618)
+Yeah. That's really fascinating.
+
+@vaibcode (25:23.252)
+Yeah.
+
+Yeah.
+
+@dexhorthy (25:28.52)
+anyways you can we
+
+@vaibcode (25:29.26)
+we've been japping for a while. And does any while we're chatting, do you folks have questions about Slob Code Bench and kind of the things that it has that it kind of asks you to do? But while we wait for that, Duxher, you can keep going.
+
+@dexhorthy (25:42.799)
+Yeah, we'll keep going. But yes, please drop questions in the chat. this is the overall like summary of all this data of like basically like the total cost and the total defect rate. so very interesting to see like for the cot for you know six five five to six X the cost, you only save, you know, a little bit of defect rate. and defect again is like not the strict past thing of like, did you solve the challenge perfectly? But like
+
+@vaibcode (26:06.407)
+Hm. But
+
+@dexhorthy (26:12.612)
+how many of the tests across all the checkpoints are passing.
+
+And so Fable did a little bit better, two percent better, but it cost five times as much.
+
+@vaibcode (26:23.431)
+Yeah, and for most use cases it's probably a bad spend, but for some it might be critical. So you can make the decision on your own, which is kinda fascinating.
+
+@dexhorthy (26:30.232)
+I'm I'm also looking at this Opus V one and like I just wanna asterisk again that these three, the gray ones, did a different set of challenges. so it's really just kind of like directional context. I d I wouldn't count this as a comparison here.
+
+@vaibcode (26:45.265)
+So what I'm hearing is Dexter's about to turn into a Kimmy show.
+
+@dexhorthy (26:49.798)
+we are gonna we are gonna launch our Kimmy provider on on HumanLayer soon. so if you want to play with Kimmy, you can go try it in Human Layer. I mean you can get Kimmy from a lot of places. This one actually uses Kimmy via open code. it was not hard to set up, but but yes, technically technically we will we are excited about Kimmy. So here's another one, right? Like if you just look at strict passes, right? Soul and Fable Tide. if you wanted a tiebreaker.
+
+@vaibcode (26:56.381)
+Nice.
+
+@dexhorthy (27:18.756)
+Fable got a couple more isolated passes where like it didn't solve all the regressions, but it did like solve all the challenges for an individual checkpoint.
+
+and it's interesting the like the two mo the two kimmies are like one of them got more strict passes, but the other one got more isolated passes. and here's here's an example. Here's actual data from like when we ran it last time on the circuit eval checkpoint, on the circuit eval test. Like Sol actually got the farthest with no issues. Fable got almost as far, and then like like none of these actually like lined up. The so
+
+@vaibcode (27:44.329)
+Yeah.
+
+@dexhorthy (27:55.652)
+There's so many dimensions to like how you can understand like model skill and ability. so I just thought it was really interesting to just kind of take a bunch of different projections of this data and look at it along different different lines. Yeah. what else we got? yeah. So then we look into the slop code bench people also do a lot of like code quality metric stuff. and they have a lot of custom like obviously cyclomatic complexity is a term that's been around for fifty years in terms of software quality.
+
+@vaibcode (27:58.079)
+Yeah.
+
+@vaibcode (28:07.901)
+Really cool.
+
+@dexhorthy (28:23.759)
+But they actually I was talking to Gabe and basically like they have two hundred and twelve or they had two, I think they have more now, of like slop detectors, like different function different like Python AST parsers that try to understand like different things that could signify slop. And and and then they like I I took the ten most interesting ones and tried to look at basically like f this this percentage is like from the f from checkpoint one
+
+Okay, checkpoint three to checkpoint eight, basically. So, like how much does the does the slot metric increase from checkpoint three to checkpoint eight? Because some of them had zero on checkpoint one, so I couldn't do percentage increases. but like you can see that Kimmy K three has more than five times the cyclomatic complexity. Like the the complexity grows really fast across the five checkpoints.
+
+What's also interesting is like a lot of these metrics are very close together. Like they don't change much over the cost of o over the course of the challenge.
+
+Does this make sense?
+
+@vaibcode (29:32.008)
+Yeah.
+
+@dexhorthy (29:34.1)
+so the most interesting ones are like s cyclomatic complexity and cloned percentage, like the percentage of lines that are like exact copies of other lines. And then I like this graph dependency entropy one. I don't actually know how they calculate this. I have to dig into the math, but you can go read the paper if you want to understand it. so that's like the overall like results based on the circuit eval one. Sol wrote more code than all the other models.
+
+But and then the th there's an interesting one here that I'm still have to dig into, but basically like according to the data, only Seoul wrote t Python tests. And the other models all used like scripts and stuff to test their stuff. They did not write like Python unit tests.
+
+@vaibcode (30:20.049)
+I think that just you know why I think that's the case though? You started off with a scripting problem and you slowly evolved it when like literally you just have to like what would really happen in a real production scenario, at some point you'd be like, write some tests in Python. It would just you would come This is what's interesting about these models is like it's not like you wouldn't steer this whole process, but
+
+If you knew ya you were gonna g start from a scripting problem and go to a production app, at some point you'll make that philosophical swap of I'm scripting, I'm productizing. And it's
+
+@dexhorthy (30:55.675)
+Well, and it's I think it's also they're they're following patterns, right? So if the first model on the first challenge does not choose to write unit tests, then the next challenge in the new context window will see the scripts and be like, we test this with scripts. Okay, we're gonna keep doing that.
+
+@vaibcode (30:59.4)
+Yeah.
+
+Scripted.
+
+@vaibcode (31:10.767)
+Exactly. 'Cause like that's kind of what you told it to do and that's kinda what a real software engineer would do too. And at some point some software engineer is gonna stop and reflect and say, I guess that is the point of these benchmarks, is like can the model stop and reflect and make an orthogonal decision?
+
+@dexhorthy (31:26.585)
+Yeah.
+
+@vaibcode (31:26.685)
+But then I'd be so pissed. Could you imagine? Could you imagine? You're writing your whole code base, it's running for a whole day, and somehow in the middle of the thing it decided to just refactor your whole system and say, nah, this is just wrong. And just threw it all away and made it arbitrary decisions on its own.
+
+@dexhorthy (31:41.839)
+I mean, if it made a good decision I'd be happy. I just have never I rarely see it do that. Yeah.
+
+@vaibcode (31:47.454)
+I know, that's kinda where I'm stuck too. I haven't seen any of the good decisions yet. It's funny. You know, I hear myself saying this and what's funny is I used to say this too. I could I used to say the exact same thing. Could you imagine the model writing the whole feature? I was like, no way, it's gonna mess up, it's gonna make some bad decisions. And clearly I don't feel that way anymore. So I guess it's just a matter of time before like that also becomes true, where it starts making architectural decisions in a good way.
+
+@dexhorthy (31:51.237)
+Yep. If you can feed a good good examples, then that's great.
+
+@dexhorthy (32:13.881)
+Yep. we also looked at kind of other other metrics here at the end, right? So the mean function cyclomatic complexity was pretty even. looks like Kimmy on Modal had actually like way lower max so like the most complicated function that modal wrote was more than half as simple as the most complicated function that the other Kimmy wrote.
+
+@vaibcode (32:41.698)
+silly question. Is all of this me running on the same harness?
+
+@dexhorthy (32:48.173)
+So Sol is running in Codex C L I, Fable is running in Claude Code, and the two the two Kimmy instances are running in basically like identical open code configs.
+
+@vaibcode (32:51.251)
+Codex. Yeah.
+
+@vaibcode (32:59.603)
+Cut it.
+
+@dexhorthy (33:03.877)
+So they we also looked at like what percentage of lines triggered at least one like slop rule. They have like an AST grep like detector for just like is this line slop? so ninety-five percent of the code written by Saul triggered at least one slop. And they're very aggressive. Like I don't think this means it's bad code. I just think it means like this is like interestingly like if you wanted to compare across different models.
+
+@vaibcode (33:06.451)
+So my mm
+
+@vaibcode (33:13.587)
+Yeah.
+
+@vaibcode (33:17.735)
+I would love to read through that code.
+
+@vaibcode (33:30.715)
+I really would love to see this code. I'd love to know what the examples of slot. 'Cause like I'd I'd probably write some slot myself by hand.
+
+@dexhorthy (33:35.578)
+Yeah.
+
+@dexhorthy (33:38.849)
+Unfortunately it's Python only. so you would have to slop fork it into r if you wanted to detect rust. but yes, it can be it ca it it it can be done.
+
+@vaibcode (33:50.419)
+Never mind. I take it all back. It's i it I I mean it makes sense it's ninety five percent slob, it's Python.
+
+@dexhorthy (33:57.254)
+So another interesting one here is, you know, just looking at across the checkpoints of this challenge, like how does the cyclomatic complexity change, and how does the number of duplicated lines change? It's weird that Opus five actually had less duplication, but again, like I don't think this actually says anything, it's just directional. Like it could be that Opus V has less duplication because it wrote more chaotic weird code. Like it didn't follow patterns, it just like wrote whatever the heck it wanted in every single case.
+
+@vaibcode (34:24.206)
+also the real interesting point here is like the models are roughly the same. That's actually the more interesting thing to me. Yeah. So like there's no real alpha in a model. Or a harness, actually. Wha
+
+@dexhorthy (34:29.711)
+Yes, all of these are kind of the same on these sorts of metrics.
+
+@dexhorthy (34:37.103)
+Yep. Yep. But you could say, Kimmy is a little more like shoot from the hip than Fable.
+
+@vaibcode (34:43.366)
+Yeah, but it's like it's probably within like standard of error, standard deviation of error. So it doesn't matter. I'd probably say like plo
+
+@dexhorthy (34:47.565)
+Yeah, exactly. It's also like if you were gonna do this properly, you would run it like five times and average everything, which I did not have the time or patience to do.
+
+@vaibcode (34:53.668)
+And probably over like hundreds of test suites, not just like these a few samples. Like you need to look at like different levels of problem anyway.
+
+@dexhorthy (34:59.407)
+Yeah. Yeah. Yeah. So yeah. you know, we'll see we'll see if if the if the inference providers wanna re up and give me some more credits.
+
+@vaibcode (35:09.436)
+How much does this whole thing cost to run on inference? How much do you spend?
+
+@dexhorthy (35:12.251)
+so I use the Claude sub for the Fable stuff. and I use my Codec sub for the soul stuff. So these numbers are not accurate, but it's around two hundred dollars if you're paying per token to run six challenges.
+
+@vaibcode (35:17.05)
+Yeah. Let's use clots and codecs.
+
+@vaibcode (35:27.184)
+And KV is like around like yeah, okay, not bad. Okay, got it.
+
+@dexhorthy (35:30.416)
+Which is crazy because if you look at the last one that I did, where is it? I think it's here. This one also cost two hundred dollars. And I used dumber models and and fewer challenges. But it's still the cost got up to I don't where's the final cost here? Yeah, it still cost two hundred dollars. because those models wrote like way more fucking code. Like Opus Vrote thirty thousand lines of code for half as many challenges and fifteen thousand lines of tests.
+
+@vaibcode (36:00.019)
+Dude, I'm gonna run Slobcode Bench and just have it right write BAML code and see what it does. That would be so fascinating, I think.
+
+@dexhorthy (36:06.943)
+yeah, you should. I mean I think the what's nice about Slopco bench is like the the code quality metrics are all like implemented specifically for Python, but all the tests are designed to be black box where like the model gives a CLI out and you can test it. Yeah, that would be super interesting. We should do that on another episode. We should just like fungin that'll be the next pair programming one. We'll just fire it up. There'll be a lot of waiting. there's a lot of waiting in this stuff, but that would be fun. I would be I would love to rig that up.
+
+@vaibcode (36:16.22)
+Yeah, exactly.
+
+@vaibcode (36:22.862)
+just build the ventronic. Yeah. The
+
+Yeah.
+
+Yeah, that'd be fun.
+
+@dexhorthy (36:33.995)
+okay, what else is interesting here?
+
+@vaibcode (36:35.58)
+Well I was finding it fascinating. It's I think the fascinating thing about all these problems is actually like look, software is a incredibly rich dimensional system.
+
+@dexhorthy (36:43.269)
+Yes.
+
+@vaibcode (36:43.334)
+So like there's so many dimensions you can play with. You can change the model, you can change the problem, you can change like the harness, you can change the language, and like you can change the prompt. And there's so much you can do and like so I don't actually think these problems will get solved because they're so multidimensional and they optimize for different things. But it's interesting and it, you know, entertains my dumb little what's it called? Goldfish brain for a little bit of time at a time. Yeah, exactly.
+
+@dexhorthy (36:50.939)
+Yep. Yep.
+
+@dexhorthy (37:06.915)
+It's it's fun to look at data. And I like this. I decided I really like this poimandris theme, which is cre a theme created by an autonomous coder collective or something. I don't know. Anyways, it's a good theme. so this chart is the number of functions that were written across the lifetime of a challenge cut against the mean complexity of the functions. And so you have again this like, okay, if you have lots of more functions, those functions are probably simpler. And if you have less functions, then they may end up being way more complex.
+
+@vaibcode (37:26.199)
+huh.
+
+@dexhorthy (37:36.635)
+Complex. Yeah. this one I can't there's there's a kind of a line going down and to the right, but it's it's hard to see exactly any any winner or loser here.
+
+@vaibcode (37:37.724)
+That's cool.
+
+@vaibcode (37:43.207)
+Yeah.
+
+@vaibcode (37:47.32)
+Let's let's recap really quick. Unless there's more stuff you wanna go summary and show. Okay.
+
+@dexhorthy (37:50.982)
+There's one more so I wanna talk about like what we do next. So the thing you said is really interesting of like, hey, I wanna w what was it? What what was your proposal?
+
+@vaibcode (37:59.078)
+You smash all the prompts together in one big goal very up front and you say, Go do all of it.
+
+@dexhorthy (38:02.347)
+yeah, you compare it to like see see see if it does better if you do all of it at once.
+
+@vaibcode (38:07.888)
+And if it does, then you guys just need to hire people that can do all of that much faster.
+
+@dexhorthy (38:12.601)
+Yeah. They can do the planning, right? They can they can pick the right thing to build.
+
+@vaibcode (38:14.78)
+Yeah. People that have a good product I mean people with good product sense and good engineering sense are generally highly valuable and I th my suspicion is the data would prove that.
+
+@dexhorthy (38:25.007)
+Yeah. So my my thought is basically in order to get a ultra strict pass, after checkpoints you hand a smaller model the same code base, you give it like Sonnet five, and you let the smaller model go try to do checkpoint two. And checkpoint two has to fully pass. Like basically like the frontier model has to set up the code base in a way that a small model can solve the next problem. otherwise it doesn't get a full pass.
+
+Basically this thing has to ace check point two.
+
+@vaibcode (38:54.394)
+I think you would you would have to prompt it differently. Like if you knew you were gonna hand off your code to someone else, you would code differently. Right?
+
+@dexhorthy (39:03.683)
+Yeah. I mean that's the other thing. It's like so that's part of it, giving the whole problem up front, having a smaller model do it. again, it's like it's not like how do you how do you raise the score on this, right? It's like what would tell me that the frontier models are good enough to go lights off? That's the whole point of this entire exercise, right? Is like what signal would I have to see in the benchmark data to tell me
+
+my god, a model wrote four checkpoints of code and then GPT OSS one hundred twenty B was able to solve the next checkpoint? That is a sign that yeah, go ahead.
+
+@vaibcode (39:35.496)
+Well
+
+That's interesting. That's interesting. I'm that's such an interesting question. What would convince me that I can go completely lights off and have no humans? I am
+
+@dexhorthy (39:45.849)
+Yeah. Yeah. So we're trying to figure that out.
+
+@vaibcode (39:49.934)
+Or and I think and that's such an incendiary question I'm sure to many people. But even if I were to break it down, like how do I go how do I go lights off and have no humans for certain kinds of problems? Like for example, managing my website, managing my ad spend, managing the any subsystem. That's such an interesting problem. I don't know what I would need. I'd probably need probably what I need from a candidate when I interview them, which is like during the interview.
+
+@dexhorthy (40:06.243)
+Exactly.
+
+@dexhorthy (40:10.341)
+Yeah. Yeah.
+
+@vaibcode (40:19.917)
+process, can you show me one unique insight off of the little data that you have that I have not had myself? And if you can, I trust you as a candidate to like work at our company and obviously if you prove me wrong that we that might happen. But like that's kind of all you go for.
+
+@dexhorthy (40:35.419)
+Yeah, is where is the alpha? The alpha is in in human reasoning over systems.
+
+@vaibcode (40:41.029)
+Yeah, it's like can you show me something?
+
+Well no, what I'm saying is if a model could give me that insight too. Like if during the progress of this it implemented it and there was pro even if it was prompted to hey produce some insight and only share it if it's truly unique and the other person isn't gonna have and it shared something that was like, Hey, this is a background insight I have, I'd I'd probably trust that system. I don't know about you.
+
+@dexhorthy (41:04.219)
+Okay. Yeah, I mean we talked about this when we were f initially benchmarking Fable, right? It was like, Hey, can this thing tell me something that I missed? Like can this that that would impress me and I think you did not find anything interesting.
+
+@vaibcode (41:17.511)
+No, there was nothing interesting. And I mean but the coolest the workflow stuff in Babel is great for s compressing time.
+
+@dexhorthy (41:24.793)
+Yeah. So yeah, the the three things that I think I would add to this, right, are you know.
+
+Bench next, right? Is like number one what you said is like give the whole problem up front and compare. Number two is have a smaller model try check point and plus one. If it aces, you get a super strict pass.
+
+@vaibcode (41:47.345)
+Checkpoints. Yeah.
+
+@vaibcode (41:59.58)
+Cool.
+
+@dexhorthy (42:01.961)
+and then the third one I think is apply the 'cause this is what people do in real life is like they apply deterministic litters as a feedback loop during the challenge.
+
+@vaibcode (42:12.377)
+Yes. I would yeah, it's probably an unfaithful test without that. 'Cause like yeah.
+
+@dexhorthy (42:13.515)
+Yeah.
+
+@dexhorthy (42:17.079)
+Exactly, right, 'cause most people who are saying, lights off software factory, they're having other models review the code before it goes in, and they're having deterministic linters set the cyclomatic complexity cap to some number to force the model to write clean code. I don't know if it would actually make things better or not. Like I'm very curious to see what this looks like. It might make them worse if you say, Hey, every time Fable writes a thing we have Soul review it, and every time Soul writes a thing we have Fable review it.
+
+@vaibcode (42:30.342)
+Yeah.
+
+@vaibcode (42:38.193)
+Well, like for example
+
+@vaibcode (42:44.731)
+Yeah, I mean for example for us, like we run code RAM in all our PRs and that gives us a lot of confidence to let stuff run. We run C I C D, we have a pretty good C I C D system, I would say. And that's probably what this that's like number three is like. That's probably like the true earnest feeling that you really get, which is like yeah, I I think that's good. On the other hand, like if you're
+
+@dexhorthy (42:48.633)
+Yeah.
+
+@dexhorthy (43:02.735)
+Yes.
+
+@vaibcode (43:09.263)
+It depends on who your ICP is. If your I C P is like regular people writing code, I actually don't think three is three matters as much. I think one matters not one. Three matters less 'cause
+
+@dexhorthy (43:16.313)
+Yeah. My si I mean, I care about the frontier of the software factor. I think we're all right now in this in this year twenty twenty six, everyone is trying to figure out what code do you still have to read, what code can you not read, how do you maximize and like how do you avoid disaster? How do you maximize confidence and how do you like r maximize the chance that you won't have some terrible outage that you can't fix because the code got too nasty?
+
+@vaibcode (43:21.093)
+Okay then
+
+@vaibcode (43:43.685)
+You know what I really think the answer here is? You optimize for really quick fixes and patchability as opposed to getting it right the first time around.
+
+@dexhorthy (43:52.72)
+really? You mean the thing I said where you ship the thing and iterate instead of designing the whole thing up front? Okay, okay, okay.
+
+@vaibcode (43:57.531)
+Well no, you also get it right as much as you can, but you optimize for the sorry, you're right, never mind. No, but I mean I mean for like pff Tanner's got a really interesting question. that I think is good, which is like
+
+@dexhorthy (44:03.395)
+Yeah. Thanks, buddy. That's okay. I'm never right on this show, so I I gotta I gotta take when I can get
+
+cool. I think that's it. this was super fun. Yeah.
+
+@vaibcode (44:18.238)
+how do you expect configurations like MCPs or skills to influence a benchmark like this? What's your bet? If you had to go off the cuff right now, MCPs make it better or worse, skills make it better or worse.
+
+@dexhorthy (44:30.425)
+I mean, like it it depends. I think I think skills are I think skills are hard, right? Like Python is in the weights deeply. If you're gonna go write it in BAML, like yes, put the BAML skill in there and you'll get better results. there's some ideas of like, hey, if you can build a really context efficient and high quality code search MCP that is like
+
+@vaibcode (44:36.102)
+Correct answer.
+
+@dexhorthy (44:53.795)
+less tokens and like less searching and finds the right thing faster and basically like use a sub like a a mini like what the morph what Tejus and Morph does. They have like an MCP that is a tiny model that's really good at code search. Like if you index the code base ahead of time and you never use grep, like yes, every single thing in the harness can inf influence this outcome. And like if you're interested in in trying that, like, yeah, go customize the open code harness, add an extra skill.
+
+@vaibcode (45:03.227)
+Yeah.
+
+Yeah.
+
+@dexhorthy (45:20.547)
+It was not hard to get Claude to like read the paper, pull down the slop code bench repo, and make the changes I needed to make. So like you can do this.
+
+@vaibcode (45:28.112)
+Yeah. My personal recommendation is for anyone writing MCPs and skills for entire organizations, try your best to have the minimum set in the context window of every engineer. Like it's not to say like don't have any that are useful, but like it's a very high bar what's allowed to be everywhere because it steers everyone and as the models get better you're really fighting the models more than agreeing with them.
+
+@dexhorthy (45:53.062)
+And I I think this is actually like I'm gonna I'm gonna ask you, Vivov, another like slightly tangential question, but I think it's very, very topical right now with the release of Fable Opus five and GPT five point six. what do you think of Boris Cherney's advice and a couple other people's advice of like every time there's a new model, you should throw out your agents MD and your Claude MD and you should throw out all your skills. What do you think of this?
+
+@vaibcode (46:16.99)
+I think you should I think you should always throw out your agents auto MD. You should not have an agents auto MD in your code base. i that's my personal Skills
+
+@dexhorthy (46:22.381)
+Okay. What about the skills?
+
+@vaibcode (46:28.046)
+I view skills as purpose built. Like personally I don't have that many skills in my codebase except for things that I know are not in the model weights for sure. Like d like proven to not be in the model weights, not I think they're not in the model weights, like I am very, very confident. Yeah, so like like I'll give you an example.
+
+@dexhorthy (46:38.533)
+That's
+
+@dexhorthy (46:45.061)
+You've watched it hill climb and fuck it up over and over again. So this is this is like we use skills. Yeah. Go ahead.
+
+@vaibcode (46:53.668)
+So in our code base, for example, our type system is very strict when we write BAML code in our Rust code base. And if you let Opus go wild or Fable go wild or Sol go wild, it will at some point get something wrong because they're bad at they're bad at long mathematical chains where they actually have to like do computation to figure out the right result. And like really what we do is like we ri what Kaya on their team has done is he's written a doc that forces the model to be rigorous about the type system. And that's been a
+
+big godsend to making the model actually work well. But for and if we don't do that, the code base basically veers off, turns into like this fragmented system where it has like fifty different type checkers and it breaks the rules in subtle places but fixes other it turns into a slot mess. So I think in that sort of place where it's a hard, hard, hard problem, and it's a novel problem where we're evolving our types as we go, it's never gonna be in the skill set. So it needs to be sorry, it's never gonna be in the weights. It needs to be in the training data.
+
+@dexhorthy (47:54.01)
+Yeah, I think this is the key thing is like Yeah, the skills exist to give the model things that are not in the weights. To do default like if you if you say like people used to put in their Clot MD, always run the tests after every change. You don't need that anymore because the models just do it. one example that we have is like we used to have an agent browser skill, which agent browser is a CLI that lets the model like work with a browser. It's very context sufficient, it's good as for Vercell.
+
+@vaibcode (48:08.678)
+Yeah.
+
+@dexhorthy (48:22.083)
+We should have the skill in the repo, and we actually threw it out because the model is now knows about Agent Browser. No same with the GitHub CLI. Like no one would put a GitHub CLI skill in their repo because you've never seen the model screw up a GitHub CLI command. It always gets it right. And so like this is kind of how I think about it is like every time there's a new model, you have created skills because you've watched the model try to hill climb against an outcome, and you actually end up needing to, I guess like
+
+@vaibcode (48:36.442)
+Yeah.
+
+@dexhorthy (48:49.967)
+You have to put in extra context so that it knows what to do. And so if you have specific things about your repo or specific things about your type system that are not in the weights or unlikely to get into the weights, you should definitely do it. But this advice of like, don't don't just cargo cult all your skills from model to model, the same way you wouldn't cargo cult all your prompts from model to model is very interesting advice. Like I don't think I go so far as like throw everything out, but whenever a new model comes out, like
+
+@vaibcode (48:53.755)
+Yeah.
+
+@vaibcode (49:09.54)
+Yeah.
+
+@dexhorthy (49:16.887)
+User intuition. We went through all of our skills and changed most of the descriptions to because a lot of our description was like, you must use this skill if X. And the new models, Soul and Fable, love using skills. They're very good at calling skills. And so we literally had to change like 80% of our skills to be like, do not invoke this skill unless the user requests it by name. That is the description of most of our skills. Because most of the we're just steering to like use this skill to do this thing.
+
+@vaibcode (49:42.331)
+My yeah, my recognition to people is I I actu
+
+actually one hundred percent agree with Boris. delete all agents.md, delete all skills by default, and the burden is on you, the developer, and the team, to prove that you need them. And like one reason to need them is, hey, you have an edge team of ten, twenty people that are all doing the same workflow and you want to standardize it. You want to lift the mean up to a certain point. Great reason to add a skill. You want to help build metrics so you have a core engineering team who's building skills for your company.
+
+And they're measuring things and making data driven decisions about what skill is good. Great. Shared skills. Shared MCPs. Yeah.
+
+@dexhorthy (50:20.282)
+Yeah. You need evals on that, right? Exactly. Yep.
+
+@vaibcode (50:31.414)
+Exactly. Like if you're not everything else, like no. Like just don't hurt yourself. you're making your product worse. you're making your engineering goals worse.
+
+@dexhorthy (50:42.082)
+And I I I actually think when we were going over that project, we had kind of I had kind of mocked it up with like information versus instruction of like, hey, here's how you run the test for this thing versus information of like, our main branch is called canary instead of instead of main or whatever it is. Like I actually think the informational ones tend to be the ones that get moved across model generations because they're very clearly like, here's a thing you don't know and you couldn't know, but you need to know in most cases, versus
+
+@vaibcode (50:59.365)
+Yeah.
+
+@vaibcode (51:09.306)
+Yeah. That's like our type system, right?
+
+@dexhorthy (51:11.842)
+The instructions are like here's how to run the Rust tests and not like try six different things is like that might not need to be carried forward. That might be the kind of thing that the model can just figure out and you're actually detuning the model and like lowering your performance by having extra instructions in there.
+
+@vaibcode (51:24.325)
+Yeah.
+
+I'll give you like an example of that. In our code base, we run a massive monorepo. Monorepos are good and bad. The bad part is a model will try and do everything in every re subfolder. You don't want that. We have a subfolder called Bama Language. That belongs in an agent MD. That belongs in a skill where it's like, hey, like 99.9999% of the time you're only working in this subfolder. Ignore the rest.
+
+@dexhorthy (51:29.678)
+Yep. Yep. Yep.
+
+@dexhorthy (51:37.668)
+Yep.
+
+@vaibcode (51:50.82)
+Right, unless explicitly mentioned. And that's a great skill because monore it defaults the model to a good path by default.
+
+@dexhorthy (51:51.279)
+Nice.
+
+@dexhorthy (51:58.144)
+Imada asks, how do you make Claude and Codex automatically review each other's work? You can orchestrate this in a hundred ways. You can use a bash script, you can use a Ralph loop, you can tell I I've told clo you can tell like your Claude model to use the Codex CLI. You can tell your codex model to use the claude CLI. They know how to do this now. and the other question is, huh?
+
+@vaibcode (52:09.89)
+Yeah.
+
+@vaibcode (52:16.173)
+I haven't used the Greptal folks yet, but like they they apparently ha Greptile apparently has a way to like check what you're using and shipping and automatically uses the other model to check it, which is kind of interesting.
+
+@dexhorthy (52:26.655)
+cool. So you put up a PR and they know this was made by Claude, so we're gonna review it with Opus or with with Codex.
+
+@vaibcode (52:31.353)
+Yeah. So yeah, they kind of have stuff like that.
+
+@dexhorthy (52:35.291)
+Cool. I think that's probably time. What skills do you have? That's gonna have to be for another episode, unfortunately.
+
+@vaibcode (52:42.617)
+Yes indeed. this was tons of fun folks. Thank you guys for joining. and hopefully you guys found some interesting conversations between the yaps. You wanna
+
+@dexhorthy (52:52.471)
+Every Tuesday, ten fifteen AM Pacific. plus plus minus five yeah, plus zero plus zero to five minutes. yeah, we will never be early. Sorry folks. and if you're in San Francisco, come by the young conference on on Sat Saturday, it'll be a lot of fun. A lot of AI engineers, systems engineers. Do you want me to do a recap?
+
+@vaibcode (52:55.983)
+Plus minus or not plus minus plus five minutes.
+
+Ha
+
+@vaibcode (53:16.057)
+Let's do a recap and and then we'll log it up.
+
+@dexhorthy (53:19.737)
+Okay. I'm gonna make my camera zoomed in again. I just wanted to show off my new no more slop shirt. I have one for you, by the way.
+
+@vaibcode (53:24.193)
+I liked it dude. I was gonna say I that's so sweet.
+
+@dexhorthy (53:30.393)
+Yeah. you don't have to wear it. I know you're a big slop king, but
+
+@vaibcode (53:34.587)
+hey, hey, hey. I I actually disagree with with the the fact that we should have slop. But slop can be a friend. I think that's probably the only difference. Slop is a tool. Yeah. that's interesting. We will have slop dead.
+
+@dexhorthy (53:42.981)
+Slop is a tool. It's like tech debt, you know? all right, let me share real quick.
+
+entire screen, sure, fuck it. All right, y'all. all right, y'all. On today's AI That Works, we went through a new paper, new ish. It's originally published in March called Slop Code Bench. And I published some results. We did an initial article last week on testing Opus V on Slop Code Bench. We went through the results of that, and then we went through the brand new results I just published this morning looking at how GPT five point six soul
+
+Fable five and Kimmy across two different providers performed on Slop Code Bench compared to the historical results. This is a really interesting benchmark because it's not saturated. the best models at our time are only getting 33%, which is like these are sweet bench 2024 numbers. so very exciting unsaturated benchmark. There's a lot of really cool, interesting data about code quality, about cost, about defects. and so this was a really fun episode. I hope you have fun. let's get into it, dude.
+
+@vaibcode (54:51.523)
+Alright, amigos. Always a pleasure. Thank you all.
+
+@dexhorthy (54:53.039)
+Take it. Good luck, fam. Take care.

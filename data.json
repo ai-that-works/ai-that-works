@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-08-11-unconference-recap",
+      "guid": "aitw-069",
+      "title": "Unconference RECAP",
+      "description": "On Saturday, August 8th, we are hosting another unconference bringing together some of the brighest minds in AI. This week on the podcast we will be recapping it! What were some of the best takeaways? What did we learn? If you aren't attending the unconference, definitely tune into this episode to see what you missed.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/unconf-recap",
+      "eventDate": "2026-08-11T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-11-unconference-recap"
+      },
+      "season": 2,
+      "episode": 69,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-08-04-slop-code-bench",
       "guid": "aitw-068",
       "title": "SlopCodeBench",
@@ -9,15 +29,16 @@
       "eventDate": "2026-08-04T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=Yh4eL60Ncxs",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=Yh4eL60Ncxs",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-04-slop-code-bench"
       },
       "season": 2,
       "episode": 68,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1486,15 +1507,15 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 71,
-    "completedEpisodes": 66,
+    "totalEpisodes": 72,
+    "completedEpisodes": 67,
     "upcomingEpisodes": 1,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-08-01T14:08:01.524Z",
+    "lastUpdated": "2026-08-07T21:28:45.557Z",
     "generatedBy": "validate-metadata.ts"
   }
 }
