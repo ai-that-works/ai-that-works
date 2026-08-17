@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-08-18-syncs-and-ab-testing-200-agents",
+      "guid": "aitw-070",
+      "title": "syncs and A/B testing 200 agents",
+      "description": "We've got a special two-part episode for you this week! We brought on two guests to tackle two massive technical challenges in production AI:\n\nWhat actually happens when you spin up 200 agents in parallel to run real A/B tests?\n\nHow do you cleanly sync data all the way from raw state, through your agent layer, down to the frontend?\n\nTune in for practical takeaways on scaling agent infrastructure that works.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/syncs-and-ab-testing",
+      "eventDate": "2026-08-18T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-18-syncs-and-ab-testing-200-agents"
+      },
+      "season": 2,
+      "episode": 70,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-08-11-unconference-recap",
       "guid": "aitw-069",
       "title": "Unconference RECAP",
@@ -17,7 +37,7 @@
       },
       "season": 2,
       "episode": 69,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1507,7 +1527,7 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 72,
+    "totalEpisodes": 73,
     "completedEpisodes": 67,
     "upcomingEpisodes": 1,
     "workshops": 3,
@@ -1515,7 +1535,7 @@
       1,
       2
     ],
-    "lastUpdated": "2026-08-07T21:28:45.557Z",
+    "lastUpdated": "2026-08-17T19:13:34.767Z",
     "generatedBy": "validate-metadata.ts"
   }
 }
