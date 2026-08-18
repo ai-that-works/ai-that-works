@@ -141,7 +141,7 @@ Meet the Speakers🧑‍💻​
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-08-11</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#69</strong>: Unconference RECAP</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-08-11-unconference-recap">code</a>
+          <a href="https://www.youtube.com/watch?v=fyZ0i4USjgc">watch</a> • <a href="./2026-08-11-unconference-recap">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">On Saturday, August 8th, we are hosting another unconference bringing together some of the brighest minds in AI. This week on the podcast we will be recapping it! What were some of the best takeaways? What did we learn? If you aren't attending the unconference, definitely tune into this episode to see what you missed.

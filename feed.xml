@@ -16,8 +16,32 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 17 Aug 2026 19:13:34 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 19:22:53 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[Unconference RECAP]]></title>
+      <description><![CDATA[On Saturday, August 8th, we are hosting another unconference bringing together some of the brighest minds in AI. This week on the podcast we will be recapping it! What were some of the best takeaways? What did we learn? If you aren't attending the unconference, definitely tune into this episode to see what you missed.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+
+
+Watch: https://www.youtube.com/watch?v=fyZ0i4USjgc
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-11-unconference-recap
+Event: https://luma.com/unconf-recap
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=fyZ0i4USjgc</link>
+      <guid isPermaLink="false">aitw-069</guid>
+      <pubDate>Tue, 11 Aug 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=fyZ0i4USjgc" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[SlopCodeBench]]></title>
       <description><![CDATA[On the podcast this week, we will examine a new AI coding benchmark called SlopCodeBench (SCBench), which aims to evaluate how software is truly developed. While typical benchmarks evaluate models using single-shot solutions against specifications, they fail to address the long-term difficulties of software development. Creating an initial solution is simple; the real challenge lies in extending, refactoring, and maintaining code over time. SCBench addresses this gap by requiring frontier models to continually build upon their own previously generated code across multi-checkpoint trajectories.

@@ -1,0 +1,927 @@
+@dexhorthy (00:01.841)
+We're live.
+
+@vaibcode (00:03.446)
+Or mastering the YouTube algorithm.
+
+@dexhorthy (00:05.714)
+Can you believe it? I've never been more online than I am right now. I am peak online. I'm so excited to be here with you talking about AI That Works. This is the AI That Works show. Ladies and gentlemen, we are gonna talk about things that work in prod. Real shit. No hype. Beyond the demo. My name is Dex Horthy, and I am the CEO and co founder of Human Layer.
+
+@vaibcode (00:07.67)
+How you done?
+
+@vaibcode (00:11.938)
+Ha ha ha.
+
+@dexhorthy (00:35.612)
+We build a multiplayer a collaborative agent coding workspace. And I'm joined by Vibov. Vaibov, please introduce yourself.
+
+@vaibcode (00:42.712)
+Mm-hmm.
+
+@vaibcode (00:46.542)
+My name is Viboff and I'm the co-founder of Boundary and we build a programming language and an observability suite for building code bases that you don't have to read every line of code.
+
+@dexhorthy (01:00.944)
+Wow, wow. Really, choosing violence today, huh?
+
+@vaibcode (01:06.622)
+we're just gonna start with the violence. no, I
+
+@dexhorthy (01:09.764)
+When d dude, when we started this show we you y we I we were not I'm the read the code guy and you're the don't read the code. If anything, it was the opposite. If anything we swapped places.
+
+@vaibcode (01:16.354)
+Ha ha ha.
+
+Hey, you know it's a ebb and flow of yin and yang. six months from now I'll be saying the opposite and you'll be saying the opposite and that's okay. I mean I think the beauty of the world as it goes right now is that it changes so fast and I personally find that the value of like literally just flipping your perspective every now and then to the opposite extreme is probably the healthiest way to really challenge the system as it is today. Cause if you're doing what
+
+@dexhorthy (01:23.868)
+Yeah.
+
+@dexhorthy (01:28.464)
+That's true.
+
+@dexhorthy (01:45.816)
+If you are not
+
+@vaibcode (01:48.214)
+I don't I just think like if you're s trying to stride the middle you're basically falling behind.
+
+@dexhorthy (01:53.38)
+If you were not changing your mind every three minutes you were falling behind. Sorry, every three months. Not every three minutes. Sorry.
+
+@vaibcode (01:59.247)
+Three minutes three I was like I offered a slightly slower time scale than you, so maybe maybe three months for me. Three minutes for you but yeah.
+
+@dexhorthy (02:07.031)
+I I had a buddy in college and he used to say, you know, if you can't look back two years and want to kick your own ass, you're probably not learning fast enough and AI is just compressing that timeline.
+
+@vaibcode (02:18.252)
+What's your Imad's got a fun question. What do you think about Claude Watermark stuff?
+
+@dexhorthy (02:22.799)
+We already have the watermark. It's load bearing fucking it's a trap. Like if you need a watermark to tell what text was written by Claude, you're not paying attention, buddy.
+
+@vaibcode (02:34.488)
+Wait, so catch me up on this. Claude is watermarking text, not just
+
+@dexhorthy (02:38.255)
+They they are putting stuff so you know how like when you copy structured text on your laptop and sometimes you paste it into something like if you copy Markdown from GitHub and you paste it into Google Docs, it like brings the styles with it. It's like actually it's like, you know, pasting XML and then the the client reads it. They're I guess adding metadata and tags and stuff, or basically if you copy text out of Claude and you paste it into something that like supports rich text, there will be little like smidges of
+
+@vaibcode (02:43.555)
+Yeah.
+
+@vaibcode (02:49.528)
+Mm-hmm.
+
+@vaibcode (03:06.968)
+That's interesting. You know, why do you think they're doing that?
+
+@dexhorthy (03:07.611)
+Claude and they said it it will persist through s it'll persist through some editing. So if you if you edit the right if you delete the right block of text or change it some way, you'll lose that metadata if the client doesn't support it. But I think they're having some something something like that. But yeah, they posted a thing.
+
+@vaibcode (03:29.122)
+Why do you think they're doing that?
+
+@dexhorthy (03:31.148)
+because the EU told them they had to.
+
+@vaibcode (03:34.71)
+Okay, well there you go. That's a good
+
+@dexhorthy (03:37.385)
+now why is the EU doing that? you know. W just Europe doing Europe things. I love Europe for the record, but this is a very EU coded coded move.
+
+@vaibcode (03:51.702)
+Europe trying to do things for the rest of the world, I guess.
+
+@dexhorthy (03:52.057)
+@dexhorthy (03:55.877)
+Yep. signed provenance metadata. Yeah, it will sign any image it generates gets yeah, I mean I think the images and the video stuff is way more important of like, hey, look, people spreading misinformation with AI using images of things that didn't happen is actually like a useful thing.
+
+@vaibcode (04:03.105)
+Well, okay.
+
+@vaibcode (04:12.737)
+Yeah, so like for example, new models will mark AI generated content from day one. Words everywhere you use clawed will help detect clawed marks. So I I guess the idea is you can query it very easily to know if it's clawed. This is gonna help systems like Reddit and stuff basically like remove like clawed clawed speak directly into the stuff, which I think is not a bad place if the platform opts into doing that.
+
+@dexhorthy (04:34.866)
+Well so it's not CloudSpeak. It's it's it's other, it's like unreadable metadata.
+
+@vaibcode (04:39.787)
+Yeah, that that's what I mean. So that's why like Reddit can probably do this in a better way. 'Cause they're like, if they I assume you have a programmatic API that Reddit could check on the back end to know if something like clawed speak.
+
+@dexhorthy (04:51.442)
+I see. Yeah, yeah, yeah. I mean it depends it depends if it's a rich text editor, I'm guessing.
+
+@vaibcode (04:52.875)
+You see what I'm saying? Like as I
+
+If it's an API, I suspect it'll have ways. Like and Reddit does have a rich text editor by default.
+
+@dexhorthy (05:01.296)
+I wonder what if they're gonna inject like Unicode characters that match the same like they look the same, but they're actually
+
+@vaibcode (05:08.351)
+Embedded watermarks and tests, Providence metadata for JPEG. I mean honestly it you know I I I'm kind of torn about all this 'cause like it's telling me it's gonna generate it for SVGs, PNGs, JPEGs, and like the reason I'm torn is because I'm asking myself a very, very important question, which is do I even believe that people care? And the analogy to this I think is like cameras. Cameras and locker rooms used to be banned. Now you got TikTok reels about locker rooms.
+
+And like society just moved on and accepted it as like a norm rather than trying to fight it. As much as I hate to say it.
+
+@dexhorthy (05:42.736)
+That's a very interesting example, huh?
+
+@vaibcode (05:45.964)
+I mean, as much as I hate to say it, like I think people are gonna be watching content that is fully AI generated and not care. Like AI AI generated, human delivered is probably what I was gonna happen for a while. And I see YouTube already doing this in so many different ways. I watch channels like you can hear the Claudisms out of their mouth and they're literally reading out of a teleprompter talking about like to verbatim saying the script that Claude wrote for them. But like people watch it.
+
+@dexhorthy (05:53.904)
+And the other interesting thing is
+
+@dexhorthy (06:12.754)
+yeah, no, I was at a wedding this year for the first time and I was like, Is that a chat GPT tick in your wedding speech? Are you serious? I'm not sure, unconfirmed, but like it was the first time I was like on alert for it.
+
+@dexhorthy (06:28.026)
+@vaibcode (06:28.183)
+Yeah.
+
+@dexhorthy (06:31.056)
+I don't know. It's also like you get to this point of like, okay, cool, I can I can generate an image with Claude and then I can pull it up and I can take out the certificate certification that came from Claude, right? You can always remove metadata from an image. So what that comes down to is now like, okay, if you take a photo with your iPhone, your iPhone's gonna sign it using like a hardware like private key, basically, that proves that this was taken on an iPhone with a real camera. But that stuff can all be cracked. Like there is no it's just like DRM, like there is no like guaranteed fail-safe way to
+
+@vaibcode (06:40.449)
+Yeah, of course, of course.
+
+@vaibcode (06:58.294)
+Yeah, there's no guarantee.
+
+@dexhorthy (07:00.018)
+Prove that a thing was really made. I think
+
+@vaibcode (07:01.965)
+But but DRMs are really good for the majority of use cases, like albeit of
+
+@dexhorthy (07:06.48)
+No, they're not. People stopped using them because people just kept cracking them. Like people don't use DRM anymore.
+
+@vaibcode (07:10.475)
+Yeah, but for a while for a while or g do they really not on Netflix and stuff? Like for example, if you're on Apple and you're trying like FaceTime and share your screen and you're watching T V, it instantly gets blocked. Like Apple as a hardware provider would
+
+@dexhorthy (07:22.376)
+yeah, there are yeah, so I mean DRM like I guess yeah that that's true. They still like blocks if you're watching something on Hulu and you take a screen cap, it blocks it, 'cause it's like if you're in the the blessed ecosystem, okay, and if you don't have that, then like the Netflix app will refuse to run. I I don't know. I when I hear DRM I rem I I think of like how they used to like if you if you bought a song from iTunes and then you sent it to somebody, that person couldn't play the file unless they like were logged into your iTunes account.
+
+@vaibcode (07:27.969)
+Yeah.
+
+Yeah.
+
+@vaibcode (07:35.947)
+I think Windows does the same thing too, right?
+
+Maybe not.
+
+Yeah yeah.
+
+@vaibcode (07:50.914)
+Yeah, that stuff I agree, but like the actual like premise that you're gonna encode data, I think anyway, we're way off topic. This is not what we intend to spend ten minutes talking about. let's go into what we're gonna talk about today, which hopefully many of you got the chance to check it out. We or some of you perhaps didn't. We hosted the UN conference this last weekend, and I think what today's episode of is gonna be about is actually going to be recapping what we learned about the UN conference, topics that came up.
+
+Sadly, we do chat and mass rules, so we can't say who did what, because we don't yet have approval from every single person out there. I suspect some people spoke about it and what that they were there and that they mentioned it, so we can mention them probably. But in general, it was a very fun vibe of learning a lot of different techniques. I think the only the one big takeaway I had, and I don't know about you, Dexter, was that we're all still figuring stuff out.
+
+Every single person is doing something differently than every other person and every single person is changing their mechanism every few months. Like no one is operating the same way that they used to be operating and no one expects to be operating in the same way that they're currently operating.
+
+@dexhorthy (09:03.322)
+And the crazy thing is like there is a spectrum of like the the software factory subversion, there's like a spectrum of like read all the code versus like just fucking make your factory work and like use feedback loops and use code to do it. And what's interesting is like sometimes you would think of that as like like linear journey, but like people move back and forth across that spectrum and people are on different sides and it's like it's it's actually really hard to tell who's who's ahead of whom or if the problems are different. It's a very multidimensional space.
+
+@vaibcode (09:13.175)
+Read that. Yeah.
+
+@dexhorthy (09:32.55)
+I think the one thing that was very clear was that everyone accepts that if you let models like like run unattended, they will write slop code and you have to be you either have to accept it or you have to do something about it.
+
+@vaibcode (09:47.916)
+Yes. I think there's zero people in the world that don't believe that. It's like the convergence of models running code is slop. Like they converge to s they or I guess they diverge to slop is a better framing. it
+
+@dexhorthy (09:58.736)
+Yeah, this what is the entropy thing of like everything everything naturally devolves into chaos.
+
+@vaibcode (10:04.065)
+Yeah. I yeah, I don't think there was a single person that said I mean there was I can't say who, but there was someone that was like you can just write code for like forever without reading anything. that was not me, by the way. I do believe you have to read a minuscule amount of code.
+
+@dexhorthy (10:20.643)
+Yeah. yeah, it was like just merge, merge without review, auto merge everything kind of thing. It's like but I mean some people are writing some people I say someone is saying they wrote like seventy deterministic linters for Rust. Like they just they just vibe coded a bunch of tools that like look for every single anti pattern and every time they see an anti pattern, they don't update their agent's memory, they don't update their prompts or their skills, they actually just go build another linter so that the next time someone writes code like this, it gets like fed back to the agent.
+
+@vaibcode (10:24.065)
+Yeah. Yeah.
+
+@vaibcode (10:32.855)
+Yeah.
+
+@vaibcode (10:39.074)
+Yeah.
+
+@vaibcode (10:46.677)
+It gets detected. Yeah.
+
+@dexhorthy (10:48.837)
+Yeah, and tells the agent like, Hey, here's here's what you did wrong.
+
+@vaibcode (10:52.569)
+I had a really interesting conversation last night, kind of following up from that, where we were talking about like how do you design linters in the world of AI. And I think the missing thing out of most linters is some sort of natural language. Like and the thing is like
+
+@dexhorthy (11:06.173)
+yeah, 'cause 'cause someone was saying, yeah, it like Deep Seek V four flash is like small, fast, cheap, and smart. And like if you just write if you can just write a list of a hundred rules of like this should never happen, this should never happen, this should never happen, like easier to maintain and like almost as good as a deterministic linter and like yeah, it's more expensive and it's slower, but like it's close enough that the trade off is like it's you're you're right on the edge there.
+
+@vaibcode (11:11.724)
+Yeah.
+
+@vaibcode (11:28.897)
+I mean you're paying let's say you're paying a thousand dollars per feature to ship slop. Is it worth it to pay like five dollars to review that slot? Probably. Like it like five dollars to have a lint to run on is like a hundred percent of trade off that you s I think people would make. So
+
+@dexhorthy (11:44.72)
+And I mean my take with all of this is like it's it's not like your goal should not be to get to light I mean, lights it's always good to like set a goal that's farther than you actually are gonna end up, right? If you're like, hey, I'm gonna make a billion dollars this year and you make two hundred million, then the goal worked, right? Like, yeah, you didn't hit the number you said, but like setting ambitious goals is a way to like 'cause you're always, you know, it's the you're gonna be halfway and halfway and halfway. like the higher your goal, the the the more progress you'll make. And so that idea of like
+
+@vaibcode (12:02.219)
+Well.
+
+@vaibcode (12:07.917)
+To be
+
+@dexhorthy (12:14.553)
+I don't if you set your gold lights off, fine. But like be okay with like, hey, we went from 50 PR, you 50% of PRs being merged without without any feedback to 90% of PRs being merged without any feedback. But until until you're actually merged a thousand PRs in a month or two, and you read all the code and you have no feedback, you should not like stop reading the code until you're very confident of like, yes, this has been working for
+
+@vaibcode (12:33.538)
+Yeah.
+
+@dexhorthy (12:40.803)
+Long enough that it's like 'cause I don't know, Kyle made this tweet this morning. Here let me pull it up. It was just like I think it's already got like fifty thousand views.
+
+@vaibcode (12:47.571)
+I don't think I don't think one should be merging code at a faster rate with AI than they what they were merging before unless they actually have a grasp of the system and they believe that the system is converging.
+
+@dexhorthy (12:55.91)
+Yeah.
+
+@dexhorthy (13:00.945)
+Wait, where is this post? Hold on. my god, Kyle Kyle's posting a lot these days. let me pull this up. entire screen. Chrome? Chrome? Where's Chrome? Alright, we're just gonna do this one. Yeah.
+
+@vaibcode (13:09.677)
+We got
+
+@vaibcode (13:13.569)
+And then while you pull that up, do you remember what this one?
+
+@dexhorthy (13:18.417)
+If you're not reading the code, you have no idea how much garbage is in your code. Like you can't say, like, we don't read the code, the models are good enough. It's like, no, you if you don't read the code, then you don't know. You cannot say that it's good or not. did you say something? Yeah, yeah. Yeah, read the least amount of code you need to ship reliable software. In a large enough code base, your best engineers don't read all the code. Many more worse engineers ship slop all the time. Yeah, companies work.
+
+@vaibcode (13:28.247)
+Hey, scroll down, scroll down. Scroll down, scroll down. They're they're right there. Right there.
+
+@dexhorthy (13:43.524)
+Anyways, that was like one part of the discourse. What I liked about the Young conference though was it was like the audience built the agenda and there was lots of people who like kinda care about code, but people shared like their take on Andre Carpothy's LLM wiki and how they maintain a like recurring improving memory system over time that like how you can have like all the right information in your context window back to context engineering and stuff. There were people talking about how to build coding harnesses for hardware and build the right feedback loops there.
+
+@vaibcode (14:11.149)
+Do you remember right here we got
+
+@dexhorthy (14:12.299)
+you got the schedule, nice.
+
+@vaibcode (14:16.009)
+I guess we revealed one one person who was there, Quinn. Quinn La from the Pipe Cat and yeah, he's great. Yeah.
+
+@dexhorthy (14:16.06)
+how to build yeah.
+
+@dexhorthy (14:23.181)
+Yeah, he's always he's he's technic yeah I'm sure yeah. He also he gave he gave this talk, well, he gave the talk
+
+at AI engineers. So but yeah, that was good. Migrating large code bases, personal context layer. we talked about KV cache engineering, like some really like down to the metal, like I missed that one. Was it dope? What was the big takeaway?
+
+@vaibcode (14:40.877)
+That was so cool. Yeah. Yeah, I learned I mean I think I've looked at this stuff before, but I think for if you haven't, I think the biggest takeaway is you don't probably realize how much things like I learned something new. For example, if you change the reasoning midway, did you know that you invalidate your full cash?
+
+@dexhorthy (14:57.989)
+Yeah.
+
+@dexhorthy (15:04.269)
+Like like like all the way back?
+
+@vaibcode (15:05.557)
+If you change the reasoning in the middle of the all the way back, you invalidate the full cash.
+
+@dexhorthy (15:10.449)
+Well so my my my understanding was like there's certain ways to use the APIs where they will either keep all the reasoning in or they will only keep the most recent reasoning block. But if you take out the reasoning block here, you still keep the previous cache, right?
+
+@vaibcode (15:18.987)
+No. So the the reason
+
+@vaibcode (15:24.363)
+Nope, you don't. I'll show you why. reasoning
+
+@dexhorthy (15:26.469)
+That's that's a bad API design.
+
+@vaibcode (15:29.173)
+No, I'll show you why GLM grammar.
+
+Let's see if can find it.
+
+@dexhorthy (15:37.265)
+I'm gonna make you a whiteboard in case you wanna draw it by the way.
+
+@vaibcode (15:37.773)
+If I can No no I'm I'm just gonna pull up chat G with T.
+
+@vaibcode (15:49.23)
+Yeah, I'll I'll just find out like gr like the grammar of text for what it looks like for GLM or like for GLM or for like OSS one twenty B. or get it for GPT one twenty B. I just wanna look at the prompt and like the grammar and the prompt. It's I know it's somewhere, I can you just access it online. I just wanna show the template of what's going on for it.
+
+@dexhorthy (15:59.398)
+Yeah.
+
+@dexhorthy (16:13.189)
+By the way, we only see we only see the unconference thing if you wanna be sharing your yeah. And how did you make did you you took a picture of the all the post its on the whiteboard and then just gave it to Claude?
+
+@vaibcode (16:15.797)
+Yeah, yeah. I'll I'll share this in a second. I don't know if I wanna share my
+
+@vaibcode (16:22.385)
+this is amazing. Yeah, I literally I literally just took a picture and I was like, Hey cool, I'll do this and it made some mistakes. but we were able to go fix that along the way. and that was pretty like it made very few mistakes. yeah.
+
+@dexhorthy (16:30.353)
+Yeah.
+
+@dexhorthy (16:34.811)
+The the o the other one I really liked is like kind of the more like human take on the sharing learnings with your engineering team of like, hey look, everybody's on their own journey learning AI and building like competence with using it for both technical and non technical work. And a lot of people using AI for non technical work are technical people. Hey, what's up, Avery? your audio is super you have like a lot of background noise. Do you mind muting for a sec?
+
+@vaibcode (17:02.177)
+You should you should quit, rejoin, use your headphones from your mic fr use the headphones from your headphones sorry, speaker from your headphones and the mic from your laptop.
+
+@dexhorthy (17:16.891)
+Cool. Avery's coming back. Avery's gonna give a little recap of of his talk, which was interesting. And if you've watched the slop code bench episode we did last week, it will sound i he went he went a little deeper, on on some specific examples, so that'll be fun to see.
+
+@vaibcode (17:31.767)
+So I'm gonna I'm gonna share a different screen really fast and like you'll see what I mean. So like check this out.
+
+So like the grammar often has this. So reasoning is often one of the earliest messages that goes off into any prompt. So this is like the actual prompt for like GPT.
+
+@dexhorthy (17:45.337)
+And the the start and the message things are basically those are like special tokens.
+
+@vaibcode (17:50.156)
+Yeah, these are just special tokens. Like i well, maybe start and system message is a special token. I suspect this is a special token if I were them. But anyway, the point here is like, see this reasoning stuff right over here? You change the reasoning, you change one of the earliest tokens in your whole prompt. Everything is invalidated.
+
+@dexhorthy (17:55.003)
+Yeah, yeah. Yeah.
+
+@dexhorthy (18:00.752)
+Yeah.
+
+@dexhorthy (18:06.189)
+No I see. You don't mean changing the content of the reasoning. You mean changing the changing the content of when you change the reasoning level. That's crazy. Why would they make it like that?
+
+@vaibcode (18:11.563)
+The reasoning level.
+
+@vaibcode (18:15.827)
+yeah, I
+
+some other interesting facts that I learned is like the reasoning tokens aren't only actually hard coded. So like there's some models that only have medium and high. You can also pass low into them and they mostly work. Because like they're trained on semantic meaning of what it means. at least empirically. Obviously you're not gonna get the same results. Like if you really think about what's happening here is like the model gets trained on like this token yields to some amount of reasoning tokens being favored or not favored, in the post training loop. So like when it does that, obviously put in low, it hasn't
+
+@dexhorthy (18:31.897)
+Mm.
+
+@vaibcode (18:47.989)
+It has an approximate meaning of what that means. So it's allowed to generate so many tokens before it prefers to generate the stop reasoning token.
+
+@dexhorthy (18:54.917)
+Yeah. It's just like any other instruction of like, hey, run the test after you change code. It's like d it it it changes the chance that the next token will be more reasoning or reasoning and and into the actual like call messaging and tool calling.
+
+@vaibcode (18:59.125)
+Yeah, exactly.
+
+@vaibcode (19:07.335)
+Exactly. So that was that was a really interesting talk. I thought I don't know which of these did you get to attend that you thought was interesting. I love the building evals one too.
+
+@dexhorthy (19:17.393)
+I I don't know, I was running around doing conference stuff. Wha how what did you think of the eBell's talk? What was what was interesting there?
+
+@vaibcode (19:21.751)
+That was I can't say whose, but okay.
+
+@vaibcode (19:29.623)
+The eval stock, I thought the most fascinating part was building evals for your skills. Building evals for skills was a fantastic takeaway. I had not thought of it in that way. like if you're going to build a software factory. The idea is if you're going to build a software factory, you can't actually eval most of the stuff that you're trying to do. and the reason that you can
+
+@dexhorthy (19:39.353)
+What's the what's the T L D R
+
+@dexhorthy (19:47.653)
+Because it's such like it's like long long context, like long tr like like long horizon tasks and like you can't just look at the trace and say like this is good or bad.
+
+@vaibcode (19:57.868)
+Yeah, so let me join the room and let me scaladraw really fast. So like the idea is like look, there's like two parts of a software factory, there's planning. Where you basically build specs, and once your specs are complete, then you can build like implement. one fairly consistent conclusion about the whole thing is that the implement loop is solved. Like you like coding agents can implement most things and you can eval this pretty well. Like right here you have some skills.
+
+@dexhorthy (20:01.168)
+Yeah.
+
+@vaibcode (20:26.071)
+You have some other stuff that you end up doing, you have like skills, you have your environment that you're gonna set up. yeah, like all the stuff around that, like tests, linters.
+
+@dexhorthy (20:30.799)
+Yeah, you have your tests and linters.
+
+@vaibcode (20:39.113)
+And like if this is bad, this is only bad due to a couple of things, which is either your skills are wrong, your plan was wrong, or your environment is set up incorrectly. And in that world, you can really evalu you can do a closed loop eval in the implement loop really, really fast. So if you can do that, then the next part just becomes like, can you merge? and I what we find the biggest bottleneck was really the planning side. But the whole part is like because this is so evaluable.
+
+then what you can also do is you can also go ahead and actually like you can also go ahead and actually just validate the implementation loop.
+
+@dexhorthy (21:17.309)
+Interesting. yeah, because you can take a plan that you already know was implemented well, change the skill, and then just see if it still implements well.
+
+@vaibcode (21:17.569)
+@vaibcode (21:26.301)
+Exactly, exactly. And that's one thing that I found to be very, very interesting, as a part of this.
+
+@dexhorthy (21:30.481)
+I mean, this is what we talked about on the very first episode of AI That Works was like how do you take this large problem and break it down into like things that you can probe at a lower level so you can optimize smaller parts of it and you can figure out like, Okay, the end to end is slow and expensive to run and it's like there's lots of edge cases. How can I break it down into smaller problems?
+
+@vaibcode (21:53.334)
+Another thing, verification loops. like adversarial review. I I'll call that.
+
+@dexhorthy (22:00.219)
+God I'm so sick of that word. It is not a magic word. Saying the word adversarial does not magically make the code bet I mean it will make the code slightly better and it will catch all the dumb stuff, but like adversarial review does not solve your problem.
+
+@vaibcode (22:02.603)
+Yeah, I know, but it it
+
+@vaibcode (22:13.153)
+Yeah.
+
+Yeah, but almost everyone had some variant of adversary review in their process. Almost anyone that was shipping code with AI, they were always like having some sort of loop at the very end. And I think the idea is not the idea is not that you should do this as a the idea is like you're gonna do oops. The idea is you're gonna do something, then you'll have like a loop like an ad loop. And then the idea is that this thing will loop before it goes to a human.
+
+@dexhorthy (22:27.055)
+Yes. So it's good.
+
+@vaibcode (22:42.945)
+You wanna delay going to the human as much as possible and this this just increases the odds of like it being correct for the human by the time it gets there. and I thought that was fascinating that com almost everyone independent whether whatever they called it, different people called it different things, always had that kind of process coming in.
+
+@dexhorthy (22:43.504)
+Yeah.
+
+@dexhorthy (23:01.269)
+someone's posting shilling stuff in the chat. I'm gonna kick them out. I've never had to do this before, I'm really excited. I can't, you have to you have to boot them. I'm not an admin.
+
+@vaibcode (23:05.895)
+sure, yeah. Take
+
+@vaibcode (23:10.792)
+Ha ha ha
+
+How'd I boot this person? I I don't know how to delete this. I don't even know how to this is too much work. I'm sorry.
+
+@dexhorthy (23:21.989)
+Go to the people list.
+
+@vaibcode (23:23.733)
+No, it doesn't have anyone in here. I only see you and me. Anyway.
+
+@dexhorthy (23:25.546)
+damn. Alright, stop posting shilling for your shit in the chat, or we will find out how to ban you.
+
+@vaibcode (23:33.153)
+scorecards for hill climbing. I didn't check that one. Slop free software factories was yeah.
+
+@dexhorthy (23:38.31)
+That was the one I went to that was I won't say who it was, but it was very good. they talked about like how they have basically like three parts of their loop, which is like discuss and decide and brainstorm all of the plan all of the parts in planning of like one thing, and then they have implement and then they basically have compound. They only have three skills. They have like figure out what we're gonna do at a high level that gives us leverage over what's coming next, do the implementation, and then compound is like
+
+Hey, review what rent what went wrong, pull in PR comments, pull in agent traces, pull in user messages, and then like figure out and they do like once a week, they just get a report of like, here's all the things that went wrong this week that like the agent didn't solve and that humans needed to get involved for, like, prioritize and then they just pick a couple of things every week to like build that into the implement system or into the planning system.
+
+@vaibcode (24:30.317)
+Cool. ch I didn't check out I I actually missed these 'cause I was in the middle of something. but I I mean obviously harness engineering. there people we just shared actually I think this they posted about this so I can pull this up.
+
+@dexhorthy (24:31.449)
+Yeah.
+
+@dexhorthy (24:45.576)
+the the orchestration primitives thing?
+
+@vaibcode (24:48.513)
+Yeah, I thought it was kinda I thought that was kinda nice. It was like some really nice diagrams that they made actually. Let me share this.
+
+@dexhorthy (25:00.061)
+yeah, I was just looking for this. I was gonna try to show this off too, but you can pull it up. yeah. This is Will is one of the OG BAML guys. He built a coding agent in BAML like forever ago.
+
+@vaibcode (25:11.297)
+Yeah, but I think the coolest part is actually he he does like had it go and search through a bunch of stuff. and like found a bunch of control flows and like I know we've all talked about these processes, but it's just nice to see the entire list of everything kind of built out. And what's really fascinating to me personally is I look at this, I'm like, Okay, well, this literally just looks like code. And like it's interesting that we've invented like well, I don't know about that, but this is definitely how you would like
+
+@dexhorthy (25:33.317)
+Yeah. This is how you would design a programming language.
+
+@vaibcode (25:40.301)
+Like these strategies are not new. And I think that's probably the most important part here. It's like none of these strategies of execution patterns are new at all. So given that they're not new, go ahead.
+
+@dexhorthy (25:48.197)
+Did you did did you ever did you ever read design patterns, that like C plus plus book?
+
+@vaibcode (25:58.956)
+I'm actually illiterate and I don't really read, which is a very sad thing about myself to admit.
+
+@dexhorthy (25:59.814)
+Gang of four.
+
+@dexhorthy (26:03.849)
+at my first job I had a twenty minute bus commute and I would always read on the bus. So I just read like forty minutes a day and I would read that's how I learned closure. That's how I read clean code. It's the only way I can read is like it was before phones were super addictive, or I just had managed to not get hit by that. I also had like for two years out of college I was poor and so I just had a flip phone instead of an iPhone. yeah. Yeah, I was crazy. Dude T nine, I'm
+
+@vaibcode (26:28.311)
+Dude, that was wild.
+
+@dexhorthy (26:32.645)
+Yeah, okay. Patterns that's what I said. Okay. Thank you for sharing that. anyways, yeah, Design Patterns is one of those books. I mean, they had like forty things of like the observer pattern and the fly away pattern. It was all these things that like basically like if you like people keep reinventing the same idea over and over again poorly with the wrong algorithm, and it's just like if you keep iterating on this code for a while, you will land at one of these forty patterns. Factory pattern, like yeah.
+
+@vaibcode (26:35.053)
+Cool. Yeah.
+
+@vaibcode (26:59.563)
+Yeah, that's Yeah, so my big gripe with this thing, like it's really nice visually and honestly Will did a fantastic job, but my big gripe is just like there's not like a hundred patterns. There's literally only like there's a reason like map reduce, for example, is just map and reduce. And that breaks down everything you need to do in distributed systems. And like pretty much all other computation work that you have to do.
+
+And the beauty of most systems is like the minimum that you can have. But it is useful to see concrete examples of certain patterns. And obviously I know map reduce has a couple more constructs, but like at at a very high level, it is map and reduce. So I found I found I mean I do think that for many I mean in some ways data structure is very similar to kind of what you're saying, Dexter. It's like while it all boils down to the same 40 patterns.
+
+It is useful to learn like the one hundred most common applications of those forty cap patterns, even though that's way more than the forty patterns themselves. Because it just makes you a better engineer. You if you can do an O one lookup.
+
+@dexhorthy (28:02.059)
+Well, yeah, the problem is if you read too many design patterns or you read too much, you know, you download a Google library and you go spelunking through the Google code, you're just like, I'm gonna just make an abstract singleton factory factory for everything and like it's not it's not done in bad faith. It's just it's like what will naturally ha like if you just build the code you will naturally land on these design patterns. And if you read about the design patterns you will naturally land on like a lot of bullshit probably.
+
+@vaibcode (28:10.316)
+Yeah.
+
+@vaibcode (28:16.781)
+Yeah. Yeah.
+
+@vaibcode (28:26.221)
+Yeah, it is a f software is a fine balancing act, is what I would say. Okay, so unfortunately I think Avery won't be able to join today. his audio s his A V's not working. I don't know why. I should tell him to just use my mic setup. But it's fine.
+
+@dexhorthy (28:33.541)
+Yeah.
+
+@dexhorthy (28:39.217)
+'Cause he can't get his A V.
+
+@dexhorthy (28:43.493)
+Aww. You should just do his slides as if you're Avery. You should just steal his steal his valor.
+
+@vaibcode (28:48.793)
+I can't I can't disservice him like that. Maybe maybe what we can do is we can have Avery and perhaps one of the other speakers come on next time and actually give their talks 'cause I thought some of the talks were phenomenally well done. And that could be fun.
+
+@dexhorthy (28:59.417)
+Okay. I mean, I have if you need twenty minutes, I have a talk I'm working on for a launch today that we could talk about that a lot of people seem to so we talked about this a little bit at the end conference, but like is a thing that I think like everybody is on this journey towards. It's a little bit human layer coded, but it's like basically like how do you go from how do you go from like like basically like where do you put your fucking plan docs?
+
+@vaibcode (29:06.893)
+Let's hear it. I mean I don't need
+
+@dexhorthy (29:25.283)
+And like how do you organize them and where should they live and how do you work with them and like I think the journey that everybody goes on to get there. was was was the other guy gonna come? Is he is he in? Did he reply?
+
+@vaibcode (29:38.065)
+I was out all night and I did not message someone. so sadly I didn't know. But I'm I'm down that I should tire your talk. Or honestly, if people have questions, we're happy to take questions, or like today can just be a light day as well.
+
+@dexhorthy (29:42.255)
+Okay. I know.
+
+@dexhorthy (29:51.056)
+We can answer do we need to design patterns with AI, isn't AI already knowing it? And I will say that the problem is AI knows it too well and it's in the second it's in the second class of the like, I'm just gonna use factory patterns for everything. or it's like I'm gonna use an overcomplicated algorithm for a thing that doesn't need it.
+
+@vaibcode (30:10.741)
+See if I can get this
+
+@vaibcode (30:17.257)
+I I'll see Avery has slides. This i I mean this just ba Avery's thing just proves this basically. Like basically I think what we found is very similar to slop code bench where if you let the AI go wild, it is not going to do a good job. as far as I know. because it will mess up one out of ten times and av every one out of ten times it messes up means that if it's made a hundred decisions, it's messed up ten times. And
+
+@dexhorthy (30:29.755)
+Yeah. Yep.
+
+@dexhorthy (30:39.279)
+Yeah. And it's also like the the it compounds, right? It's like, okay, if you put AI in a hundred percent clean code base and it messes up one out of ten times, well the the the the odds that it's gonna mess up is a function of like the cleanliness of the code base that exists. So if we come like it's like
+
+@dexhorthy (31:03.057)
+P of mistake equals like cleanliness times or like like there's like a base P of mistake, I don't know.
+
+@dexhorthy (31:21.649)
+What am I saying? I don't know I don't know how to express this. It's like P1 of mistake. you got it? Alright. Thank you.
+
+@vaibcode (31:25.549)
+I mean I I've got it right here. I've got it right here. I've got a good example. Yeah. Avery was kind enough to send me the thing. so okay, there's this is kind of interesting. So like check out this. Like imagine building a thing that does ticket master and you have to do three things. You have to either open and by the way, all credit to Avery. If you like him, go follow him on Twitter. He's
+
+@dexhorthy (31:45.721)
+I thought you just said you weren't gonna steal his slides and do them for him.
+
+@vaibcode (31:48.502)
+Yeah, but this is so good. He just sent it for me. but I'll have him do the full talk later. But you have open, held and sold. You can represent this as two pools, and it both pools can never be true. And the consequence of this is if you chose the left representation instead of the right representation, regardless of what it is, and this is Rust code, so excuse us. when you go add a new state, see here, you'll have one thing to update. Here you have to now update one, two, three, four places.
+
+And now you can take this up to the nth degree. What are the odds that an agent will forget to update one of the places? The more complex the system, the more likely it will miss one state. And therefore you will be sad. And your code will have bugs.
+
+@dexhorthy (32:17.497)
+Mm.
+
+@dexhorthy (32:27.843)
+Right. This is forty lines of code that can get way more complex with one mistake. Imagine four hundred thousand lines of code fit twenty then.
+
+@vaibcode (32:35.531)
+Yeah, exactly. This isn't forty. How many lines of code is this? One, two, three, four, five, six, seven, eight, nine, ten. It's like twenty. Like, it's just guaranteed to mess up. and I'm not gonna I'm not gonna steal any more of this thunder because Avery will get to the whole talk. It's gonna be fun.
+
+@dexhorthy (32:46.47)
+Yeah.
+
+@dexhorthy (32:50.661)
+We'll do. Come next week if you wanna see the full talk on Avery measured slop and had two hundred agents implement the same feature and did the stats on like how many what percentage of them got it wrong versus got it right.
+
+@vaibcode (33:00.181)
+Ha.
+
+Yeah, I thought it fantastic. Mateus has got a great question. Beyond separate models, what adversarial review approaches do you recommend? how using how many documents? I'll tell you what we do, and Dexter, I'd love your thoughts on this too, because I'll learn something new. when it comes to separate models, so I don't really care about separate models. Personally, I just clear the context, it's fine enough. It doesn't really matter. But what I do care about is I'd like to frame adversarial review as a design constraint that probably the model skipped on. So in our case, performance is a very
+
+Concrete measurable thing. The best way to do adversarial review for us is we just say, is this fast? And you just ask it like what would make this faster? And it will literally just come up with better data structures. And once you have a better data structure, it often will actually clean up the code a lot more. Like funnily enough, faster code is usually better code, especially when it comes from like initial model code.
+
+@dexhorthy (33:56.346)
+Yeah. I think I think I put it in this category of like w there's this paper we've talked about before called Don't Waste Your Back Pressure, which is like if you are just reading all the code and trying to decide if it's correct, then then like then yeah, you're screwed. So like what you can do is like in the early part of the effort you can use a compiler to check stuff. And now you as a human don't have to like check for the symbols in the compiler. you may bring in like a type system as well. I mean type system compiler is kind the same. and then like basically
+
+@vaibcode (34:05.613)
+Yeah. Y you're screwed.
+
+@vaibcode (34:24.929)
+Yeah, not really. No.
+
+@dexhorthy (34:26.905)
+Alright, fine. if you're using a langu but like if you if you use C, the compiler is doing the type checking. so if you're using a fake language with fake types, then yes, you need a type system separate from your compiler. like Python or TypeScript. welcome to TypeScript where everything's made up and the types don't matter. and then you can have MC this has MCP servers, but this is like using playwright, using external tools, giving the agent back pressure.
+
+@vaibcode (34:31.851)
+Yeah. Yeah yeah yeah yeah yeah.
+
+@vaibcode (34:45.761)
+Well, yeah. Anyway, go on. And then you can add more but
+
+@vaibcode (34:53.153)
+What do you guys do though in practice?
+
+@dexhorthy (34:56.337)
+what the last feature I was building was something where I basically I had this like vision for a thing and I just basically I wrote a PRD. so I'll show you I'll pull up the PRD that we made. what is it, V3? So this is a very large task with lots of stuff. I'll talk about what I did, but the first thing we had was
+
+actually need the mock-up. Let me go find the mock-up. I kind of stopped using the dock and I just used this mock-up, but somewhere in here. Is this it? No, that's trash. give me one sec.
+
+@dexhorthy (35:44.068)
+Another HTML file in here somewhere. Yeah, this thing. I started with just like, hey, here's the new prompt experience in HumanLire. And then we iterated on this. And then I just literally was like, okay, what does every drop down look like? What is every like ticket? What's the behavior when we're fetching stuff? sorry, I'm not sharing. Yeah, sorry. wow. So you guys have just been staring at the article. all right, any other work circle of trust.
+
+@vaibcode (36:00.126)
+What I what are you sharing? Do you meant to share this?
+
+@dexhorthy (36:13.731)
+So I built this PRD basically, which is like the new prompting experience in HumanLayer. and then I went through and was like, okay, what does every drop down look like? What are the options? what happens? What are the loading states? How do we like generate stuff? What do errors look like? What does the directory selector look like? Et cetera, et cetera. Like we just kind of like went and figured out all of this. And then I just sent Fable on like an infinite loop to go to go implement this. Just like keep going, implement everything. I think it technically did make a plan and
+
+@vaibcode (36:40.491)
+Yeah. And just make it look like this.
+
+@dexhorthy (36:43.833)
+Yeah, exactly. Use the browser to go through and do this. Then what I did was I played with it, I vibed it. I had it have codecs, so it was like basically like it was like now launch a codec CLI Codex CLI to review, take the feedback, and I basically I did this the the way I did this was I queued a bunch of messages. So it was like
+
+@vaibcode (36:47.18)
+Nice.
+
+@dexhorthy (37:10.351)
+I was like at prompt.md, which told it to like track its progress and look at the PRD and things like this. And then I did slash compact. And then I said at prompt.md, keep going. And then I did like slash compact. And so I queued all these up. So like I I don't even use Ralph loops anymore. I just use in human layer you can queue up a bunch of messages and they'll send one at a time. And then it was like, you know, slash C R L which is our codex review skill, like review and fix, etc. And I just did this like ran this overnight.
+
+@vaibcode (37:21.527)
+That's funny.
+
+@dexhorthy (37:39.055)
+And then I came back in the morning and I like, you know, vibed some changes for for an hour or two.
+
+@vaibcode (37:46.295)
+Yeah, and then you merged.
+
+@dexhorthy (37:48.037)
+Nope. I looked at the PR and it was twenty thousand lines.
+
+and it was mostly isolated in its own tree, which is what we like to do when we're riffing out new features. We're like, cool. If you need to use shared code, you may not change the code that the main tree is using. If you need to change it like a tiny bit, you can, but don't add extra props, don't add extra like parameters. Like you will copy that function and put it in the new tree. And eventually we'll just throw away the old tree. but we kind of force it to like repeat code if we don't know what the abstractions are.
+
+@vaibcode (38:21.186)
+Yeah.
+
+@dexhorthy (38:24.197)
+But so for this PR, I then basically like reverse engineered it into seven small PRs. Seven small PRs of like three to five K each. And so that was actually the interesting planning where we used the code as kind of like the spec of what we're building. And then we built it into this like PR splitting plan, which to build this actually took me like an hour or two because it was asking a bunch of questions and I actually like changed some of the behavior basically.
+
+@vaibcode (38:32.653)
+I see.
+
+@vaibcode (38:41.323)
+The plant, yeah, yeah.
+
+@dexhorthy (38:52.741)
+but then this is basically for each one, it's basically make a new work tree, here's your reference code. When you wanna copy files, like copy the file and delete from it rather than reading the file and like writing the new code. and things like this. So I'm I'm now on PR number four of this, but each of the PRs was only a couple thousand lines of the last one I merged last night was like fifteen hundred lines. I vibed out the got the behavior right. So it's like we prototyped to get the shape of it, and then I went back and broke it down into things that like
+
+@vaibcode (38:59.575)
+That's cool.
+
+@vaibcode (39:21.409)
+Yeah.
+
+@dexhorthy (39:22.385)
+Kyle will actually review. And so here is like one of the PRs that got merged. so this is, I don't know, this was only a couple hundred lines, but
+
+@vaibcode (39:24.343)
+That's funny.
+
+@vaibcode (39:28.653)
+We do a slightly we do a slightly different approach where it's like we actually do it like so you're doing it more aggressively up front. We do something very we do something slightly different, which is like you you kinda just merge it ahead of time and then you we kinda just bake in time as a part of engineering process to like refactor recur like retroactively.
+
+@dexhorthy (39:52.132)
+Okay. And Mateus asked the question about the thing I was gonna talk about right now, which is where do you keep the spec driven dev? Where do you keep your docs? Do you keep it in the repo alongside the code? Or in Jira or in DOX? So this is literally like the journey that everybody frickin' goes on. So I'm gonna share again. and I didn't finish drawing this, but maybe we can finish on the show. so basically, like we hear all this thing about artifacts, and we talk about artifacts as like markdown documents of like
+
+@vaibcode (40:03.52)
+Not with the code, man. Not with the code.
+
+@dexhorthy (40:20.315)
+Plans, research, specs, whatever you want to call it, right?
+
+and like they're separate from the code, right? Usually they're like fairly short-lived. and then you use them to produce code. and the first thing that everyone ends up doing is they end up in your code. You have a plan.md and a review.md, and maybe have a couple for different features, and you either git ignore them or you commit them because you want to come back to them later, or you want to share them. Eventually, you maybe like put them in a special directory.
+
+so you have like a folder for all your plans and then you start sharing this across your team and they like build up over time and then the model finds them but they're out of date. and so like it actually like slows you down instead of making you faster. Is this are you following this so far? Like did you go on this journey kind of?
+
+@vaibcode (41:13.864)
+I I I had yeah, I mean I yes, people initially check in MD files and then you quickly realize you can't do this.
+
+@dexhorthy (41:22.671)
+Yeah. and so like the next thing people usually do is like you scope them by feature and then when the feature is shipped you try to clean up the old ones. You can do this automatically or manually. and then like the real challenge that I hate is like you have work tree one and work tree two, and you have feature two over here and feature three over here, and your coworker has feature four, and you constantly end up asking yourself, like, wait, what branch was that artifact on?
+
+@vaibcode (41:31.01)
+Yeah, no chance.
+
+@dexhorthy (41:46.662)
+Like what branch was that plan on? And like, I want to reference that plan over here, but it's from an older checkout, it's from a feature that didn't get merged yet, so I have to go like find it. it sucks. It's hard. I've do we this happened with a bunch of customers that we've worked with. the other thing too is like GitHub is really good for reviewing like diffs, like when things are changing. But you well, it's not even bad for Markdown. Like, it's good for Markdown diffs, but like.
+
+@vaibcode (42:06.446)
+Yeah, it's bad for Marktown.
+
+@dexhorthy (42:12.355)
+If you just want a document that's not changing that much, I can't comment on this in GitHub. Even if I go look at the raw code, like there's no way to comment on a on a thing. You can only comment on a change. and so the big the takeaway here is like don't store your artifacts in Git. Like put them somewhere else. and so what we like to do is we get ignore this. Some people put them in Notion or in Google Docs or Vibov, I know you guys have built a system to do this, your like Bep thing. and so you git ignore this.
+
+And then basically you sync it with an external system. So basically what we've built is like there's this flow of like the agent like does like a is talking to the file system.
+
+@dexhorthy (42:53.51)
+actually we'll say the agent calls calls a thing in the harness which touches the file system.
+
+@dexhorthy (43:06.65)
+and then the file system says like okay. And then what we have is basically a hook that is
+
+@vaibcode (43:16.246)
+Yeah, you guys sync like from the harness itself, anytime you read certain files in that plans folder effectively, you kind of sync it with like a cloud artifact. Yeah.
+
+@dexhorthy (43:21.933)
+Exactly. Yeah, and so this actually gets pushed to an API where we store the file contents. and then you can see them in a web UI. so the hook will like sync this and then this goes back and then the harness says, Okay, the hook is done, and then it passes control back to the agent. I'll call this the model, technically, since the agent is the harness plus the model.
+
+and then over here you can serve these and look at them. This is how this is how human layer stuff works when I'm all these docs I'm showing you, that's exactly how these were created. and what's cool there is like the other side of it that we also like to do here is sorry, I'd stopped sharing my whole screen again, but we'll pop back. actually let me just take a screenshot of this doc.
+
+@dexhorthy (44:18.513)
+So like here's our dock here.
+
+and so you can view these in the UI now. and then then the other thing that happens is like another model running in another harness, basically, what we have built into our sort of meta harness is like
+
+@dexhorthy (44:44.822)
+we call this like the the demon or the worker. Basically when when the when the client requests a new session
+
+we start a watcher against that API.
+
+@dexhorthy (45:04.303)
+And so here's your API server, right? the API requests a session. We start a watcher for like basically
+
+notify me when task files change. When artifact when task like artifact files change. and we group these like per per like thing you're working on. And so if some this agent over here updates it, that change will flow into my local oops. I'm getting really bad at Excaladra.
+
+@vaibcode (45:23.17)
+Yeah.
+
+@vaibcode (45:31.606)
+Yeah, it just f you kind of have like a Dropbox like sync kinda mechanism here, right? Yeah.
+
+@dexhorthy (45:35.577)
+Yeah, exactly. So it's just constantly watching this stuff and then this flows into the file system.
+
+So the outer thing is actually writing to the file system. And then when the harn when the model wants to read a file, the harness goes and touches the file system, and this thing has been synced down. so this is how you can kind of like it's a it's built on an electric SQL sync. there is one c weird race condition that we don't handle.
+
+But what we found is like you probably don't need CRDTs for this for most cases. Like CRDTs would be the way to do this like perfect, like like all race conditions handled, like no merging. but the scrappy way of doing this is just dropping things on the file system and then the agent can read them. And what's nice here is you don't need any extra MCP tools. so I didn't I didn't mean to tell turn this into a like here's how human layer does this, but basically like the the idea is like you should like make your
+
+Files accessible to the agent, whether it's a Google MCP or an Ocean MCP, or just like having some process that just drops them on the file system for you. Or you or or or yeah. Sorry, not or. And then once they're available to the agent, the agent can read and write them. You want to be able to comment on them, you want to be able to read them, you want to be able to read them from your phone, you want to be able to have them in a a place that is like stored. But the thing is, like, I don't think you need like
+
+Stra you don't need Git for this. Like you need probably like linear history, right? And so you wanna be able to say like, okay, what are the past versions of this and what changed? But
+
+@vaibcode (47:02.574)
+Well you know you know what I really want if I'm completely honest? I actually don't even want versioning or ranking. What I really just want is I just want Dropbox. I literally just want to have Dropbox where I point it at a directory and say, This directory is an agent directory. Whatever happens here, reflected in the cloud, multiple people might be talking to at the same time, give me a C or D T sync on it. And then let me comment and make the comments available.
+
+@dexhorthy (47:11.045)
+Yeah.
+
+@vaibcode (47:31.624)
+Via the file system somehow.
+
+@dexhorthy (47:31.835)
+Yeah. So the comments are good. We also we also did give you version history. So you can like look at like okay, what changed recently and stuff. That one's new.
+
+@vaibcode (47:38.892)
+Yeah, I mean drop I think Dropbox has like similar kinds like linear versioning, but like it's like I want like the I want this to just be a file system construct, which is just like always working. I can just point to it anywhere and it just works. Like if I have to hook into a specific agent, that means like when a new one comes out like Pi, I kinda get stuck on it. Mateus has a good point about like a OneDrive folder. So that's kind of the idea. The problem is, and this is what I run into, it's mostly about edit resolution and how comments work.
+
+@dexhorthy (47:42.619)
+Yeah.
+
+@vaibcode (48:07.99)
+Edit resolution is really hard to go deal with in a typical CRT system because if you're building an agent based system, you want to have delayed resolving of edits. Because if you edit it right now, immediately as it does, you kinda want to have the user prompt and say, I actually do want this error to I actually do want this error to propagate up. And like I'm sorry, I want this edit to immediately interrupt the agent and validate its cache, or I wanna hold off on this edit until after the agent is done working.
+
+@dexhorthy (48:08.101)
+Yep.
+
+@dexhorthy (48:29.317)
+What do you mean?
+
+@vaibcode (48:38.018)
+It's a very important problem to solve there, or else you get kinda get screwed.
+
+@dexhorthy (48:38.395)
+So the
+
+Yeah, the Claude Code harness had this for a little while. I don't know if they still have it, but they basically had like, if an agent touches a file and then that file changes on disk that the agent hasn't seen, it will inject a system message to remind the agent. You don't see it, but you can see it in the thinking traces. Claude is like, the system reminder tells me that the user has edited the file. so that I should and and so I should read it again before I try to edit it, and it's like see what's different.
+
+@vaibcode (48:55.083)
+Exactly.
+
+@dexhorthy (49:10.177)
+yeah. We created a context repo that s ties a set of GitLab repos together, br gives every engineer one place to understand how the repos fit, write a plan, branch Yeah. So this was the second generation of what we built. Is like we built a separate repo that we would hard link into every repo that had code in it, and the agent would read and write there, and then we had a hook that was basically like on commit, it would also sync that thing. It would just do a straight push pull. There was no branching in that other repo, but it was a thing that like
+
+@vaibcode (49:11.33)
+Anyway.
+
+@dexhorthy (49:38.352)
+When certain things happened, it would get synced up. That was even less like real-time sync. That was like on demand sync. But again, like it didn't really matter unless two people were working on the exact same document, which tended to be pretty rare. And the only reason we wanted to go like more real time sync was because we wanted to get to a point where like two people could be like collaborating on one dock with the agent at the same time. but yeah, Narren, that's that's the natural thing.
+
+And you will probably like if you keep working on this, you will you you might you may eventually end up with a thing that is more real time. because the craziest thing for me was always like the first time in December or something we were testing this and me and Kyle were sitting next to each other and I was having my agent edit the dock and push it, and then he was having his agent re edit the dock and push it, and we were both staring at the page in GitHub real time when we were storing artifacts in GitHub, that was like the magic moment for me. That was when I was like, this this needs to be a product.
+
+@vaibcode (50:36.396)
+Cool. this is cool. I think we should probably close it off here. And I saw there were a couple more questions around sandboxes and more about like process and workflow. I'm sure
+
+@dexhorthy (50:41.969)
+Yeah, that's fun.
+
+@dexhorthy (50:48.881)
+Is there any Google Doc-like system that lets agents and users dynamically update docs and spreadsheets in real time? Cloud keeps making a bunch of new Google Docs for each edit, as the API doesn't let it make edits directly. Yeah, so this is this is really hard, and we should probably get Kyle on to talk about this. But basically, like, yeah, the model tools are not good. What you need is something like code mode, where the model can what we what we ended up doing is like the model wrote a like markdown edit, and then a small model took that edit and turned it into like
+
+a snippet of Quickjs JavaScript and sorry, give me one sec.
+
+@vaibcode (51:24.748)
+Okay, while we do that. what's E D D? what's your take on E D D D? I have no idea what E D D stands for.
+
+@dexhorthy (51:33.531)
+Sorry, I'm back. Kyle heard me say his name and he thought I needed something. I was like, Yeah, I need you to come do a great podcast episode 'cause I'm we're we're throwing it over here.
+
+@vaibcode (51:37.942)
+No, you never need anything.
+
+Yeah. I mean I actually do think the feature is code mode for almost all things. Like we should actually do an episode maybe we can do a renewed episode in like code mode, sandboxes, and the whole like design patterns that get evoked when you enable the model to write code instead of calling tools. 'Cause I think a hundred percent of the code they're
+
+@dexhorthy (51:54.788)
+No, no more code mode. Reese is not allowed back on the podcast. He went and started a competing podcast. He's dead to me.
+
+@vaibcode (52:02.254)
+No, I think we can talk about code mode. I think code mode will be fun. I think there's we've been advising more and more companies to actually do code mode as inside of pool calling for many scenarios. It's the future. Yeah. Anyway, it's eleven nine. Andre, sorry we didn't get to question. I it's for two reasons. One, I have no idea what EDD is. I so maybe next time let us know what it is. We'll take a look at it or tweet at us or something. But
+
+@dexhorthy (52:03.825)
+No, we can do cut mode. Yeah.
+
+@dexhorthy (52:13.189)
+Yeah. Yep. I mean it's how all the RLM shit works.
+
+@dexhorthy (52:29.901)
+It's the employment development department of California.
+
+@vaibcode (52:33.162)
+Eval driven dev. eval driven dev, we will put a pin in that. We can talk about that forever. the answer is yes, do it. well maybe we'll do a renewed one or something. But regardless, let's take a pause. do you want to do a recap today, Dex? Or do you want me to do
+
+@dexhorthy (52:35.021)
+yes. Yeah. Yeah. Go watch the Evals episode. Yeah.
+
+@dexhorthy (52:48.849)
+you should do it 'cause you have the artifact of the unconference up.
+
+@vaibcode (52:55.382)
+Let me share my screen.
+
+@vaibcode (53:00.686)
+Alright. Hey everyone. Today's episode is going this is so hard and awkward always whenever we do this.
+
+@dexhorthy (53:06.521)
+It's really hard dude. But you get as many takes as you want.
+
+@vaibcode (53:10.24)
+I know that's the best part. And you guys get to watch all of us in in live and watch us play all around. Today's episode we get to talk about the AI that works on conference, which is an event that we host about every three to four months, where we put a bunch of the smartest people that we know in a room together and we just let them build the agenda. We had all sorts of topics and we recapped some of them from cash engineering to slot factories to harness engineering and all the way to building evals to some degree.
+
+And we talked about some of the learnings that we had, what was consistent, what was not consistent across engineers in different domains, different sizes of companies, and different edge orgs. If you're interested in hearing what happened, check out this episode and we'll show some examples and eventually we'll at the very end we get to live Q<unk>A with the audience and see what kinds of questions came up. Let's get started.
+
+@dexhorthy (53:54.587)
+Let's do it.
+
+@vaibcode (53:57.42)
+Alright, thank you everyone. We'll catch you guys around.
+
+@dexhorthy (53:58.577)
+All right. Thanks everyone. We'll see you next week.
+

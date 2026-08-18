@@ -29,10 +29,11 @@
       "eventDate": "2026-08-11T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=fyZ0i4USjgc",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=fyZ0i4USjgc",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-11-unconference-recap"
       },
       "season": 2,
@@ -1528,14 +1529,14 @@
   ],
   "meta": {
     "totalEpisodes": 73,
-    "completedEpisodes": 67,
+    "completedEpisodes": 68,
     "upcomingEpisodes": 1,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-08-17T19:13:34.767Z",
+    "lastUpdated": "2026-08-17T19:22:53.869Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

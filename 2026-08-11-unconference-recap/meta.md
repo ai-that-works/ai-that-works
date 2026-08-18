@@ -12,10 +12,11 @@ description: |
 event_link: https://luma.com/unconf-recap
 eventDate: 2026-08-11T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=fyZ0i4USjgc
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-11-unconference-recap
+  youtube: https://www.youtube.com/watch?v=fyZ0i4USjgc
 season: 2
 episode: 69
 event_type: episode
