@@ -18,10 +18,11 @@ description: |
 event_link: https://luma.com/syncs-and-ab-testing
 eventDate: 2026-08-18T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=GF7dnSlCM4U
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-18-syncs-and-ab-testing-200-agents
+  youtube: https://www.youtube.com/watch?v=GF7dnSlCM4U
 season: 2
 episode: 70
 event_type: episode

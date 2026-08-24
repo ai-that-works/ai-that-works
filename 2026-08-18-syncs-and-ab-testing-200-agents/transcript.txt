@@ -1,0 +1,1009 @@
+@dexhorthy (00:01.112)
+Alright, Kyle's out of here. What's up y'all? doing great man. I got my no more slop shirt ready to rock. I made like 50 of these. I'm really excited about it.
+
+@vaibcode (00:05.696)
+How's it going?
+
+@vaibcode (00:12.872)
+If I I was gonna wear mine, but
+
+made I made a mistake when ordering and I I usually order an XL but I didn't realize I got one but it's quite oversized. I need to shrink it in the wash a little bit.
+
+@dexhorthy (00:22.468)
+did you get one?
+
+@dexhorthy (00:30.08)
+So it is the no more slop shirt is a very high quality cotton shirt, so if you wash it it will shrink.
+
+@vaibcode (00:35.528)
+It's very it's so nice. Yeah.
+
+@dexhorthy (00:39.232)
+Yeah, it's good. It feels a little heavy, but then you wash it and it's like gets it gets softer as it goes. It's like actual real cotton. It's great. all right, welcome to the AI That Works Show where we talk about AI-related t-shirts and merch. we have a lot of fabric related discussions and you know we if you need an AI AI themed wardrobe, that's what we're doing.
+
+@vaibcode (00:39.818)
+No, I I love the material, we need to get
+
+@vaibcode (00:49.974)
+All right.
+
+@dexhorthy (01:02.812)
+for. No, this is the AI that works show where we talk about AI that works in production, beyond the demo, systems engineering, AI engineering. learned in the trenches, working with hundreds of founders and engineers who are shipping real AI products that make real, real revenue. I'm here joined by my host Vibe co vi Vibecode, Vibob and his guest. You guys want to intro yourselves?
+
+@vaibcode (01:17.672)
+Ha ha ha.
+
+@vaibcode (01:27.994)
+how's it going folks? I'm Viv. I'm one of the co-founders at Boundary, and we build a programming language that's built for the AI systems. I'm Avery and I also built that same programming language working here at Boundary for the last roughly six months. Some of you may know Avery from reclaimed fame of pursuing his battle against Microsoft for five dollars and finding exactly what what Microsoft's willing to do and what source code they're willing to send to you. The the letters in the mail are still waiting on that.
+
+But today go ahead.
+
+@dexhorthy (01:58.796)
+Well say what are you guys on for audio? 'Cause Avery's pretty quiet and not that easy to hear.
+
+@vaibcode (02:03.472)
+Can you try now?
+
+@dexhorthy (02:07.914)
+Yeah, that's better.
+
+@vaibcode (02:09.551)
+Okay. Apparently it's really tuned to my voice. What the fuck?
+
+anyway, today's episode I think is gonna be a really fun one. Dexter and I have been chatting for a bit, and obviously some of you saw the on-conference, we saw a lot of people like the comments on it. So today's episode is actually gonna be a little bit more of a recap from the on-conference. We're gonna have Avery give his talk, which is about data structures. I won't spoil any of it. we s shared a little bit yesterday, but last time, but this week we're gonna get into it in really big detail. And I think we're gonna have Kyle hop on and talk about how we do syncing across like multiplayer systems.
+
+when we're building agentix systems. Kind of like Dropbox, but for more for AI coding workflows. Is that a good summary, Dex?
+
+@dexhorthy (02:53.112)
+I don't know exactly what he has prepared, but yeah, we're gonna talk about the sync engine we use and how you might accidentally reinvent a sync engine from first principles and why there you should you know, like many things, you wouldn't build your own database unless you were crazy, but most people end up building their own janky sync engine. and so we'll talk about what
+
+@vaibcode (02:57.768)
+Yeah.
+
+@vaibcode (03:08.427)
+Yeah.
+
+@dexhorthy (03:14.06)
+looks like and and all the things you will end up having to think about when you want to optimize for performance and what what the state-of-the-art off-the-shelf tools can do to help.
+
+@vaibcode (03:25.078)
+Let's do it. so this episode probably Dexter and I will just shut up and watch amazing people actually talk. So if you guys have questions in the chat, just drop them below. We might ask some questions, interrupt you sadly, because we're obnoxious. and Kyle will get the same treatment right afterwards.
+
+But we're gonna hand the stage off to Avery and let him share about data structures really fast. Okay. So I'm gonna start off with a selection of quotes and hopefully this this convinces you that at least in the past people cared a lot about data structures. So or wait, we're on the wrong mon
+
+I got you. I hate slides, but we accept these slides because we'll see code. So, Fred Brooks, show me your flow charts and conceal your tables and I shall continue to be mystified. Show me your tables and I won't usually need to see your flow charts. They'll be obvious. He's basically saying in in modern parlance that if you if you just look at the c control flow, it's it's quite confusing.
+
+But if you if you look at the data structures behind the control flow, it it will all make sense like intuitively. And really quickly, who's Fred Books? Very famous computer science guy. Okay, cool. Good enough.
+
+@dexhorthy (04:38.7)
+What was his quote? It was like adding more people to a team slows down the project. It was yes, what was the it was like yeah, yeah, nine nine months to a baby, but nine women you cannot make a baby in a month.
+
+@vaibcode (04:43.22)
+Yeah. It's from the same book that this quote is from. Yeah. Yeah.
+
+@vaibcode (04:53.878)
+Yeah, yeah, yeah, yeah. Yeah. and then Rob Pike. Rob Pike, the Golang guy, as you can see on his shirt. If you've chosen the right data structures and organized things well, the algorithms will almost always be self-evident. Eric Raymond also wrote a cool book, Full Knowledge of the Data So Program Logic Can Be
+
+@dexhorthy (05:02.828)
+The future is here.
+
+@vaibcode (05:23.264)
+Sorry. Sorry, I bumped the output. Full knowledge into data so program logic can be super and robust. And then if you haven't heard of any of those other people, Linus, bad programmers worry about the code, good programmers worry about the data structures and the relationships. So what does this all mean? I'm gonna I'm gonna explain with a simple example here. the main thing I'm talking about is just the concept that representation shapes implementation.
+
+so let's say you're implementing something like Ticketmaster, where you want to have you you want seats to be in one of three states. You want them to either be open, sold, or held while somebody is in like the checkout flow. You can represent this with
+
+Somewhat naive representation on the left, where we have a bull flag for held and a bull flag for sold. This you know, this makes sense. This is what like a lot of programmers may do. Like a freshman in college would a hundred percent write that code. Yeah. you end up with this this crazy like state machine here on the left where you have you have to have you have to handle all the possible error states because y
+
+With this representation, you can represent the state in which the seat is both held and sold at the same time. You have like Schrödinger's concert seat. So if we want to go from held to some other state, we have to do this error handling to make sure we don't end up in an invalid state. Whereas if you fold it into the data structure here and use an enum, you can have open, held, and sold, and the state transfer.
+
+becomes much simpler. But what I found really interesting at the
+
+@dexhorthy (07:14.732)
+So you create you basically create a exclusivity here. It cannot be held or sold. It's like it has to be one of it cannot be held and sold. And it cannot be neither. It has to be one of those three things.
+
+@vaibcode (07:28.085)
+And I'm sure everyone watching this probably like, that's so obvious, I can't whatever. But like go to I think this was the part that really made it really interesting to me. yeah.
+
+@dexhorthy (07:34.858)
+Yeah, the point we're gonna find out is that agents really love to screw this up, but that's only to bury the lead.
+
+@vaibcode (07:38.482)
+Yeah. Yeah. Yeah. so yeah, this like I I hope I I think most of the people watching this would be like, yeah, like this is this is pretty obvious. You don't wanna do this this representation, it's bad. You wanna fold it into the type system and let it handle it for you. But when you add like a new state, this is what I what I found really fascinating when everybody shared this, which is like
+
+Adding a new state changes the amount of places where you have to touch the code. And this may also be obvious to many people, but think about like an agent writing this code. Every single one of those like four places we have to add is now an area where like an agent might forget to add it. And then you're screwed. Yeah, it's it it grows exponentially. you
+
+@dexhorthy (08:27.904)
+And just to be clear here, when you're returning none in these states, that's sort of your error case of like, Hey, nothing nothing was changed because you've asked for something that is invalid.
+
+@vaibcode (08:34.451)
+Yeah. Yeah.
+
+Yeah. Yeah. So you yeah, but you have to handle that individually on each of these, whereas here you can fold it into this wild card because it's handled by the type system. which makes it much less prone to error. Even human programmers, like I'm sure like this is not a very realistic example. Like if somebody was doing this, there's gonna be a lot more flags than this. Like Yeah. Yeah, I mean
+
+@dexhorthy (08:48.768)
+Cool.
+
+@dexhorthy (09:00.768)
+For like what is the state of your ticket order, right? Yeah, that that quickly grows to be your like God object with twenty fields or whatever.
+
+@vaibcode (09:07.729)
+Exactly. Yeah, we're trying to avoid the God object here.
+
+@dexhorthy (09:12.4)
+okay, this makes sense. And yeah, so I guess the take here is like if you if you have a bad representation, every time you want to change the code, it causes it to get even harder to change versus like code that as you change it it stays the same amount or like gets easier to change over time and easier to understand.
+
+@vaibcode (09:31.699)
+Yeah. It's it's easier to it's often easier to change and it's often easier to understand. so is this actually relevant for agents? I I hope if if you guys aren't tuning in for the first time, you're probably familiar with how this podcast feels about slop. slop is bad.
+
+@dexhorthy (09:37.985)
+Cool.
+
+@vaibcode (09:54.245)
+And slop has been bad. Yeah. Exactly. Slop has always been bad. Slop has always been bad. We've always had like as anyone who has played like a Bethesda game can probably attest to. We've had slop since before AI. There's been bad code and bad data structures for a long time. And we all know that slop leads to bugs. It's very it it's very obvious. I I at least I hope it is.
+
+But do agents actually make these mistakes is the real question. And to get to the bottom of this, I devised an experiment where I had Codex GPT 5.6 sole on high. So like the frontier model, frontier harness, build ticket master. But instead of like one-shotting the entire thing all at once, I had it build it one feature at a time.
+
+Just to emulate how teams already ship. So you know, it's it's not realistic to have all the requirements up front. You're gonna, I mean, maybe for something like this simple it is, but we we wanna emulate like actual, like an actual team where you write one feature and then you stop, you hand it off to your coworker, and they write another feature. And now this is all being done with agents. So it's it's your your coworker's agent and your agent.
+
+So it's actually really interesting. Dexter, like different than Slop Code Bench, like what's fascinating here is like the agents have no context about what the previous agent did. I guess that's ex- is that exactly how slop code bench works as well. Okay. Nice.
+
+@dexhorthy (11:29.61)
+No, Slot Codebench is the same. It's kind of like cool, like implement this feature, and it has to go investigate the code base that it inherited.
+
+@vaibcode (11:36.455)
+And it deletes all the code up front, it all the ticket information, everything. It only has commit history or something.
+
+@dexhorthy (11:42.808)
+I I don't know the exact specifics, but my my understanding is that it looks like this, where it's like, okay, you inherit the code and then it's like cool, add this feature to the code base, and then it's like cool, now add this feature to the codebase.
+
+@vaibcode (11:45.575)
+Okay. Yeah. That's cool. Yeah.
+
+@vaibcode (11:55.667)
+Yeah. So I I don't think I even gave them commit history. Yeah. So it's fascinating here, I think, from what Okay. Okay. Yeah.
+
+@dexhorthy (12:01.472)
+yeah, they don't commit either. No, there's no commit history for slob code bench. You just get the raw checkout. It's actually like people always ask, like, why doesn't it use git? And it's like it's intentional. You just land in a raw code base.
+
+@vaibcode (12:11.688)
+Yeah. Yeah. Cool. So like, all right, what's the conclusion? You ran this thing, best model, best harness. You spent you ran every single one of these sample s segments two hundred times. And then you actually looked at the code. so like what did you find? So this is feature one, sell seats. Yeah, sell seats, you know, a seat is a label that can be associated with a customer. That's also like it's their name usually.
+
+Pretty much all of the agents converged on like the obvious representation, at least for anybody who's taken a DSA class. It's crazy that it's not a hundred percent, by the way. I I think some of them had some like strange Okay. I I I recall looking at the three and it was it was odd.
+
+@dexhorthy (13:00.765)
+man, I wish we could see one. You don't have the coat around anymore?
+
+@vaibcode (13:03.868)
+I I do. I'd have to pull it up after though. let's go on to the next one. So this one was easy, basically like almost a gimme. Yeah. So then let's say the front end team wants you wants a way to list open seats and they want a printable seating chart, which this kind of implies that you want like a a stable ordering to your seats. Yeah. So
+
+@dexhorthy (13:07.732)
+Maybe we'll do a part two.
+
+@dexhorthy (13:26.433)
+Yep.
+
+@vaibcode (13:29.278)
+Forty like roughly forty percent of agents made a manual index map where you have this this like extra vec that holds like the seat order. So this
+
+This vac of strings is is like representing the string is representing the same as the same thing as the and the seat label. And I know at for just for context here, I not everyone here writes Rust all the time like we do. So obviously they're not gonna they may not recognize this. The key the the key problem statement here is that if you want in if you've if you're familiar with like ordered dictionaries where you want to order list out dictionaries in order for the keys rather than like the insertion order or whether you want like random order for a hash.
+
+order maps and such in Rust there's a data structure called index map that not index map like while you'll see this right here that you can just use that's like very commonly used. Well there is index map there yeah but we don't want index map because we're not insertion order. But the fact that you're manually ordering the seats is just a bad it's a
+
+You would flag this. Like you don't want someone to write that code. It's somewhat defensible for if you wanted to keep insertion order, because I didn't tell it necessarily. But then use index map. Well
+
+I I did tell it don't bring in external crates, and notably index map is an external crater. Yeah, okay, okay. But if I were to do it this way, as a human, I would implement a struct called index map to do this for me. so I can test on that invariant and not re-implement this every time. Yeah. then some of them kept the exact same representation, but they just sorted it at the very end, which like that's also defensible, but like yeah, yeah.
+
+@dexhorthy (15:08.928)
+Like on on request.
+
+@vaibcode (15:12.54)
+not not optimal in my opinion. another like five percent for some reason added like an O of one like constant time lookup for the number of open seats, which is just like flop. Like that's just like not what I asked for. I don't know what happened there. Maybe some quirk with the prompt, but whatever. Yeah.
+
+@dexhorthy (15:31.264)
+Ha ha ha.
+
+@vaibcode (15:36.256)
+this is also bad. like these are also bad because they they introduce it's this idea of like the the invalid states. Like this one has one invalid state, this one has no possible invalid states. So we're we're introducing like the possibility if the implementation code is wrong to have an invalid state here where like let's say this is actually more than the amount of seats there even are, or this doesn't actually have every single label in it. Yeah.
+
+And then thirty-five percent did actually do what I believe is optimal where they they used B tree map, which is like a like a self-balancing binary tree that that keeps these things the the keys implicitly in order. Yeah. It's impossible to have an unordered seat.
+
+@dexhorthy (16:24.333)
+So that does make the the lookup like log in instead of instead of instead of O one or
+
+@vaibcode (16:29.489)
+Yeah, the lookup is the O login.
+
+@vaibcode (16:34.097)
+Yes. So if you are worried about performance, there is there are ways that you can you know, you can cache this and such. But
+
+@dexhorthy (16:40.266)
+Right. Orthogonal, very trivial for the the purpose of what you were trying to demonstrate here.
+
+@vaibcode (16:44.753)
+I mean you only have like how how what's the biggest stadium selling seats? Yeah, you wanna optimize for the biggest in? Like that's that's absolutely nothing. And that's implied by the problem definition, I would say. But I agree, it is slower.
+
+@dexhorthy (16:57.152)
+My new concert concert venues for AI agents startup allows up to a billion seats for all the agents. Just saying.
+
+@vaibcode (17:02.387)
+It's true. Yeah. We're going intergalactic. next we're adding save and restore. So like let's say we want to be able to turn off like our Ticketmaster service overnight and bring bring it back on. we need some way to serialize and deserialize it. All of the agents did the right thing here where they didn't change the data structure at all, but
+
+This does introduce an issue where, or not necessarily an issue, but it introduces coupling downstream, where now we have a ton of downstream code for this serialization and deserialization logic that actually depends on the the structure or that depends on the data structure that we used. and with agents especially, this I mean with humans too, it makes it much harder to change things downstream.
+
+Because the moment you change the data structure you get like five hundred errors elsewhere in the code base. And serialization is notoriously good.
+
+@dexhorthy (18:03.264)
+Well also doesn't doesn't this depend on the ordering? Like I'm seeing where you we're we're pulling seat off of the loop, but
+
+@vaibcode (18:12.325)
+But remember we already said we want it to be ordered up front. Yeah. I this kind of implies ordering. I suspect the I suspect this example I pulled was from one of the ones that just ordered it on demand. Yeah. Yeah. next thing, final feature. customers are complaining that their seats get sniped when they're in the checkout flow. We need a way to add five-minute holds. So
+
+@dexhorthy (18:16.108)
+Okay.
+
+@dexhorthy (18:27.147)
+Okay.
+
+@vaibcode (18:41.777)
+87.5% of the agents refactored it to what I believe to be the ideal representation in this case that doesn't allow for any invalid state. So you have you're folding your sorting requirement into the the B tree map. so our seats are implicitly sorted. And then we use this, this is a Rust enum. Once again, sorry for using Rust, but it makes it very nice to to do these things and fold the
+
+@dexhorthy (19:08.8)
+You're not sorry. You are not sorry for using Rust. Don't pretend.
+
+@vaibcode (19:10.545)
+I'm not sorry. I'm really not. you can think of it for people that are TypeScript devs, you can think of it like a tagged union. Yeah. Is like the best way to think about this. Yeah. The enum basically is able to hold like state and data at the same time. so it just makes life a little easier. Yeah. This is kinda nice. Like most agents did the right thing. Tagged union? Tagged union is a C thing.
+
+@dexhorthy (19:21.046)
+Yeah.
+
+@dexhorthy (19:30.644)
+I don't think TypeScript people call that a I was gonna say I don't think to TypeScript people called that a a tagged union. That's a C thing. I think they call it a discriminated discriminated union, I think is the JSON schema word.
+
+@vaibcode (19:42.509)
+discriminated unions. Freaking TypeScript devs, man. Freaking TypeScript I'm done. I'm done with TypeScript devs. And then it's interesting, like almost like
+
+Almost all I'm sure Kyle will talk about effect later, it's fine. almost all agents over here, almost all of these things, like twelve and a half percent, did did kind of the wrong thing. They have like a lot of invalid state representations here. Yeah, like there's three sources of truth in this data structure. Yeah. That's so bad. And what's really interesting to me is like this is
+
+@dexhorthy (20:02.276)
+Ha ha ha ha.
+
+@dexhorthy (20:22.774)
+Just also
+
+I was just gonna say quick quick time check, if we're gonna get Kyle in we've about eight minutes left.
+
+@vaibcode (20:29.447)
+Yeah. Yeah. we'll be done soon.
+
+@dexhorthy (20:33.206)
+Cool. And we got time for questions.
+
+@vaibcode (20:35.779)
+Yeah. yeah, invalid. There's there's tons of ways to have invalid representation here. But the thing about this is that twelve point five percent of the time, this is per feature. That's a lot. Like that compounds over features. You're gonna end up with slop in your data structures if you don't watch them. Like basically like yeah, twelve and I yeah. and then I I hit something, even with the right overarching shape,
+
+Some of them added a second source of true truth for this time. I I don't know why this was. I think it was some some difference between like the system time and like the time semantics. Very strange.
+
+@dexhorthy (21:17.174)
+Yeah, you have determinism time and wall time, which is like human human readable.
+
+@vaibcode (21:21.883)
+Yeah. Yeah. so this is not something you can really catch in CI. The tests were green the entire time. I had all of them write tests. Like they all passed, I guess. this yeah, you you can't really Yeah. There's no way to catch this. So the options to prevent it are either one, know your know like your representation, all your features ahead of time.
+
+And if you do this, the models are very good. Like I struggled to get them to produce incorrect output when I gave them all the features up front. So what I'm hearing is skill issue. Yeah, skill issue. Rewrite your entire code base every single time you add a feature. Yeah. yeah. Obviously this is not feasible for a lot of projects or teams. Yeah, you we I just took like a week and a half to rewrite our type system.
+
+Or you can review the data structures. And this is at least at this point with these models, what I implore you to do to actually review the data structures, because I think they're the most significant thing that affects downstream code the most. And if you can simplify those, you can simplify downstream code and be more confident in it, especially if you're not reading any downstream code.
+
+So yeah, I hope I hope people agree with me now, or at least some of you agree, that all slop starts as bad data structures. And I'll plug my info here at the end. That's funny. if you know I'll I'll I'll give people something slightly more interesting than this. if you
+
+@vaibcode (23:10.02)
+I can't find you. anyway. if this stuff is I don't know texture. What are your thoughts? Agreed? Disagreed?
+
+@dexhorthy (23:19.18)
+take on agents writing slop. and I think it's sort of like because slop compounds, even a 12% like failure rate means that every time I run 10 prompts through my system, if I ship 10 features in my software factory,
+
+One out of those ten is gonna make my code base worse in a way that compounds. That means after a hundred features, my code base will be like 40% slop. Like it compounds really, really fast. And so I think like people say, the models are good enough. They only make mistakes one in ten times. It's like that is not good enough to go lights off and let it like compound on its own in a trajectory, because you have the trajectory of the aging session.
+
+@vaibcode (23:51.175)
+Yeah.
+
+@vaibcode (23:56.742)
+Yeah.
+
+@dexhorthy (24:02.742)
+But then you also have the trajectory of the code base itself. And that is subject to the same compounding rules that happen when you're 10% wrong, 10% wrong, 10% wrong. You very quickly become six, 40% wrong or 50% wrong. And at a certain point, it's gonna become unrecoverable.
+
+@vaibcode (24:06.074)
+Yeah, exactly. Yep.
+
+@vaibcode (24:20.07)
+Yeah, a hundred percent. Yeah. I suspect I suspect the twelve point five percent is a lower bound, especially 'cause this was such a simple problem. Yeah. I'd be surprised if it's not like it makes like bad data show show decision like twenty twenty plus, thirty per s plus percent of the time. Yeah.
+
+@dexhorthy (24:28.406)
+Yeah. So
+
+@vaibcode (24:37.302)
+And this is by the way, not only is this in this is in Rust, it's making bad data structure choices. It's definitely making bad data structure choices in Python and TypeScript. Like it's not even a choice. Like it's like And the agent will just do the convenient thing, because that's what they're optimized for. Like the training data literally just makes it optimized for for convenience. Because honestly, that's what humans do. They optimize for convenience. And it will always be true in software. So it's interesting. Cool?
+
+it sounds like we got not too many questions in the audience. If we have any more, just chime in. Avery will be here for a bit, or at least around.
+
+Think we're gonna go into part two. But for those of you interested, this is the kind of concepts that we had coming in. You can get Kyle really fast. for those of you interested, this is the kinds of conversations that were going on at the AI and conference that we held. These are the kinds of topics that we'd like to go into. There's data behind them, there's meaning behind it, and we're like we're actively trying to share knowledge from experiments and workflows that are going on. So hopefully if you checked out last week's episode, this gave you a more in-depth detail, and we'll try and bring on more speakers and stuff from the unconference.
+
+@dexhorthy (25:16.566)
+Okay.
+
+@dexhorthy (25:21.9)
+I'll be right back.
+
+@vaibcode (25:44.19)
+Go share their learnings with us if they're down to. I thought some of the talks were like fantastic. and I truly did learn a lot.
+
+@dexhorthy (25:54.7)
+There's a lot of things to learn. There's a lot of smart people, and we're all learning things along different trajectories and different dimensions.
+
+@vaibcode (26:02.502)
+Yes. And it and the thing I always come back to, it's always a skill issue, apparently. Either the agent's skill or your skill, but it's always a skill issue. Or both. Or both. That's true. It's true. I do prefer to when possible.
+
+@dexhorthy (26:12.768)
+We can blame the agents.
+
+@vaibcode (26:19.878)
+Yeah. we'll get this set up. I'm really excited to learn about the Sync engine.
+
+@dexhorthy (26:20.337)
+great. Kyle's joining in a sec. I did I send you guys the whiteboard? yeah, it's gonna be a fun time. I mean I can kind of maybe start talking about it. Well
+
+@vaibcode (26:35.954)
+Are we are we gonna t a okay, so help me understand, how deep are we gonna go? Am I allowed to probe and ask system design questions or are we gonna stay slightly higher up and listen?
+
+@dexhorthy (26:45.76)
+Well fill it out. What's up, Kyle? How you doing?
+
+Kyle Mistele (26:47.597)
+How's good? How are y'all?
+
+@dexhorthy (26:51.392)
+so I think we chatted about this a little bit. Kyle's in has spent a ton of time working on our sync architecture. and when I say sync architecture, I will perhaps just like draw a tiny little thing, which is like when you run human layer, there's three components. There's the API, there's the like client, which is like desktop or web app.
+
+And then there is like the what we call the demon, or like the worker. This is the thing that runs your Claude sessions and your codec sessions. And what happens is these two things are running on your workstation. And let's see. But every time you send a message to the agent, it flows through our API.
+
+and every time a message comes out of Claude, it flows through our API. and by our API I mean kind of our cloud, there's couple different components. but we're able to do this very efficiently in terms of compute and memory and things like this. We're able to do it very fast on the order of like, I don't know, I want to say like 50 milliseconds of delay between like Claude outputting a JSON line and it shows up in your client.
+
+chat about maybe like how does how might you accidentally invent this system from scratch if you were just gonna build it from first principles and what would be hard.
+
+@dexhorthy (28:25.245)
+the actual like off-the-shelf thing. Like the same way you wouldn't you wouldn't build your own database from scratch. You probably shouldn't build your own sync engine from scratch. I don't know if that maps on to what you're thinking about, but I will pass it on to Kyle because he's been building in this space for probably a year now at this point.
+
+Kyle Mistele (28:44.577)
+Yeah, at least. Yeah. so I guess to start, it's when we look at an architecture like that, it's probably worth mentioning like why we designed it that way in the first place. because that's a question we get a lot is like, why don't you just have the desktop app and the native or like the desktop app and the daemon talking to each other directly using like a standard stream or some other like host local interprocess communication mechanism?
+
+@vaibcode (28:44.794)
+I'm very excited.
+
+Kyle Mistele (29:12.898)
+Do you wanna pull the Excala draw back up, maybe Dex?
+
+@dexhorthy (29:15.828)
+yeah, sure. I can share it while you're while you're drawing.
+
+Kyle Mistele (29:19.962)
+do you did you send me the link? Yeah, perfect. okay. amazing.
+
+@dexhorthy (29:21.959)
+yeah, you got it in Slack.
+
+@dexhorthy (29:28.084)
+there you go.
+
+Kyle Mistele (29:28.566)
+Yeah, so there the reason that we did this, and we didn't support this on day one, but we knew that what we wanted to do was to be able to have a bunch of different daemons and remote workers on different hosts, maybe like for a separate user's workstation.
+
+@vaibcode (29:48.326)
+Dexter, can you do me a favor, can you just click on c click on Kyle?
+
+in icon list. Yeah, there you go. Now we'll see exactly what Kyle says. Yeah, exactly. So whatever zoom level Kyle's at, we'll kinda just get that for free now. Yeah. So like you y you guys kinda wanna do this thing where like any machine can run and communicate with the central layer. And I saw this amazing tweet by you yesterday, Dexter's controlling codecs on my machine.
+
+@dexhorthy (29:56.076)
+Sort of thing. nice, we follow it.
+
+Kyle Mistele (30:04.088)
+Amazing. but so what we
+
+Kyle Mistele (30:18.06)
+Yes.
+
+Kyle Mistele (30:21.623)
+Yeah. so yeah, we we wanted we we believe that like the future of of software development is is heavily collaborative. And so we care a lot about users being able to interact with other users' coding agents to be able to interact with artifacts like plans and design documents created by other users. And and and it doesn't make sense to like lock your work to a host in the same way that like it might for an IDE where you you have a local file system.
+
+we just really wanted it to be able to just work, whether you're on the web, whether you're on a mobile app, whether you're on a desktop app, and to be able to manage daemons running on like sandboxes and VMs and the Mac Mini that you bought for your ClaudeBot that you almost forgot about. Like, and so this is this is what allows us to do that. and so there's there's a lot of like really interesting design considerations here. And I guess if you were going to like
+
+@vaibcode (30:58.171)
+Yeah.
+
+Kyle Mistele (31:18.882)
+Kind of design this from scratch, right? If you're like, well, okay, I need some central some type of central like system here, let's move over here a little bit.
+
+Kyle Mistele (31:30.616)
+Yeah, you're like.
+
+Kyle Mistele (31:35.532)
+have a bunch of different clients. Gosh dang it.
+
+Kyle Mistele (31:43.864)
+And you're like, I want updates like to and from each of these to be synced out to each other in real time, right? what i what do you think is the first thing you would reach for?
+
+Probably WebS, right?
+
+@dexhorthy (31:58.538)
+Yeah, WebSockets or like SSE before that of basically like, hey, I wanna broadcast a message when something changes and tell these things to like refetch the data.
+
+@vaibcode (32:05.146)
+Or like some sort of like
+
+Yeah, or like a Firestore or like a have you guys used real time databases, like Confest or something?
+
+Kyle Mistele (32:08.288)
+Exactly.
+
+Kyle Mistele (32:13.686)
+Yeah, something like that.
+
+@dexhorthy (32:14.284)
+I mean, Firestore and Convex are sync engines, basically. Sync engine is a fancy way to say real-time database.
+
+@vaibcode (32:19.14)
+Yeah.
+
+Got it. Okay. Cool. Sorry, excuse my pleb brain that sadly has never worked on any sort of cloud product ever.
+
+Kyle Mistele (32:25.622)
+Ha ha ha.
+
+@dexhorthy (32:28.65)
+It's a b it's a better word, honestly, but yes.
+
+Kyle Mistele (32:28.77)
+Ha ha ha.
+
+@vaibcode (32:31.579)
+Yeah. Go on.
+
+Kyle Mistele (32:32.867)
+Well, it's also it's a spectrum because our sync engine is not a real-time database, which we'll get into in a little bit. but our sync engine sits in front of our Postgres database, which is one of the reasons we like it. so like if you had a client that was just like sending a prompt, you know, or an agent sending some agent result, right? What you would have to do is you would then have to like have your API server kind of receive that on a WebSockets connection and then broadcast that out to all of the other clients.
+
+the the first problem that you will run into if you do that is if you have that happen, right? You know, your agent sends a result and then another client joins and it opens a connection. It never got that message because it wasn't online, right? And so now you have to have like kind of a a WebSockets like room that has some type of state that you're adding to, and then when a client connects,
+
+you flush all of this the like kind of buffered state to them as well as any new messages, right? And so now you you need something that's like like this is kind of like what a Cloudflare like durable object is, right? You can have a bunch of WebSockets connections, it has a little SQLite database associated with it. that that's like one way to do this. one of the problems here is like this is a highly stateful thing now and
+
+scaling WebSockets is is not pleasant because they are stateful, long-lived connections. And you need stateful storage in the memory of your process, or you have to have like short-term ephemeral storage like in Redis or Postgres for your your your buffer here. the next problem is you actually want to have all different kinds of data, right? That is going to and from each client. So like
+
+You might have something like, you know, in human layer we have tasks, right? Which each task has a name and a bunch of configuration information associated with it. You have sessions. You have I don't know, you have conversation events. Yeah.
+
+@vaibcode (34:35.717)
+I'm gonna ask a really quick high-level question really fast, Kyle. What's the key part that's different here rather than building like a chap chat room? Like if I'm gonna go build something like Slack, it feels very similar. What's the key difference here?
+
+Kyle Mistele (34:46.713)
+Mm-hmm.
+
+Yeah. I would say one of the key differences is like there's so many different things that you have to sync. we we in in kind of the sync world, I guess you would call them shapes, but it's like a a slice of data in the system that you want clients to know about. And for something like a a chat app, the shape that you care about syncing to every client is just like.
+
+the list of messages for that conversation, right? It's it's very simple. it is it's relatively low turn, right? You're not like adding or removing or updating data in it very frequently. And
+
+@vaibcode (35:23.131)
+Yeah.
+
+Kyle Mistele (35:37.208)
+I would say that's
+
+@vaibcode (35:38.577)
+Alright, but like I the the right model I think is from what I'm hearing is something like if I wanted to build something like Slack where like for example like one of the things in Slack is like you don't want to scroll up and load all the messages on day one because you could have like five years of history in there. there's like some dynamic stuff. Is that is that the right like as someone that's never worked on a sync engine?
+
+@dexhorthy (35:55.02)
+I think that's that's
+
+Kyle Mistele (35:58.028)
+Yeah, so that's
+
+@dexhorthy (35:58.412)
+Paging and sc scrolling I think is separate and Kyle, just you know, I j I just added the OG like electric POC diagram off to the right there.
+
+@vaibcode (36:03.033)
+Yeah.
+
+Kyle Mistele (36:07.928)
+Amazing. Yeah.
+
+@vaibcode (36:10.555)
+Is is it different because with your sync, everything builds on the previous, whereas like Slack messages, you're not really building on previous messages.
+
+Kyle Mistele (36:22.018)
+So Slack messages
+
+Kyle Mistele (36:28.779)
+Slack messages do kind of function as an append only log. and it is very easy to like get a fixed tail of that and then like load them in a paginated manner. one of the things that is different about like the the way that users interact with data in human layer is like there is a very large amount of information that a client could could want to access. Like I have literally probably a hundred plus sessions a week.
+
+@vaibcode (36:52.623)
+Yeah.
+
+Kyle Mistele (36:58.868)
+Each session is associated with a task. It has ACL rules. It has it has tons of conversation events. And each of those conversation events, like the list of conversation events for a given session, in some cases is tens of megabytes because you have so many like files and diffs and thinking messages and stuff. And so it's a lot of data. And there's not a like cleanly paginated way to get that to the client very quickly.
+
+@vaibcode (37:16.869)
+Well yeah.
+
+@vaibcode (37:25.147)
+Yeah.
+
+Kyle Mistele (37:26.776)
+And so you you have like a large boundary of what the client might want to access, but you don't have a good way to like optimistically fetch for the client like what they're likely to access.
+
+@vaibcode (37:35.589)
+That's cool. Yeah, 'cause you can't predict you can't predict intent effectively. So like because the data source that's actually really interesting. I think the I now that you frame it that way, it actually makes a lot of sense. Like if you were to ask me like why don't I wanna build my own Slack, it's some of the exact reasons that you said, which is like I don't want to deal with file uploads. And like how am I gonna like do that in a good way? It's hard.
+
+Kyle Mistele (37:41.12)
+Right.
+
+@vaibcode (37:59.119)
+And like obviously for just the chat message, anyone can by code a web socket-based chat message. But building the whole thing and then making it mobile optimized, for example, like how do I make it so my phone doesn't like kill my b data because I just downloaded everything up front? That's actually really fascinating. Framing it that way was like, wow, yeah, I would not have thought of that way. That's great. I see why. So tell me, what's the hardest part about this whole system? Is it the syncing of like loading and pulling data?
+
+Kyle Mistele (38:13.378)
+Right. Yeah.
+
+Kyle Mistele (38:18.956)
+Ha ha.
+
+Kyle Mistele (38:27.085)
+Yeah, so the the hardest the our ours the sync engine that we use actually has like a particularly like graceful solution to to the problem. And there's there's like lots of different solutions to this. And you could like WebSockets is just a transport. You could actually use it for our for our system. But like conceptually what happens is like there is a
+
+@vaibcode (38:41.87)
+Yeah.
+
+Kyle Mistele (38:51.871)
+we and we can get a little more into the weeds on the architecture. So by like this API thing, what we actually mean is have
+
+we have a database, right? we're gonna make that green and it's a circle or not. Yeah.
+
+@vaibcode (39:08.25)
+Right.
+
+@vaibcode (39:12.846)
+I I can I can clean up your stuff. You just tell me what to do, I'll I'll make the day I'll make it look like whatever you want.
+
+Kyle Mistele (39:17.772)
+Yeah, cool. Okay. So we have a good database. we have we have a Postgres so it's po it's Postgres, that's important. we have a our sync engine.
+
+Which is built on Electric SQL. We have an authorization proxy. and then we'll get into like fast sync and like slow sync in a minute, but then we also have a what's called a durable stream server, which is like backended by a file system.
+
+@vaibcode (40:00.451)
+Okay. And I'm gonna ask you a r a couple a couple and it's a SQLite based file system is what you're saying.
+
+Kyle Mistele (40:07.64)
+well so the the index is SQLite. The the data is not actually stored in in SQLite. No, it's it's literally just a it's a it's literally just a file system. it's it's yeah. Yeah, it's it's a cache.
+
+@vaibcode (40:10.83)
+Yeah, okay. It's probably like S three or something. Yeah, it's probably like S three or something. Makes
+
+@dexhorthy (40:19.894)
+the ephemeral file system in the container.
+
+@vaibcode (40:22.678)
+I see. I I and you spin up a new container for every single thing?
+
+Kyle Mistele (40:27.256)
+so no, there is the the durable well we can get more into that in a little bit, but it it like the the SQLite index maintains like a list of like logs for streams and it indexes them and knows how to find them. So yeah.
+
+@vaibcode (40:32.783)
+Okay.
+
+@vaibcode (40:40.046)
+But okay, before we get into any of the nitty-gritty here, I have a couple of questions that just pop up from this, which is how
+
+What is the hardest challenge here that someone should know about? So is the problem ingest of data and amount of bandwidth I'm processing? Is it the number of web requests I have to make are so many that I have to reduce the latency between them and I have to do consolidation and other things? Or is it along the side of the workload I do itself is intense on the back end side and therefore I have to worry about compute and latency on that end? Like where are we spending the most of our brain power trying to solve?
+
+Kyle Mistele (41:15.992)
+Yeah.
+
+So for us, I would say it's it's more about the write load, actually, which is really interesting. so like I said, a given conversation for a coding agent in our case can can involve like tens of of megabytes of data. And for a sync architecture, like in our case, we write that to a database. like Postgres is is good for that. It's a single writer, like multiple reader configuration.
+
+@vaibcode (41:26.755)
+Okay.
+
+@dexhorthy (41:29.706)
+Yeah, the
+
+@vaibcode (41:30.03)
+Makes sense. Yeah.
+
+Kyle Mistele (41:48.48)
+And like Postgres is fine, it will handle that load. But in order to get data out of the database quickly to the client, like that's the key thing, is the client might ask for a lot of data. And so you have to have some way of quickly like storing and caching and getting data to the client in a way that's not like them constantly pulling your Postgres database every, you know, every second or every two seconds. Because that's that's kind of the other like naive approach here is to use something like TanStack query.
+
+@vaibcode (42:10.808)
+Makes sense. Yeah. Yeah.
+
+Kyle Mistele (42:15.936)
+Where you're defining an API endpoint and then you're like constantly pulling it or like invalidating it when data on the client changes. Yeah.
+
+@vaibcode (42:21.518)
+Well yeah, I was about to I was about to ask, like you just said like it's you have write heavy workloads, but then you said the most important thing to fetch data fast. I was like, you can't have a single writer and get fast reads. You just can't or like fast updated reads.
+
+@dexhorthy (42:35.328)
+Well, yeah, the w the way I would think about this is like basically like you would want to let's say you're looking at a a list of coding agent session.
+
+@vaibcode (42:43.524)
+Yeah.
+
+@dexhorthy (42:44.108)
+messages. So claw does a thing, claw does a thing, they're being a new one comes out every half second or two seconds or whatever it is. And so the client wants to like f on page load fetch all the ones that have happened so far and then subscribe to a hook basically. And so what you could do is you could like subscribe to a WebSocket and just tell the client rather than sending it the data, you could just say like, hey, by the way, here's what changed.
+
+Or hey, something changed, go refetch and then you go refetch all the previous hundred events and the next two. And so that's really, really inefficient. And then the logic gets into like, okay, how do I tell the client j send it just which rows changed? And then you basically need like an in-memory database of
+
+@vaibcode (43:09.945)
+Yeah.
+
+@dexhorthy (43:24.038)
+All of the hundreds of clients that are connected, what they've already seen, what they've subscribed to, because they all some of them are like, I want to subscribe to select star from this table where session ID equals this. And another one is gonna be subscribed to select star from this table where session ID equals this. And then you have that for five or six different tables to hydrate all the state in your UI.
+
+and you want to basically unconnect, fetch everything, and then the sync engine's job is to keep track of all the clients, what they care about, and then to when something gets changed in Postgres, to compute, okay, which clients do I need to send incremental updates down to.
+
+Kyle Mistele (43:49.836)
+Yeah.
+
+Kyle Mistele (44:04.096)
+Right. It's it's not like it it's not so much like handling the volume of of rights is the hard problem. It's more like the the number and volume of rights churns shapes very quickly and clients can't know when data's
+
+@vaibcode (44:05.241)
+So is this the right model?
+
+@dexhorthy (44:16.8)
+What is churn sh you have to you have to explain what churn's shapes means.
+
+Kyle Mistele (44:20.183)
+Yes, okay. So a a a a shape is like the thin slice of data that the client is asking for out of everything it could possibly ask for. And churn just means like that's changing constantly, right? So like Dexter said, when cloud's running, it's sped in an event out every like couple of seconds. By the way, we also do token streaming, which is the reason we have that kind of separate faster sync system. but the the the
+
+Clients are riding very quickly, which means shapes are turning, which means other clients need those updates. We want that to happen basically in real time. And so you need a way to detect as soon as data is changed, which is happening incredibly frequently. How do we rebuild kind of the the sync system has to rebuild the shape or incrementally update it and then push updates out to connected clients? Because clients, unlike something like
+
+@vaibcode (44:58.436)
+Yeah.
+
+@vaibcode (45:08.239)
+So
+
+Kyle Mistele (45:10.582)
+I don't know, like GitHub or something, which can know when it needs to invalidate something locally. It's way harder to know, somebody touched this thing on some other server and I need I need to ask for that. The server has to invalidate all the different clients.
+
+@vaibcode (45:19.649)
+You know what this reminds me of? Well what this reminds me of a lot is actually like video games. I was gonna say design. This is literally how like if you've ever built like a multiplayer video game, this is the exact architecture that you deal with. So I'm curious now. now that
+
+Kyle Mistele (45:28.216)
+Yeah. Yeah.
+
+@vaibcode (45:36.688)
+Question comes up. If that's the case, do you guys do something clever on the client side to basically make it really fast on the client side and do a lazy invalidation? Yeah, client-side prediction. Because you do client-side prediction because it's running on the client host. So like if I can stream the tokens directly from Claude onto my UI, but then basically the server's authoritative and says, if the server says something different, I'll cancel it. And like I'll re-re update the UI.
+
+Kyle Mistele (45:58.646)
+Yeah, so yeah. Yeah. So that that is how we do token streaming, right? Because token streaming, you have like fast sync, which is like, I I want like an updated row of events in my conversation to sync out to connected clients in like a hundred milliseconds, say, maybe. Like that's that's fast, but it's not like it's not fast, right? token streaming, you you know, your claw might if you're streaming sixty tokens a second, you're
+
+@vaibcode (46:03.949)
+Makes sense. Yeah.
+
+@vaibcode (46:20.782)
+Yeah.
+
+Kyle Mistele (46:28.343)
+Typically getting diffs from the the server cent event stream from your inference server, like you're getting a l another token update, like sometimes tens of those a second. Now, how do you get that to all your connected clients without yeah, hopefully more, right? They ch Yeah, yeah, yeah. They bash Yeah.
+
+@vaibcode (46:33.06)
+Yeah.
+
+@vaibcode (46:39.129)
+Hopefully more.
+
+@dexhorthy (46:43.148)
+Well they usually they chunk it a little bit. They usually don't send you each individual token.
+
+@vaibcode (46:45.239)
+I know, but e i even even then, ideally i they speed it up. But yeah, anyway, go on. Yeah, so makes sense. So you don't send out token streams to every client, you send out like you basically do another batch on top of token streams that get sent out to clients and then or do you not do that at all? Like no streaming goes to c
+
+Kyle Mistele (46:50.572)
+Yeah. and
+
+@dexhorthy (47:00.524)
+Well we do we just we don't wanna we don't wanna go through Postgres, right? Because the sync engine is basically like write to Postgres and then everything else downstream is handled by the sync engine of like, something changed in Postgres based on the write ahead log, like the replication slot.
+
+Kyle Mistele (47:00.598)
+So we we we
+
+@vaibcode (47:05.603)
+Yeah.
+
+@vaibcode (47:09.529)
+Perfect. Okay.
+
+@dexhorthy (47:15.498)
+And then we stri we stream that down to clients. But if you want to skip the Postgres round trip and you don't want to put every incremental token as like an update or an insert into Postgres, we kind of skip that path and just go straight over the the durable stream server, which is more direct.
+
+@vaibcode (47:18.243)
+Understood.
+
+@vaibcode (47:25.314)
+Yeah, yeah, exactly.
+
+@vaibcode (47:30.063)
+Do you guys do any batching there though? so you don't do any batching. Well might be interesting, like if it were up to me,
+
+Kyle Mistele (47:33.91)
+Well so we we we do under the hood, right? So the the way that like the to Yeah, so the the way that the token streaming works is like so actually the better way to explain this is like the way that a normal write works first, so we can like start with a normal write is like the client, like the daemon or something. So that's not actually not our web UI, that's like our little daemon worker. says, you know, hey, I have like
+
+@dexhorthy (47:37.056)
+We we dual ride it, right?
+
+Kyle Mistele (48:01.492)
+Thinking block for this conversation, right? So I'm gonna put a thinking block. And the API is like, okay, cool. I'm just gonna drop that in Postgres. And the way that the sync engine works is like Dexter kinda alluded to, it is tailing the write-ahead log. So it's it's Postgres has what's called a write-ahead log. For anyone who doesn't know much about Postgres internals, I'll try not to get too into it, but yeah.
+
+@vaibcode (48:28.064)
+Yeah, let's ignore that. Let's just assume that it works.
+
+Kyle Mistele (48:31.137)
+Yeah, it's it's a log of of transi basically of of things from transactions. Like it's how replication works, it's how a bunch of other things work, but it's a list of the way that we're using logical replication, it's a list of insert, update, and delete operations. and the sync engine basically consumes that like a read replica would. So it's pretending to be a read replica as far as the database is concerned. And like when
+
+It it knows how to, it knows what like rows are included and what shapes. And when a client asks for a shape and then it receives an update from Postgres about a transaction, it says, okay, I need to notify the five clients that care about this shape and send them that update. for token streaming, where you have like, you know, a single thinking block might have like 10 or 20 or 30 like tokens.
+
+@vaibcode (49:21.454)
+Chunks, yeah.
+
+Kyle Mistele (49:22.112)
+or like token chunks per block and it takes like two seconds. You don't want to write to the API, write that to Postgres, wait for it to go out on the replication log and then sync out to clients because that'll just massively increase your yeah, it's it's too slow. It just massively loads your Postgres instance when you have that happening just because of the sheer volume of transactions. and so you don't want to do that. And so what the client actually does for thinking block tokens is it
+
+@vaibcode (49:34.414)
+Yeah, it's just slow. Yeah.
+
+Kyle Mistele (49:51.7)
+it's it goes through the proxy to the durable stream server, which uses a very similar wire protocol to electric and also to to Kafka actually, but it basically says, Hey, I have like I have a like a a thinking block which is like this, right? It's just a single token and some information about what stream it's for.
+
+@vaibcode (50:08.406)
+I see. Yeah, it makes sense.
+
+Kyle Mistele (50:15.434)
+And so all of the clients that are connected to that durable stream server are just receiving server sent event notifications as soon as things are written to this. It's HTTP cacheable, it's very performant. it will keep streams in memory, it will flush them to the file system.
+
+@vaibcode (50:22.904)
+Yeah.
+
+@vaibcode (50:27.768)
+Got it. You be it's just like a proxy. It's mostly like a proxy effectively what you're doing. and I what you're doing. Makes sense.
+
+Kyle Mistele (50:36.515)
+Yeah. So it it has a local like SQLite database and file system. And so it's it's actually like as you're appending multiple events to it, it's writing it to the log on file system. And then if a client connects, it flushes the entire log. Yeah.
+
+@vaibcode (50:46.306)
+Okay. So I got a cloud I got a cloud problem here. how big is the gerbil stream server? Because like that seems like a real-time connection machine, and if you have a real-time connection machine, you need CPUs so you can like do nice throughput on them. how many how tiny of a machine or how big a machine can you run and how many concurrent connections can you run on that machine?
+
+Kyle Mistele (51:08.404)
+it's actually exceptionally fast because the like for example, a single-threaded bun JavaScript server can handle tens of thousands of of like concurrent connections for things which are not like dependent on upstream databases and stuff like that. So even with a single thread
+
+@vaibcode (51:21.038)
+Yeah.
+
+@dexhorthy (51:28.638)
+And we use we we use SSE, so like the most compute intensive part of the connection management is the SSL handshake and so like we leave a lot of like long lived commu connections open.
+
+@vaibcode (51:34.263)
+I see.
+
+Got it.
+
+Kyle Mistele (51:40.716)
+Yeah. And it's yeah. And we're also it's a like what we're using, it's actually a caddy plugin. So it's written in Golang and runs on Caddy. So it is actually multi-threaded. But the slowest thing it has to do is talk to its file system when like a client hasn't asked or has asked for a stream that's not in memory and it has to go fetch it off disk and it already knows where it is. Yeah. Exactly. So it's it's it's incredibly fast. It's not buffering like too many things in memory.
+
+@vaibcode (51:41.164)
+Got it, okay. And it kinda just works. Yeah.
+
+@vaibcode (51:59.191)
+Yeah, and you're still looking at like one hundred nanosecond time t times for most things, so it doesn't really matter. Yeah.
+
+Kyle Mistele (52:08.417)
+except for like an initial stream fetch when it's fetching the stream it's like hitting the SQLite database saying what is the file path for this stream, reading the stream, sending it to the client, and then notifying it of updates.
+
+@vaibcode (52:13.87)
+Cool. Nice.
+
+@vaibcode (52:18.818)
+So even my stream tokens are actually not going directly from my daemon to my UI. It's going my daemon to the cloud to my UI. So there there is do you know how much
+
+Kyle Mistele (52:24.216)
+Correct. Exactly.
+
+@dexhorthy (52:27.189)
+That's why anybody else on your team can watch the same thinking streaming in real time.
+
+@vaibcode (52:31.79)
+So now I have a question. Doesn't that mean that I get a lag when I use it by default? Like I'm probably seeing like like anywhere from like a thirty millisecond to a a hundred twenty millisecond like I gotta pay the ping cost. Okay.
+
+Kyle Mistele (52:43.779)
+Yeah, yeah. I mean so you do, but like why you like y
+
+@vaibcode (52:48.95)
+I guess more of an offset than it is anything else, but okay.
+
+Kyle Mistele (52:52.192)
+Mm-hmm. Yeah, like the the the jitter is quite low. It's just like you are seeing whatever your coding agent is doing like a few tens or hundreds of milliseconds after it's it's actually done it, which is like not that important in the grand scheme of things because coding agents are quite slow, right? It's yeah, inference is really slow. and and so like it turns out you just actually don't care that much. most people don't even notice.
+
+@vaibcode (53:08.098)
+Yeah.
+
+@dexhorthy (53:10.238)
+Inference is slow.
+
+Kyle Mistele (53:21.834)
+Like you you would if you were using human layer like you would just not be aware.
+
+@vaibcode (53:23.882)
+You guys one interesting thing that you guys could do that wouldn't be that hard is you could just draw the make the UI happen directly on the daemon and just do invalidation on this end. For the primary client, you can make it so that you're invalidating off the network. Just to Huh? Just to to optimize all the way. Why? Well like like for example, like cancellation commands, for example, I've noticed like take a while to register through.
+
+Kyle Mistele (53:36.536)
+Well I
+
+Kyle Mistele (53:40.994)
+But why?
+
+Yeah.
+
+@vaibcode (53:51.412)
+And like whenever I cancel and part of that is probably because you're doing the round trip. And like what's nice when I use cloud code is like I just hit escape and it cancels, like boom. So when I when I experience that lag, I'm experiencing that lag as an end user. And what you really want to make sure is that the primary you're right that r you want to make sure readers are good, but you wanna make sure like client like video games do this all the time. So like I'll give you a really cool example in like first person shooter games. When you have first person shooter games, obviously a player can be experiencing lag.
+
+But when you're sniping someone and you see that you made a headset, a headshot in your UI, what ends up happening is even if the cloud sync engine says technically you would have missed because of lag or whatever,
+
+If you perceived it as you killed the headshot, you get that headshot. There's a really good blog post about this. Yeah, it's an amaz you can find I and like the reason is like the per it's such a bad experience for the person to feel like they missed it because of lag. And the person that's running and doesn't know, doesn't care. Like they're basically like they died anyway. You don't even need to like it's it's almost a UX thing. You don't even need to even like actually send it locally. You can just make it look like it's canceled. So like
+
+Kyle Mistele (54:39.926)
+Yeah.
+
+@dexhorthy (54:51.296)
+Ha ha ha ha.
+
+Kyle Mistele (54:52.12)
+Mm-hmm.
+
+Kyle Mistele (55:02.668)
+Yeah.
+
+@vaibcode (55:02.863)
+That's kind of th that's kind of why I was suggesting this, is like it would change the DX of the person interacting with the person a lot and make the system a lot better.
+
+Kyle Mistele (55:12.748)
+Yeah. So so the the actual answer here is like the thing which you are perceiving as slow cancellation is us waiting for the daemon to finish flushing the events that it has written like out to the API before we do that. one of the cool things that we do have in our sync system is optimistic mutations. And the reason that that feels slow to you is because we're not doing one right there. We could. we we just like have not done that. which is there's an entirely like, yeah.
+
+@vaibcode (55:35.277)
+I see.
+
+@dexhorthy (55:37.9)
+Yeah, we don't wanna tell you it's cancelled until the demon actually like is acknowledges like yes I've stopped the clawed session.
+
+@vaibcode (55:45.195)
+But can't the daemon isn't that all local? So the daemon can do everything locally, right? 'Cause there's no it's just IPC.
+
+Kyle Mistele (55:49.292)
+Well, so it it it can be, but it's not necessarily, right? If you're running it on a separate machine, it's not. and so then you need like two separate paths for writing and I PC, and the demon has to know whether it's expected to be talking to a native app or not. and and so we've opted to minimize the coupling, right?
+
+@vaibcode (56:06.603)
+Yeah. Hey Yeah. Yeah. Networking is networking is hard. By the way, don't I Yeah. I would think specifically for cancellation. Well specifically for cancellation would be dope because like that's the part that I like if I'm canceling I want to cancel now. I I think the
+
+@dexhorthy (56:07.744)
+We could do this we could we could do this as an optimization though. It would be very special it would it would be a very specialized like optimization that we could do.
+
+@dexhorthy (56:24.277)
+I guess if we had sorry got it.
+
+@vaibcode (56:25.515)
+Ninety nine percent of this is making the UX like it just needs to look like it canceled instantly. Yeah, I agree with that too. If you made me feel like it canceled instantly and it didn't, I'd also be happy. You would never know. I literally wouldn't know if you're burning tokens.
+
+Kyle Mistele (56:33.592)
+Ha ha.
+
+Kyle Mistele (56:37.752)
+Ha ha.
+
+@vaibcode (56:41.883)
+And I probably don't even care, but it's like
+
+@dexhorthy (56:42.102)
+We could just make the interrupting state not display to the client and then only like reverse it if something broke.
+
+Kyle Mistele (56:50.422)
+Yeah, yeah, yeah.
+
+@vaibcode (56:51.381)
+I yeah, I mean at some point like I guess like for this kind of thing, what you're really competing against is like the native app that someone's using. And if your app feels awesome, then it's worth it. And like collaboration is a huge, huge value prop, I think, obviously. Like the fact that Avery can like pull up the same session as me and share it is like a great value prop. The fact that I can take that session and like pull it up on my phone while I leave, great value prop. I was just like, if if I had to think about it purely from a system design perspective.
+
+I would go study a lot of the video game art and be how do video games do I would use UDP by the way, I'd stop using TCP and just like build a UDP session around this and you'd get like massive screens. You can still do a lot of ordering on your time you use UDP you reinvent TCP on top of it. Depends. A lot of video game a lot of video games, for example Except video games. Well they use UDP and then they rev they invent top of it. Yes. the thing is you don't need this
+
+Kyle Mistele (57:38.454)
+Yeah, yeah, this is the thing that happens. This is why this is why almost nothing uses UDP.
+
+@dexhorthy (57:38.72)
+Ha ha ha.
+
+@dexhorthy (57:48.812)
+But they build the whole end they build three quarters of the TCP envelope inside a UDP packet.
+
+@vaibcode (57:53.94)
+Yeah, but that three quarters is why it's fast. Like I mean a lot of stuff in like video game stuff doesn't need like exact ordering. I think well one one thing I'm wondering about is are the are we are we largely sending like delta encoded like are we sending like diffs and these diffs like depend on each other or is are we getting snapshots every time where there's no dependencies from the previous history?
+
+@dexhorthy (58:00.98)
+This is fun guys.
+
+Kyle Mistele (58:19.81)
+So when we're are you asking about when we're doing a riot or when like data is getting pushed to a client?
+
+@vaibcode (58:25.739)
+Like when data's getting pushed to a client.
+
+Kyle Mistele (58:27.683)
+Yeah. So this is yeah, that's a that's a great question. the way that I guess both of these systems work actually, right? The fast, fast and then like the slow one, which goes through Postgres work is they are both aware of the client's state. So when a client connects, it says, Hey, I need this shape, and it just says my cursor is like negative one, right? And if the sync system already has that shape in memory because another client's listening to it.
+
+@vaibcode (58:49.57)
+Mm.
+
+Yeah.
+
+Kyle Mistele (58:56.618)
+It sends it to the client and then the client like updates its cursor with the last received event and then makes another request and keeps that connection open until there's another update available. Right. It's how long polling works. Little different from SSE. and for durable streams, we do actually use SSE because you just get you you just get faster updates with a single long-lived connection that you can write events to. and it's also cacheable in a way that
+
+@vaibcode (59:20.038)
+Makes sense.
+
+Kyle Mistele (59:24.396)
+Long polling is not, right? Because long polling is a bunch of like repeated requests. SSE is just a single request that you're writing data to over time. And so if you've already written a bunch of stuff, if you configure your proxy and your cache and everything properly, you can just serve that off of a cache without ever hitting the upstream server. And so you need all kinds of cloud infrastructure and request collapsing and and shit like that. But that is that is possible. and so the client, if if the
+
+@vaibcode (59:26.124)
+Yeah.
+
+@vaibcode (59:41.165)
+Yeah.
+
+@vaibcode (59:48.589)
+Cool.
+
+Kyle Mistele (59:54.078)
+If the sync server, right, either the fast one or the slow one doesn't have the data that the client's asking for, it has to go and do a snapshot, right? The for the fast sync server, that means a SQLite lookup and then pulling a log off a file system and sending it to the client. For the slow one, it means running a Postgres query to go get the current state of a of like whatever shape the client has asked for, as well as whatever the the checkpoint was in the the write-ahead log. And then as updates are received,
+
+Off the write ahead log from that checkpoint forwards, then it also includes those updates when the client reconnects. And every time the client gets a chunk of data, it's has like the last event ID, I think, as its cursor for the next request. And then the server knows, is there data since this event that we can send to the client, or do we just rev leave the request open until there's data to send to the client? So it's highly stateful.
+
+@vaibcode (01:00:44.939)
+Yeah. The parallels with video Yeah, the parallels with video games here are crazy 'cause this is like exactly how a lockstep real time strategy game, at least back in the day, would do this. like a lot of games you couldn't connect midway through a session because you didn't have the history and they didn't, you know, snapshotting that much data at that time just didn't work. Yeah. That's why they have lobbies and like most games are like five to ten minutes.
+
+Kyle Mistele (01:01:08.994)
+Yeah, bandwidth is cheaper now.
+
+@vaibcode (01:01:12.701)
+this was a really, really fun conversation. I hope people that are watching today got a gist of a slightly different kind of episode today where we actually got to go deeper into like not just me and Dexter yapping, but some technical conversations and you got a little bit peeked behind the scenes of like how people on our team engineer and think about data structures when building compilers and how people on the human layer team go think about building distributed systems that can have really fast syncs for complex UIs that need to be filled native.
+
+I think everyone watching this episode that hasn't watched it yet is hopefully gonna go learn a lot. And I and like if you haven't already, I'm gonna say before you get into the episode, definitely go ahead and go follow Kyle and Avery on Twitter. If you don't know their Twitters, I'll share it really fast. I'm gonna scare the screen.
+
+Go take a look. Kyle makes some banger tweets all the time. Like how Jared Palmer is apparently still still up for sell, even though he technically works for cognition. and like Avery makes some Avery's got some funny tweets all going on all the time. I'll show you my favorite one really fast. What is your Prime Agent one? Right here. They really got this going. And we they re I don't know how they missed it. But
+
+@dexhorthy (01:02:05.516)
+Still selling Brusel.
+
+Kyle Mistele (01:02:09.442)
+Mm-hmm.
+
+Kyle Mistele (01:02:22.678)
+Ha ha.
+
+@dexhorthy (01:02:23.05)
+Ha ha
+
+@vaibcode (01:02:30.689)
+Go follow them. You'll get some really good engineering content from all of them. and like hopefully today's discussion was style. If it was a good style that you actually enjoyed, let us know in the comments and like we'll try and see if we can replicate this kind of conversation going forward. But other than that, let's get started. Let's go learn about data structures and let's go learn about sync engines. Thank you guys.
+
+@dexhorthy (01:02:50.742)
+Can't wait, let's do it guys.
+
+@vaibcode (01:02:56.012)
+Alright. That was hopefully a fun session. We're also live. I'm gonna turn this off really fast. Stop.
+
+@dexhorthy (01:02:56.204)
+Mm.
+
+We still we're still online. Yeah. All right.
+

@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-08-25-software-factory-design-patterns",
+      "guid": "aitw-071",
+      "title": "Software Factory Design Patterns",
+      "description": "In this episode, we'll talk about key interfaces and how they fit together in the modern software factory, what you could buy vs build, what you should always own, across compute, dev environment, harness, and orchestration. We'll dig into how sessions / traces / artifacts / plans all become perrs of code in the new forge / system of record for software\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/software-factory-design",
+      "eventDate": "2026-08-25T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-25-software-factory-design-patterns"
+      },
+      "season": 2,
+      "episode": 71,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-08-18-syncs-and-ab-testing-200-agents",
       "guid": "aitw-070",
       "title": "syncs and A/B testing 200 agents",
@@ -9,15 +29,16 @@
       "eventDate": "2026-08-18T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=GF7dnSlCM4U",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=GF7dnSlCM4U",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-18-syncs-and-ab-testing-200-agents"
       },
       "season": 2,
       "episode": 70,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1528,15 +1549,15 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 73,
-    "completedEpisodes": 68,
+    "totalEpisodes": 74,
+    "completedEpisodes": 69,
     "upcomingEpisodes": 1,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-08-17T19:22:53.869Z",
+    "lastUpdated": "2026-08-24T16:27:29.578Z",
     "generatedBy": "validate-metadata.ts"
   }
 }
