@@ -29,10 +29,11 @@
       "eventDate": "2026-08-25T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=tGbjIvvYuHE",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=tGbjIvvYuHE",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-25-software-factory-design-patterns"
       },
       "season": 2,
@@ -1570,14 +1571,14 @@
   ],
   "meta": {
     "totalEpisodes": 75,
-    "completedEpisodes": 69,
+    "completedEpisodes": 70,
     "upcomingEpisodes": 1,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-08-31T17:42:47.421Z",
+    "lastUpdated": "2026-08-31T17:56:17.687Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

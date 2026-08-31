@@ -129,7 +129,7 @@ Meet the Speakers🧑‍💻​
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-08-25</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#71</strong>: Software Factory Design Patterns</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-08-25-software-factory-design-patterns">code</a>
+          <a href="https://www.youtube.com/watch?v=tGbjIvvYuHE">watch</a> • <a href="./2026-08-25-software-factory-design-patterns">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">In this episode, we'll talk about key interfaces and how they fit together in the modern software factory, what you could buy vs build, what you should always own, across compute, dev environment, harness, and orchestration. We'll dig into how sessions / traces / artifacts / plans all become perrs of code in the new forge / system of record for software

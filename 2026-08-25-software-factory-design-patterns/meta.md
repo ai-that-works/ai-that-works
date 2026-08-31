@@ -12,10 +12,11 @@ description: |
 event_link: https://luma.com/software-factory-design
 eventDate: 2026-08-25T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=tGbjIvvYuHE
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-08-25-software-factory-design-patterns
+  youtube: https://www.youtube.com/watch?v=tGbjIvvYuHE
 season: 2
 episode: 71
 event_type: episode
