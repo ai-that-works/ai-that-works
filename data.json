@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-09-01-code-mode-extensible-software",
+      "guid": "aitw-072",
+      "title": "Code Mode for Extensible Software",
+      "description": "Making software extensible has always involved designing good and flexible interfaces (e.g. vs code extensions, iphone apps). But the most flexible interface is code, and today Vaibhav's gonna share some very futuristic ideas on what the next generation of customizable tools looks like.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/code-mode-extensible-software",
+      "eventDate": "2026-09-01T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-01-code-mode-extensible-software"
+      },
+      "season": 2,
+      "episode": 72,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-08-25-software-factory-design-patterns",
       "guid": "aitw-071",
       "title": "Software Factory Design Patterns",
@@ -17,7 +37,7 @@
       },
       "season": 2,
       "episode": 71,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1549,7 +1569,7 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 74,
+    "totalEpisodes": 75,
     "completedEpisodes": 69,
     "upcomingEpisodes": 1,
     "workshops": 3,
@@ -1557,7 +1577,7 @@
       1,
       2
     ],
-    "lastUpdated": "2026-08-24T16:27:29.578Z",
+    "lastUpdated": "2026-08-31T17:42:47.421Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

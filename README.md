@@ -12,9 +12,9 @@
 
 <div align="center">
 <h2>🦄 <strong>Next Episode</strong></h2>
-<h3><strong>Software Factory Design Patterns</strong></h3>
-<p><strong>Tuesday, August 25, 2026 at 10 AM PST</strong></p>
-<p><em>In this episode, we'll talk about key interfaces and how they fit together in the modern software factory, what you could buy vs build, what you should always own, across compute, dev environment, harness, and orchestration. We'll dig into how sessions / traces / artifacts / plans all become perrs of code in the new forge / system of record for software
+<h3><strong>Code Mode for Extensible Software</strong></h3>
+<p><strong>Tuesday, September 1, 2026 at 10 AM PST</strong></p>
+<p><em>Making software extensible has always involved designing good and flexible interfaces (e.g. vs code extensions, iphone apps). But the most flexible interface is code, and today Vaibhav's gonna share some very futuristic ideas on what the next generation of customizable tools looks like.
 
 Meet the Speakers🧑‍💻​
 
@@ -23,7 +23,7 @@ Meet the Speakers🧑‍💻​
 ​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
 </em></p>
 
-<a href="https://luma.com/software-factory-design" target="_blank">
+<a href="https://luma.com/code-mode-extensible-software" target="_blank">
 <img src="https://img.shields.io/badge/🦄_REGISTER_NOW-Join_Live_Session-ff4444?style=for-the-badge&logo=calendar" alt="Register Now">
 </a>
 
@@ -107,10 +107,29 @@ Before joining, get familiar with our toolkit:
         <div style="margin-bottom: 2px;">
           <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
         </div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-09-01</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#72</strong>: Code Mode for Extensible Software</div>
+        <div style="font-size: 13px; color: #666;">
+          <a href="./2026-09-01-code-mode-extensible-software">code</a> • <a href="https://luma.com/code-mode-extensible-software">code</a>
+        </div>
+      </div>
+    </td><td><div style="padding: 8px 0; line-height: 1.5;">Making software extensible has always involved designing good and flexible interfaces (e.g. vs code extensions, iphone apps). But the most flexible interface is code, and today Vaibhav's gonna share some very futuristic ideas on what the next generation of customizable tools looks like.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+</div></td></tr>
+<tr><td>
+      <div style="padding: 8px 0;">
+        <div style="margin-bottom: 2px;">
+          <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">PAST</span>
+        </div>
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-08-25</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#71</strong>: Software Factory Design Patterns</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-08-25-software-factory-design-patterns">code</a> • <a href="https://luma.com/software-factory-design">register</a>
+          <a href="./2026-08-25-software-factory-design-patterns">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">In this episode, we'll talk about key interfaces and how they fit together in the modern software factory, what you could buy vs build, what you should always own, across compute, dev environment, harness, and orchestration. We'll dig into how sessions / traces / artifacts / plans all become perrs of code in the new forge / system of record for software
