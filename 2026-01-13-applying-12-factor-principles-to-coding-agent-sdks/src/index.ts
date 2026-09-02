@@ -1,4 +1,4 @@
-import { query } from "@anthropic-ai/claude-agent-sdk";
+import { query } from "./agent-sdk";
 import { BLUE, GREEN, RESET, log, printEvent } from "./utils";
 
 async function main() {

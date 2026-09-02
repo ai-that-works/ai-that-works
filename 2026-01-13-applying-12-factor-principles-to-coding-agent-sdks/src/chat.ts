@@ -1,6 +1,6 @@
 import { createInterface } from "node:readline/promises";
 import { stdin, stdout } from "node:process";
-import { query, type SDKUserMessage } from "@anthropic-ai/claude-agent-sdk";
+import { query, type SDKUserMessage } from "./agent-sdk";
 import { BLUE, GREEN, RESET, createInputQueue, log, printEvent } from "./utils";
 
 async function main() {
