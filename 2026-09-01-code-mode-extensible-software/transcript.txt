@@ -1,0 +1,878 @@
+Kyle Mistele (00:00.707)
+@vaibcode (00:01.76)
+Yes we are. Hello, we are live.
+
+And today we are on time. And I can note that there's only one reason we are on time that is confidently true. Dexter is not here. So while he's not here, that's the that perhaps there's you know causation may not be correlation, but sometimes maybe it is anyway. nice to y'all. I'm Bybov and this is the AI That Works Show. And as per usual, we like to go and show real working systems that you leverage AI into working pipelines. Today with me I have Kyle who is Dexter's co-founder.
+
+Kyle Mistele (00:13.356)
+Ha ha.
+
+@vaibcode (00:35.234)
+But I'll let him briefly introduce himself.
+
+Kyle Mistele (00:37.916)
+Yeah, hey guys, I'm Kyle, I'm co founder of Human Layer. we work on really cool coding agent stuff.
+
+@vaibcode (00:44.184)
+Cool. and I think today's episode is something that I was actually really excited about for quite some time. And specifically the thing that I was excited about is talking about code mode. Now
+
+I think that's a word that either is not described very well or a word that is perhaps described in totally different ways in many and diff depending on who's using it. So we should start off really quickly, Kyle, with how do you think of code mode? What is it to you? What does it mean? What does it enable?
+
+Kyle Mistele (01:17.072)
+Yeah. So code mode is it's a a way to give an agent more tools or to let it compose tools differently. U when you think about how an agent normally calls tools, you know, it'll generate one or multiple tool calls in an array, right? You execute the tool calls, you submit the results to the API, and it round trips it, right? It does more inference, it processes that, it can call more tools if it wants.
+
+But it has to do that in order to get the output. Code mode is a way of like giving the agent almost like a runtime where you give it kind of tool definitions or stubs and it can write code to use those tools to chain them together, to pipe them, to process, you know, filter, map, reduce, whatever them, so that you can execute a longer or more complicated sequence of actions than you might.
+
+you know, otherwise be able to do with just normal tool calling. There's a lot of different reasons why you might want to do this. but that's that's kind of like how it works at a high level.
+
+@vaibcode (02:21.398)
+So if I were to break down this code mode box, what is the main thing? It sounds like it's a thing that's leveraged by an agent. So an agent kind of has access to this somehow. And it produces some like can I call it like dynamic output?
+
+Kyle Mistele (02:35.804)
+Sure. Yeah, I mean it it gets, you know, the agent writes tokens out, they get executed as code, and then the output gets shown to the agent, right? The the most trivial example of code mode that I think everyone that is watching this is familiar with is actually the bash tool, right? The agent writes code, i.e. bash. It has a bunch of tools baked into that, like runtime in the bash shell, right? That's just your Linux, Unix, Mac OS utilities, right? Grep.
+
+Read, cat, pipe, whatever. it's you know, small sharp tools that the agent can like compose and do a bunch of like things in sequence instead of like having to say read this file and then get the result and round trip the API and use like a read and a grep and a glob tool. So like the Cloud Code harness, for example, used to have a bunch of different tools for like list files, grep files, glob files. And a lot of the Cloud Code harness is moving in this direction, and other harnesses like Pi have kind of always done this, it's just said.
+
+The agent already knows how to do all these things, just give it the bash tool because it lets it compose it in a better way.
+
+@vaibcode (03:36.216)
+Okay.
+
+So I yeah, bash is basically like the most simple form of code mode. But why do you think it's starting to get a lot of conversation happening now about what code mode actually is? Like where does that happen from?
+
+Kyle Mistele (03:52.017)
+Yeah. I think code mode solves there's a couple different reasons you would do it. it it solves some some interesting problems. And the first is it one of I I think maybe what pe what got people initially excited about it actually was like code mode over MCPs, right? People had a lot of different MCP servers that they wanted to plug into their agent. And so by default, all these had to be added as normal tools into the agents, like.
+
+Context window with descriptions and and like it would go list all the tools. And if you had 60 tools, now there's 60 tools in your context window. And so what people first started to do was to say, okay, instead of like adding these as tools to the agent, we're gonna like use a little like JavaScript or Python SDK to turn these into just like functions. And the agent can just write Python or JavaScript code to call these functions and compose them and to discover them so that you can have dynamic tool discovery and you can make them
+
+more composable and do like kind of multi-hop tool calling without round tripping inference. So it it's more token efficient in terms of what starts in your context window and also more token efficient in terms of like what gets dumped out back into your context window if you need like multi-step like sequences.
+
+@vaibcode (05:10.954)
+Interesting. Okay. So I think the more interesting part about this is if you had to system design code mode out and you had to actually go and decide like if your app should or should not use code mode, how do you go about that in your mind?
+
+Kyle Mistele (05:26.753)
+yeah, I so
+
+It it it there's a lot of different like reasons people use code mode. And so like it's like what problem
+
+@vaibcode (05:38.432)
+A and by the way, for everyone else, like why I'm asking Ky why I'm asking Kyle this. Kyle has worked on code mode, he's added code mode features, he's done this, so there's a lot of nuances to this discussion that I think a lot of people like overlook in like a high-level concept. So I'm just like really curious on like his specific engineering take.
+
+Kyle Mistele (05:59.271)
+Yeah. Yeah. Like code mode is like one of those things where there's like a bunch of different ways to use it. And like two people can be having a conversation about code mode and talking about like completely different things, right? There's like the MCP use case that I mentioned. but there's also like all kinds of other ways to use it, right? The codex harness now supports code mode natively, right? and so like I there's a bunch of different reasons you might have it. Like
+
+The default is not like, you should have code mode, because code mode is not super in distribution for the models yet. and so like my take is like there's certain uniquely shaped problems that you should use it for. and one of them is, like I said, if you need a bunch of different tools in your context window that you just can't afford to stuff in there, you need dynamic tool discovery, right? So dynamic tool discovery and like
+
+lots of tools and needing to compose those well is is like one of the first things that would maybe make you think, yeah, I should have code mode.
+
+@vaibcode (07:04.097)
+And like you need dynamic tool discovery because like way too many tools. Okay.
+
+Kyle Mistele (07:07.514)
+Yeah, way too many tools. Like dozens, right? Like an everything agent, for example. Like if you think about like Mass, yeah.
+
+@vaibcode (07:11.009)
+That's so funny. Can I just say the idea that dozens is way too many is kinda fascinating to me. But 'cause w in what other world in what other world of software do we have dozens being like, yeah, that's too much.
+
+Kyle Mistele (07:21.21)
+Yeah, it is.
+
+Yeah. I think you did, yeah. so like for example, if you think about an everything agent that needs to be able to check your Slack and needs like 12 different tools for Slack, like list channels, read a channel, read a thread, send a message, send a DM, like search through chat history. and then also it needs to be able to do like
+
+@vaibcode (07:30.487)
+That spelled dozens, right? I hope so. Okay.
+
+Kyle Mistele (07:54.085)
+All of those things, also for your GitHub and also for your email, and also for like six different social media and SMS platforms, like you get into a question of like, there's good SDKs for all of these. And so do you just let the agent use the SDKs, which are kind of already like in distribution, and you just let it execute it in like a JavaScript or Python runtime and inject some credentials into it? Or do you like go and figure out how do I like design a harness that like
+
+lets the agent decide which provider it wants to talk to and what it's gonna do in that provider and manage interop so you have like one like send message tool with a bunch of different channels or you just add like a tool for each action in each channel. It's like a weird, like kind of strangely shaped harness design problem.
+
+@vaibcode (08:40.567)
+So I know so given I mean I tease this a little bit, but you built code mode. So what what do you guys built? Show me what you built. Do you have a system designed for it or do you want to screen share and show it live?
+
+Kyle Mistele (08:49.724)
+I can try to pull it up. but the the thing that we built code mode for, and this is actually another like really good example of when it's it's very obviously the case you need to do this, is we were trying to have agents edit CRDT documents without getting like super in the weeds on CRDT. You have a data structure that represents some data. It could be a string. In our case, it was an XML document that represented like a rich text document. So think Google Docs. And you want the agent to be able to edit it.
+
+and that data structure is being replicated across a network in lifetime. But the it does like the semantics of like an a read tool or an edit tool, like the harness normally sees, like during RL, don't really make sense for that because it's a data structure. And it's like the it's kind of like if you took like a linked list or a tree in C and you're like, well, how do get an agent to like edit this? The answer isn't like, well, I give it a read tool and have it like get a node ID and then like.
+
+@vaibcode (09:43.254)
+Yeah, code.
+
+@vaibcode (09:47.126)
+Yeah.
+
+Kyle Mistele (09:47.921)
+You have to have a super complicated tool interface that says like, how am I traversing this data structure and selecting the node that I want to read or edit? Right. It's like you just need to have it write code to traverse and modify the data structure because it already it can do that already. But otherwise you end up with like a JSON tool with like forty different input properties that's just like super out of distribution.
+
+@vaibcode (09:54.985)
+It's yeah.
+
+@vaibcode (10:08.799)
+It's like the equivalent of this, right? It's like the these two are basically the same, or like
+
+@vaibcode (10:28.871)
+like and you just have this be like null to signify all or something. And this is basically kinda saying the same kind of stuff. But if I were to go and have the agent write something, I know what it's gonna prefer writing. This. 'Cause what you're inventing is a shitty DSL on top of something that's well described. It's like or like do you know what AWS step functions are? Yeah, exactly.
+
+Kyle Mistele (10:43.44)
+Right. Exactly. And and something that's in distribution too, right? It's like the agent already knows SQL. Otherwise you have to teach it what your little DSL means.
+
+@vaibcode (10:54.357)
+Let me show you something that's so funny. have do you know what AWS step functions are? It's like the exact same concept here. It's like you can have a I if I can pull an example of it and make it so clear, I actually what I should do is just ask chat. Give me an AWS step function example. And I think this is probably the closest concept to like what code mode really is for many people. Is if you've ever used AWS step functions or something that.
+
+Like I got one here. I'm gonna s I'm gonna literally bring this in. Actually I'll just share this tab.
+
+if it lets me.
+
+@vaibcode (11:40.491)
+Like this is one way to write code where you literally write this. You add a comment, you write start, then you these are all the states I have, this is how you go from one state to the next. And this is kind of describing code
+
+Kyle Mistele (11:50.48)
+Yeah, it's basically like a JSON state chart. Yeah.
+
+@vaibcode (11:52.949)
+Yeah, exactly. And then you can you can ask you like this is the exact same equivalent code. It actually described it to me that way. 'Cause like if you're trying to understand set functions, then you're trying to be like, Okay, well you can write this and I'll bring this to the Excalibur itself, so we have it. You can either write like option number one of like the TypeScript code, or you can write this at the top. And like
+
+Kyle Mistele (11:58.951)
+Yeah.
+
+Kyle Mistele (12:16.764)
+Yeah
+
+@vaibcode (12:19.576)
+I think we all know which one it's not about which one I prefer. Like I can imagine which one is less prone to mistakes, where can I take advantage of all the tooling benefits and stuff that we have. Like it's just so much more likely that an agent will get this thing right as opposed to a thing on the left right.
+
+Right. So
+
+Kyle Mistele (12:40.166)
+Yeah, like JSON is like weirdly like it's like very in distribution for the models, but like they don't like tools that have like super large, complicated JSON interfaces. They're just like not for whatever reason.
+
+@vaibcode (12:55.702)
+Well I don't think it's a model thing. I just think a super complicated JSON distribution is just bad for humans too. Like you're writing a serialization effectively it's a serialization layer and JSON is amazing for serialization. It's not really good for like maintaining s schema specs over time. You've seen like open API for example?
+
+Kyle Mistele (13:03.846)
+Yeah.
+
+@vaibcode (13:16.21)
+Open API is another shitty example of like JSON trying to represent the world. And like, would you rather write open API specs or write pure TypeScript code or any language that you're used to writing? And I think the answer is often very clear. cool. Do you want to show off your code mode stuff?
+
+Kyle Mistele (13:33.712)
+Yeah, I found I found I found the PR. that yeah, let me s let's see if I can get this going.
+
+@vaibcode (13:36.724)
+Okay, I'll stop sharing. Take it over.
+
+Kyle Mistele (13:43.526)
+Alright, cool. We see in this
+
+See if I can get this in unified view. Sweet. Can you see that viboff?
+
+@vaibcode (13:52.039)
+I can see it.
+
+Kyle Mistele (13:53.659)
+Yeah, okay, so is that showing the tab? Yeah, and also I'm gonna get it showing the window instead of the the tab. 'Cause I what I what I wanna do is Okay, we got that, and then we've got like
+
+@vaibcode (13:55.638)
+Can you zoom in though?
+
+Kyle Mistele (14:14.438)
+So what what we were trying to accomplish is editing a YJS CRDT for like a rich text document, which it models as an XML fragment, which for anyone who's not familiar, like HTML document, nested tags, tags can have content, tags can have attributes. but this is the API for like messing with a YJS XML fragment, right? it's it's quite complicated. These are all like
+
+@vaibcode (14:24.085)
+Okay.
+
+Okay.
+
+Kyle Mistele (14:44.228)
+Rich types and their objects. And by the way, you also have XML elements which have their own APIs, and then you have the text objects within them. And so it's it's like you you look at something like that, and you think, well, okay, how am I gonna like design a harness that like the agent gets to let it do all of these things? and like it's not out of the realm of possibility.
+
+But it's also the case that YJIS is the most popular JavaScript CRDT library out there. And so LLMs are very good at JavaScript and at YJS. Yeah. And and so like that that's kind of the first thing that like popped into my head is like, well, the agent can just write the code to do this. And the other thing that you get into is to perform operations on a
+
+@vaibcode (15:22.387)
+Y J S.
+
+Kyle Mistele (15:36.781)
+like a YJS C R D T, you normally need like multiple different operations, right? You have to get a node, you have to validate in the document, hey, this is a valid node. You have to kind of traverse the tree and then say, okay, I have the element I want. I have a reference to it, and now I'm gonna insert text here. And so, like in JavaScript, that's probably like a for loop and something to update a node, right? And so for the agent to do that, you would just have to have the agent call tools in a loop until it gets to the thing you want, and then
+
+Update it. And by the way, because that took 10 like round trips of the inference API, that might be a materially different document now because other people might be editing it editing it than it was when the agent decided on the edit it wants to make, right? So that was the other thing to think about is you need to be able to call a bunch of tools in sequence and have that kind of execute at the speed of code so that the agent can just generate one string and have it be applied rather than like round-tripping GPT 5.6 Sol X Highs API and like.
+
+@vaibcode (16:08.565)
+Yeah.
+
+@vaibcode (16:14.585)
+Ha ha ha.
+
+@vaibcode (16:18.923)
+Okay.
+
+Kyle Mistele (16:35.6)
+Five minutes later, maybe you have the update that you want and the document is entirely different and so it gets discarded anyways.
+
+@vaibcode (16:39.669)
+So I wanna highlight that by the way, like the the key point that you said here for me was I wanna execute tools at the speed of code.
+
+There's no frickin' way you can execute tools at the speed of code if you're using an LLM to decide what tools to call. You just cannot. Because like you're gonna hit network latencies of at least 30 milliseconds. Just like pure network bandwidth at a minimum town, not even if token speed was zero time. And then you have token speed on top of that. So like you're talking about like three, four hundred millisecond fastest response time. There's no code in the world that runs that slow.
+
+Kyle Mistele (17:12.742)
+Yeah, and then
+
+@vaibcode (17:19.405)
+for dispatch loops. There's not a single language in the world that runs four loops in two in 30 millisecond time frames. I mean there might be, but it would be imp it you would need to do real engineering to make it that slow is the way I would describe it.
+
+Kyle Mistele (17:22.044)
+Yeah. Yeah.
+
+Kyle Mistele (17:37.415)
+Yeah. Yeah. And like the other thing too is like you need a smart model to do this, right? It's like you can't just use a super fast model like you know, like Luna or something. We're doing complex operations across a a a a data structure that is quite large and that the agent needs to be able to like read and inspect. And so you do actually need a reasonably smart model. And so as the you you
+
+@vaibcode (17:47.487)
+Yeah.
+
+Kyle Mistele (18:04.174)
+it it might even take you more than one try to do this, right? And yeah, so the so the so this this this does work. I don't have my like local dev stack set up for it, but like this is the thing that we built which works. And I actually I I got invited to give a talk about it for the online track at AI Engineer World's Fair and I ended up declining because I got the the in person slot. But like this is this is a a practical solution to the problem and like
+
+@vaibcode (18:05.663)
+So does this thing works does this thing work right now?
+
+Kyle Mistele (18:32.208)
+We can talk a little bit how it a little bit about how it works because like there's a bunch of other like there's a whole like dimension of how you actually design tool calling for agents based on like what type of agent you're working on. and so
+
+@vaibcode (18:44.917)
+Can you go to the Excala for example really quickly and perhaps like draw for me? draw for me the loop that you're building here for your code mode system. Like what does your code mode system look like?
+
+Kyle Mistele (18:56.154)
+Yeah. So the first thing that you have to like think about is you know the agent is basically like it gets a prompt and it like gets some information about like in the system prompt. why don't we do this? Why don't we do our little context stack here, right? We have like
+
+@vaibcode (19:24.499)
+Okay.
+
+Kyle Mistele (19:27.15)
+Right. And so then like we might have, you know, user messages that are telling it like what to do. Right. And then the agent decides it needs to go ahead and actually call the tool, right? So it's gonna say like execute code.
+
+Kyle Mistele (19:51.221)
+and it knows that it can do this because the tool definition is in the system prompt. And in our example, there's a bunch of instructions about like what kind of how the like little SDK that we inject into the runtime actually works. So let me see if I can find that.
+
+@vaibcode (19:56.735)
+Yeah, so we have like
+
+@vaibcode (20:15.963)
+As a TS script. Here's we have Shad C N imported or like EE et cetera, right? Like you can basically say like we have Yjs imported.
+
+Kyle Mistele (20:31.967)
+Mm.
+
+@vaibcode (20:33.643)
+Yjs variable
+
+Kyle Mistele (20:36.804)
+Right. But so there's an additional kind of nuance here, which is like so the agent has to execute this code in like our little runtime, but it can't actually write yjs because the the yjs it to be able to do this, it would need to be able to execute code against the yjs object.
+
+@vaibcode (20:58.463)
+Yep.
+
+Kyle Mistele (20:59.044)
+And the object like lives in our backend, right? This was this is for a cloud agent. So it's an entirely separate thing if you're doing a coding agent where you can just give it a little JavaScript or Python runtime and fork the process. If you're building an agent in like a cloud agent for a multi-tenant back end, you can't trust the code that the agent is writing. And you can't so you can't execute it against things that live in memory inside of your back end. So what you actually need is you have to take
+
+You have to basically build a little SDK for it. and we're gonna call those like bindings basically. And these are methods that get injected into your like, in our case, we used quick JS quick.js runtime. super lightweight, like C or C based JavaScript runtime. And it allows you to inject bindings into the runtime. So I'm gonna go and find where that is in the diff.
+
+@vaibcode (21:42.859)
+So you do this.
+
+@vaibcode (21:57.078)
+So like for example it hard codes like what user ID that you're calling to. So the user it doesn't this runtime doesn't even get access to like every single tenant. It can only query for that specific user or that specific session.
+
+Kyle Mistele (22:10.18)
+Right. So it that's too much. yeah, we basically define a bunch of function interfaces that it's allowed to execute. And like this is the code that just injects those functions into the runtime. we also injected like a console API so the agent can execute code and inspect something in the middle of that execution code. Because if it fails, we don't just want the agent to get an error message. It needs to be able to like see where the
+
+@vaibcode (22:13.482)
+Yeah.
+
+@vaibcode (22:30.334)
+And debug.
+
+Kyle Mistele (22:38.428)
+program state is at various points in it. And so that would include whatever it logged to the output. But so you have to design these little functions that define like what is the interface, whoops, that the agent can actually do. So we would have like you might have something like list nodes, you know, node ID or list child nodes.
+
+@vaibcode (22:41.579)
+Yeah.
+
+Kyle Mistele (23:08.527)
+and then you could have, you know, like insert
+
+@vaibcode (23:09.289)
+Yeah. So you're basically building a wrapper on top of YJS effectively. That like is also Yeah. So that's interesting. Okay, I saw I'm gonna push back. I'm gonna push back here really fast because the thing I'm curious about here is the thing that inspired code mode, and it seems like that wasn't the exact thing, there's a different reason for why it's really useful for you guys, was that stuff is already in the training data.
+
+Kyle Mistele (23:15.012)
+Right, but you still want it to look as much like Yjs as possible, but it doesn't allow the agent to access the JavaScript prototypes.
+
+@vaibcode (23:37.523)
+Which doesn't seem like that's what it is, cause this like your nodes are not in the training data. They're close, but they're not in the training data by default, because you're inventing this API surface. But it sounds like the real value prop for you is you don't have to do a multi-tool call loop. You get to do a single tool call execution loop, so you get much faster execution time. So it sounds like actually for you, it's actually not the fact that. is that a is that the right is that the correct interpretation here?
+
+Kyle Mistele (24:05.56)
+It it's yeah, it's mostly correct, I think. that is one of the main value propositions is the agent can write 40 procedure or 40 method calls to touch a JavaScript object without like round-tripping the inference APS. So that's the main one, right? It is also the case though that YJS is very in distribution and the little binding SDK that we wrote that gets injected into the runtime is shaped almost exactly like YJS.
+
+@vaibcode (24:09.384)
+Yeah.
+
+@vaibcode (24:33.692)
+And you tell that in the comment.
+
+Kyle Mistele (24:34.052)
+And we gave the agent instructions on how to use it, right? It has a system prompt block that says, by the way, here's the SDK that's injected into the runtime, and here's how to use it.
+
+@vaibcode (24:43.976)
+Okay, w I see, so you're like here's the SDK. It's pretty much YJS.
+
+etc. Right? And you just tell it this. That's cool. That's cool. So so I'm gonna ask a couple more questions. do you do compiler checks or do you just run it and wait for it to mess up?
+
+Kyle Mistele (24:58.096)
+Exactly. Right. With like but there's like a little more detail of here's the methods and the signatures. But yeah.
+
+Kyle Mistele (25:10.79)
+so we did JavaScript, not TypeScript. And so it's it's not compiled. We just because that's like you would need to actually have yeah, you would need to run a TypeScript compiler in your back end, basically. right. So if again like
+
+@vaibcode (25:14.026)
+Okay. Why?
+
+@vaibcode (25:19.048)
+Works enough.
+
+@vaibcode (25:22.846)
+That's true. Yeah, and that's hard. Yeah. Cause right now d does this require a back end or is this running in the web server directly, or do you have a separate microservice here?
+
+Kyle Mistele (25:32.113)
+Yeah, so this code was not super opinionated about it. It was designed as a module. You could you could deploy it inside of a service either way. But yeah, if if you wanted a TypeScript compiler, you would need to think about hey, compiling TypeScript code can be expensive. TSGO is not cheap. and like how do you slot a TypeScript compiler into your back end like to be used at runtime? Like Yeah. Exactly. Yeah. And and so like what you do instead is you just Yeah.
+
+@vaibcode (25:40.638)
+Yeah.
+
+@vaibcode (25:53.075)
+Yeah, you basically need like yeah, it's kind of complicated. Cool. This is cool.
+
+Kyle Mistele (26:01.326)
+And so you what you need instead is like when it fails, you have to give it the error message and you give it like a console.log method so that
+
+@vaibcode (26:08.904)
+Yeah. You redirect console.log to point to the your own capture log, then you point it back to the loop and now your agent tool called agent loop has that access.
+
+Kyle Mistele (26:14.949)
+Right.
+
+Right. So then it'll like when the tool call actually runs, it'll say, Cool, here's the result.
+
+@vaibcode (26:25.62)
+Yeah.
+
+And really quick w yeah, exactly. And you kinda get kind of everything for free in that way. I have like two quick questions really fast. How does quick how does quick JS runtime deal with this? Is it just like an in memory JavaScript runtime?
+
+Kyle Mistele (26:28.376)
+Error and then here are the console lines.
+
+Kyle Mistele (26:46.992)
+yeah, so it's like it's it's C or C based, and so it's like it can be compiled to WASM and like deployed in a back end that way. which is why you need bindings, right? Because you can't pass a JavaScript object like a CRDT, run it in your backend across like a WebAssembly boundary into like a like a sandboxed thing that just knows how to execute JavaScript syntax but is not actually like part of your JavaScript environment.
+
+@vaibcode (26:48.138)
+That's cool.
+
+@vaibcode (26:55.678)
+That's cool.
+
+Kyle Mistele (27:15.802)
+You could do something maybe a little more clever with like V8 isolates and and and stuff like that. but like this is the kind of more more secure way to do this.
+
+@vaibcode (27:27.188)
+Yeah.
+
+I'm gonna give a quick little shout out to if you haven't tried the Agent OS team. they do some interesting work in this kind of stuff too. might be worth for other folks to check check it out. No no real obligation, but you know, they do some hardcore engineering. Okay, so I think this is interesting. This is like a really practical way to do code mode. It sounds like there's a real like if I if someone were to take the transcript from here, they could probably feed this to their agent and find their own application of this pretty easily. Because this concept of having bindings, having a runtime, remapping console outlets.
+
+log that makes total sense. It's not. Agent layer is not open source. Yeah. I mean it's fine. Regardless of the fact like people can definitely like point to And I suspect an agent can figure out most of this stuff with just the conversation that we have. If you're gonna open source it then yeah just we can share the link to people for exactly what that PR is as well. Now exactly there we go we just made a public live then boom done.
+
+Kyle Mistele (28:00.475)
+I'm also reasonably sure that this repository is open source. We use it for a bunch of things. it's not. that's easy enough to
+
+Kyle Mistele (28:20.358)
+Yeah. Well I can also just make it public right now.
+
+Bam. Yeah. So I I do I I do want to back up though for a second, because there's a couple other reasons that you would want to do code mode this way. And there's a couple different ways you could do it. The open code team, for example, built code mode into open code and they just wrote their own little TypeScript interpreter because you don't need processing because it's not a multi-tenant system. It's running on a single user box. But in a multi-tenant system,
+
+@vaibcode (28:28.562)
+So I have a go ahead. Okay.
+
+@vaibcode (28:44.767)
+Yeah.
+
+Yeah.
+
+Kyle Mistele (28:51.79)
+It has to be completely isolated because this code is not trusted. And even if you limit which objects it's allowed to touch in JavaScript, if you can touch the prototype of an object, you can more or less execute arbitrary code. This is behind all kinds of different remote code execution vulnerabilities you've heard of. I think maybe like one of the React or like Next.js vulnerabilities was like a prototype pollution thing in JavaScript. But generally, like letting untrusted code touch an object prototype is incredibly evil. So you have to you
+
+@vaibcode (29:18.066)
+Yeah, execute is freaking dangerous. Yeah.
+
+Kyle Mistele (29:21.316)
+You have to sandbox it.
+
+@vaibcode (29:24.904)
+Okay, I actually want your thoughts on some stuff. So I think this is a really practical example. I want to talk about some non-practical stuff now. Cause that's what I like to really push, right? Cause like practicality's fun, but why don't we take it to the next level? So I'm gonna I'm gonna draw some stuff here. Sure, I'll take it. And I think particularly what I'm really interested in is like here's where I find code mode most interesting.
+
+Kyle Mistele (29:31.985)
+Yeah.
+
+Kyle Mistele (29:38.32)
+Yeah, here do you do you wanna take the screen share vibe off?
+
+@vaibcode (29:47.996)
+My view of software in the future is it is all code mode. And what do I really mean by code mode? I want you to think about the most useful kinds of software that everyone in the world uses. It's browsers, it's apps on your phone, it's extensions and VS Code. What has made all of these extremely successful? It's basically being able to run code that matches some interface that extends that application to every niche user's use case. Like when we built BAML, we didn't have to go and update VS Code, we shipped a VS Code extension.
+
+And that made it usable by every other user. When you want to make a new iPhone app, you don't ship new hardware, you ship the app that matches the platform that you ship to. And I think this principle used to be gatekeep only developers. Now you could only contribute in this way of extending software if you were a developer. And I think the beauty of soft AI is like this is really the untapped beauty. You can now extend every piece of software ever. And everyone can extend every piece of software ever.
+
+It's
+
+And if you want to go do that, the question I ask is, how do you make code mode so easily accessible where it's both, like you said, running untrusted code, but in a way that meets the bounds of your application? And that's what I think the really, really tricky part of this system is. Because why do why does not every system build like extension apps to itself? It's because like you have to maintain an API contract, you have to secure it and make sure it's not gonna do something really dangerous. And then you also at the same time
+
+To understand the cost primitives of it. We just started talking about TypeScript and we realized, and one of the things you were like, I need a backend now to type check. And like, do I have to spin up a server just to type check the code? Like that's that's real heavy compute usage. And not just that, that's like a real infrastructure bill you have to pay in a way that's like complexity that you may not want to take on. Clearly, in your case, it wasn't worth it. So we've been thinking about this a lot. And we have some w weird, weird implementation of code mode.
+
+Kyle Mistele (31:27.364)
+Yeah.
+
+@vaibcode (31:47.131)
+that we've specifically been thinking about. Let's see if I can pull it up. I'm gonna use cursor because let's pull this up and let me move you on to the side.
+
+So this is, and I I want you to take on this, and I will show you the first example of this and see what you think. So the first thing that we're doing here is code is passed in as a string. So this is the very, very first example. Code is passed in as a string, you can go write this. And I'm gonna pass in some more code as an additional string that's gonna fill in this string. So when I go run this code.
+
+Kyle Mistele (32:08.358)
+Right, let's see it.
+
+Kyle Mistele (32:15.195)
+Right.
+
+Kyle Mistele (32:24.176)
+Mm
+
+@vaibcode (32:30.057)
+Yeah.
+
+Okay. what do I want to run this? I'll just run renderwood plugin. Dam I'll run renderwood plugin. What I want to be able to run is let's say the name is Kyle. And the code I want to run on it is actually going to be something like name.2upercase.
+
+And this should run widget kyle, because it just runs a name and name becomes whatever expression I pass into here. So if I did name.split, split on like empty races, dot join on like space, and then did this, you can kind of expect what it would do. So you're kind of watching me dynamically change the code on the fly and execute it as it's happening.
+
+Kyle Mistele (33:01.649)
+Nice.
+
+Kyle Mistele (33:16.998)
+Yeah, that's really cool.
+
+@vaibcode (33:17.949)
+But what hap what happens if I find a function that doesn't match? And I'm looking for the foo function now instead of the render function. Well now you get render not found. But what's really weird.
+
+Kyle Mistele (33:32.432)
+So you do actually have the type checking there.
+
+@vaibcode (33:36.07)
+Yeah. So and look up. But if I do something else, and let's say instead of this I just did dot split. Now name dot split will create an array type. It creates an array of strings instead of a single string. And widget's name is defined to be just a string. So let's see what happens. You actually get a compiler error that says and you can render this prettily, we don't right now. where'd it go?
+
+mismatch type string right here. Yeah, yeah, I mean this just needs to be printed out correctly for like a human diagnostic. But this basically gives you the same compiler which is expected string found string array. Right? And it actually tells
+
+Kyle Mistele (34:05.734)
+Yeah, that looks like a a stack trace for agents, not humans.
+
+Kyle Mistele (34:19.708)
+So it is so you're you're giving it a string and your code is telling it to split this string and then that string is being passed into another function.
+
+@vaibcode (34:30.821)
+It's as if I had written name.split here. And this will obviously not type check because name has to be a string, this is a string array. Or more obviously if I did name.length.
+
+Kyle Mistele (34:40.581)
+Right.
+
+@vaibcode (34:45.091)
+And this is what I plugged out. now it's not being passed in anywhere, but I will get like expected string found int. So it's actually running the type checker to make sure that this code is one safe to pass.
+
+Kyle Mistele (34:58.748)
+So it's like it's assembling the code and then doing type checking before execution.
+
+@vaibcode (35:04.956)
+Exactly.
+
+@vaibcode (35:08.905)
+So it's assembling the code and then running type checking before execution. But it's doing another thing before execution. I'm gonna change this string to return an. I'm gonna say that render is a function that returns an int, and set it takes in a string, returns an int. Now, if I do this, we all know render here is a function that takes in a string, returns a string.
+
+So it's a slightly different kind of thing. So this all type checks, everything is good. So we'll just switch this back to a simpler version of like two uppercase.
+
+@vaibcode (35:43.347)
+So what you're able to do now is you get a different error, which is oops. Did I mess up?
+
+@vaibcode (35:58.009)
+that's funny. Yeah, there you go. So you kind of get this here. We're like rend the function render has a type of string string, which is not a subtype of what you're looking for, which is string to int. So you're looking for a function at string to int, but it's it does compile, it does work. But it's not what you're what you're actually trying to get. It's like a type error effectively. So you're actually getting two levels of errors under the hood as you're trying to go execute this.
+
+So you kinda get the code mode on a very extendable plane, if that kinda makes sense.
+
+Kyle Mistele (36:33.52)
+Yeah. Yeah. And this is the other thing that's like really hard about building code mode too is like making the errors be not nonsensical or sensical, I guess, to your agents, right? It's like, okay, something goes wrong and it's a bunch of JavaScript code that's executing, and like some of the SDKs or bindings might ha not have like obvious errors. For example, in QuickJS,
+
+@vaibcode (36:45.894)
+Yeah, what I
+
+Kyle Mistele (36:58.778)
+You know, like the errors can be like super weird and it's hard for the agent to figure out what's going on. And it's actually like an entire like design space of how you do your code mode of like how do you design the errors for the agent to be able to figure out what went wrong and correct it? That's actually really hard.
+
+@vaibcode (37:15.792)
+It really is. I was like, what I should really be doing here is this BAML dot IO dot println and print out the compilation error.
+
+Oops, compile failed. So like if I'm running all of this through, this is kind of what I want to get. Oops compiled failed, render has typed this, which is not a subtype of this. And you can kind of see what's going on now in a really easy way. And this is what I think a lot of people need to think about a lot more, which is as you're executing down this train, how do you make it so that the code you're writing is going to abide by contracts that you're defining at compile time?
+
+Cause if you can only have defined that and that's just kinda what your bindings are doing, I think. Where you're defining bindings, which are like your compile time content, and you're describing it in some other way. So like if I take it to like the nth degree, let's see if this thing is working. You kinda want something like this. Let's see if this one works. actually let's go back to another one.
+
+Where like if you have a contract that's described in code, as in summary is a field that is like summary and key points is a field that is like a string array, and the agent generates this code, you want to be able to say something along the lines of, hey, I have I have this code that the agent generated. Summary maps to summary, key points map to key points. Now on this example, can you run this code?
+
+Well, I can run this code and produce a summary, and I can say that these are specific things that are only for this type. So you're kind of extending the type. So like if you have like a broken point right here, the agent generated this code, notice we don't have key points anymore. Well, before we even install the plugin or extend it, we get told, hey, we're missing key points. At compile time I have required key points. You haven't done that, so let's tie this to bullets now.
+
+@vaibcode (39:21.894)
+And now this works, and now I can execute this again. And this actually renders an LLM call and it shows me the other stuff as well. So you're kind of able to extend software behind the scenes without even having to go do this. So if you've totally broken everything, and it like for example, key points is now a string instead of a string array, you get told, boom, it's requires string array, but class field is only a string.
+
+So you're kind of again able to extend the code without having to do much behind the scenes. Both on like an interface layer where you can define the interface. And also on on the what's it called? excuse me. And also on like the function interface layer.
+
+Kyle Mistele (40:07.28)
+Yeah. It like it gives you an extra extra layer of safety almost. you could imagine in our example earlier where the agent is like writing code to manipulate a CRDT document. The agent could get halfway through an edit and like you know, it writes all the code and there's an error halfway through it. And so you get halfway through the edit, you apply some changes, and then it fails because some contract wasn't satisfied and you couldn't type check it.
+
+You couldn't parse it at the beginning. And so now you've done a bunch of side effectful things and you're halfway through an operation and then it fails. And it's not obvious like what actually happened. And so being able to have like more like parsing and and safety before you start doing a bunch of things that have side effects on all kinds of outside like software systems.
+
+you know, you're you're able to like indicate to the agent, No, this code isn't valid and you need to try again.
+
+@vaibcode (41:04.294)
+Yeah. And like a c really clear example is like this. I I'm sure everyone has some sort of classification stuff stack that they're running. And right here you kinda just saw this where like I I didn't have feature requests before and when I go and like rerun this, one it can tell me that the categories are gone or outdated. So if I go run this, it classifies as unknown. But you could imagine a user who's running your app and gets all the feature requests has their own category name for whatever they call.
+
+And now they could easily extend it and say new things a user wants. I can just reclassify and like this should classify as feature requests instead of unknown. And it's all about this like tweaking and ownership that you really want to have as you kind of deal with stuff along the way. I'm curious this is probably like I'll show you the other one that I think is really weird code. I think this is the one.
+
+So like I have I have a doctor form template. Like a doctor has a bunch of forms here, it's a bullet list, drop down, and I'm gonna extract this into the form and like let's just use this example really fast. But when I actually take a look at this code, per se, let me open this. How do I open this split down?
+
+@vaibcode (42:19.511)
+This works.
+
+Which one is this one? form builder.
+
+When I take a look at this code, I and I wonder if you have code like this in your repo. Where you basically have some concept where like a form, a field is described in like human terms or like your app terms, like you obviously don't want a user to think about like string array. It's like a bullet point list. And you have a way to turn a bullet point list into basically what's a string array.
+
+A text becomes a string, a number becomes an int, maybe it should become a float, I don't know. Drop downs become like an array of literals along the way. It's like a union type of literals. And then you can modify stuff along the way. But then you kind of build a new class. And what ends up happening is extraction just takes in a generic. So as you're executing, you actually say something like this. Where you generate the form type and you actually just turn this.
+
+runtime type into a compile time type as you execute along the way. And now you just pass that into here.
+
+@vaibcode (43:28.399)
+And this basically will just guarantee that now you can just get all the fields off of it, get everything you want out of it, and now it's guaranteed kinda give you that d like JSON structure, in this case convert it to a string.
+
+Kyle Mistele (43:37.393)
+I see. So it's like what you're kind of doing is because the way that like structured generation like that would normally work is you have to define a schema, right? And that might be like Zod or Pydantic or Effect Schema or something. And like that basically gets it's like it can be extracted to like a JSON schema or something, which which gets sent to the model. The model generates things along that schema. And so what you're doing is basically
+
+Right, you're you're giving users a way to extend that schema in like a human friendly way to then change how that extraction is done without like making the users write like a JSON schema extension.
+
+@vaibcode (44:17.731)
+Exactly. It's the same alternative as like what are you really doing here? You're just trying to go do some code like this. You're just trying to build a class. And this is like a builder alternative. If you don't do a builder alternative, you get the opposite where we did the thing that I was showing the other one. Where like you can literally just write the code. And as you r you so you can kind of choose which variation you wanna have, but the idea is you kind of get to write the code.
+
+And as you write as you write the code, you can either programmatically build it, which has different trade-offs. Like being able to build it programmatically is very useful as like code generally is. But being able to just write the string itself is also useful because like an agent might just prefer to generate the code wholesale instead of doing anything else. So you can kind of generate whatever code you want, and then you kind of just execute it, but instead of passing around JSON schemas, we use the type system as a way to guarantee everything. So you say this thing that I generated as a type system.
+
+Type at runtime is really just turned into a compile time type for the rest of the scope. So now
+
+Kyle Mistele (45:20.124)
+So so what happens if it doesn't if something doesn't match?
+
+@vaibcode (45:23.473)
+You get what you would get? You get like cast errors and compile time errors. It becomes like a like here, for example, we have a thing that says, hey, if this for whatever re here, let's let's let's make this better.
+
+@vaibcode (45:40.03)
+is this requires extends. So now T has to be something that extends any class.
+
+So if I do this, what you'll find is something kind of interesting. Where this tells me this is F, F extends.
+
+sorry, requires we don't have the syntax yet. Whoops. Sorry.
+
+Kyle Mistele (46:07.014)
+Getting a a sneak preview of the the next version of BAML.
+
+@vaibcode (46:10.67)
+Yeah, exactly. Require reflect dot any class. And then you just do like a else throw. So now if this thing basically is not a class type, because like maybe someone passed in like a dot array. dot as array or something. I don't know. What is it?
+
+I have to go check what this is. it's somewhere up here. dot array. Okay. dot array. Then this would actually hit this line.
+
+Because this is no longer doing the same thing. It's no longer in any class type, so you get a runtime failure. And you can handle runtime errors with like catches and other things that you want along the way. like you would with typical exception handling.
+
+but that's kind of the idea, is you you kinda control how much handling you wanna do at any given point. Do you wanna control this to be extremely rigid? Well, you can catch the exception, you can pass it back to the agent, say this was the exception that I got in, and you can build almost like a cyclic loop. or you can say like nope, I'll just fail the app and the user will just get no results and they'll be told to deal with it.
+
+Right, or of course you can choose to have your whole app crash as well. So like it's up to you. kind of what level you can choose the amount of security that you want, but the idea is you shouldn't it's kinda like idiot step functions. Like you shouldn't be forced to write things in JSON schema when an agent knows how to do something much better in the form of code. Right? If the agent can write code to define some to define some workflow.
+
+Kyle Mistele (47:25.84)
+Yeah.
+
+@vaibcode (47:45.913)
+And it can and you can just say this is the interface I have to imply, then you can kind of do what you're doing, which is say, hey, implement this interface. And as long as you implement this interface, I am happy. And I will let you I will compile it for you and I will let you go to and now if you fail to implement this interface for whatever reason, so I think like an example was kinda like on the dimension of we're talking about this with the plugin gate.
+
+Kyle Mistele (47:57.787)
+Yes.
+
+@vaibcode (48:17.68)
+Where like I have this interface called the summarizer that I'm implementing up front. And wherever I have the summarizer,
+
+Sorry, I'm really bad at navigating on this computer.
+
+@vaibcode (48:35.61)
+Wherever I have the summarizer, I actually just tell the system I have to implement the summarizer concept. And if I don't implement the summarizer concept, it will basically just fail. So I basically require that whatever class I generate has to programmatically verify that it implements summarizer. And if it doesn't, bugger off, it's a compiler failure, and I pass it on to the user.
+
+Kyle Mistele (49:00.07)
+So how would how would you explain to someone the difference between like that and like using a schema to parse a generated like JSON object, for example?
+
+@vaibcode (49:11.798)
+the main difference is like the only reason to use a generated JSON object is because what you're trying to do is you're trying to have an LLM extract or not even an LM, you're trying to basically say that something is programmatically generated, defined external to your system. But really what you I think you wished is you could take that thing as code and just pass this in as a parameter to this function and it would just work. Because if I had a standard type that was pre-defined.
+
+at like compile time, obviously I should be able to pass in anything I want into T. I should be able to pass in string, I should be able to pass in like my resume class, my doctor notes class, my any class I want, and it should kinda just work, assuming that this prompt is good enough for that type. Yeah.
+
+Kyle Mistele (49:53.926)
+So okay, so here's a question. in
+
+in in in TypeScript, for example, when you're like generating a JSON object, you might say, the agent can generate it, but it has to match this interface extracted from a schema that we'll use to parse it. In BAML, can the agent generate a class that satisfies some constraint that actually like implements its own behavior with its own methods?
+
+@vaibcode (50:02.779)
+Yeah.
+
+@vaibcode (50:11.429)
+Yeah.
+
+@vaibcode (50:21.786)
+Yeah. That's actually I have a demo cooking up to show that right now. I think I have this
+
+Kyle Mistele (50:26.204)
+Okay, so I'm I I promise I promise Vybov didn't seed that one.
+
+@vaibcode (50:32.388)
+That's actually one of the coolest things that I've been thinking about a lot, which is like how do we do that sort of workflow? Because I think I have it right here. Function workshop. What is this one called? Eight. Write a function, get us a button, implement the host interface, and your class joins a pipeline. So this is exactly this. So what you have to do?
+
+So right over here, stage is actually defined external to my code base. If you look anywhere in my code base, stage is not defined. This is just like kind of externally defined available to me. So I can't really change this. This is like read only. That's why I can't I can't edit this if you can see this. This is not allowed to be edited. So this is hard coded in the system. There's like special methods that I pass into it. But now I can have my own implementation versus stage.
+
+For trim and for read write for rewrite along the way. And if I run the stages function, you'll kinda see this. It kind of executed both of them. And I want to show you the code for this because this is probably more fascinating, which is like how do we actually like go implement these because this code is defined elsewhere. So let's start changing this code. Let's say like I don't implement stage here.
+
+You'll notice that I immediately get a compile time error.
+
+Kyle Mistele (52:02.632)
+Right.
+
+@vaibcode (52:06.735)
+So what's happening?
+
+is let me see if I can write this code. Take this describable interface and let's describe it externally to my code now. So render is actually a function that'll return to me a describable object. That's actually what I want to think of it as.
+
+Render is a function that'll always return a describable object that implements this for me. Now describable is not available in this code snippet. It's externally implemented. Behind the scenes. But widget is going to be a thing that'll implement describable.
+
+And let's just say this throws number, I don't want deal with the throws thing.
+
+Now that widget is a thing that implements describable, how do I deal with this? Well, in my plugin code, what I do is I actually just pass in a special thing. I say packages equal. I'm gonna name my package app and I'm gonna pass it in reflect.com reflect.package.current. So I've now given it access to my current package. Under the
+
+Kyle Mistele (53:21.732)
+Inside of your code
+
+Right. So the you define a class in your BAML code or an interface that the code mode, I guess kind of how would you describe it as like a little runtime like can access.
+
+@vaibcode (53:39.041)
+It's app. Yeah, and it's not really a little r i it's actually the same runtime as your app. So if I pass in my package now and I ask to get the render function, let's run this code.
+
+I mean this works in my this is how my thing works, so let me check.
+
+Sorry. This is under some other namespace. So it's under like app. I I pass in the whole thing, I can pass in chap twelve codemode.
+
+Kyle Mistele (54:26.534)
+So this is would you say this is kind of like in the example we went through earlier, this is kind of like your quick JS bindings almost is like this is the interface that gets like injected or kind of bridged into your little runtime that's actually executing the generated code.
+
+@vaibcode (54:43.917)
+Say it Say that one more time.
+
+Kyle Mistele (54:46.396)
+So this this package that you're you have in the plugin, this is like the equivalent of your quick JS bindings that you're injecting into like in in the quick JS case, the JavaScript runtime, right? You're defining here's the API of things you're allowed to call and what they do.
+
+@vaibcode (54:53.196)
+Exactly.
+
+@vaibcode (55:03.201)
+Exactly. Exactly. I think for some reason this is not let me try one more thing.
+
+@vaibcode (55:13.381)
+Describe for widgets.
+
+I don't know, there's something weird here. But in theory, you can kind of write this code. I I'll figure out what the exact syntax is. I don't actually write BAML hand. I usually ask Claude to do it, which is why I've probably fucked up. but the idea is you can kind of describe interfaces that are described externally. So now an agent can generate a class that's dynamically defined and then kind of make this work behind the scenes without having to do any work over here. So it's like you can kind of have static comp static statically defined guarantees on dynamically generated code. And then now that you have that guarantee, now
+
+Now you can go execute this. And because it's so it's actually not spinning up and isolate, it's not doing any overhead. So the overhead to execute this, I mean you can tell how fast it's running. It's basically running as if it's a normal code. So there's actually no go ahead.
+
+Kyle Mistele (56:01.373)
+So what's so what's the security model there? Like how do you prevent the generated code from doing evil things or restrict its capabilities?
+
+@vaibcode (56:11.811)
+I'm actually curious about your take on this.
+
+So that's actually one thing we think about. So I think the first default answer is by default, you don't get it. By default, you only get compile time guarantees if you do this naively. And you can execute all the code and it basically lives in the same memory space as your app. So it can do anything that it needs to do. Just like it's like j it's like type-safe eval. And I think we want it to explicitly not restrict this anymore because that's what makes this so powerful. Like making it that way. But then you're right. Immediately as soon as that comes up, you're like, okay, well, what if someone writes the infinite while loop and blows up my server or allocates like
+
+Kyle Mistele (56:27.516)
+So it's like JavaScript to eval, basically. Yeah. Okay.
+
+Kyle Mistele (56:44.826)
+Yeah. Or or prints process.env and d steals your API keys.
+
+@vaibcode (56:45.179)
+10 gigabytes of memory, right? Or like Exactly, right? So there's a lot of evil things that can happen here. So that takes us to the next thing, which is how we think about sandboxing.
+
+And think there's different approaches here, and sandboxing has different purposes. So like there's one hu huge value prop to sandboxing, which is like you just need state stored somewhere, and for that you might need a real sandbox, you might need a true Unix environment, there's all sorts of reasons. But like in your case, for example, you guys don't even need any sort of thing. You're just doing computation tasks. And you just want to make sure that those computation tasks are somewhat safe. You're accessing some APIs, so you wanna oop yeah.
+
+Kyle Mistele (57:21.98)
+Well so so for our case though, those computation tasks, they have they have side effects, right? Because when you update the data structure, those changes are replicated out over a network and synced down to other clients.
+
+@vaibcode (57:27.289)
+Yeah.
+
+@vaibcode (57:31.758)
+Yeah. And if they can hit one network request, they can hit every network request, and then you're screwed. so we have a couple solutions to that. One is like one, you can just build a sandbox. So you kind of create a sandbox. And as you create a sandbox, you can put memory limits on it, you can put deadlines on it, like timeouts, and you can basically allow or deny specific like I.O. properties, is what we call them. And by default everything is denied in this environment, I think. And then
+
+Kyle Mistele (57:59.045)
+What about reflection? Do you d that I assume that has to be allowed or denied explicitly too?
+
+@vaibcode (58:04.369)
+reflection probably has to be allowed and denied explicitly. I don't know what the default here is. I have to check. Probably denied. I suspect anything that's like allows you to inspect program state does this. And then what you get to do is you get this override concept. Override lets you pass in any function and replace it with an override for however you want to implement this.
+
+And then you get the next ability, which is you can run the sandbox and just run arbitrary code inside of this. So you kind of combine the two systems that we just described together, and they kind of compose really well. Because you can use a sandbox without having dynamic code, and you can have dynamic code without a sandbox, but putting them together it gives you like the orthogonal plane that you really want. So like if you want something on the order of like let's say like let's say fetch, let's say you only wanna you basically wanna ban all URLs except the ones that you guys allow for.
+
+For your like f SDK layer that you want. This is kind of how you would do this. You would ru you would take fetch, you would wrap it, and you'd replace fetch with a totally different implementation of it. And now f for the Yeah.
+
+Kyle Mistele (59:07.42)
+Okay, so let me ask you another question then. A really popular use case of of this, of of having agents generate code to use these SDKs is like they you want them, like I said, you want them to be able to hit Slack or Discord or like some other API, but you need credentials. But you don't want the agent to be able to Yeah, you don't you don't get to you don't want the agent to be able to like have those credentials in the runtime because it can like in the sandbox code reflects the runtime and and like look at what's in there. So what you
+
+@vaibcode (59:23.395)
+You get this for free. Yeah.
+
+@vaibcode (59:30.362)
+Fuck up.
+
+Kyle Mistele (59:35.025)
+What a lot of folks will do, for example, for background coding agents, same thing. If you're doing like managed background agents, you have the agent running in a sandbox, and there's like some network-level proxy that injects credentials after the request has left the sandbox before it hits the upstream API. So if I'm reading this right, what this would allow you to do is to basically shim your fetch function that's that's triggering network requests and to like inspect it and say, hey, if it's going to this origin, you should add this credential.
+
+So the agent doesn't have to think about credentials and it doesn't ha it doesn't get to touch them either.
+
+@vaibcode (01:00:04.61)
+Yep. Yep, exactly that. So you kinda get this for free over here. Without having to do any extra work.
+
+Right, and that's kind of the idea, is like you kinda get this sandbox layer. And of course this doesn't prevent you from everything. Just to be very, very clear, this is not the same level of sandbox guarantees that you have when you're running in a fully isolated environment that's like totally hermetic and has like firewalls baked in. Like this is running in your process. But as far as it's running in your process, what we guarantee is we guarantee function level boundaries to be completely secure. So yes, once you use shell, it gets a lot more dangerous. So we recommend banning shell. But as long as you never use shell
+
+And you don't use reflection and you ban reflection in shell, the agent can't really go outside of the sandbox. So you could replace the file system APIs with a thing that fetches against like SQLite databases, so you have like a durable storage layer. But as far as the agent is concerned, it's just calling LS. It's just calling like all these other file system APIs in the code. So it never even knows the difference there. Because all of those are input go ahead.
+
+Kyle Mistele (01:01:09.894)
+So if you So if you did one, like the same like typesave or the same guarantees that you would get from like an isolate or a QuickJS sandbox where it's like it's running inside a separate like memory space. And for example, in Quick.js it's it's just JavaScript, it's not node, it can only use bindings that you inject into it, but it can't touch your file system, it can't like sp spawn processes or read the parent process and stuff. Is there like a sane default like
+
+Here's how you get that sandbox in BAML I need to just like execute arbitrary, completely untrusted code in a multi-tenant SAS back end.
+
+@vaibcode (01:01:42.178)
+Yeah.
+
+@vaibcode (01:01:46.361)
+The default is just like don't allow any of these commands.
+
+Like don't allow any of the network commands, don't allow the file access, like don't allow the typical things that you want to ban, then we ban those by default. It's kind of the premise. And then you get everything like compute is basically what you're buying. And then you also get this nice thing, which is max memory and max deadline kind of for free without having to think about it, where you don't need an isolate to go do that. So like imagine the user runs like a while loop. We can terminate infinite running while loops with our cancellation primitives. So that becomes a thing that you don't have to go build. Right? If you allocate like if the user alloc
+
+Allocates like like 50 gigs, we prevent that from happening effectively. So you end up not having to do some of this work by default, and you kind of get the wins without having to go all like part of why you didn't spin spin up a TypeScript server is you're like, I don't want to deal with the infrastructure of this. And that's and that's like a real pain point. So we said, why don't you just have an agent like effectively generate code? We embed the compiler in for you so it becomes type safe by default. We and then we took another level, which is we allow you.
+
+you to merge your types with the we allow you to graft your types into the existing types that you're compiling so you can like effectively where'd it go effectively do something like use this so like here I can just get this demo working on this as quad. Why is this snippet not working?
+
+It'll just fix it for me. Where like you now that you have this, you can actually call the describe function, which is an interface capability, on this code that doesn't even exist yet when you compiled. Right? And it's type safe. Like this thing is actually type safe when I'm executing this. So being able to do this
+
+Kyle Mistele (01:03:32.622)
+So you get the compiler for free. You get like the things you'd have to like, for example, you'd have to if you wanted to limit memory or side effects or whatever, you'd have to use an isolate. If you want to like limit memory and CPU usage, you probably have to like use C groups or like manage processes. Yeah.
+
+@vaibcode (01:03:48.631)
+And think about how complicated. Yeah, exact and managing processes is also a lot of overhead. And not only that, there's latency associated with it, there's like new compute requirements you need. You can't use Lambda functions now because of what you're trying to go do. The way you scale for your for your SaaS service is fundamentally different now because of this kind of work. But like what this does is this just says, hey, the overhead here to do this is basically a function call.
+
+Right. And it this is as slow, like this compile code is as slow as our compiler is, which is like go speed. So it's not like I'm not gonna say it's like one millisecond, I mean maybe for this kind of code. But like for for like a hundred thousand lines of code, it's like maybe like one second. So you could truly have LMs like exactly. It's vr exactly. That's really what this is. It's like ex it's pretty much like extremely fast just in time compilation. and
+
+Kyle Mistele (01:04:32.89)
+Yeah, it's very fast just in time compilation.
+
+Kyle Mistele (01:04:42.214)
+So what is what is the the the overhead of of doing this like for each execution? Like if you're serving, you know, like a bunch of different tenants for code execution, like what is like how much what like how expensive are BAML sandboxes?
+
+@vaibcode (01:04:49.218)
+And why don't we just time it?
+
+@vaibcode (01:04:54.584)
+Wanna see?
+
+@vaibcode (01:04:58.52)
+We can just know this really fast. I don't have to guess.
+
+So the plugin function, the render function took about twenty-one milliseconds end-to-end. And the plugin function, I guess, took about twenty-one milliseconds. So we know how fast compile took. Compile took twenty-one milliseconds on my build for this function. Right? And then execution is basically just execution. There's no cost of execution. I mean this is still a little too slow for me. I'm pretty sure why this was slow is
+
+Kyle Mistele (01:05:18.726)
+Yeah, that's pretty good.
+
+@vaibcode (01:05:29.57)
+Yeah, it looks like there's some I.O. stuff that's I don't know why there's IO happening. I'll have to figure that out. But twenty one milliseconds is a little too slow. We should be able to bring this the way down. but it's fast as far as I'm for like most practical use cases. it's much faster than spinning up an isolate. It's likely faster than a lot of other
+
+Kyle Mistele (01:05:47.143)
+Yeah, so so that was my next question. It's like what about sandboxes? Like how does that compare to like QuickJS, which has like the image it's like a fifty like it's not fifty megs, it's like it's like tens or like low tens of of of megs or an isolate. Like you you have a bunch of like overhead associated with creating like you know, for quick JS, the WASM runtime and allocating the space for for QuickJS in your process.
+
+Like what is for BAML sandbox where you're doing like CPU usage limiting and memory usage limiting and and like how expensive does it is it and like how does it compare to those things?
+
+@vaibcode (01:06:21.813)
+I mean this binary is L S dot L H A dot out. This binary is like twenty five megs all out for the whole but that's including the whole compil that's including everything.
+
+Kyle Mistele (01:06:30.812)
+Yeah.
+
+@vaibcode (01:06:36.385)
+Right. so tw don't know if this tiny. I wouldn't say tiny. tiny would be like four megs, but like or less, but like it's it's not gonna be a problem. And this is you never have to redeploy any other binary, this is all self-contained. sandboxes should also have the same exact thing. They just add overhead to function calls. Basically our runtime b every time you call a function of some kind, once you're in a sandbox mode, we certain functions just swap what pointer they go to.
+
+So you actually don't get this and like this thing that I'm showing you, like the telemetry layer. What we should be able to do is we should be able to even highlight the functions that you called this function, but here's the real function you actually went to. And show you that in the telemetry layer. So you don't even have guess about what's kind of executing behind the scenes. Right? And I think if I go back to like a previous execution that we actually did where it actually like ran.
+
+Trace trace timings. Do this one. Yeah. So like you can kind of get the feel for what's happening here, which is like when I call get function on this one, it's basically just executing this code along the way. And then like you're able to just know how long stuff took. So like get function is basically like like where'd it go? Sorry. It's basically free.
+
+Literally the yeah, this is more like what I was expecting. Like the compile time is very, very fast. I don't know why it was slower there. I suspect it's because I grafted types on. Once I graft types on it gets a little bit slower. Because it has to do some weird grafting behind the scenes. But if you're not grafting, it's much, much faster. So this is kind of what I think about when I think about code mode though. Like this idea of like I wanna be able to write code.
+
+Kyle Mistele (01:08:05.638)
+Yeah.
+
+@vaibcode (01:08:22.219)
+I want some most of the code to be dynamic. I want it to match some interfaces that I define externally in my code at compile time. I want to be able to then use that code that was dynamically generated but matches my interfaces as a part of my extension or my app flow.
+
+And then, most importantly, at some point I want to be able to secure this too. And like make sure that this actually runs in a very in the in a somewhat reasonable way, effectively. Because if it's untrusted code, I need some way to bound this. And the answer can't be like I I mean sometimes it can be like spin a datone to say inbox like go make that happen, but like I don't want to manage processes, I don't want to manage machines, I just want it work. Cause then you have like API contracts and stuff that you have to go do and make that all work behind scenes. I found the bug.
+
+Kyle Mistele (01:09:05.776)
+Yeah, and it's it's slow too.
+
+@vaibcode (01:09:09.121)
+Yeah, exactly. So it's like there's a whole bunch of problems with this kind of workflow that I I think is like kind of problematic. And if you actually build reflection a really nice way, you get this really nice property where like you can build nice little UIs for every single function in your code base without ever having to go do it because like the reflection defines what the code is doing it. Yeah.
+
+Kyle Mistele (01:09:31.014)
+So that's dynamically generated based on the code.
+
+@vaibcode (01:09:34.614)
+Exactly. So this is just like I'm just literally doing like, hey, for every single function in here, let's iterate over it and then build a UI from like the data the types I get from here. So you again you get this like nice ability to be like like I there. And this is not an LM function, right? But some of these are probably LM functions. Like this function throws something, ten divided by two, this returns this, but if I do this, I'll get a division by zero hour.
+
+And like you're kind of able to get all the reflection capabilities without having to do anything here. It's like great day talking about code mode.
+
+@vaibcode (01:10:17.089)
+And like you can just summarize this text. And I this is an LLM function I'm executing on the fly. So you can kind of get an idea for like what you're able to do and because everything is just code, it's just code. And that comes with all the cons and all the benefits of everything being code.
+
+Kyle Mistele (01:10:33.19)
+Yeah, that's that's really cool.
+
+@vaibcode (01:10:37.687)
+But I'm gonna close it out here. it sounds like Kyle, what are your final thoughts on code mode? Like should everyone do it? What are we just yapping? What's the final takeaway?
+
+Kyle Mistele (01:10:47.29)
+Yeah, I think the final take is like code mode is good for certain types of problems. If you need composability, if you need to be able to chain like complicated actions really quickly, if you need to protect your context window because you have too many tools and you need tool search, or if you're working with things that are already super in distribution, like a bunch of JavaScript and TypeScript SDKs and like things like that, like it it just makes sense to allow.
+
+the agent to just write the code that it already knows how to do instead of like trying to figure out how to design a harness to do all that.
+
+@vaibcode (01:11:24.795)
+I one hundred percent agree. I'm gonna record a quick little closer and then I guess we're good to go.
+
+Alright, hey everyone. Today's episode is going to be completely about code mode. And what code mode is, is something that you're probably likely familiar with, which is if you've ever seen an agent use the FASH tool, that's the most basic form of code mode. So we talk about how that works, how you generate code, and then how you run code. We talk about all sorts of analogies to this in previous software engineering worlds, like like SQL representations, step functions versus code. We talk about when you should use code mode, and most interestingly we had two ch sections of today's talk where we talked about Kyle's actual implementation.
+
+in the human letter code base for how they build code mode to do dynamic
+
+dynamic searching throughout their or dynamic modification of their CRDT data that they're holding. And then secondarily what we got to get a little sneak peek of is how you actually do code mode in possibly BAML once you have both type safety and the compiler baked in into the same runtime. And that comes with security trade-offs, that comes with that comes with all sorts of open questions that we kind of go through. So I hope this is interesting and let's get started.
+
+Yeah.
+
+@vaibcode (01:12:43.02)
+All right.
