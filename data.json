@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-09-15-performance-engineering",
+      "guid": "aitw-074",
+      "title": "performance engineering",
+      "description": "When milliseconds are too slow, you have to engineer for nanoseconds. This week, we're unpacking N5-level optimization for AI workloads and what it takes to shave off ultimate low-level latency. We discuss the engineering techniques required to strip away overhead, optimize memory throughput, and push inference infrastructure to absolute hardware limits.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/n5-optimization",
+      "eventDate": "2026-09-15T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-15-performance-engineering"
+      },
+      "season": 2,
+      "episode": 74,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-09-08-hands-on-software-factories",
       "guid": "aitw-073",
       "title": "Software Factories: Hands on with Real Builders",
@@ -9,15 +29,16 @@
       "eventDate": "2026-09-08T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=HGizPRQfpdw",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=HGizPRQfpdw",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-08-hands-on-software-factories"
       },
       "season": 2,
       "episode": 73,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1591,15 +1612,15 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 76,
-    "completedEpisodes": 71,
+    "totalEpisodes": 77,
+    "completedEpisodes": 72,
     "upcomingEpisodes": 1,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-09-07T13:33:12.132Z",
+    "lastUpdated": "2026-09-14T19:15:09.593Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

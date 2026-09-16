@@ -12,10 +12,11 @@ description: |
 event_link: https://luma.com/hands-on-software-factories
 eventDate: 2026-09-08T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=HGizPRQfpdw
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-08-hands-on-software-factories
+  youtube: https://www.youtube.com/watch?v=HGizPRQfpdw
 season: 2
 episode: 73
 event_type: episode

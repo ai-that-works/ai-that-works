@@ -16,8 +16,32 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 07 Sep 2026 13:33:12 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 14 Sep 2026 19:15:09 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[Software Factories: Hands on with Real Builders]]></title>
+      <description><![CDATA[We had some really cool unconference talks from hands-on software factory builders, and this week we're gonna bring them on the show to talk about how they build their start up, week in week out, with background agents that get smarter every week.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+
+
+Watch: https://www.youtube.com/watch?v=HGizPRQfpdw
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-08-hands-on-software-factories
+Event: https://luma.com/hands-on-software-factories
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=HGizPRQfpdw</link>
+      <guid isPermaLink="false">aitw-073</guid>
+      <pubDate>Tue, 08 Sep 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=HGizPRQfpdw" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[Code Mode for Extensible Software]]></title>
       <description><![CDATA[Making software extensible has always involved designing good and flexible interfaces (e.g. vs code extensions, iphone apps). But the most flexible interface is code, and today Vaibhav's gonna share some very futuristic ideas on what the next generation of customizable tools looks like.

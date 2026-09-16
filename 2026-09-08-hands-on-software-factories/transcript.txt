@@ -1,0 +1,701 @@
+@dexhorthy (00:06.274)
+How how long are we holding it, dude? Are we live? I was so I'm on another tab. I can't see the countdown timer. I don't even know if we're live yet.
+
+@vaibcode (00:07.712)
+Shit, I won. I just want to say I won. Alright, how's it going, Dexter?
+
+I am doing. I am
+
+@dexhorthy (00:22.318)
+Today's episode. Welcome to the AI That Works podcast. I'm your co host. I'm Dex.
+
+@vaibcode (00:27.832)
+Do the spiel.
+
+@vaibcode (00:33.006)
+Ha ha.
+
+@dexhorthy (00:33.136)
+cut this from the thing. What's up, y'all? Welcome to the AI That Works. What's up, y'all? Welcome to the AI That Works podcast. I'm Dex. I am the CEO and co-founder of Human Layer. We build a multiplayer coding agent workspace with composable building blocks that meet software factory builders where they are. my god, what a terrible sales pitch. No more pitching. I'm gonna hand it over to Vybov, who's definitely not gonna pitch.
+
+@vaibcode (00:36.792)
+Clap. Don't put this in there.
+
+@vaibcode (00:58.668)
+What's up everyone, I'm Bybob. I'm the co-founder over at Boundary, and we make a new programming language that's built for agent-native coding in the form of BAML. but today's episode is not about CodeLair, today's episode is not about BAML. Today's episode is a recap and one of two of the most fun talks that we've had at the I AI on conference. I believe we're gonna have Tyler on the call and we're gonna have Cole on the call. And both of them gave phenomenal talks about what it actually takes to think about agentic engineering.
+
+@dexhorthy (01:05.71)
+Amazing. I love BAML.
+
+@vaibcode (01:28.592)
+Specifically, I think we're gonna talk about how a sp a real software factory that Tyler operates for his for his I would say like pre-AI business behind the scenes works and how they kind of automate the heck out of it from every angle from support to engineering. And then Cole works on a really cool spec called open inspect.
+
+@dexhorthy (01:39.533)
+Yeah.
+
+Yeah, this is a this is a company
+
+@vaibcode (01:50.891)
+And he does a lot of work around actually putting out software factories and helping engineering teams and s folks build around them in their internally so that you can have a thing like ramps agent inside your own code base.
+
+@dexhorthy (02:04.728)
+Yeah, really excited. Really excited to talk to Tyler. Tyler's one of my favorite builders of all time. And yeah, he sort of is the is the is the CEO of a company that has been around for a long time and has just kind of been chugging along. And then Yeah, he was kind of running it as a side project. and then actually they just like automated the whole thing with AI and now it's like growing and building and they're like revamping the whole it's interesting because it's like it's both like
+
+@vaibcode (02:15.758)
+Yeah, they're a Y C company, right?
+
+@vaibcode (02:28.802)
+Yeah.
+
+@dexhorthy (02:31.308)
+Okay, cool, here's one of the best engineers I know building the thing that builds the thing that builds the thing in a really compelling way. And also like, here's a thing that every business from five to ten years ago wants to do, which is like like, you know, rebuild themselves from the inside to be completely AI native.
+
+@vaibcode (02:48.184)
+Yeah. Yeah, exactly. And I think mm while we load them into the chat, while we go do this, I I want you all to think about something really important when it comes to building these automated systems. I think
+
+we had this for a bunch of other companies kind of in the in the same portfolio as us. We were chatting for a while and the bus biggest anxiety that I saw a lot of people make is how do you make the transition? What is a transition looking like from I'm a team, we used to ship some code, I see this AI stuff happening, but we just can't get over the hump and sometimes you can't get over the hump for a variety of reasons. You can't get over the hump because like you just have two
+
+250% org, you have a thousand percent org, you have a ten thousand percent org, and change management itself is hard. Then there's a whole another element around cole's joint. Sorry, Cole, interest how's it going? Nice to see you again.
+
+@dexhorthy (03:43.598)
+What's up, Cole?
+
+Cole Murray (03:44.921)
+Hey guys.
+
+Good to see you as well.
+
+@dexhorthy (03:50.061)
+Yeah, we're joined by Cole Murray, who is the maintainer of a project called Open Inspect, which is an open source software factory system that you can install in your own infrastructure. really excited to have him on and talk about how he's he's building and what he's learning in the trenches with with, you know, real engineers at larger companies trying to figure this whole thing out.
+
+@vaibcode (04:10.599)
+I I think we should
+
+@dexhorthy (04:10.91)
+And I wanna pick back up on Vybov was just making a really interesting point, that I think we should finish, which is basically just like whether you when you're two people, it's very easy to rebuild your company to be AI native. But like it's very hard when you're two hundred and fifty or a thousand engineers to like you're not just like it's not the end state that matters. It's actually like what are the incremental steps you can take to get there. 'Cause if you try to do it all in one go, it's gonna be chaos.
+
+@vaibcode (04:16.62)
+Yeah.
+
+@vaibcode (04:26.561)
+Yeah.
+
+@vaibcode (04:34.443)
+Yeah. I can share like two processes that worked really well that I think are worth thinking about. one is
+
+I absolutely think your best engineers should pause for a month and try and build a software factory. Even if they fabulously fail, you will learn so much about your engineering process just by putting your best engineer trying to automate the heck out of it rather than trying to buy it from the outside or rather than trying to just like convert everyone on day one. And the second thing that I think that these companies and us were realizing is that pair programming and kinda like
+
+Kind of AI pilling everyone, but not in a way that's like aggressive and like being like you have to do this, but genuinely turning into a collaborative exercise where like what is AI but just chatting with the computer and kind of making progress. And it's basically pair programming. And rather than making someone pair program automatically, I'm gonna mute you, Tyler, sorry. Rather than making someone pair program automatically and like be like force yourself to learn how to pair program alone in a box by yourself and also high super high pressure to code
+
+like ten thousand lines of code every single day. Make them pair program with one of your engineers that knows how to use AI and make them learn the process over time. I mean that's how I learned it. Dexter right here is the one that taught me how to do this through a pair programming session no less of like eight hours.
+
+@dexhorthy (05:58.985)
+yeah, that was fun. Yeah. that was that was an exhausting day. but yeah, no, I think I think pair programming now is as important as ever. Not pair programming you with the AI, but like I think there's two things. One is like there's a lot of new skills and a lot of new things, and everybody on your team is picking up new tips and tricks in different dimensions. And so there's a lot of value in cross pollinating, getting people to work together. And then there's the other side is I think
+
+@vaibcode (06:02.925)
+Haha.
+
+@dexhorthy (06:25.442)
+Agentic coding is a little more asynchronous. It's a little more back and forth. Hey, I kick off something and then I go check it out. and then I, you know, I go get a cup of coffee, I come back. and so if you are solo, the the you get bored of the you know, you l you miss the dopamine because the agents are working for longer now, you kick something off, and then you're like, What if I did another one? And another one. And another one. We've all hit the limits of our personal parallelism. or you go check Twitter.
+
+@vaibcode (06:47.394)
+Ha ha.
+
+@dexhorthy (06:54.194)
+if you're me, probably. and go shout about how bad everybody is at at agents or whatever it is. We're mostly positive. but if you're pair programming, you can just pause. If there's someone else there, it kind of forces you to stay on track, right? You pause and go to the whiteboard, you engage with the problem, you look ahead, you talk about what's coming while the agent is working. So
+
+Anyways, we already introduced Cole. We got Tyler on here. Tyler, we were explaining to everybody how cool you are, but if you want to do a quick intro, actually both of you, and then I would love to get into Tyler how you're building your software factory, and then we'll do some some chat with with Cole and feel free to jump in and interrupt people and all of this. did we lose Cole?
+
+Tyler Brown (07:35.993)
+Awesome. Yeah, he disappeared.
+
+@vaibcode (07:38.195)
+I he just turned off his camera. I think he's here.
+
+@dexhorthy (07:39.758)
+Okay. Okay. Cool.
+
+Tyler Brown (07:43.965)
+Awesome. Well, hey, I'm super excited to be here, guys. I'm huge fans of the show, huge fans. And what a what a treat it is to be to be on here with the legendary Vibe Off and Dex. my name's Tyler Brown. I run a product called the Bloom Text. it's a clinical communication platform for healthcare professionals. we serve about 18,000 patients a month right now. We've had over 30 million messages sent on the platform since launching.
+
+@dexhorthy (07:56.088)
+No.
+
+Tyler Brown (08:13.169)
+Love these guys. We just talked about software factories recently at an UN conference. I know you guys recently covered it as well. So you know, I don't wanna cover things that you guys have already covered, but happy to kind of share some of the processes that me and my co-founder are using to build Bloom Text and move super fast. I'll also mention that we have a suite of kind of like products, kind of like open source products we use too, on the software factory side, that are mainly for internal use, but we also kind of share them.
+
+As well with others.
+
+@dexhorthy (08:45.002)
+Awesome. Awesome. Yeah, I would love to I know you have an Excaladra or whatever the evolution of it is. I would love to just have you talk through and we'll jump in and ask questions and interrupt you, I'm sure, as is tradition on this show. but yeah, I would I would love to learn kind of like what you guys are doing today in your internal first of all, like how how big how big give a sense of like how big is the team and and and it's is is this is it
+
+@vaibcode (09:05.087)
+Yeah, what's the team, what's the company size, how long has it been around? And like if you wanna show for like two minutes just the product really fast so we can all ink ourselves into something a little bit more tangible along the way and like if you're down to share, how much revenue do you make?
+
+Tyler Brown (09:22.969)
+yeah. Okay, cool. Yeah. So it's actually this is gonna be a really interesting one. So it's just me and my co-founder that are working full time on this. so two. he's in his twenties. and he's he's sort of what I would call the more AI pilled engineer, and I'm more of like the traditional software, you know, traditional been around for 10 years engineer. So we c sort of like butt heads a bit on how to do our software factory.
+
+@vaibcode (09:32.278)
+Okay.
+
+Tyler Brown (09:49.914)
+And I feel like the best of both worlds kind of emerges in our process and design. So I would say he goes a little too fast, I go a little too slow, and then we end up somewhere you know, the optimal middle ground. so yeah, so revenue-wise, we're at we just grew the product from around two 270 K ARR to just under 400 in the last three months.
+
+separate podcast podcast episode can cover what we did on the growth side to achieve that. but you know software factory is is a part of it, but obviously that extends into the business side as well, which so interesting, interesting side note we can talk about later there. but yeah, so so that's a quick quick intro. Let me show the product really quick. hopefully share my screen is pretty straightforward here. I think this is actually a good example because
+
+You guys will probably recognize this as this is just a messaging app. So I feel like it's very tangible to share. A lot of people, if you've ever tried building a messaging app before, it might sound pretty simple until you get into the weeds and you realize there's a lot of like non-trivial engineering tasks to along with real-time instant messaging. there's a few features I can show that we recently implemented, such as message replies, reactions to messages, things like that, and how we approach it from our software factory side. But
+
+This is basically what it looks like just to kind of anchor everyone's understanding of our product here. So yeah. do you guys want me to to go into the Scaladraw now? Or do we want to talk with Call First? Okay, cool. Awesome.
+
+@vaibcode (11:34.091)
+Let's do it.
+
+@vaibcode (11:37.815)
+So it's kinda like a it it and just from what you were showing me curr before this, it's basically a chat app for doctors. that and then tell me like why do they buy it?
+
+Tyler Brown (11:47.57)
+Exactly.
+
+Tyler Brown (11:52.096)
+so they buy it because they can't use Microsoft Teams, they can't use Slack. there are like HIPAA compliant versions, but they're Yeah, it's HIPAA compliant. Yeah, exactly. Exactly. It's it's HIPAA compliant. It feels like WhatsApp, but it's you know, you can use it. okay. So, you know, everybody knows sort of what a software factory is at this point, right? I don't wanna like repeat stuff that I think people are already kind of wrapping their heads around, but I feel like it's helpful to kind of start
+
+@vaibcode (11:57.959)
+HIPAA compliant chat that is kind of what you're selling.
+
+@vaibcode (12:07.69)
+Okay.
+
+Tyler Brown (12:21.976)
+On the fundamental side. And my goal really is just to like if you guys can all walk away with like one new idea or thing to implement your own software software factory, I'll consider this a success. But this is kind of like how I think about software factories now, specifically with the latest iteration of you know agentic coding models, because I think a lot has changed. And you know, initially I thought that you know, as models get smarter and more capable.
+
+We as engineers would get less important, right? And the stuff we built, the harnesses around it would become less important, right? Boris was kind of alluding to that when he first released Cloud Code. Like all of a sudden you don't need cursor anymore. You can just use an agent in a command line loop. Well, the inverse is true. As models get more capable, you actually need more kind of like like you need a better harness and you need more sort of checks and balances around it.
+
+to make sure that if it goes off for three hours it's not gonna come back with something that you throw away. So this is sort of how I think we should be thinking about software factories in the new world. So before sort of this latest iterations of models, you know, our a lot of our plans were iterative. but now that they're so capable, we sort of switch to declarative planning, which means we we kind of create the end state and we let the agent figure out how to get there. So
+
+That's a huge change in kind of how we approach our planning process. so before it, you know, the bottleneck used to be on the code review side, now it's really on the planning side. another big change, and I can talk through all of these as well, is you know, a lot of people will work inside the harness before these latest iterations of models. And now I think we're at a stage where we can start orchestrating the harness. And I know you guys talked about this a little bit on the last episode that you did on software factories.
+
+And so, you know, again, now like human understanding is sort of the bottleneck in terms of like, do I understand what I'm doing with this large plan? and so that's kind of what we optimize for with our plans. and then you know, we try to create our skills in our factory based off of kind of like tested benchmarks rather than vibes. and we're more concerned about cost now, just given how expensive everything is getting and will continue to get.
+
+Tyler Brown (14:42.812)
+And yeah, so so those are the those are kind of like the key fundamentals. Is anything does that kind of track with what you guys how you guys are approaching software factories or is there anything else that's adding?
+
+@dexhorthy (14:51.533)
+I I think optimize I think I think Optimize for human understanding is the most interesting one, right? Is you know, I've always said I stole from Jake at Ne at Netflix was the you cannot outsource the thinking and Karpathi basically jumped in and said, Well you you can outsource the thinking, but you can't outsource the understanding.
+
+@vaibcode (15:00.085)
+Agree.
+
+@dexhorthy (15:11.919)
+I think they're two sides of the same coin of this idea of like if you don't understand the system you're building and you're like the the more you're building, the more you have to understand. If you can't streamline that almost like agent-to-human or factory to human communication to help people stay on on board, like you basically just end up kind of like noping out and hoping that the agents can solve it. And if you can maintain understanding, then you can maintain kind of control of your destiny.
+
+@vaibcode (15:38.624)
+Yeah. I'm Tyler.
+
+Cole Murray (15:39.754)
+I'd like to hear too a bit more diving in on the planning review that you guys are doing. I think I see a lot of teams shifting to that as well. And it's kind of a unsolved problem. I see a lot of different teams, whether it's using designated tools for this, whether it's just dumping and doing actual like GitHub code reviews on the plan itself. but would love to hear how you guys are approaching that.
+
+@vaibcode (16:01.589)
+There's
+
+There's a really nice slide on here. I'm I'm gonna kinda push Tyler towards showing that earlier than perhaps what he planned, which is show us your flow. I think you have a flow on here and like Scaladrawa is like, this is what we do during planning, this is what we do in during execution loop, this is what we do during XYZ.
+
+Tyler Brown (16:22.545)
+Yeah, absolutely. So so, you know, just before we get there, like I would say this is kind of the thing I think about a lot, which is kind of how do we speed up as much of the work as possible while still avoiding slot, right? That's kind of how we approach this whole thing, right? here's some really I think we already covered this, but this just kind of gives you background on Bloom Text here. Okay, so this is sort of our plan, or this is sort of how we approach it. So this actually looks like pretty simple.
+
+@dexhorthy (16:35.287)
+Yes.
+
+Tyler Brown (16:52.123)
+on the surface, but there's a lot of depth to this. So, you know, basically the the main takeaway here is there there's three sort of phases to our development work. The first is sort of figuring out the plan. And I would say that's kind of the art currently is is creating really, really good plans. and that's that's sort of what I would consider to be like pretty ad hoc still. and then there's this phase called the do phase, which is almost completely automated at this point, where we just sort of hand off our plan to a harness or a
+
+factory and we let it do its thing. And if everything goes well, you just merge that sucker in right away. however, if there's anything wrong with what came out here, then so we basically will still do a human review at the end of every you know every PR or every feature. but ideally we look at that and we say great. but if there's any issues, then a post mortem is generated that we then create a GitHub issue for.
+
+And then every week we look at all of our postmortems and we upgrade the whole harness based off of them. And I can show you some examples of what what that looks like. Sure. Yeah.
+
+@dexhorthy (17:53.743)
+Can can you show us one of these postmortems?
+
+@vaibcode (17:57.92)
+So wait, before we do that I wanna check one more thing. I think and I want opinions here from Cole and you decks. Is this the loop? W just like zoom out for a second. If I am watching this and I wanna go build a software factory of some kind
+
+Is this the loop that I wanna have? This is some sort of planning stage. Then once a planning stage is checked off, go to an implementation loop, and then there's like some sort of like just like post-processing kind of thing that's just like always gonna be manual for some steps.
+
+@dexhorthy (18:32.143)
+Cole, what do you think? What's what's what's missing or or how does this map on to like how you think about it?
+
+Cole Murray (18:33.993)
+Yeah, I think
+
+@vaibcode (18:36.991)
+From a macro layer.
+
+Cole Murray (18:39.251)
+Yeah, I think at a very high level this is more or less kind of the standard process I see across teams where we do some planning up front, we're creating design docs. how they actually get reviewed, I think really depends on the team, the level of scope. at that point then, I think obviously like how the implementation gets done can be a lot more granular, right? We can like fan this out over multiple sessions, we can have multiple agents kind of collaborating on this, but
+
+At the end of that, we're going to have some type of verification process. And I think that that varies a lot depending on what you're actually building. It could be as simple as integration and end-to-end tests. It could be, you know, much more formal than that. It really depends on what we're building. But at the last part, I think is the review part is probably the more interesting part where I'm seeing teams diverging and
+
+Some of that is due to regulatory issues. Some of that is that they're, you know, willing to move fast. they're kind of automating code review now. But I think at a high level, this is kind of the the macro that I'm seeing. I think I guess maybe one missing piece specific to software factories, there is kind of like a a non-human in the loop aspect that is not covered here, which is like scheduled automations, triggers, things like that. But in terms of kind of human shipping code, that that tracks.
+
+@vaibcode (19:37.451)
+Mm-hmm.
+
+@dexhorthy (19:44.877)
+Yeah, I I actually
+
+@dexhorthy (20:03.117)
+Yeah, and just just zooming out to the other one, I think I think there's you you don't have on your on your can you can you go back up to the other picture? I don't I don't see on here a like code code review stage unless the the human reviewer is basically this is like when you have pull request problems, those all get logged basically and
+
+@vaibcode (20:22.601)
+I think verify impulse, right, Tyler?
+
+Tyler Brown (20:25.605)
+Yeah, yeah. So this is a good call out. Verifiers, in my opinion, are the most important thing now. like I sort of consider like code review anything that you can't verify, right? And the goal is to verify as much as possible. and and give the L L verifiers to use so that it can loop through using them. so there's a lot of different ways you can do verification, right? And I'm sure you guys, everyone listening is familiar with a lot of, you know, like linting verifiers and
+
+you know, having verifier agents that look at the plan and make sure everything was done correctly. you know, a a lot of the work we do right now is in making sure that when an agent creates a plan or implements something, it has all the data and information it needs, right? In order to verify what it's doing.
+
+@vaibcode (21:17.119)
+Dex would call this back pressure is the word that Dex would use. It's like you're adding a different amount of back pressure. sorry, you're right.
+
+@dexhorthy (21:20.463)
+A genetic back well, I got that from Jeff Huntley. But yeah, we did episode we We've done many episodes on back pressure.
+
+Tyler Brown (21:24.615)
+I have it, yeah. Yeah. But you know what? This there's a new layer here that I haven't actually showed here in the diagram, but I would call this the orchestration layer. And I think this is the new kind of frontier to add on top of this. So what you're seeing here is a very traditional process that you would go about using for like a big feature. But in production, a lot of the stuff we do day to day is, you know, bug fixes, little things. And I would say this can be a bit overkill for that kind of stuff.
+
+and one of you guys were mentioning earlier, like I can only juggle so many things in my head. And so I think like how we kind of run our orchestrators is the new frontier. And I can dive into how we do that now if you guys want to see that. That's interesting.
+
+@dexhorthy (22:08.951)
+Yeah, one one other thing that it would be interesting to hear about is too is like this is this is the like the the production line, but the the other question I think I see in some interesting software factories is like what feeds work into the factory? Because obviously we have the normal like humans deciding what to build, talking to users
+
+Reading bug reports, but the other interesting thing I've I'd be here curious to hear about is like how much how much are you automating the like ingest of I know I know Pearson did a little demo also of like, okay, he checks post hog screen recordings once a once a week and like pulls in any like UX friction in like how do you detect things that need to be done without having to sit in Slack or sit on support channels? How can you how can you automate feeding that in?
+
+Tyler Brown (22:46.022)
+Yeah.
+
+Yeah. This is such a good question. So let me show you a really like simple version that I encourage everyone to do. So each day I have all of these insights that I write in Notion, right? So each day, like all of these ideas are just coming from they're like the exhaust that come from working on your business. So what's cool about Bloom Text is we do an average of I would say, you know, eight customer demos a week.
+
+@vaibcode (22:58.801)
+you already had a slide. I love this.
+
+Tyler Brown (23:17.659)
+And these customer demos are so rich for uncovering new features and for understanding kind of like what to build next. so you when you combine that with all the customer support discussions we're having, I mean, like it's the it's a roadmap for building as much as you want, like in indefinitely. Now, I think you can get more sophisticated with how you capture this, but you know, this is something that I think anyone can do. You're literally just taking notes on all the stuff. And so in a given day, I might have like seven things I want to implement.
+
+Right? How in the world are you supposed to get to all these things? one thing I haven't mentioned is that we basically maintain four products simultaneously. So we have Plume Text, which is our main production app, but then we have three internal kind of apps that we that we're also using day to day for all of our work. And those are more vibe codey apps, but like how do we just kind of like get all the work done across all these things? And so what I do is I actually grab all these.
+
+And then I throw these into what I call an orchestrator chat. And through the orchestrator chat, I'll actually have an agent that manages multiple set multiple sessions of these discuss do loops all through one chat. And that's kind of the secret sauce is you copy your whole day's worth of features, you paste it into a chat with an agent. I can actually show you what these chats look like. for us, we use linear now as kind of our software factory interface. It's not great, but it works for now.
+
+@vaibcode (24:28.926)
+That's cool. Yeah. Yeah.
+
+Tyler Brown (24:44.32)
+and we have an agent, a cloud code session, that just kind of like looks at linear and it assigns agents to linear. It creates sub issues too. you know, for like overall issues, right?
+
+@vaibcode (24:53.822)
+This is
+
+This is the exact pattern that Antonio on our team found. Where like instead of actually managing linear tickets himself and like the whole discuss you call it the discuss do loop, we call it the plan implement loop. But the same thing, he's just like for small tickets, my only job is to triage things correctly as small. And if I triage things correctly as small, I just let the agent rip and I just do a final pass check at the end and just kinda drives it the whole loop end to end to completion. Is that kind of what you're doing here where like you've triaged it to guarantee
+
+Small so you trust an agent enough without him to read all the code. It can only do so much harm. Is that what we call it? You're you're bounding the harm?
+
+Tyler Brown (25:34.787)
+Yeah, yeah, totally. I mean, you you still need to kind of dig into the weeds. And so it's going back to this question of, you know, how do we speed this up as much as possible while still avoiding slop and staining control, right? And so if you've got an orchestrator chat, more things can go wrong. I think everyone needs to design a an interface for this. And we're still experimenting with the right interface. Can you guys see my screen? I just I just switched applications. can you you just see the browser? Okay, that's my bad. I need to
+
+@dexhorthy (25:57.292)
+No, we only see the Excalibur.
+
+@vaibcode (26:02.15)
+It's funny, we're gonna see you have to share your whole screen. as you do this, it's gonna be funny. I suspect Cole has a lot of opinions on how interfaces like this kinda work. I see him smiling.
+
+Tyler Brown (26:04.803)
+Okay, let me share my whole screen. Yeah.
+
+@dexhorthy (26:11.681)
+Yeah. And we should yeah, we should time box Tyler to maybe like five more minutes. So and then and then we'll flip over to Cole.
+
+Tyler Brown (26:17.24)
+Okay.
+
+@vaibcode (26:17.716)
+Yeah.
+
+Tyler Brown (26:19.693)
+Okay. So you know, my co founder created his own agent IDE. It's it's I don't know why, like it's it's it's it's very similar to what everyone else has. But what's nice about it is you can always add a feature if you're missing anything. So we have this orchestrator chat called Pain Chat, which actually has the ability to manage and chat with all these individual sessions. So this morning I actually had it create like one, two, three, four, five, six PRs all in a row.
+
+@dexhorthy (26:27.001)
+Many such cases.
+
+Tyler Brown (26:47.543)
+And it's it's keeping them running under the hood and it's like you know surfacing like whatever is needed. And here's another one.
+
+Cole Murray (26:54.879)
+Is that running locally or is that running like connected to a cloud environment?
+
+Tyler Brown (27:00.442)
+This one's running locally, but we do have a whole daemon running on an environment that we mainly use through linear. So this is a great example. Customer reported a bug this morning, right? I uploaded all the I uploaded all of the issues or all of the the the chat transcript with the customer. And check this out. This is from Linear. I know this is kind of hard to read. but look what it did. It created four sub tickets in linear.
+
+And then assigned agents to each of these. And these are all working on our daemon, which is a Mac Mini. and if you look here, I know this is a lot to read and definitely don't read all this, but basically what I wanna what I wanna show you guys is this right here. It had access to sentry, it had access to the transcript with the customer. it was able to look at post hoc, like it was able to kind of get to the root cause because we gave it all of the necessary tools it needed.
+
+And so these fixes were kind of verifiable root cause issues that were you know based on those. So boom, there it goes, it creates all these issues right here as tickets, and then each one of these is a separate. And you can see some of these are already done, some of these need more more work. This is just kind of a faster way to work, especially on the small things.
+
+@dexhorthy (28:17.025)
+Okay, and so one of these gets picked up and then the planner agent picks it up g it get it gets assigned to the planner agent and then when these plans are approved they'll go to an implementer agent.
+
+Tyler Brown (28:29.029)
+That's right. So it's going back to that same foundation that I showed you guys in this diagram. The only difference is you have an agent on top managing this now. But it's still not automated because that agent on top is is actively triaging the work. It's surfacing, hey, agent number one has a plan ready for you to review. Agent number two is like you know just finished and is ready to show you the prototype. So we're basically going to like a Tinder style, swipe left, swipe right.
+
+@dexhorthy (28:37.807)
+Yeah.
+
+Tyler Brown (28:58.723)
+you know, add more comments, style interface. that's you know, that's kind of where I see us headed with these orchestrator style management interfaces.
+
+@dexhorthy (29:15.775)
+I know you had more to show. I think we're probably almost at time just so we make sure. But you know, if you if you want to do a deep dive recording, we have done some like longer, longer form stuff sometime, ship a feature end to end, etc. But yeah, Cole, do you want to talk a little bit about Open Inspect and and and the work you're doing? And I'm I'd be curio I'd be most curious to hear kind of some some stories of like, hey, we built it this way because we
+
+We thought this was what people needed and then we got in the trenches with 'cause I know you do a lot of like consulting with people, helping them set this up of like, what was a surprising thing that you found and and and how did you actually have to like that like was like non intuitive that you learned after like watching people work?
+
+Cole Murray (29:58.147)
+Sure. Yeah. I don't have any I guess what I can pull up just to give us something to look at.
+
+Cole Murray (30:14.195)
+Alrighty. So this is just the Open Inspect interface. I thought we gives us something to look at while we're chatting. but so the short of Open Inspect is that it is a background agent system. it covers the control plane. It has support for various different sandbox providers. the main ones right now are modal, Daytona, E2B, open computer, and there's a couple other ones that are in progress.
+
+And then for kind of interfaces, how you can interact with the system, it supports linear, GitHub, it has the web client that you see here, and Slack as well.
+
+@vaibcode (30:49.737)
+Can I pause really fast? Because I'm sure there are tons of people that have never ever heard of the word open inspect. So before we go into that exactly, like what is the problem that it's trying to solve and why can it not be solved by other things? Because you said a lot of it seems to talk all the way from compute down to like tickets. It's spanning a really big spectrum. Help help me catch up on that really fast. Like what what is the core problem?
+
+Cole Murray (31:17.218)
+Yeah. the core problem we have is that agents are starting to take on very long running tasks. And you want somewhere to push that work ideally off of localhost. And a system that you would build for that is typically called a background agent or a cloud agent. Simultaneously within companies, we're starting to see this trend where we want to start centralizing systems, we want to start creating kind of core agent infrastructure.
+
+whether that's for you know Slack bots, text to SQL bots. Go ahead.
+
+@dexhorthy (31:50.571)
+Sorry, I'm gonna take over the screen because I I think this would be really useful to draw. so I'm just gonna share. I'm gonna share this. I started I started trying to take notes on what you were what you were saying, but I also I sent you a link to this if you want to help draw on it. Otherwise, you keep talking and I will just draw.
+
+Cole Murray (31:53.987)
+Yeah, go for
+
+@vaibcode (31:55.047)
+Yeah.
+
+Cole Murray (32:05.635)
+Cool. yeah. And so we have this problem basically that we have agents prior to kind of cloud agent systems coming about, these were primarily running on developers' laptops. And we have a lot of problems that have kind of formed ahead that need a different solution to this. And I can dive into kind of the different personas, each of their problems, but feel free to let me know what you want to hear.
+
+@dexhorthy (32:33.755)
+yeah, Vibob, does that sort of start to answer your question?
+
+@vaibcode (32:38.771)
+Yeah, I think it's it's like it's like a good framework for kind of tying
+
+I think what I'm hearing, Cole, and correct me if this is not the right words, if I want to build a software factory for my internal team, I have to plug in a lot of systems together, all the way from compute resources to systems of record to agent like like surface area of how I want to communicate with them, w whether it be text messages, Slack, whatever the heck I want it to be. Open inspect is some sort of opinionated stack of how to go combine all those together.
+
+Cole Murray (33:10.851)
+Yep, yeah, more or less.
+
+@vaibcode (33:12.017)
+Right. And it's like I think Tyler what's inter what's gonna be interesting here is like Tyler has built one version of this internally. We've built one version of this internally. Dex is also building something like this in a very interesting way. So I I'm actually I think we're gonna get into a lot of really interesting details around like the hard parts about this problem. That's probably what I'm most fascinating about, especially given your background of like how you work with so many companies of different sizes to go solve this problem.
+
+@dexhorthy (33:12.952)
+And
+
+@vaibcode (33:39.943)
+Like what are the challenges?
+
+Cole Murray (33:40.58)
+Yeah. I think the orchestrator in the control plane is actually the easiest of the problem. There's a pretty stand standard set of primitives here where we take in some user input wherever that comes from. It could be from Slack, web, wherever. We then need to create agent sessions and basically launch compute to run those. whether you run the agent in the sandbox or not, I think separate discussion.
+
+But basically we want some way to invoke the agent and have a log of what has actually happened with that agent. And
+
+@vaibcode (34:19.123)
+You know the that word comes up again, log. An agent is nothing more than a log.
+
+Cole Murray (34:23.597)
+Yeah, 100%. and so with that, then you know, you can make a lot of different decisions whether you want to build or buy this. But I think the actual hard part here of a system like this is what is actually running in that compute, because that is running your dev environment, ideally, assuming that you we want to verify our changes. And running that in that compute, especially if you're a large company that has a lot of internal services.
+
+there's kind of a lot of goo to get through there. And if you don't have control of that environment, it can actually be pretty difficult to do that because you're, you know, kind of working in a black box. And I'm sure people who are familiar with just like bashing the CI, right? Of like submit a fix, did it work? No. yeah.
+
+@vaibcode (34:56.305)
+Yeah.
+
+@vaibcode (35:12.105)
+I'm gonna ask you a quick question, just so again, contextualize everyone. Large company means different things. Can you anchor us on what you mean by large company? Is it a team with a hundred engineers? Is it a team with a hundred orgs? What are we talking about?
+
+Cole Murray (35:28.94)
+Yeah, with Open Inspect, the biggest team, or I guess, or you could say that we deployed it to is 500, 500 engineers. but I think the people count is maybe less of the problem. I think it's more the surface area of your company. As you have more services, as you have more kind of internal dependencies, actually getting a system that is, you know, mirroring that environment becomes increasingly more complex because you have additional services.
+
+@vaibcode (35:35.314)
+Okay.
+
+Cole Murray (35:58.782)
+And just complexity that you have to deal with.
+
+@dexhorthy (36:01.762)
+Yeah, we work with a lot of teams where it's like they have, you know, hundreds of engineers, ten year old code base, they have some giant monolithic apps that need very specialized compute just to be you know, sixty gigs of RAM just to be able to run the app.
+
+And then they also have this problem of like there's hundreds of repos. And one, I need to be able to run an agent session with five to ten repos checked out. I may not be banking edits to all of them, but like the agent needs to know how they work for context or whatever it is and be able to search the actual code and see what the interfaces are. But the bigger problem there is like I may not know which repos are relevant when I start working. If I just drop a a an alert in or a page that I got and say like, hey, here's a problem.
+
+Like, well, I don't want to check out all two hundred repos every time I want to do work. I mean, this is a thing some people have done and actually it seems to be working okay. but it involves like every hour you clone every repo onto a base image and like bake that image and then send it some l like store it somewhere so that when people check it out it's like, okay, we will do a Git poll, but hopefully not too many things have changed 'cause like you also want fast boot times, right? If I ping a Slack bot and it doesn't start working for five minutes, like that sucks.
+
+Cole Murray (37:16.589)
+Yeah. And that is exactly how Open Inspect approaches that is that we can pre-clone all the environments.
+
+@dexhorthy (37:22.222)
+I'll stop sharing and I'll let you I'll let you go back to demoing or you have the whiteboard up if you want to draw more.
+
+Cole Murray (37:28.828)
+yeah, and so you can pre bake those images. We have the concept of a environment and so if I go
+
+@vaibcode (37:40.357)
+but so I think yeah, you can make it seems like you can kinda configure the environment setup, you can set up Docker containers I suppose of like how you deploy everything on the stack. I suspect like the whole stack is set up. But when you first talk to a company, what percentage of time do you spend on what concept? So like of I think you said the orchestrator's the easiest part, so it sounds like you're like don't spend any time on that. do you spend most of the time on setting up the developer environment?
+
+Cole Murray (38:06.581)
+Yeah, I I think the orchestrator is probably the least interesting of the problems.
+
+@vaibcode (38:10.63)
+Okay. So where do you spend the time then? Like when you work with them and like let's say you have one week or two weeks to build a software factory and that's all the time that a company's giving one engineer to go build it, where should they spend the time?
+
+Cole Murray (38:25.549)
+Yeah, I think the dev environment is where you're going to spend the majority of that time. Getting that set up is kind of the precursor to having valuable work. The phase two then is actually connecting it into the company. And so that could be the production logs, production databases, kind of a any context that that agent needs to be able to answer the tasks that you're giving it. And I think then
+
+Phase three of that is like, okay, the organization problems that we're about to create. a lot of companies now are starting to want non-technicals to be able to contribute. And so now you have marketing, you have sales, you have a lot of people who don't necessarily have the technical expertise at kind of the agent level, but we want a system that they can still utilize to be able to make changes and achieve whatever outcomes they're looking to.
+
+work on. And so that's where a lot of the time is actually spent of okay, now that we've deployed this system, which typically takes about two to three weeks to get it kind of set up and integrated, let's start addressing the org problems with this. And depending on the company, there's various different directions that we go, whether it's kind of engineering driving this, whether it's marketing or another team driving it. but eventually they all kind of end up at the same place.
+
+@vaibcode (39:51.345)
+So you said dev environment you spend a lot of time on. Can you help us understand what that means? Like w when you say you spend a lot of time on this, what are you configuring? Is it like Kubernetes clusters that you're configuring? Are like, you don't have a sandbox you don't have a staging environment yet? Let me actually build you a staging environment release pipeline for the first time because you've never done this before, even though you're a 500% org, which I have seen before.
+
+Cole Murray (40:14.275)
+Yeah, yeah. I mean, it very much varies depending on the company. the best case scenario, they have a local environment that they can set up, whether that's with Docker Compose, whether it's with, you know, Vagrant or whatever other tools they decide to use. that's a very easy case. The other cases are where they don't have that or they have, you know, some archaic like hand-rolled scripts that is how everyone sets everything up. And
+
+@dexhorthy (40:14.402)
+Ha ha ha.
+
+Cole Murray (40:41.769)
+In those cases, then we're kind of standardizing how to get that set up. the kind of remaining steps then, especially teams that run a lot of web applications, they often don't actually have a like good local reproducible environment that the agent can operate in. And so as an example, in almost every case, the web application has some type of login which is going to be OAuth based.
+
+Well, if your agent now needs to verify these changes, we have a problem here because the agent is not going to be able to, you know, Google login. I mean, I guess it could, but like probably not. and so we need to then build bypasses into the system that allows the agent to actually be able to test the environment so that it can verify those front end changes.
+
+@vaibcode (41:18.523)
+Yeah.
+
+@vaibcode (41:30.768)
+Okay. You're when you say dev environment, you're saying a lot more than what I think most people mean by dev environment. I think when I think about dev environment, I'm like, what's the machine I need to set up so I can start writing code on the system? And I think you're it
+
+@dexhorthy (41:45.379)
+Well, you need the you need the language runtime, you need the you need the actual like code checked out, you need network access to any like 'cause most people I we talked about this last time was like most people if you have two hundred repos, I'm not gonna run all two hundred just to make the thing work. I'm gonna run three or four services and then point them at some shared pool of like developer resources that they're gonna use to like, you know, the database is gonna run over there and I'm gonna use the same shared data set as all the other developers.
+
+@vaibcode (42:08.624)
+Yeah, but
+
+@vaibcode (42:14.118)
+But the caveat w kinda what Cole was talking about is like, I need login built for my agent. That's that's usually not included in what I would I think ninety percent of people think about when they think about dev environment. And I think what Cole you're really saying w what you're saying about like the this hardest part of the system is actually not about just dev environment. I might want to use a different word for it and tell me how you guys feel about this.
+
+@dexhorthy (42:19.278)
+Yeah.
+
+@dexhorthy (42:26.731)
+It's true.
+
+@vaibcode (42:38.906)
+I wanna design a the fastest testing iteration loop. And part of that is everything I need to do to make sure that my stack runs locally. What's that one thing that they built? SST. Isn't that why SST is so frickin' nice? what was it called? I think it was SST, right? Where like you can just deploy your stack. Yeah, those guys. Yeah. So you c
+
+@dexhorthy (42:55.256)
+Serverless thing.
+
+@dexhorthy (42:59.918)
+It's the same guys who make open code. Yeah, it was a wrapper on Pulumi to let you run your serverless functions locally.
+
+@vaibcode (43:06.596)
+Exactly, 'cause like you can't simulate AWS so your dev cycle is like write the code, push the AWS, go make it run. It's like off I'm I'm basically like waiting minutes every time I make a change. I use SST, I'm waiting seconds. And like as a human it's just annoying of why I do this. As an agent, you're f fucked to say any other word if I'm waiting five minutes to test a change.
+
+@dexhorthy (43:21.646)
+I mean
+
+It's
+
+It's a clever interface boundary of like, okay, the Lambda is a thing where I okay I'll put that locally versus running the cloud. I think what Cole said about like bashing CI to get it to work is really interesting. Like the iteration loop is so much slower because like the environment the thing runs in in the CI worker is so different that I can't actually test it locally. but I think what you're talking about, like I don't know, we have a we have a contractor who is in a different time zone. he's awesome. and he's just like, I'm trying to get the dev stack set up and I can't I can't get it.
+
+@vaibcode (43:37.542)
+Yeah.
+
+@dexhorthy (43:57.259)
+Working because I don't have like the keys for Work OS or whatever, so that I can create like a proper auth environment. And he just hacked it and it's exactly exactly what you're talking about. It's like, how do I re-architect my application so that I can run it with as little like upstream exterior dependencies as possible so that it's not complex for the factory to set up and so that the agent can use it and test stuff. He literally mocked out all of work OS in our app.
+
+so that he could I mean, I could have just sent him the keys, but it was like it was, you know, three AM in the US and he was busy, so he wanted to get he wanted to get he wanted to get unblocked.
+
+Tyler Brown (44:34.284)
+Hey guys, sorry sorry to interrupt, but I have to jump. we've got an Airbnb we need to leave at now. But my gosh, I have so many hot takes about this. And I don't want to just drop a hot take and leave, so I will I will withhold my urge. Okay, sandboxes are the wrong primitive for developing applications at large scale companies. I think that you should give each employee a Mac Mini instead. That's my hot take.
+
+@vaibcode (44:39.813)
+Ha ha ha.
+
+@dexhorthy (44:46.828)
+No, give us one. Give us one hot take.
+
+Make it tight.
+
+@dexhorthy (44:58.059)
+All right.
+
+@dexhorthy (45:02.946)
+Pets versus cattle. We talked about this on the last Software Factory episode. Do you give everybody a bespoke box that they own or do you anyways, I know you gotta go. we can go deeper. That's a
+
+Tyler Brown (45:07.259)
+okay.
+
+Tyler Brown (45:11.597)
+Well yeah that plus give people dev environment like make sure the dev environment runs exactly the same whether you're local or remote. which is Ian Livingston's key card is a key component in that. like routing solutions are a big deal. Or yeah. Anyway, sorry guys, I gotta I gotta go. But this was super fun. Thanks for having me. And Cole, it's great to meet you. Great to meet you, Cole. Okay, see ya. See you guys.
+
+@vaibcode (45:20.526)
+One hundred percent agreed.
+
+@dexhorthy (45:32.29)
+Don't get banned from Airbnb.
+
+Cole Murray (45:32.839)
+See ya.
+
+Cole Murray (45:36.813)
+Great meeting you as well.
+
+@dexhorthy (45:39.095)
+Catch you guys around SF.
+
+cool. All right. good riddance. that guy that guy talked way too much. just kidding. We love you, Tyler. cool. Okay. well we could dig into that or we could keep going on this like dev environment idea. I don't know, Cole. What what what are you seeing? Are you seeing people wanting to have the option of local and background agents at the same time? Like what does the adoption look like? Are people trying to move everything to background agents, or is it just the small stuff that we talked to triage the small stuff and have that go in the background? What are seeing?
+
+Cole Murray (46:10.473)
+I see a mix of both. I I don't think that you need to, you know, kind of run everything on the cloud, but I do think that it is becoming increasingly attractive as we have longer and longer running agent sessions where, you know, if I have a six hour session running, I don't really want that on my laptop because now I my laptop cannot be turned off and you know, I have to keep this plugged in overnight and that's a pain. but I I think it really depends. I think
+
+For the non-technical users of the company. Obviously, they don't want to maintain a developer environment. And a lot of teams who have come across Open Inspect found it kind of through looking away to solve that, where, you know, they say, hey, our PM, they want to contribute. We don't really want to maintain a dev environment for them. You know, they're asking, like, what's Docker? How do I update this? And having a system like this allows that to be completely abstracted away.
+
+To where they can still operate within this, they can still preview the changes, but they're not actually having to maintain that environment.
+
+@dexhorthy (47:17.536)
+And do you find people are actually getting like PRs merged? I mean, obviously like copy changes is easy, but like I what I've seen a lot is like PM will vibe code a feature, give it to the engineers, and be like, see, this is easy. And then the engineers see the code and they're like, absolutely, will we never ever frickin' merge this? Like what what is what is the what is the I've I've heard people say things like, have the PM create the PR as a like pr prototype
+
+And then the intent is like they will close the PR and the engineer will rebuild it properly, using that as like a reference of like what is the experience. But like, I don't know, have you have you what have you seen in teams that are like successfully getting non technical people to contribute meaningful work? Is this something that's possible today?
+
+Cole Murray (48:00.983)
+Yeah, very much so. And a lot of this is kind of what my consulting goes into. I would say it's, you know, obviously there's the setup process, but things like this I think are more organization and you know, how do we get a company to be quote unquote AI native? And I think a really good way to start with this is for the PMs first just taking on very small bug fixes. you know, you get a customer complaint that comes in and hey, what this modal doesn't close, or like, you know, whatever the issue is. Let the PM take that on.
+
+Rather than creating an issue and giving that to engineering, just let them run with it. Let them create the pull request. And most cases when teams start out, the quality of the code is going to be off, something is wrong, you know, there's issues that we have to address. And so that part of the iteration I think is very critical to get early on when the scope is still very small for the PMs of just these little bug fixes.
+
+And that could be adding skills, it could be adding documentation, linters. I think, you know, really depends on kind of the issues you're seeing. But as the code that the PM is producing becomes more trusted, we can then let the scope of what they can actually ship increase. I think letting them, you know, create proof of concept vibe coded things is great, but the expectation should not be that this is going to go into production.
+
+you know, it's a proof of concept, it's great, it allows us to organize around whether we even like this as a concept.
+
+@dexhorthy (49:33.455)
+Okay. I think
+
+I think that makes sense. I I think I would tie that even back to Tyler's thing of like the compounding stuff. Like our job is not to you know, decide who who does and doesn't get to contribute. Our our job is to like let non-technical people try and then figure out how do we need to evolve the guardrails or the skills or the prompts or the linters so that the next time someone wants to be productive they have they have more feedback and the chance with whatever skills
+
+@vaibcode (50:05.86)
+Yeah. It's I mean, if it's no different than how you do with engineers too. Like you onboard a new engineer into your team, even though they're technical, they're gonna ship a frickin' bug. How do you prevent that? Well you add processes around that system so that like they're good. And now you're basically onboarding you can think of it as you're onboarding a intern onto your team, but this intern is never gonna learn how to code. So you just have to build safety guards on like these bumper lanes so that they
+
+@dexhorthy (50:12.77)
+Yeah.
+
+@vaibcode (50:35.244)
+I mean don't let an intern do a database migration. Like just don't make that possible. Right? Like and if you if you do make it possible, like I'm sorry, you had a process error. Don't blame the intern, blame the process error. Patch that process system. Make sure there's no other similar processes at that time that are gonna ha have the same other or other thing and like just deal with it. And if you can't support that, then like don't bring interns onto your team, you know? Like that's kind of how I think about it. If you want to pay the
+
+Cole Murray (50:39.843)
+Sure.
+
+@dexhorthy (50:40.718)
+Yeah.
+
+Cole Murray (50:59.511)
+Yeah, one hundred percent.
+
+@vaibcode (51:05.148)
+Engineering tax. Like bringing an intern on was also a process error. Like don't add your marketing team to your database if you don't have an engineer available to support, like, let's say 100 engineers on your marketing team. Like some percentage of engineering resources have to go towards fixing mistakes that these people are gonna make.
+
+@dexhorthy (51:32.366)
+Okay, but what is what is different?
+
+Between now and and and before. I mean, I think the analogy of like, hey, you bring in an intern, you better have be ready to assign them a mentor that's gonna help them get better and help them like not make mistakes and things like this. You hire an intern with the expectation that that person will become more skilled and will learn as they go. And right now we're kind of saying, like, okay, I'm never gonna expect a a marketing per a marketing person, even someone who's a little bit technical, to like understand the dangers of database migrations. And so rather than expecting the human to learn.
+
+and get better, we are forcing ourselves to may maybe for better, I'm not saying it's a bad thing, but like we are forced to put all of outsource the learning from the people and put it into the the factory instead.
+
+Cole Murray (52:20.779)
+Yeah, I mean I think it doesn't I was gonna say I don't think it has to be kind of a a hard cut guardrail, right? In the same way that we do allow the intern to eventually grow in their capabilities and we give them a process, right? We start them very small, a very easy scope task. Okay, great, you achieved that. Okay, let's take on a slightly bigger feature. And as they show continued progress, you know, we give them more scope. And I look at
+
+@vaibcode (52:21.114)
+Yeah, exactly. Like that's kind of go ahead.
+
+Cole Murray (52:50.625)
+The non-technical the same way, and that I think you said it perfectly, Vibov, that like it shouldn't really matter who's prompting the agent because the system should be able to accommodate whoever that is. And you know, you could formalize those guardrails and like you could put in, you know, a status system, right? Where like the pull request or the agent just blocks you if you don't have database certification within the company. I obviously I wouldn't recommend doing that, but
+
+you know, you certainly could. And I think as people become more familiar with this, I do see a lot of PMs learning more technical concepts to where they're very interested in these things and they're not trying to learn them, you know, at the same level of the engineer, but they understand the stack as their familiarness with the system grows.
+
+@vaibcode (53:45.264)
+Yeah. I think that's a great nose to note to kind of close us out on, which is like
+
+If you're gonna go and build a software factory of some kind, one, like there's there's a lot of different components here, and like different folks here may have different opinions on what the hardest part is. in Cole's opinion, the hardest the easiest part is orchestrated, the hardest part is setting up the fast testing loop so that your agents can iterate. And like part of that is regardless of what you believe, in terms of what products you use, what systems you put together, fundamentally we're all trying to do the same thing. We're trying to help more people contribute to building
+
+software faster and help more users at a faster rate than ever before. And as we all go down this road, there's a lot of learnings and journey that we have. And like the one shared learning that I suspect every single one of us, including Tyler, seems to have Cole, you have Dex you have, we've had on our team, which is it's process engineering all the way. And process engineering means change management. It means mistakes and absorbing mistakes. and the
+
+@dexhorthy (54:48.32)
+It means finding and elevating bottlenecks. It means what okay, what's the what's the hardest, slowest part of this system? Don't stuff more work in the top of the funnel if if there's a bottleneck here because all work in progress is debt.
+
+@vaibcode (54:52.325)
+Yeah.
+
+@vaibcode (54:59.909)
+Yeah, exactly. And like and don't be afraid to do things more manually. Like
+
+Just because you need like Tyler showed this perfectly before where like they have a human review step for parts of their code base and they recognize some stuff doesn't need human review. So they accept that risk. And it's always a trade-off of this like risk versus correctness trade-off. So like decide where you are on the spectrum and decide that for every single part of your system. Some parts you don't have to be one or the other for your whole stack. I think it's interesting that open code kind of lets you build kind of this stuff. So thank you for sharing all that today, Cole.
+
+@dexhorthy (55:36.161)
+Open inspect.
+
+@vaibcode (55:36.279)
+Yeah.
+
+That's why I said open inspect. frick, sorry.
+
+@dexhorthy (55:40.396)
+No, you said open code.
+
+Cole Murray (55:40.647)
+you said open code, but yeah no worries.
+
+@dexhorthy (55:47.95)
+Cool. Any any final thoughts from you, Cole? Like w what's what's exciting? how how can people find you? How can they be helpful? and and yeah, we'll close it out.
+
+Cole Murray (55:48.035)
+But yeah, I think it's
+
+Cole Murray (55:58.219)
+Yeah. you can find me on Twitter at just my full name at Colmurray. for teams looking to deploy software factories, I would love to chat. I think as mentioned, the challenges, a lot of them are just really org related. And how are we going to deploy this system, whatever that system means to you within your company, and do that in such a way that you achieve whatever outcomes you're looking for. And yeah, I think more than happy to chat with teams and
+
+Thanks for having me.
+
+@vaibcode (56:28.217)
+Thanks for thanks for joining, Cole. Dex close up. pff I said it first. Alright, go, go, go, go. I'll stop.
+
+@dexhorthy (56:29.231)
+Amazing. Vibob, you wanna do the outro? You want me to do it? I'll do it I'll do other you're you're sharing your screen. That's fine, I go. All right. I don't have Tyler's Excaladra, unfortunately, but
+
+@vaibcode (56:40.641)
+I know his accelerator is so good.
+
+@dexhorthy (56:43.895)
+all cool. this was a really fun AI that works. we had Cole Murray, who is the creator of Open Inspect, which is a software factory system that uses open source that you can deploy. We talked about a lot of the challenges there, both in terms of like how do you create dev environments, how do you replicate the the dev environment that every developer has running locally into a software factory seems to be the biggest friction point people hit. it is a solvable problem, but it is a lot of work.
+
+and then getting into like how do we help enable non-engineers to ship code, whether it's product managers, marketing folks, sales, finance, et cetera. and then I don't have a visual for it, but we also talked to Tyler Brown. He showed us his software factory on their plan.
+
+Or what is it? It's discuss do compound loop and how they let agents do the planning, how they have an orchestrator that manages work across lots of different systems, and how they do a post mortem every week to learn what was missing from our what where did humans have to step in step in and what's one thing we could add to the software factory to help ensure that the next week humans don't have to be involved there and slowly improve. Yeah.
+
+@vaibcode (57:47.097)
+The coolest part being the coolest part being Tyler and his co-founder Parsa have built a HIPAA compliant chat app for doctors, which they've grown from revenue all the way from like two hundred K to four hundred K in three months using the software factory approach. A system that typically has no room for errors. Seems to work. Let's go chat.
+
+@dexhorthy (58:06.361)
+Super exciting. thanks everybody. Let's let's get into the show.
+
+@vaibcode (58:11.556)
+Alright, thank you guys. It was tons of fun. Thanks for having us, Cole.
+
+@dexhorthy (58:14.32)
+This is great. Thanks, Cole.
