@@ -71,6 +71,7 @@ Tell the user to go turn on the livestreams and upload the generated image in Ri
    - Create a new folder for the upcoming episode following the format
    - Create a meta.md, set the youtube link to `https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt`, set the code url to `https://github.com/ai-that-works/ai-that-works`
    - Update the luma links
+   - Copy the generated thumbnail (the `.png` from step 3) into this new episode folder as well, e.g. `cp <absolute path to outputted image from step 3> <new episode folder>/`. Keep the original copy in `src/thumbnail_creation/output/` too.
 
 
 ```example initial meta.md
