@@ -77,6 +77,48 @@ class Guest:
 
 
 @dataclass
+class CalendarContact:
+    """Represents a contact on a Luma calendar (across all of its events)."""
+
+    id: str
+    user_id: Optional[str]
+    email: str
+    name: Optional[str]
+    first_name: Optional[str]
+    last_name: Optional[str]
+    event_approved_count: int
+    created_at: Optional[datetime]
+
+    @classmethod
+    def from_api_response(cls, entry: dict) -> "CalendarContact":
+        """
+        Create a CalendarContact from the API response entry.
+
+        Args:
+            entry: API response entry containing contact data
+
+        Returns:
+            CalendarContact object
+        """
+        created_at = entry.get("created_at")
+
+        return cls(
+            id=entry.get("id", ""),
+            user_id=entry.get("user_id"),
+            email=entry.get("email") or "",
+            name=entry.get("name"),
+            first_name=entry.get("first_name"),
+            last_name=entry.get("last_name"),
+            event_approved_count=entry.get("event_approved_count") or 0,
+            created_at=(
+                datetime.fromisoformat(created_at.replace("Z", "+00:00"))
+                if created_at
+                else None
+            ),
+        )
+
+
+@dataclass
 class Event:
     """Represents a Luma calendar event."""
 
@@ -242,6 +284,46 @@ class LumaClient:
         # Sort by start_at descending (most recent first)
         ai_works_events.sort(key=lambda e: e.start_at, reverse=True)
         return ai_works_events[0]
+
+    def list_calendar_contacts(
+        self, page_limit: int = 100, max_contacts: Optional[int] = None
+    ) -> List["CalendarContact"]:
+        """
+        List every contact on the calendar, following pagination to the end.
+
+        Args:
+            page_limit: Contacts to request per page
+            max_contacts: Stop after this many contacts (useful for testing)
+
+        Returns:
+            List of CalendarContact objects
+        """
+        url = f"{self.base_url}/calendars/contacts/list"
+        headers = {"accept": "application/json", "x-luma-api-key": self.api_key}
+
+        contacts: List[CalendarContact] = []
+        cursor: Optional[str] = None
+
+        while True:
+            params = {"pagination_limit": page_limit}
+            if cursor:
+                params["pagination_cursor"] = cursor
+
+            response = requests.get(url, headers=headers, params=params, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+
+            contacts.extend(
+                CalendarContact.from_api_response(entry)
+                for entry in data.get("entries", [])
+            )
+
+            if max_contacts is not None and len(contacts) >= max_contacts:
+                return contacts[:max_contacts]
+
+            cursor = data.get("next_cursor")
+            if not data.get("has_more") or not cursor:
+                return contacts
 
     def get_guests(self, event_id: str) -> List[Guest]:
         """

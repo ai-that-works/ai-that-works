@@ -1,6 +1,6 @@
 """Luma API integration module."""
 
-from .luma_client import LumaClient, Event
+from .luma_client import LumaClient, Event, Guest, CalendarContact
 from .constants import (
     LUMA_BASE_URL,
     LOOKBACK_MONTHS,
@@ -16,6 +16,8 @@ from .constants import (
 __all__ = [
     "LumaClient",
     "Event",
+    "Guest",
+    "CalendarContact",
     "LUMA_BASE_URL",
     "LOOKBACK_MONTHS",
     "DEFAULT_TIMEZONE",
