@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-09-22-all-about-jev",
+      "guid": "aitw-075",
+      "title": "All About Jev",
+      "description": "Jev has been making lots of waves in the AI world this week. This week on the podcast, we will dive into jev and discuss how token generation may be holding back your agent architecture and how jev compares to and complements BAML. We'll look at what type safety means across different layers of the stack, why generating text for routing and classification is an antipattern, and how to combine fast decision models with BAML-orchestrated workflows for production agent architecture.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/all-about-jev",
+      "eventDate": "2026-09-22T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-22-all-about-jev"
+      },
+      "season": 2,
+      "episode": 75,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-09-15-performance-engineering",
       "guid": "aitw-074",
       "title": "performance engineering",
@@ -17,7 +37,7 @@
       },
       "season": 2,
       "episode": 74,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1612,7 +1632,7 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 77,
+    "totalEpisodes": 78,
     "completedEpisodes": 72,
     "upcomingEpisodes": 1,
     "workshops": 3,
@@ -1620,7 +1640,7 @@
       1,
       2
     ],
-    "lastUpdated": "2026-09-14T19:15:09.593Z",
+    "lastUpdated": "2026-09-20T02:28:51.770Z",
     "generatedBy": "validate-metadata.ts"
   }
 }
