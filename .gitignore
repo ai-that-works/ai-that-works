@@ -164,3 +164,5 @@ skills-lock.json
 .claude/skills/
 .agents/
 .scratch/
+# Luma -> Loops sync checkpoint (contains email addresses)
+.luma_to_loops_cache.jsonl

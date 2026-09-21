@@ -1,23 +1,22 @@
 ---
-guid: aitw-074
-title: "performance engineering"
+guid: aitw-076
+title: "GTM Engineering and AI at Rippling"
 description: |
-  When milliseconds are too slow, you have to engineer for nanoseconds. This week, we're unpacking N5-level optimization for AI workloads and what it takes to shave off ultimate low-level latency. We discuss the engineering techniques required to strip away overhead, optimize memory throughput, and push inference infrastructure to absolute hardware limits.
+  In this episode, we break down GTM Engineering, the practice of applying software engineering principles, custom data pipelines, and AI agents to go-to-market ops. We will be joined by John Kutay at Rippling to see how they do this in practice
 
   Meet the Speakers🧑‍💻​
 
   ​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
 
   ​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
-event_link: https://luma.com/n5-optimization
-eventDate: 2026-09-15T18:00:00Z
+event_link: https://luma.com/gtm-engineering
+eventDate: 2026-09-29T18:00:00Z
 media:
   url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
   type: video/youtube
 links:
-  code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-15-performance-engineering
-  youtube: https://www.youtube.com/watch?v=WHLXRZi8Mus
+  code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-29-gtm-engineering
 season: 2
-episode: 74
+episode: 76
 event_type: episode
 ---

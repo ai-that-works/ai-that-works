@@ -107,6 +107,25 @@ Before joining, get familiar with our toolkit:
         <div style="margin-bottom: 2px;">
           <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
         </div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-09-29</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#76</strong>: GTM Engineering and AI at Rippling</div>
+        <div style="font-size: 13px; color: #666;">
+          <a href="./2026-09-29-gtm-engineering">code</a> • <a href="https://luma.com/gtm-engineering">register</a>
+        </div>
+      </div>
+    </td><td><div style="padding: 8px 0; line-height: 1.5;">In this episode, we break down GTM Engineering, the practice of applying software engineering principles, custom data pipelines, and AI agents to go-to-market ops. We will be joined by John Kutay at Rippling to see how they do this in practice
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+</div></td></tr>
+<tr><td>
+      <div style="padding: 8px 0;">
+        <div style="margin-bottom: 2px;">
+          <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
+        </div>
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-09-22</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#75</strong>: All About Jev</div>
         <div style="font-size: 13px; color: #666;">
@@ -129,7 +148,7 @@ Meet the Speakers🧑‍💻​
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-09-15</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#74</strong>: performance engineering</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-09-15-performance-engineering">code</a>
+          <a href="https://www.youtube.com/watch?v=WHLXRZi8Mus">watch</a> • <a href="./2026-09-15-performance-engineering">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">When milliseconds are too slow, you have to engineer for nanoseconds. This week, we're unpacking N5-level optimization for AI workloads and what it takes to shave off ultimate low-level latency. We discuss the engineering techniques required to strip away overhead, optimize memory throughput, and push inference infrastructure to absolute hardware limits.

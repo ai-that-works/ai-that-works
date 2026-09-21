@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-09-29-gtm-engineering",
+      "guid": "aitw-076",
+      "title": "GTM Engineering and AI at Rippling",
+      "description": "In this episode, we break down GTM Engineering, the practice of applying software engineering principles, custom data pipelines, and AI agents to go-to-market ops. We will be joined by John Kutay at Rippling to see how they do this in practice\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/gtm-engineering",
+      "eventDate": "2026-09-29T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-29-gtm-engineering"
+      },
+      "season": 2,
+      "episode": 76,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-09-22-all-about-jev",
       "guid": "aitw-075",
       "title": "All About Jev",
@@ -33,6 +53,7 @@
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=WHLXRZi8Mus",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-15-performance-engineering"
       },
       "season": 2,
@@ -1632,15 +1653,15 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 78,
-    "completedEpisodes": 72,
-    "upcomingEpisodes": 1,
+    "totalEpisodes": 79,
+    "completedEpisodes": 73,
+    "upcomingEpisodes": 2,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-09-20T02:28:51.770Z",
+    "lastUpdated": "2026-09-21T14:49:13.956Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

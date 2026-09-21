@@ -1,0 +1,787 @@
+@vaibcode (00:00.64)
+Alright, I think we are live. and I think we are streaming. So we've got a new setup today, so we'll see how this goes. and as people are out there, we'll get some general feedback about the setup if you enjoy chatting and stuff on there. while you're out there, today this episode, we'll get to that in a second, and let's just do some really quick operational setup really fast. Excalibur.
+
+dot com. Hello Perryman. How's it going? Welcome. Sadly Dexter will not be joining, but we've got two special guests that will show that should be in today. We've got Kai over here on our team and then one more person that's hopping in in a second. like I said
+
+@vaibcode (00:44.354)
+Yeah, we can do this. Okay.
+
+So, for everyone watching, let's do a quick intro and then we'll get started. Hey everyone, I'm Viba from A and this is AI That Works. AI That Works is where we try and show real working systems where AI pipelines hopefully help get past the hype and show how productive how production systems drive value for end users. I'm one of the co-founders over at Boundary. Normally I have my co-host Dexter with me over at HumanLair. He's sadly out in Europe prancing around, not doing important stuff. So instead, we've got an amazing
+
+And probably a more exciting guest on the show today. Kai, you want to give a quick background? Hi. I've been here at Boundary for
+
+I've been here at Boundary for seven months or so. Yeah. I don't know, I
+
+Mostly work on compiler and runtime stuff.
+
+@vaibcode (01:47.435)
+Yeah, I don't Cool. That yeah. And then we'll get to we'll get to going and talking about we'll have one more person hopping on a special guest halfway through, so hopefully you guys will get a bit. But today's episode is actually one that I'm particularly really excited about. And the specific thing I'm really excited about is actually to talk about how do you get AI to solve really, really, really hard problems. One such hard problem that I think is a really good useful exercise and maybe be a good proxy for other people trying to get AI to push the limits
+
+Especially with like reliability systems, is performance engineering. Now over at Boundary we do a lot of that. We're and some of the stuff that we do operates in nanosecond level time. And typically you'd probably want to put a human on that type of code because, well, I mean, how do you how do you get nanosecond level precision if code is churning all the time? You can't, because it's changing all the time. And I think today's conversation is gonna be a little bit more free-form, but I'll try and share some chat examples. I know Kai has some opinions on this end, which will be kind of fun to go through.
+
+on our team, he's been doing some work for like our GC and our core memory model and a bunch of other runtime level semantics and the type checker. And then I've been doing more work more recently on the actual VM side and making it really fast. So as we go through, if any of you have any questions about exactly how you might apply this to your real world scenario, I would think of it as more so: imagine you have a system that has extremely rigid design constraints that are very expensive to test. How do you leverage AI and agentic coding in that design constraint?
+
+Constraint system is the general topic for today. Now, I we we've been doing a little bit of work specifically on the infrastructure side of this. That's actually, I think, a little bit more important than the actual nitty-gritty of how you do performance engineering. And one of the core things that I want to talk about, let's go to Xialadraw.
+
+we're not gonna talk too much about the GC stack and everything. But I think what we will talk about is actually on the order of I want you to think about how you have to do performance engineering. Your workflow often starts with look at code. And Kai, tell me if you agree or disagree. Think of better idea. Or I guess
+
+@vaibcode (04:08.654)
+See Is it slow? Huh? See what can go wrong. Is it slow? Think of better idea.
+
+Yeah, then y after as soon as you look at the code, you think and see if it's slow, then you well, I guess this is probably the wrong word, sorry. and then after you think of a better idea, then you like implement better idea. And I'll put better in quotes. And then you kind of just like at this point you're kind of back to where you started. Where you're like, Okay, now is it slow? And you kind of run this loop over and over again. Is that kind of how you I think.
+
+@vaibcode (04:53.664)
+In some aspects you would want to do this. I think you also
+
+I think part of it is just avoiding pessimization throughout the entire thing. Amo avoiding what? Pessimization. Like the opposite of optimization.
+
+throughout the entire process. So you're like at design time make sure you haven't made it effectively slower by design. and obviously for the hot VM loop, you need to get that nanosecond of precision you kinda have to go through that. But I think throughout the entire process you really need to be Yeah, so there's a higher level design construct that if you know performance is a constraint, you kinda need to think about it all the time. But there's also like a tactile moment that we want to think about. and I think
+
+You're right that we should maybe it's interesting 'cause there might be like we might want a design loop versus like implementation loop. Yeah.
+
+Cause like you're right that during design you want to think about performance, and we'll share that a little bit later today when we show the chat GPT LOPS about how we're just thinking about it without writing any code, but then there's also an implementation loop side of it. Now, one of the key things that you're probably noticing on here is that there's this measurement stage that is very, very, very important. What does the measurement stage mean? That means you are bottlenecked on how fast you can measure your system. So, for example, if measuring your system
+
+@vaibcode (06:22.199)
+It requires like nanosecond level precision. Well then not only your bottleneck and how you measure your system, there's another bottleneck. Your system cannot be doing any other work at that time because your measurements will be too diverse. So now you need a different machine that has some measurement capabilities that is somewhat stable to go do this in some way. So the amount of paralyzation that you can do at that time is highly limited. You can't run like we we run a Rust Great base. I can't run five workspace at the same time and do performance optimization in one of them. It will make wrong decisions. Yeah, I know in
+
+In our our test suite, there's a few tests that are performance or timing dependent with just like multi-threading and stuff to test that. And they consistently fail whenever I'm running like three work trees at the same time. Yeah. Yeah. How do you get around that? Even beyond that, just like if you're running too much Chrome, it's gonna
+
+Chrome is a resource hungry application and it's gonna
+
+It's gonna mess up your measurements. Yeah, there's this really interesting blog post going around right now, or this image going around right now, if you haven't seen it, it's like the bottleneck is basically moved downstream. And the thing is like if I were to think about what the most expensive time was beforehand when I was writing doing any performance engineering before AI, literally the most expensive part was thinking of a better idea and implementing a better idea. So therefore, it didn't matter. And once agents write all the code, my only bottleneck is how much can I measure at any given time. So like we're kinda just stuck.
+
+So like what I do, for example, if I do performance measurements, we don't have remote machines that we can run on yet, sadly. Maybe we should. And we sh we should do that. But what I end up doing is I just only do like re like non coding tasks while I do this, and I only do like design docs while I'm doing any performance measurements on my machine to guarantee it's stable. Always have the wire plugged in and such. But that's just a mechanical thing that I would recommend everyone think about if you're caring about precision for like timing level sensitive. If you're thinking about like I would say like
+
+@vaibcode (08:24.527)
+Like less than 100 microsecond precision, you kind of just need to set up your CI system to go do that. But I think the more interesting thing is how do you do the second part? How do you do these three parts leveraging AI? Because once you do the mechanical fix and you have this better, how do you actually look at the code, think of a better idea, and implement the better idea? And implementation is tricky in performance, at least in my experience, because there's no guarantee that the idea you thought of is actually going to be maintained by the coding agent that implements it.
+
+'Cause it will mess it up somehow. How often have you seen that happen?
+
+Basically every time. at least for the first try or two. yeah. I mean I I especially it really is like domain specific, right? 'Cause there's a lot things that are intuitive or that are
+
+within the inference capability more directly, or like I guess the training data, right? Yeah. Of like this is how what what patterns it knows what to do and this is the kinds of systems that it has lots of
+
+pre-training data on. And then obviously you can try and do some research, but the context window is only so big and you can't have all the information in the world in there. So and especially with like a lot of optimization is the things you would think intuitively actually speed it up. Sometimes just don't. Because there's some other constraint or invariant that leads to
+
+@vaibcode (10:04.269)
+Yeah. and so there's one thing I think models are pretty good at is rel repeatedly measuring things. Although sometimes on my computer they measure things and then they're like, wow, it just randomly became slower. And then it's like, yeah, that's because the other work tree just started a test run. Yeah, exactly. But you know. The getting them to
+
+really understand the core question is a bit challenging because they'll go off on tangents about something that is not the main point. and before we get more into detail, welcome Tomas. Tomas is the right way to say it? You wanna give a you wanna give a quick intro?
+
+Tomás (10:53.681)
+That's fine. Not peaky. Sure. hi guys, I'm I'm too much. I I'm currently building a startup called PerfSoup, which is gonna help you keep your software stay fast as things change faster and faster around everything, right? and yeah, I've been doing performance engineering for
+
+about like fifteen years since I started my open source low testing tool called Vegeta that was kind of the the kickoff for my interest in the area. And I've been working on on this sort of problems for for a long time and it's kind of my my wheelhouse.
+
+@vaibcode (11:37.235)
+I'm super excited. When Dexter mentioned what you were working on and some of the stuff you did, I was like, this is gonna be such a fun conversation that we talk about. I think we were just talking about the general performance loop for a second, about how you have to do there's like an implementation phase, and Kai mentioned like you're right that like hey, during design phase you just to consider performance or else you will not be able to catch up to all the debt that you incur over time.
+
+Tomás (11:58.962)
+Yeah, but but if you but if you if you need to catch up you can use Perflip.
+
+@vaibcode (12:02.988)
+We'll we'll get we'll talk about that in second. and then I think there's a few other folks talking about like the general stuff in chat about some things that are let me answer see if there's any questions really fast before I continue.
+
+Okay. and then there's a more recent question, is this for like blast radius analysis come in for work definition? So blast radius is one element of it, but I think the thing that I have found in our core loop is blast radius doesn't really help because the thing that ends up
+
+I I mean it kind of does, but everything is so localized already in our core loop because usually once you're doing a performance sensitive s perfor like nanosecond level precision, you're no longer trying to hit. Like you're just not reaching out to a bunch of code outside of localized things. Like usually performance boils down to three things in my opinion. It's thing number one is do less work.
+
+That's a great way to make your code faster. Just do less work. Thing number two is use less memory.
+
+And that's kinda like do less work, but this is I would say more like about how many instructions are you operating and this is how much space you're using to represent your work. And thing number three is use caches better.
+
+@vaibcode (13:26.122)
+If you do those three things, you usually have a pretty performant system as long as you're optimizing on there. There's special things like understand your hardware, but I've generally found that most people don't run on single hardware systems, so therefore optimizing for hardware is just less common.
+
+But usually these three things are like generally applicable. Tomas, would you say this is generally how you think about performance engineering? Are there a is there a fourth category that you bundle stuff into?
+
+Tomás (13:56.688)
+Well, no, I I don't think so. I think I think you kind of made a a hierarchy there. where like if you squint like use less memory and use caches better is is all a version of do less work. you know, like so like over overall I think performance is do less work. Like just do less.
+
+@vaibcode (14:08.776)
+Yeah. Here. Here. I can make it more specific.
+
+@vaibcode (14:17.213)
+Yeah yeah. I'll I'll make it I'll make it slightly better. But I do agree. Do less work and do more of the work at the same time.
+
+Tomás (14:24.601)
+Yeah, exactly. Well i i it's just because the the the CPUs, you they they they go at a specific clock rate. and you know you go they go up and down sometimes. But yeah, if you do less work then they just eat more, on at every single instance of of time that elapses. Yeah.
+
+@vaibcode (14:26.036)
+Those are the two things.
+
+@vaibcode (14:37.866)
+Yeah. Use I guess the better way to put this is really it's just what all the neolabs are trying to do, use less electricity. That's actually what it's really about. Exactly. Use less electricity. But I I think the example that I want to share today, as I go down this and like I'd love for you guys to roast this example actually, as I go over here.
+
+Tomás (14:46.581)
+Yeah, that that's right. Yeah. Exactly. Exactly.
+
+@vaibcode (15:04.524)
+is some codes that I've been working on more recently. And I wanted to show as I did this code, let me pull this up, how I've been approaching performance work and how we've been thinking about it for a while. Because I think I have all the stuff on here. Let me scroll to the very top. Sorry, it's gonna load. This is a very long chat thread.
+
+Tomás (15:27.717)
+Yeah, I mean
+
+@vaibcode (15:28.22)
+as you I love that red minus twenty three thousand. Yeah, this tur do less work. Do less work. let me scroll up really fast. So a large part of when I was doing this is like
+
+Tomás (15:33.745)
+Exactly. Proof is in the pudding.
+
+@vaibcode (15:44.964)
+okay, while I scroll, I'll generally describe what I was doing. I was taking our whole VM loop. Our VM loop for a while was faster than Python, then over time it slowly became slower and slower than Python for our for the BAML language. And eventually I was like, that's just not okay. How do we get to being faster than Python again? So then I just started deleting all the code that we don't need and started redesigning some of the architecture. So it boiled down to if I go back to that loop that we were drawing earlier, I detected it was slow. I looked at the code and I realized that.
+
+We probably need to rework our core like telemetry system to make it faster because one of BAML's value prop is we want to automatically telemetrize everything. Telemetrizing everything has a cost, that means you have to read a clock. For every function call, you have to read a clock. You have to save eight bytes of data that no other language saves for every single function call. That's that's more instruction counts, that's more memory, that's you just can't use caches better at some point because your stuff is just bigger. So when we looked at
+
+This code, one of the things that we ran into is we were just slower. And then when I looked at the code and I started looking at this, I was like, I have a couple ideas of how we can make this faster. And then we I spent about like maybe a day or two purely in the design world of designing this. And a large part of designing this was actually focusing on useless memory. I couldn't guarantee useless CPU instructions because of the way it worked, so I actually just said, let's just focus on useless memory. Let's make the amount of data we pass through go down from, let's say, on average, like 60.
+
+Bytes of data down to like 32 bytes or 24 bytes. So we modeled that, and once I modeled that, I was like, okay, I want to implement this. But as you can imagine, going into the core VM and changing this code base is a very fundamental change. Now, models, this is my opinion, and I'd love to know both of y'all's opinion. I don't personally think models are very, very good at incremental changes and maintaining two states of the system at the same time. What do you guys think?
+
+I definitely agree. sorry, go ahead. Like i let's say I have a telemetry system that works today and I want to implement a better telemetry system. If I just tell it to say here's a telemetry system today, implement a better telemetry system, it will to use the i it will not do it well is the best way I'd put it. It will definitely leave legacy.
+
+Tomás (17:46.649)
+What do by two stones?
+
+Tomás (18:02.948)
+I mean I mean I if you if if you just say, you know, make it good, you know, like and and and you don't define what what good is, you know, then then you can have that time probably. Like
+
+@vaibcode (18:12.703)
+But even with steering, even with steering, it's gonna leave an extra data value there it doesn't need. It's gonna leave an extra field around that it doesn't need to carry. It's gonna start doing extra additions that it doesn't need to do. Yeah, I think for Sorry, go ahead.
+
+Tomás (18:24.805)
+Yeah. It it it requires it requires a lot of attention that y you need to put into the babysitting and and the steering, right? Or a lot of spend and and a lot of automated verification of all the things that you care about that then you know pressures the model into the right outcome.
+
+@vaibcode (18:34.997)
+Yeah.
+
+@vaibcode (18:47.327)
+What I
+
+When I thought about this, I actually have a different approach that I tried. I basically told the model, get rid of all the tracing code, existing tracing code in the code base, and thus I did automatic verification loops that were just delete, delete, delete, and it forced it to delete every single line of code. And I found that once I was able to delete it, I have much more confidence that the next loop that I start that tries to implement this much smaller data structure is way more likely to be pure. Is that a strategy that you guys have tried? Yeah, I think
+
+I've seen a lot that when I try to have it fix some system, whether it's performance or just like maybe there's a bad model that like allows invariance to be violated in the representation instead of having the language like Rust, we use Rust for the VM, right? Or for compiler and everything. And if you want it to have the best representation that basically
+
+Basically prevents you from violating your invariants and so only valid states are representable. It often will just be like, yeah, we're just gonna add this other thing because it existed before. And even if it does like does it right the first five functions, eventually it's like, this other thing exists over here, even though that's the old bad version that we're trying to delete. And so I'm gonna copy what it did over there. But like, no, that's
+
+The entire point is to delete the to delete that. I don't know.
+
+Tomás (20:20.675)
+How how how do you find how how do you find this change change over time? Like over the last six months?
+
+@vaibcode (20:27.615)
+I think this one it specifically has not really gotten better. It's I agree. Somewhat of fundamental just like the models are I mean it might even just be the attention model itself, but like trying to optimize for
+
+Trying to optimize for like getting results is like it's a gener it's a general problem with RL and stuff, right? It's it's hard to in reward sparse like training runs, it's hard to prioritize the long run win over the we fixed this bug now. Yeah.
+
+And I like Dexter has done a lot of talk on this on like slop code bench and everything, where like we're just like i I at least empirically I see this as well, where like if you give a model an open ended problem, even the same model is gonna make different data structure decisions every single time. And therefore if it has legacy code that it's being priored by, it's almost always going to like be priored accidentally at some point in the context window by the legacy code. 'Cause it'll just like forget for
+
+A blip that we're trying to delete this thing and this thing is n this thing is like evil code. Or like maybe you forgot in your context window to say that this part of the code base is also slop. I think even when you do say that, it eventually will just be like nah. Nah. That and it's like, yeah, okay, we're just gonna do that. It's on average, this is what we're doing. I mean I don't know if that's actually
+
+Tomás (21:51.589)
+Yeah. Yeah.
+
+Tomás (22:01.455)
+Yeah.
+
+Tomás (22:23.333)
+Yeah, I my experience that that happens and and the the the way I found I need to handle that is is that I I can't just trust like every single agent session to to maintain the garden for me, right? Like I need to sometimes go in and and do like a big day of gardening, you know like yeah, I mean it depends on how much you you punt it, right? Like
+
+@vaibcode (22:45.162)
+Or or a big week of gardening. Yeah. Yeah.
+
+Tomás (22:52.811)
+but but yeah. I I do see that. I I do see that even if you have very structured adversarial review and and
+
+@vaibcode (23:03.946)
+Yeah.
+
+Tomás (23:05.911)
+linters and all sorts of like deterministic checks that you try to that you try to encode your the invariants that you want o out of your system. those help. Absolutely they help. Like your code would be you have a much, much worse time if you didn't do those things, but they're not perfect. Right. And so like and so the the it they still leave a trail of things that you would do differently if you'd be doing everything by hand. Like let let's say, right? Like
+
+@vaibcode (23:23.507)
+Yeah.
+
+@vaibcode (23:34.601)
+Yeah. I and I don't think the goal is to do everything by hand. Cause also again if I if we go back to like that diagram we were drawing earlier, doing this by hand, like you could make a ton of money pre-AI doing this by hand, 'cause the hardest part was this. And you're literally paid for like ideas per minute merged in. And the thing is like now with AI, like the bottleneck is no longer this as much. It's more like there's this extra thing of like Did it do what you think it did?
+
+Tomás (24:03.888)
+Yeah, verification. Yeah. You didn't trust the results, but like
+
+@vaibcode (24:05.844)
+Right? Yeah. And like you kinda want to do verification almost like after after you measure it in some ways, because you kind of the measurement is so cheap. and the verification happens like after the fact is kind of how I think about this. But I think it's like a i there there needs to be a better systematic approach here. And like actually I think there's a really interesting question, like when do you guys do gardening?
+
+Tomás (24:16.635)
+Yes, indeed. Yeah.
+
+Tomás (24:22.095)
+Yeah.
+
+@vaibcode (24:34.63)
+I can tell you when I do gardening, for this problem that I have been working on, I basically spent all the time designing the entire feature up front without any work at all. Like writing zero lines of code. Then I spent a whole amount of workload deleting all the old code and saying, I just want to delete all this code, delete everything, then measure the performance, then double check that you deleted everything, and then triple check and then quadruple check, and then I trusted it that it probably deleted everything at that point. And it maybe didn't, maybe did, but I
+
+I think on a fourth check the models today are pretty good to be like that delete code confidently that it doesn't need. And by verifying what like our VM is pretty verified, at least to some degree, for some definition of verified. So I believe that it did it correctly. But then while I was deleting things, then I said, okay, now make the core system faster without adding tracing. And that I believe again is highly verifiable loops. I can actually measure it, I can go do things on it. And I can also do things like for example, different things.
+
+types of measurements exist. One of the measurements that I had to do very const constantly if I can find it is actually I think let's see if I have I might actually have a clawed artifact that I can show.
+
+I think and this is very much speculation, but I imagine that sort of workflow might also have benefits for the context management because if your entire recent context history is delete this type of code, then it's much easier for the model to focus in on just that. and then if you follow that up with optimize this core system, then it's becomes much easier if it's just doing this task itself.
+
+and doesn't have to focus on broader or higher level thinking, then it doesn't get distracted as much. I mean obviously that's speculation and results will vary, but
+
+@vaibcode (26:33.886)
+There is some degree of correlation that I've seen with that sort of thinking, even if maybe that's not actually how the thing works under the hood. Yeah.
+
+So the thing I ended up doing while I was doing this was literally just have it build a bunch of diagrams that were just outlining the core architecture. And once I defined the core architecture, I was like, how many ops can I do each of these in individually and just measure CPU instructions that I was writing into the code base after I wrote the memory model? Then I measured how many CPU instructions can happen, what race conditions can happen and what scenario. And eventually I was like, this thing is fundamentally always gonna be a bottleneck because even the best algorithms that the best research papers have are always
+
+going to be like too many nanoseconds that the back pressure here will build up and then we'll basically cause too much memory usage up front because the core system is working. So then we actually have to just stop and explore a new idea and we explored a new idea and did the same exact thing where we wrote every single thing as an independent script without writing any code in the existing code base. Just like measuring opcodes and measuring cache performance and measuring things in a totally standalone system. And I think eventually I got this down to like sub 10 nanoseconds in a standalone benchmark
+
+So then we can say, okay, we can make our telemetry system in theory 10 nanoseconds. Now we have to merge it with the runtime and see how fast we can go do this. And I think that's at least the architecture approach I have. And once this works, then I can delete all of the code that I have ever outstanding. And then once I delete all the code, I tell it to literally delete all the code, do nothing else. Then I start a new context window and I say now make this faster. And then I sort of once I've made the core system faster without any.
+
+existing things, then I delete all of that, then I make a new context window where I start actually doing the new work over here. And Tomas, I'm curious when you guys do your performance loops, is this what kind of loops do you kind of think of? Are you doing first principles? Are you saying this function needs to be made faster? And do you rethink it? Or do you take the approach of let's just incrementally make this function faster?
+
+Tomás (28:36.545)
+Yeah, so I wanna say a bunch about that. but before that I I wanna answer that chat question, like w how much you guys do gardening. have you heard like the Nvidia CEO with his phrase saying like as much as needed, as little as possible. So that that's kind of like a as a as a like a startup founder, you know, it's like that that is kind of my stance. You know, it's like
+
+@vaibcode (28:57.566)
+Yeah.
+
+Tomás (29:06.423)
+r reach a point where the pain justifies the return on investment of like doing the gardening, you know like and so it's it's a it's a very dynamic situation on like slop expansion and slop contraction, you know it over time. It it's i if you think of cash flow in a company, it's like it you have both sides going as as as time progresses, right?
+
+@vaibcode (29:35.603)
+So how often, what percentage of time would you say is gardening time for your team as a whole?
+
+Tomás (29:35.633)
+So
+
+Tomás (29:40.669)
+I I would say probably about like twenty five percent of of the time. Yeah. And and and I think that like we we we we spent a lot a lot more time doing things
+
+@vaibcode (29:46.195)
+So like more than one day a week.
+
+@vaibcode (29:51.623)
+That's yeah.
+
+Tomás (29:58.512)
+with more human attention in the inception of the system and the architecture, right? and we put a lot of effort in in like trying to make the system be as agent friendly as possible. Like right to to try well honestly as a as an experiment. Like I said, we're gonna put our all of our eggs on this. Let's see how it go how it goes, right? But the the idea was that we
+
+@vaibcode (30:25.917)
+So it's
+
+Tomás (30:26.735)
+We couldn't we couldn't win a a or have a even chance of winning at this sort of like if if we didn't leverage agents like to the to their maximum, right? At at this point in time.
+
+@vaibcode (30:38.643)
+So it's like this, right? Like spend a lot of time at the design loop phase, basically. Like as much as you can up front to make sure that like your infrastructure is set up correctly, that your directory names are correct. That like small, small wins like that.
+
+Tomás (30:45.551)
+Yes. Yes.
+
+Yeah. Yeah, yeah. So so I I I I I I like to to s think about it as like control the ideas as like a madman. Like control the ideas as like a madman. my aim is is is to be able to delegate the execution of those ideas as much as possible and and more of it over time, right? and but but the the way to control those ideas, right, it it keeps changing, right? And it keeps
+
+Yeah, it it it just keeps changing. Okay. Essentially.
+
+@vaibcode (31:22.791)
+Yeah. Wha how much time do you think we spend on gardening as a team?
+
+I'm curious to see what the numbers are. I don't know on an individual level because I think well, hopefully, we mostly garden as we go, which lets us avoid building on top of things that need to get replaced under it. 'cause th there have been a few instances where we have built things and then we had to and then like we built stuff on top of that and then if the
+
+foundation needs to get fixed, then now you need to rebuild everything on top of it as well. but I think we've gotten a lot better at
+
+Making sure that we reliably get it as we go. And obviously that makes it a bit harder to measure how much of our time we have to spend on that because It varies. You know, it's kind of built into the whole process. I think maybe it's like if you think about the language, there's like different layers to it. There's like syntax, there's like runtime, and then there's like our tooling effectively. It's kinda how you can think about this.
+
+And we actually really spend most of our time making sure that the runtime is correct. And I guess even more lower than this is like design. Yeah. like like the concept is kinda what I designed this as. Like when we designed threading, we spent forever just debating the concept. We probably spent more man hours debating the concept than we did actually implementing it for sure. The syntax. Go ahead. Yeah.
+
+Tomás (32:55.609)
+And and and that's that's a right trade-off. That's the right trade off, right? Like because you c you you can get from zero to eighty percent of the implementation like this, right? Like and and so controlling the design is the work primarily.
+
+@vaibcode (33:03.976)
+Yeah.
+
+@vaibcode (33:10.449)
+Yeah, and I think the way I think about this is like what depends on the thing that you have to be right. Mm-hmm. So like
+
+The more things almost nothing depends on the syntax. Like yes, user code depends, but like if I'm completely honest, in the modern era, obviously you don't want to break user code, but it's much easier to not break syntax than it is to not break the runtime. If you made a fundamental wrong move in the runtime, you're gonna break the syntax too. Like it's kinda like everything flows from it downstream.
+
+Tomás (33:36.305)
+Mm-hmm.
+
+And and how many how many like layers of of quality control do you have? Like I mean sure you have your core developer loop, like in your computer, your design process, your tests and so and so on, right? But like for instance, do you have some sort of like pre-production environment where you like let things soak, you like use it a lot, you dog food a ton, you have agents do do their own QA in in a pre production environment.
+
+@vaibcode (34:06.737)
+I'll show you something live really fast. Let's see, let me open it.
+
+What we do well we actually just put this up right now.
+
+is this thing. So every single issue that a user files or something happens just gets really quickly enriched by other agents trying to write code and starting to see what the issues are. And so we I would say like for our language, I mean we expect engineers to own the product end to end, but like really what we end up doing is a lot of it is like downstream fixes. 'Cause bugs like in a programming language are gonna have bugs. Python has bugs twenty five years later, Rust has bugs, the best languages all have bugs. We're not gonna be a bug free system. So it's more about how do you reduce
+
+fatal bugs and how do you make it possible to quickly address bugs that come in after the fact. So I think that's just like an agentic loop that you can kind of like it's like a standard like factory level system that you kind of have set up and like we're still building ours out. I wouldn't say ours is nearly complete enough. But
+
+I think the most interesting thing that I have found is like in the mechanical part of actually driving an agent. Let's say we've done the design loop, let's say we've done the implementation loop, we've found an idea, we're implementing it along the way. I actually am really curious about both of y'all's workflow here as we're doing this. And one of the most interesting tools that I have found is I moved away from the terminal more recently. As I started doing more technical work, I use the terminal less and less. And the reason, and I found that really surprising, but the reason is twofold. Two, you can see
+
+@vaibcode (35:35.363)
+Very common that I'm using annotations, but the other thing that I'll often do, and almost all the time now, is I'll like here I have a refinement here. And the way that this refinement happened is I wasn't actually sure what this capture something about a capture policy and how it worked was. So I literally just told I highlighted a section and I do this thing called more details. I don't know if any of you guys have clicked on or not. What what this allows me to do. What this allows me to do.
+
+Tomás (35:58.266)
+teach me sympathized. Like I I'm I'm now I'm now locked in. I'm now locked in because I live in the cave of the terminal and I like I like go back to the massive response and like quote things and I quote things and I quote things and then I I like so what are our notations? Like t show me your ways.
+
+@vaibcode (36:05.148)
+Yeah.
+
+@vaibcode (36:10.961)
+Me too.
+
+@vaibcode (36:17.638)
+Yeah, so I used to do that too, and I think for most hacks I can get away with the same thing. But the problem is when I really have to read. Because again, performance engineering, nanosecond level performance, I make one mistake, everything is fucked, and I just wasted my last three days. So I need to I need to micromanage every byte that I'm passing through the system. When I do that, one assumption in the model that's wrong screws me completely. So I need to make sure every time I see an assumption, like I might be I might be talking about three different concepts over here. Right now I'm talking about like capture press
+
+Tomás (36:30.896)
+Mm-hmm.
+
+@vaibcode (36:47.562)
+Like, how can a remote how can a remote control plane affect telemetry of your system without you having to redeploy? I have promotion policies. How do you automatically take a aggregation event and promote it to an individual span when like error handling happens or when a user specifically denotes that they want it from a control plane of some kind? Then I have a weight semantics. I want to know how much of my time in a function is spent on IO time versus computation time. Again, very useful metrics. And how do I do this across threads and a bunch of
+
+Of other things. So I need to be able to maintain context for many ideas at the same time. Because if I do one idea at a time, it's just one, it's too slow. I can't do that. I have parallel threads running, but then I can't join them together, so then I run into other problems. So I kind of need to do a thing where I talk about all concepts all at once. But then I can't go into detail in one of these chats, and what I used to do is side chats. But the problem with side chats is that they're very expensive. I have to from a UI perspective. So I have to do this, I have to ask in side chat, and then I
+
+I might lose context and might do other things. This allows me to go into a very quick view that specifically prohibits the agent from actually editing the code base. It can only read. It cannot edit. It's a chat only concept. It has access to my entire chat log. I discuss with it. And every time I discuss to it, I literally just go ahead and just say at the very end, I'll show you I'll can I show someone? Yeah. At the very end of my conversation, I just put a message in here that says, Hey, take everything we have and give me a standalone message that I can pay.
+
+Into the main window, and then I actually have a standalone message. I read this very carefully, make sure it's actually truly standalone, and it's it denotes every nuanced detail that we talked about, and then bring it back in. And then while I'm doing that, that's for small things, but for other things, I don't know, it's not showing my annotations. That's unfortunate. For other things, I'm constantly annotating the code base and like literally annotating this part of the code base and saying, here's an answer, here's an answer, here's an answer, instead of typing everything out in chat. It's a little less context efficient.
+
+Because you end up duplicating stuff because you're duplicating the annotation plus the response. But I find that it's much more accurate for the model maintaining its like context. And the last thing I do is every 10 messages approximately, I basically have it restate the entire program like this all the time. And I have it restate every single decision that we made, every single key struct repeatedly. So even if it does a context compression, I never
+
+@vaibcode (39:17.218)
+lose the state. I have like a comp I have a very complex state that's going on without having to do any of the risks over here.
+
+Tomás (39:24.741)
+Nice. Yeah, I I I remember y like I watched a podcast with you and I and Tex a a while ago. You guys were t talking about performance engineering and you were saying that you need that one million context window because you just lose all of those details. Right? Like I I g I guess you've you found a way around it. Basically. Okay, okay.
+
+@vaibcode (39:37.934)
+Ha ha ha.
+
+@vaibcode (39:43.975)
+Well no, I still need the million context window. Cause like it there's details in this one summary that are not captured. Like, there's still details here. This is just to minimize the risk of like a context compression by the harness. Yeah, and not only har compression, but you need
+
+Tomás (39:50.481)
+Yeah.
+
+Tomás (39:56.847)
+Yeah, yeah. Cool.
+
+@vaibcode (40:02.33)
+One million is really too big, arguably, for the current models to fully track full attention on everything, right? And to be able to I guess build I d like useful stuff you need the or like build
+
+re i reliably you need to have the key details be I guess to put it in a human term fresh in the mind of the model. Even if the entire thing is in the context window, having like there are weightings of like this was more recent or this was closer, right? So if you use the annotation tool, I imagine having
+
+closer proximity between the restated comment and your response likely increases the r association between those two things as opposed to referencing something from Yeah. Way back.
+
+Tomás (41:14.813)
+A a another manifestation of that is is that something that I find personally very annoying. Like I I use like endless threads. I'm one of those, right? Like so my threads don't end. And and and so I often, you know, I notice something that happened and I I I just want to give some input.
+
+that it's going to be handled I I want it to be handled later. I don't want to don't contact switch right now. Keep on the thing that you're doing, but get to this later. You know, like and the the the the models often just like, no, this is the most important thing now to do. Like and they just like drop everything. Like And it's like so now I I need to say okay I need to be explicit. Like keep on what you're doing. This is for later. You know, keep keep a work list, whatever. Like be organized. Like d don't don't be like a ch like you know like
+
+@vaibcode (41:45.08)
+Exactly.
+
+Yeah. Yeah.
+
+@vaibcode (42:01.071)
+You know what a you know what a good hack for that is? Just tell the model tell the model you're doing this in a side task.
+
+Tomás (42:04.754)
+Tell me.
+
+Tomás (42:09.253)
+Yeah, yeah.
+
+@vaibcode (42:09.711)
+And it will literally and if you use the same knowledge if so if you're using Claude tell it you're doing it fork. If you're using Codex, tell it you're doing it a side task or whatever your harness calls it. Because there are tools that the model knows about and that'll just let it like relieve stress. I think Perry Man has a really good question, which is like why not restate it every time? As opposed to do it as opposed to doing it like consciously without the with the user input. I I'd love to know y'all's thoughts on this, but like my thoughts is like I need to restate it every now and then because sometimes I'm just giving feedback.
+
+to iterate on my feedback and I don't want to restate the whole thing every single time because that's a slow iteration loop for human time. So I have to balance human time and correctness time with the model in a good way. Otherwise it just doesn't work for me at least.
+
+I have one last thing that I think I'd love to
+
+Yeah, and then context com consumption. It just consumes context. I have one last thing that I think might be interesting to actually chat about while we're doing this. we talked about a performance episode. Let's talk about a performance engineering hack and different ways to do things. and like while we did this and like I think it's cool 'cause both the model invented this in one context and we have to come up with different rules for this. And Tomas, you might be able to grill us on this and be like, that's a bad design. You can make something better. So maybe with your ex expertise you can learn something
+
+Really new. so let me open something up really fast. I think I have cursor file. I don't know why that just opened the freaking IDE man. and when I do this, I want to just show really fast what I mean by this is like opening terminal.
+
+Tomás (43:31.728)
+Perhaps. Must be.
+
+@vaibcode (43:52.04)
+So, idea of a telemetry pipeline is you should be able to answer these kinds of questions about your code base. For any piece of code you're writing, can you quickly understand exactly what part of your code is there? So, like if you have, for example, like an actual pipeline that has like stage one, stage two, and these are all doing different parts of your code base, can you automatically find every function along the way? So, like the idea is we should be able to answer these kinds of questions without having to do any explicit telemetry code. Now, the problem with doing this is once you do telemetry, you have this content.
+
+called a span. Spans have unique IDs. Unique IDs are kind of expensive to mint. Because if you want to create a new unique ID, it's often a UID. And a UID is probably on the order of like tens to hundreds of nanoseconds. Is that kind of what you would estimate Tomas?
+
+Tomás (44:44.539)
+Well it it depends on what version and if you're like getting a clock reading or not. you know. Okay. And that's gonna be the slow version. yeah.
+
+@vaibcode (44:49.669)
+Let's say UID seven, because you know, those are nice for databases. Yeah. and even UID four I think is gonna be at least tens of nanoseconds. You're gonna hit like probably not 'cause you're still hitting the random number generator, I think.
+
+Tomás (45:06.225)
+I built the the Go library for a unique ID scheme called ULID. Have you heard of it? Okay, okay. So so the idea there was to build an ID that is lexicographically sortable. and the use case was basically for logs, right? So every log line would would have
+
+@vaibcode (45:11.611)
+Yeah.
+
+Okay. No, tell me.
+
+@vaibcode (45:23.866)
+Okay.
+
+Tomás (45:32.203)
+a one of those IDs and and the IDs themselves would establish the same order that the log lines should have, right? and yeah. at the time UIDs were indeed not the right solution because they were forced for yeah expensive. They forced force things that we didn't want to eat.
+
+@vaibcode (45:48.112)
+Expensive. Yeah. Exactly. and then the trade off is like if you want every function to do this kind of stuff, it gets even worse. Because now every function call has to pay that overhead and like that basically makes your code like completely dog slow.
+
+Right. But we still want be able to do things like that so that we can say things like when I enter the when I enter the geocode function, only ninety-six percent of them make it through the the next phase, most of them hit the fallback phase, and of the fallback, like three percent of them never make it through. Like being able to answer this kind of question is really powerful about your code base. So the way that we started thinking about this problem is we have a random atomic
+
+That is a U64. That's just a counter. Now counters are great. The problem is counters are not shared across your cores. So if you have a multi-threaded runtime like what we do, so if you want parallelism, we actually have a shixty four and then on on every operating system core. what we do is every single thread that is running in our runtime needs every thread calls a bunch of functions. Sorry, I'm gonna draw some layers.
+
+Every thread runs a bunch of functions. Now we don't run OS threads, we run virtual threads, so that means threads can kind of hop around cores very easily.
+
+in the machine. Every core basically at any point grabs a chunk of the U sixty four namespace. So it basically grabs a two to the power twelve chunk of IDs at a time. And anything that runs on this core that needs an ID just grabs this ID that's monotomically increasing. So it's just a add increment operation running on every core. If it runs out, then it goes to shared U sixty four which is behind an atomic, so therefore like
+
+@vaibcode (47:39.849)
+Kind of slow to get. And then gets the next chunk of two to twelve bytes and it just keeps on going forever. So you basically get a really cheap ID for all spans and functions in the form of an increment where you pay for more than an increment than like a synchronization point every like two to twelve effective counts. Is this kind of similar to what you were describing earlier?
+
+Tomás (48:04.33)
+from f from my Ulid library. Yeah, so like we basically the the the random section that is not the time section, right, like can can be provided by the user. so that that's that's one one thing that we wanted to have so that we can have like idempotent rights. and so the user can can hash something that represents other states that that ID is supposed to encapsulate and but this
+
+@vaibcode (48:06.874)
+Yeah.
+
+@vaibcode (48:18.747)
+Yeah.
+
+@vaibcode (48:29.35)
+Sure.
+
+Tomás (48:33.173)
+this technique we're we're not really using the
+
+@vaibcode (48:37.038)
+I see. Yeah. I i I th what do you think? Is this fast enough? Do you think we can do faster?
+
+Tomás (48:45.201)
+I mean what's your bottleneck here? I i it's like the it's it's a coordination you have to do every two to the twelve, right? can you avoid that? so that's a that that's a question. I I guess like so if that's the bottleneck, that's a question to answer, right?
+
+@vaibcode (48:52.741)
+Yeah.
+
+@vaibcode (48:56.196)
+I don't know. That's w I I I think you need unique IDs. Yeah.
+
+@vaibcode (49:05.734)
+Cool.
+
+Yeah, but in general one really cool trick that we found while we're doing this was that now we don't have to go ahead and have most of the threads as they're executing don't pay this. And if we find that the coordination tax is too high, we increase this to the power of sixteen, to the power of seventeen. We pick the number of our choosing. And this basically makes the cost really, really cheap without having to go ahead and kind of save all the data up front and having to have like a shared a un a uni what we're able to do now is basically every process is able to give a unique ID in the form of the pro
+
+process ID, which is a UUID, plus it's like actual like what we will call like telemetry ID for effectively no performance overhead in the form of like an increment amortized. So what you end up with is a unique ID that you can attribute to any single call stack so that any point in time when you go look at where do go? When you end up go looking at where'd it go?
+
+When you go end up looking at any single function call and you're trying understand where it failed or where it passed, you have a unique ID for everything, but the performance overhead is basically an atomic ad throughout the system. So you end up not paying much of a tax. but these are the kinds of optimization that we've been able to make in the runtime using some of these techniques. Now to close it out, Tomas, I'd love to hear your take. How do you how should someone go ahead and think about performance engineering? Like what should they do, what should they not do?
+
+Tomás (50:31.685)
+That's that's pretty broad. so I mean
+
+@vaibcode (50:34.128)
+Well, you started a company around this, so like what's the thesis there?
+
+Tomás (50:37.327)
+Yeah, yeah. So like it it depends on what performance means for you, right? Like is performance kind of a a core part of your business? Right? like for instance, are you an infrastructure company, like building an S3 competitor? then performance is definitely part of of your key value proposition, right? so if you're close to the metal in that way, then
+
+You're gonna have to put a lot more resources into yielding the most out of everything that you're running, versus I don't know, some hypergrowth company that is doing voice software, but they're not really s you know, like milking every single nanosecond out of of that software, right? yeah, so with Perloop, right, the the idea, the core idea is that the core thesis is that
+
+for a large section of the economy, like there is immense pressure to adopt a genetic development, right? And to for and to and to harness that capability in probably an an unhealthy amount of time. Like and everyone's trying to do things faster and figure out how to maintain quality at the same time. Right. and
+
+Even before we had agents, I think human attention was already limited and we basically applied it to the things that mattered at any given point in time to the especially in the startup, right? Like you you're like foc focusing on crisis A and then crisis B and crisis C and and you live with the rest, right? Like and and so that'll just leave a trail of a ton of recoverable performance, right?
+
+Leave the trail of of recovery performance that no nobody really gets to. They don't have the time, they don't have the attention spend, they just focus on the top one, top two things. And yeah, Perfloop is a machine to model your system, hypothesize everything that can be faster to do less work, right? and and let users select what the harness should work through. Like so like you take one one hypothesis at a time or many and
+
+@vaibcode (52:57.585)
+So
+
+@vaibcode (53:01.2)
+And
+
+Tomás (53:01.573)
+On the other side you have basically you definitely
+
+@vaibcode (53:04.291)
+In some ways it's an opinionated harness to basically do this loop.
+
+Tomás (53:08.879)
+Yes, it's it's per soup. Yeah. Yeah. Yeah, exactly. So so yeah, we model a system, we c we have a a whole wide catalog of of of performance patterns, things like you know, N plus one queries and atomic contention and like just a whole bunch of things that we search for on your hot hot that we build from code and telemetry. so like we connect telemetry and code together so that we rank what's actually hot up top.
+
+@vaibcode (53:11.003)
+Yeah. Yeah. That's interesting. Yeah.
+
+Tomás (53:36.087)
+And and then yeah, and then you can delegate as much as you want or as little as you want to to the system. If you have your own ideas, you can also submit ideas with our MCP server so that you can test ten of them through our harness instead of one or two, which is the attention that you have to give to your coding agents if you drive it yourself locally, right? Yeah.
+
+@vaibcode (53:55.783)
+Kai, when you think about doing this performance work, what is the number one thing you think about? Like, what's a good takeaway for someone else? Because like I think a lot of this performance work, I had someone else on our team ask like, how did you know to make this faster in this specific way? Or how do you know that this is the specific technique that worked? And I didn't really have a good answer. It's just like you kind of just figure it out. And like you collect like these bucket of tricks and tips of like these are the kinds of pro like like you talk about atomic contention. Generally, if you want to make a really
+
+Fast system, don't share data across courts. That's a really good rule of thumb and it'll be way faster by default. Yeah. Don't mutate data. Like this is an area where like there's really do less work is really the only hard-ish rule. I feel like it's also an area, similar to like security, where it's like everybody knows the goal.
+
+And the rest is just how much do you understand the system that you're working on. and how it works under the hood. because understanding every level of abstraction down to like it's doing a bunch of NAND operations lets you decompose as much as you need. and I think really just like understanding
+
+how that system works is the core to it. I don't know. How do you teach someone that? That's a good question. I think we've been working on that for about as long as education has existed. is how do you teach somebody that?
+
+Tomás (55:41.617)
+Just ask questions. Ne never stop asking questions. You know, just just keep asking why. Why, why, why, why, why, why. You know, why? Like how? Why? Like just in just keep going.
+
+@vaibcode (55:43.111)
+That is honestly. Yeah. The Y will take you down to the transistor. Yes. If you go down in CPUs. Like it will take you all Be a toddler and just keep asking why. I think I think a really good
+
+Tomás (55:53.989)
+Yeah, exactly. I mean it's a twenty that sweet, but you know, like just Exactly, yeah. Yeah.
+
+@vaibcode (56:05.52)
+technique here is just like forcing people to discuss with other people. I had this conversation with Paolo and her team last night. He was like, hey how do I like you had years of experience learning this, how do I digest this and make this an actionable takeaway for me long term instead of just being like how do I how do I just like do exactly what you're saying? And like my I thought about it and I think the only real answer I had was like you need to artificially slow yourself down and stop talking to an agent and talk to a human. Because like you if you talk to an agent you can only
+
+learn at the pace of speed that an agent is going to teach you. But like I it's not like I don't know when you learned performance engineering or Tomas when you learned it or I can tell you my experience. Like I'd it's not like I I knew all performance engineering when I first started coding. I just kind of picked it up by talking to some great friends and mentors of mine where I'd be like, they'd throw me into a problem. I couldn't make it faster than like they'd take it over and they'd make it faster. I was like, how the heck did you do that? What did I miss? Then they'd describe it to me and teach me. It's like, this the trick I missed, this what you
+
+This is how I measured it, these are the tools that I use. And they'd kind of reapply these learnings back to me. And I'd I'd take those learnings, I'll internalize it, and I'd probably remember one of the 50 they told me. The next time I'd get maybe one, and maybe I'd figured out a second one on my own, because I kind of did some pattern recognition and show them they'd make it even faster. And I'd be like, what did you do? And I slowly just built this bucket of tools just by war of attrition and surviving it over time.
+
+Tomás (57:29.957)
+I think I I I think that's like the kind of the the motivation side of things. You know, is it it's like you I I get motivated by learning with with other people that I respect, right? Like it's like, wow, you know, like you know, but i I think it's a problem for the future, you know, like because d can can can we have like a a like a new generation of engineers
+
+@vaibcode (57:40.315)
+Yeah.
+
+Tomás (57:56.656)
+That is going to spend way less time with people and way less time speaking to people and speaking more to AIs. Like how how how how can they get
+
+@vaibcode (58:02.875)
+Yeah.
+
+Tomás (58:05.488)
+more intrinsically motivated in in some other ways. We're not gonna remove people, right? But but I I I do think that if you already have the motivation, then AI is a superpower. Right. It's an i in in set incredible you can just learn everything you want much faster. if you just keep asking why. You know if you just keep if you if you just keep asking why and you keep asking why and you don't just let it go and let it through and whatever. Like no
+
+@vaibcode (58:09.648)
+that's true.
+
+@vaibcode (58:29.135)
+Yeah.
+
+Tomás (58:33.529)
+Wait, like this is what doesn't make it. Like I I need to ask why. And if you probe and probe and probe and probe, like you you get instant answers, like right? Like and so yeah.
+
+@vaibcode (58:36.752)
+Like
+
+@vaibcode (58:40.442)
+And it
+
+It's not just instant answers, it's actually something better than instant answers. It's like for you like for example, I mostly did my performance engineering work all the way in C. I understand C pretty well. Not and that's still not very well, because C is you know C. But like there's some things about it that make sense. At least on the architectures that I worked on, the hardware systems we worked on. And then I'm writing Rust now. I don't know some tricks in Rust. I know the same trick in C. I don't know how to do it in Rust.
+
+I don't even know if there's different tricks that are possible in Rust, not in C. And vice versa, because like maybe the syntax allows her it's only knightly in Rust or some weird thing like that, like tail recursion. There's so much stuff in nightly that. Yeah, exactly. I just don't have the banner to learn all of this. Right? And an agent lets me do this much faster. Like when we're doing our GC stuff, I don't want to invent all of GC, the garbage collection from first principles. I literally told it, Git clone, go, get clone.
+
+Git clone.net, git clone v8, and just teach me how that works. Like give me code snippets, give me all this stuff and teach me the decision that we made. And like that is like invaluable. And no human can even satisfy that need. But I think the inverse of that is once I've done that, it's really important for me to stop and go to someone else on my team and teach them the same thing I just learned to both solidify my own learning and also help someone else be curious about a different direction of a code base that they might not have been on their own.
+
+Cause like like you said Tomas my favorite parts of engineering ever were just the people and I how I interact with them and like how we solved the problem together
+
+Tomás (01:00:21.615)
+Yeah. Yeah. That that feels like a different time of my career, you know, where that happened way more than than these days. Yeah. I I I guess it's just like earlier on in your career, like if if you're learning more from others, you're like you have less experience, right? Like then then you go a lot more to that. Like and then and and as you as you you go is it
+
+@vaibcode (01:00:30.947)
+Yeah.
+
+@vaibcode (01:00:44.921)
+Yeah, become an expert, it's just harder.
+
+Tomás (01:00:47.297)
+Yeah, then then it's kinda kind of like it becomes more lonely. A little bit you know, in i in the in the sense that you you're you're like setting your own course more, right? Like
+
+@vaibcode (01:00:50.693)
+Well
+
+@vaibcode (01:00:59.075)
+Yeah, you're you're spending so much more of your time on like these latter phases that like the earlier phase of learning is like you kinda know the most of the things you can do. So it's like not just to do the work or get someone else to do the work.
+
+It's like and like yeah, I agree. How I have one last interesting question. I think there's two very interesting questions on here that I wanted to cover before we close out. question number one is regarding like just continuing off this, how do you think we facilitate engineering culture to help with this kind of world? Like people are mostly taunting agents, that's not a bad thing, that's a good thing. But there's this other element. So how do you incentivize people to talk to humans? I would argue that
+
+Being taught off of agents is there is some value, but I would not argue that's a pure win because I feel like
+
+And like especially if you're learning some first time or trying to understand core concepts, what is it?
+
+@vaibcode (01:02:11.097)
+What's the phrase the mother invention? The mother of what? What is the mother invention? I forget what it is. I know. I don't know. It's like you gotta struggle through it. Okay. You think you're not struggling enough with agents, so you you should just have people stop. Yeah. and I don't even know for like
+
+@vaibcode (01:02:36.983)
+Even if you understand all the stuff, I don't know if it's I guess good for us to use agents all the time, just forever. just for our like maintaining our ability to do stuff. That's yeah. I don't know. I I I I fear that I'll one day become one of those people from WALL E. But
+
+Tomás (01:03:03.321)
+I emphasize I emphasize but what I have I have like the question I asked when when I hear this sort of argument is like, you know, what what were like engineering leaders and CEOs and product directors and VPs doing or or senior architects doing all this time. You know, it's like they they they were kind of like they were achieving things, right? But but through through other people. They were the OGE proxies, right?
+
+@vaibcode (01:03:27.801)
+Yeah. Other people.
+
+Tomás (01:03:32.657)
+because because they were not always close to the details. They could if they they needed to, and they would go there and they would solve the problem and they would you know put out the fire. but you know they scale their their expertise and their vision through other people and now we have also agents th right to to amplify those people, right? And so I I I I think that we're all becoming a little bit more the senior.
+
+architects, you know, and it it's it's a hard it's a hard thing to to transition from having zero experience to go there. You know it's like and so yeah th that is indeed something that I I don't have an answer for at at this point. Like but but yeah.
+
+@vaibcode (01:04:05.253)
+I'm gonna
+
+@vaibcode (01:04:17.657)
+The thing I I always get stressed about about that conversation when people say that, because I actually agree with you. I I a hundred percent agree that that's the role. The role is what a staff, senior staff, principal level IC does at some of these larger companies. But when I I can tell you like what we talked about at Google, most people will never hit staff. That was like a well-understood
+
+thing about Google. It's like most people will senior is a terminal level. It's even possible that a mid-level engineer is a terminal level.
+
+Tomás (01:04:50.693)
+But why? But why why wouldn't they? Like what are the s the the different contributing factors for that limitation at that in that prior era?
+
+@vaibcode (01:04:58.701)
+I think there's I think there's a couple of things. One is I think
+
+It's just a different workload. It's like you can't take an IC person and make them a manager. A good IC in th engineer doesn't make a great manager. It's not guaranteed. And similarly, a great manager may not be a great IC. They're two different skill sets. And I think when you go down to like senior architect level, there's different types of senior architects that different teams have. Some teams have the technical senior architect. the persona you have in mind there would probably be someone like I don't know, like
+
+Tomás (01:05:35.461)
+Jeff Dean. Yeah.
+
+@vaibcode (01:05:35.735)
+Linus, i Jeff Dean, Linus Travaltos, like these people who are like legendary, can solve the problem, probably write better code than most ICs on the team, and also have the technical chops to go do everything. And some teams need that because they're a very technical team. Then you have like broad scoping teams where the difficulty of the task is not about writing all the code, but understanding all the systems and how they coordinate together. So I bet many distributed systems have these kinds of people where it's like their job is actually just being like making sure that no
+
+fatal feature gets in that'll prevent the critical feature from eventually getting in. And that's a different kind of role. Yeah. Yeah.
+
+Tomás (01:06:09.167)
+Right. So th th that's a that's kind of a a a gardener, right? Like the the the guardrails enforcers, right? Like yeah.
+
+@vaibcode (01:06:17.474)
+And but that's still like operating at the same level as Jeff Dean, just in a different kind of capacity, maybe not him, but like you get the point of like a senior staff kind of engineer or principal level IC. And then you have director level people who are more oriented towards like a product mission. They have a product goal and they have this army of fifty to eighty people under them, they're trying to make them go do something. And all of these skill sets I would say are not distributed across engineers in a in a
+
+Tomás (01:06:23.781)
+Yeah, yeah.
+
+Tomás (01:06:42.235)
+They're not. They're not. But and I I I think No you you can you can learn. Like you can learn. I I I I think like everyone is being forced into speed into speed running this now. You know because
+
+@vaibcode (01:06:45.75)
+It's not a skill set you can learn, right? You kind of have to grow into that skill.
+
+Well
+
+That's true. I know I agree. Sorry, when I say you can't learn it, I meant the wrong thing. It's like you kind of have to like Kai You can't teach it. You ca you have to struggle through it. Yeah. Like you don't become a good director by just by like being like, here's what I do and I just imitate. It's like, no, you're you grow from like managing an intern to managing a three person team to managing twenty person team and like slowly scale it up. Yeah, now it's just like do it and faster
+
+Tomás (01:07:04.048)
+Yeah.
+
+Tomás (01:07:14.265)
+And and and and now and now everything is compressed. And now it's compressed. Like there's no yeah, it's real time. Like now like you're managing twenty-five agents, you know, like and and all the time, like Puppetmaster. And it's like it's like haha, how do you manage these twenty-five things at the same time? Like you need to figure out like like yeah.
+
+@vaibcode (01:07:24.204)
+Yeah. Yeah, it's like
+
+@vaibcode (01:07:32.554)
+I guess probably.
+
+Good way of putting it is there are things that you can learn but you can't teach. Yes. at least not fully. You can give guidance but you can't you can't I mean even most of this, right? Like if in school there are teachers who teach you things, but it's not just like here are facts, memorize them.
+
+It's like i you have to there's a lot of work that has to go in yourself and if Yeah. I guess with the agents, they can't they can't teach you it really either. You have to go through that. It's actually a really interesting model. It's like the the skills that's most useful left is like the last like ha last mile of learning. Like how do you learn the things you have to at any given moment with no prior knowledge? And the agent is just a tool to the very end. I think it was a r yeah, how yeah.
+
+Tomás (01:08:05.626)
+Yes. Yeah.
+
+Tomás (01:08:22.809)
+Exactly. Exactly. Yeah. How how self directed you can be, right? Like the motivation needs to come from somewhere else if it's not gonna come from people you know making you excited about something, right? Like Yeah.
+
+@vaibcode (01:08:32.45)
+Yeah. Hey. It's it this is the new world for introverts. You don't have to go talk to people to succeed. You can I have one last question then we'll close it out, which is a lot of anecdotes that both Tomas you and Kai both said is this is kinda like security. It's a very like performance engineering is kinda like security.
+
+I think what's interesting about security is it seems like agents are doing a lot more security vulnerabilities and detection than like humans could because it was a man hour task, more so than like I mean, this creative engineering, I'm not gonna I don't wanna undersell any of that stuff. It's very, very hard. Security engineering is truly hard. But it's the intersection of two complex domains: computer security and theory and cryptography, with understanding the actual system you're operating in. And usually people live in one side of the domain. Best security engineers are like networking security engineers, browser security engineers, because they have
+
+To learn a domain so richly to intersect it. So agents were ripe for that domain. How about performance engineering? Is this a thing that like agents just do better because they can s they can like understand it better, or is this a thing that still has like some known human craft? I think that it's well there's a lot that's similar to security. I think security is something where you can have you can utilize the ability to parallelize and have
+
+lots of breadth to find security vulnerabilities because like I guess with security it's like the defender has to always win and the attacker only has to win once. Whereas with performance it's that the defender always ha like or the like you always have to win as the attacker in this scenario. I guess attacker is probably not the best phrasing, but you always have to win as the person to perform.
+
+Because if you hit one spot that's like gonna slow down your entire system, then the rest of your performance work was pointless. And so I think it's really a flip side where the breadth doesn't win you as much. Okay. The the ability to paralyze lots of ages, because like
+
+@vaibcode (01:10:47.17)
+Maybe there's a bunch of security vulnerabilities that the agents don't find because they're not able to go as deep on specific things, but they're able to go reasonably deep on a lot of things, and so they're going to find some stuff. And some of them are even pretty impressive. But with performance, you have to win every time. Okay. what's your take?
+
+Tomás (01:11:09.455)
+I think that the the unifying angle for me is that they're they're both amenable to be seen as just hypothesis. And and that basically you can have a sec security hypothesis and it get gets refuted if you can't actually chain whatever
+
+chain of high exploits was supposed to to give you the golden egg, right? so you need to prove through actual empiricism, right, that you get to the target that you claim is there. And with performance the same thing, right? Like you make a hypothesis under this condition, you fix the question, right? and you're either gonna refute it or you're gonna verify it, like experimentally, right? and and so it's it's kind of like if you if you think about it as like
+
+Performance engineering and security engineering as kind of a a a lab, right? Like where you come up with with these hypotheses and you need to test them rigorously to come up with an answer. I I like that unifying frame for for for these two domains, you know. Because they're both very experimental. Like you can't like like unlike math, pure math, we can't deduce a security vulnerability through through a lean prover. Or or or you can't or
+
+@vaibcode (01:12:26.607)
+Yeah.
+
+@vaibcode (01:12:30.381)
+Well some people might disagree, but I agree with you. I mean I agree with you. Yeah.
+
+Tomás (01:12:33.143)
+Yeah. Okay. I I I disagree. So like I I agree. You need a actual empiricism, right? Like to to to to to get the proof that you need on the other side, right? Like yeah.
+
+@vaibcode (01:12:48.641)
+Yeah, I one hundred percent agree. The experimental nature is very fascinating to me. I I had my first moment of like I I felt I had f complete job security forever as a performance engineer. And then I think Alpha Alpha Go came out, then after that there was this thing called like Tensor Matrix. There's some some one of the Alpha models did like matrix multiplication faster. And they did something that I thought they wouldn't even be able to do because they hooked it up to a harness, which is I think it was Alpha Tensor was the paper.
+
+Where they hooked it hooked up the training system to the actual hardware that it did and it found better optimizations for every custom hardware for matrix multiplication along the way I like, that's it. This is no longer the industry that I want to be in, and that took away all desire for me to want to be a performance engineer. I was like, this is solved, and if it's not solved today, it will only get more and more solved later because I can't do it fast enough.
+
+Tomás (01:13:35.043)
+Yeah.
+
+Tomás (01:13:43.883)
+It just it I th I think your role just just goes one or two levels up.
+
+@vaibcode (01:13:46.775)
+Yeah.
+
+Tomás (01:13:48.602)
+Right? Like it it's like it you're you're not like being like a super optimizer, like combining crazy instructions to to find like you know, like the machines are gonna do this because the machines have like infinite patience and and and and infinite detention. And ours is way more limited, our context window, right? Like like way more limited. And and so we we gotta we gotta be the ones like with the taste and like and and with with with answering the question, does this fit into our system the way we want it, right? Like
+
+@vaibcode (01:13:49.399)
+Yeah.
+
+@vaibcode (01:13:56.024)
+Yeah.
+
+@vaibcode (01:14:17.313)
+Yeah. And like catch fatal
+
+Tomás (01:14:18.587)
+And and so like and that that that needs really is like I think all over time is gonna be more and more like reliably done by the machines like
+
+@vaibcode (01:14:27.575)
+Yeah. If I were to go through this entire chat log and have it be summarized, I bet ninety percent of what you'd find my annotations are is catching fatal mistakes.
+
+My only job is to read here and be like, is there anything fatal that's happening here? Is there a fundamental axiom that is introduced being screwing us over, doing something wrong? Because if I catch a fatal mistake, and I know that there's no fatal mistakes, I'm mostly good. And as long as I codify the keys, and that's all we really need. Like one of the things that we had to do was if the machine wasn't doing this by default, was some stuff needs to be default hidden in telemetry, like string dot length. We don't want telemetry for that function by default. It makes the function way slower with no benefit.
+
+So just like telling the machine that hey, even though I said I wanted telemetrize everything, what I really meant was this. Like ignore specific built-in functions. That just requires me to like really comb through it and like read very, very carefully about all the code I'm doing. But this was tons of fun. Thank you both for joining. Hopefully you guys had fun as well. what should it
+
+Tomás (01:15:29.797)
+Yeah, absolutely. Thank you for inviting
+
+@vaibcode (01:15:33.511)
+Should everyone do one performance engineering exercise this week and try and make the code base faster?
+
+Tomás (01:15:39.697)
+Of course. Yeah.
+
+@vaibcode (01:15:41.643)
+All right.
+
+You heard it here? Go try that out. Try and see if you can go ahead and make your system faster in one dimension. Run an experiment, run a hypothesis. Try doing it. I guess Tomasa's company does this automatically at Perfloop. We do this manually with our code base. It doesn't really matter how you do it. Run this loop for some part of your system. And I think you'll learn a lot by building the system around this. You'll learn the bottlenecks of your system. You might learn a new design constraint you didn't know about that might make your users happier. I'm gonna quickly summarize the episode into an out.
+
+Tomás (01:15:53.585)
+Yeah.
+
+Tomás (01:16:00.197)
+Yeah, exactly.
+
+@vaibcode (01:16:12.645)
+But that was it. That was a really fun chat guys. Yeah. Do less work. Do less work. That's the one takeaway.
+
+Tomás (01:16:17.521)
+Be lazy.
+
+@vaibcode (01:16:22.647)
+today's episode was a really fun one. We're gonna get a little chat about the performance optimization loop. It really boils down to hypothesis testing. we go from like how do you go from like building a performance loop, how do you define performance optimization, and then what are the philosophies that your organization stuff might have to adopt in order to make this work? We take a look at a couple of different examples, we look at some chat log examples, we look at what telemetry can help you drive, and then we also look at some chat log examples of how we might do some interesting work on here.
+
+The most interesting conversation today was actually led by both Kai and Tomas, where we went ahead and actually discussed exactly how we do less work and what are the philosophies behind it, how it sometimes relates to security and how do you build org culture on this. Let's get started. I think that's it. Alright folks, thank you for joining. We're gonna turn off the Twitch chat, but otherwise tons of fun. And thank you for the chat for staying in keeping it lively. It was tons of fun.
+

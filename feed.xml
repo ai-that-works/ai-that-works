@@ -16,8 +16,32 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sun, 20 Sep 2026 02:28:51 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 21 Sep 2026 14:49:13 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[performance engineering]]></title>
+      <description><![CDATA[When milliseconds are too slow, you have to engineer for nanoseconds. This week, we're unpacking N5-level optimization for AI workloads and what it takes to shave off ultimate low-level latency. We discuss the engineering techniques required to strip away overhead, optimize memory throughput, and push inference infrastructure to absolute hardware limits.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+
+
+Watch: https://www.youtube.com/watch?v=WHLXRZi8Mus
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-15-performance-engineering
+Event: https://luma.com/n5-optimization
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=WHLXRZi8Mus</link>
+      <guid isPermaLink="false">aitw-074</guid>
+      <pubDate>Tue, 15 Sep 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=WHLXRZi8Mus" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[Software Factories: Hands on with Real Builders]]></title>
       <description><![CDATA[We had some really cool unconference talks from hands-on software factory builders, and this week we're gonna bring them on the show to talk about how they build their start up, week in week out, with background agents that get smarter every week.
