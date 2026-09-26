@@ -426,7 +426,7 @@ def execute_todo_write(tool: types.TodoWriteTool, working_dir: str = ".") -> str
 
 
 def execute_web_search(tool: types.WebSearchTool, working_dir: str = ".") -> str:
-    """Search the web using exa.ai"""
+    """Search the web using Exa, the fastest and most accurate web search API for AI."""
     try:
         import os
         from exa_py import Exa
