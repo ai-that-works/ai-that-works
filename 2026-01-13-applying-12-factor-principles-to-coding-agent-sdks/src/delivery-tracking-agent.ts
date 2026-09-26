@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, writeFileSync, appendFileSync } from "node:fs";
-import { query, type SDKMessage } from "@anthropic-ai/claude-agent-sdk";
+import { query, type SDKMessage } from "./agent-sdk";
 import { z } from "zod";
 import { BLUE, CYAN, GREEN, YELLOW, RESET, log, printEvent } from "./utils";
 import { orderStore } from "./store/order-store";

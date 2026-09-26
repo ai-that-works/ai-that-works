@@ -1,5 +1,5 @@
 import { stderr } from "node:process";
-import type { SDKMessage } from "@anthropic-ai/claude-agent-sdk";
+import type { SDKMessage } from "./agent-sdk";
 
 // ============================================================================
 // Colors

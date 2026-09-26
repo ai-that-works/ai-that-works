@@ -7,7 +7,7 @@
 
 import { createInterface } from "node:readline/promises";
 import { stdin, stdout } from "node:process";
-import { query } from "@anthropic-ai/claude-agent-sdk";
+import { query } from "./agent-sdk";
 import { b } from "./baml_client";
 import { BLUE, CYAN, GREEN, RESET, YELLOW, log, printEvent } from "./utils";
 

@@ -1,7 +1,7 @@
 import { createInterface } from "node:readline/promises";
 import { stdin, stdout } from "node:process";
 import { existsSync, mkdirSync, writeFileSync, appendFileSync } from "node:fs";
-import { query, type SDKMessage, type SDKUserMessage } from "@anthropic-ai/claude-agent-sdk";
+import { query, type SDKMessage, type SDKUserMessage } from "./agent-sdk";
 import { z } from "zod";
 import {
   BLUE,
