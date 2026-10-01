@@ -29,15 +29,16 @@
       "eventDate": "2026-09-22T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=35PSMmDDKP8",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=35PSMmDDKP8",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-22-all-about-jev"
       },
       "season": 2,
       "episode": 75,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1654,14 +1655,14 @@
   ],
   "meta": {
     "totalEpisodes": 79,
-    "completedEpisodes": 73,
-    "upcomingEpisodes": 2,
+    "completedEpisodes": 74,
+    "upcomingEpisodes": 1,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-09-21T14:49:13.956Z",
+    "lastUpdated": "2026-09-27T02:54:20.644Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

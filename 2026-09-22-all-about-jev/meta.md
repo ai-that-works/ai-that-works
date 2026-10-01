@@ -12,10 +12,11 @@ description: |
 event_link: https://luma.com/all-about-jev
 eventDate: 2026-09-22T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=35PSMmDDKP8
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-22-all-about-jev
+  youtube: https://www.youtube.com/watch?v=35PSMmDDKP8
 season: 2
 episode: 75
 event_type: episode

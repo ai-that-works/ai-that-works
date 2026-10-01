@@ -1,0 +1,676 @@
+@dexhorthy (00:00.622)
+what's up, dude?
+
+@vaibcode (00:03.116)
+Hello, good morning, good evening, good afternoon. I'm not sure what times on your index, but good to see you again.
+
+@dexhorthy (00:10.412)
+It's good to see you. I'm sorry I missed the show last week. I'm glad you guys had fun. that does not look like Seattle, sir.
+
+@vaibcode (00:19.02)
+This is not Seattle. We're out in we're out in Hawaii up north in the big island. We got some palm trees.
+
+@dexhorthy (00:27.416)
+sort of a total BAML victory victory lap on on BAML winning all the programming language competitions forever.
+
+@vaibcode (00:35.136)
+yes, obviously. no, I'm just out of here to have fun. It's it's a week off. So we're here just, you know, hanging out on the beach. Dude, I forgot how good the water in Hawaii is. It feels so frickin' nice. And I also forgot how no, no, it's just me and family.
+
+@dexhorthy (00:41.454)
+Amazing.
+
+@dexhorthy (00:47.66)
+It's very nice. Are you there with the team?
+
+@dexhorthy (00:55.274)
+Okay, nice.
+
+@vaibcode (00:56.652)
+Yeah. I also forgot how early it was in Hawaii 'cause it's seven AM right now and we d do any sort of stuff. You gotta wake up three hours before the west coast.
+
+@dexhorthy (01:06.232)
+Dude, I remember doing a trip to Hawaii and it like last minute. My friend had like one tickets from his company or something. And it was last minute so I couldn't cancel all my meetings and shit. So I literally would wake up at like four thirty, take a five AM call, and then like work from five AM to like noon. And then you have the whole day to hang out.
+
+@vaibcode (01:17.304)
+Yeah, exactly.
+
+@vaibcode (01:26.654)
+I know. I have a question for you. is your Wi Fi do you have slightly better Wi Fi by chance? No. Which can be which is totally fine.
+
+@dexhorthy (01:31.416)
+So
+
+@dexhorthy (01:36.182)
+You need you need me to have better Wi Fi.
+
+I can try switching to my phone. I might have to rejoin. Let's see.
+
+@vaibcode (01:44.49)
+Okay. Cool. I'll I'll get started. I'll get people caught up on the latest thing that's happening, but while you get that set up.
+
+@vaibcode (01:54.392)
+Let's see if that works.
+
+@vaibcode (02:02.399)
+And then I I think it might just be me. It looks like the internet for you is looking really high quality on the live stream. So it may not be a problem on anyone's end by mine.
+
+@vaibcode (02:17.503)
+Let me see if that's the case really fast.
+
+Okay. But as I wait for Dex, I have some really fun stuff to share today. And I think today's episode is one that hopefully is not too surprising to anyone. I think hopefully it's one that people have been waiting to see. It's all about Jev. Jev is this amazing model that came out just last week, and I think one of the first questions we got in our Discord, on text messages, to both Dexter and I was like, What do we think about Jev? Is it good? Is it useful?
+
+some of my friends who I would consider really good engineers were just like, I keep seeing this Chev thing. Is it actually r real? And like, can I stop paying for Claude? Is it is it something I should pay at my pay attention to on my radar? there we go, Dexter, looking sharp in H D four eight four twenty P. not four twenty, no, it's like i i okay.
+
+@dexhorthy (03:12.445)
+This is the same Wi Fi I was on before, but I'm glad you like it.
+
+@vaibcode (03:17.727)
+Anyway, as I was saying, when it comes to when it comes to JEV, the main thing that we really wanted to chat about is like we're gonna try and give you a rundown of a couple of things. One, what is JEV? Two, is it useful? Three, how can you use it and will it actually save your business money? In general, I'll give you my quick TLDR. So if you want to listen to this and leave right away, you can. My opinion is yes, it is useful. Yes, it can save you money.
+
+Yes, you should probably spend some cycles trying to make it trying to see if you get some value out of it if for your team. Dexter, what's your quick one sentence summary for Jeff?
+
+@dexhorthy (03:56.977)
+classifier go burr. I don't know. You need to be Jav maxing. I just I th I think it's it really interesting. I've gotten this advice from some people who have founded a lot of companies before. and it's sort of like there is there is always alpha in like sitting near the frontier and just like, there's this new technology that changes everything, maybe is like if you want to go find awesome things. Yeah, there we go. You found it.
+
+@vaibcode (04:22.967)
+You need to be J Maxxing, that's right.
+
+@dexhorthy (04:28.199)
+When LMs came out, the people who got the most incredible results out of LMs, the people who are now running companies valued at f five, ten, fifty billion dollars, are the ones who are just like, Yeah, no one really knows what this is for, but I'm gonna try it in every single scenario that I can think of and see what it's good at. And so I think I think the answer is like it is interesting enough and the speed and cost stuff is is different enough that
+
+@vaibcode (04:54.122)
+Okay.
+
+@dexhorthy (04:57.851)
+the sound is terrible. I mean, listen, man, I think we can my god, everyone is complaining.
+
+@vaibcode (05:05.323)
+Dex, apparently your audio is very garbled. sorry about that folks. let us let's see if we can do you wanna try hotspot Dex?
+
+@dexhorthy (05:15.634)
+I can certainly try it. We did try it and it it did not do anything. So let me let me leave and come back and we can keep going.
+
+@vaibcode (05:21.399)
+or or maybe turn off the camera.
+
+@vaibcode (05:27.787)
+Yeah. Okay. let's see if that's is that better? Much better.
+
+@dexhorthy (05:30.213)
+Is that any better?
+
+@dexhorthy (05:35.039)
+really?
+
+@vaibcode (05:36.556)
+Yes.
+
+Is this better, folks, for audio?
+
+@dexhorthy (05:39.802)
+Okay.
+
+@vaibcode (05:44.575)
+let's hope it is. And I think yes, there we go. Sadly Dex we're gonna see a maybe we can ask the editors to put a little image of Dex in the bottom left corner instead of a consistent instead of a moving figure. There we go. Perfect. Yeah. So you you were saying like when when GPT first came out, pe yes, everyone's everyone we got a solid yes. When GPT first came out, we you were saying the people that got the most value were the people that really tried in every single possible situation.
+
+@dexhorthy (05:56.252)
+Yeah, here we go.
+
+@vaibcode (06:14.034)
+And then
+
+@dexhorthy (06:14.118)
+Yeah, there's people who would Claude One who tried to build a coding agent and like yeah, Claude One sucked, but like it was a space where like, hey, actually this could this this like directionally this works and you wanna be able to take the newest, earliest, dumbest version of this. Like this tech is gonna keep getting better better. You wanna be able to take the newest, earliest, dumbest version of this and go do incredible things with it. 'Cause then when the next model comes out then sorry. I there we go.
+
+@vaibcode (06:18.55)
+Yeah.
+
+@vaibcode (06:32.512)
+So
+
+@vaibcode (06:42.23)
+okay. as we as we talk about Gemmaxing I
+
+@dexhorthy (06:43.986)
+You can't see my face, but you can still receive my memes. That's my two sentence take is go try new stuff and and and mess with
+
+@vaibcode (06:56.79)
+Can we describe to people exactly what Jeb does? I think that's a useful thing. And then we'll go into use cases and interesting use cases. I think we both have examples that we ended up independently building to go do this. So I'll tell you my take on it and tell me if you understand it differently. So Jeb is basically a thing that takes in a bunch of text. It does not take in images, it does not take in audio, video, it just takes in text. And then typically when you use an LLM, what you get out is
+
+You will typically get out something like a bunch of text back out, or I guess like if you use multimodal LM images or something. But this comes in the form of a token stream, more so than anything else. but in the case of Jeff, what they do, and I'll respect them with their colors because they like their pink.
+
+there you go. I I I will give them their colors. Wha when Jeff comes out, what they do is instead of a token stream, they just give you one of three options, which is they give you probabilities.
+
+@dexhorthy (07:47.956)
+that's true. That is it is a pink model.
+
+@vaibcode (08:04.04)
+So instead of probably teeth. Okay, cool. That's spelled correctly. so instead of actually saying whether or not this is whether or not this is the next token, they just tell you whether or not the options you gave it are correct. And the things that they give you as an option are choices, newles.
+
+And then what's the last one? I actually forgot. Score. Wait, really? What's the difference between okay, well, this is not the one I've used as much. choices are basically a list of choices. So like if you were to think about it in terms of code, I would think about choices as your standard enums, like unions of literals, like
+
+@dexhorthy (08:26.866)
+Score.
+
+@vaibcode (08:52.892)
+enums, unions of literals and other things like that.
+
+@vaibcode (09:00.506)
+and that kind of falls into a choice category. And when you ask for a choice, what Jev will tell you is given some choices and categories you've given it, what is the probability that you are going to get any of these? So in case if you gave it the choices happy and sad, it's going to return to you like some sort of dictionary that says like happy, happy, like 0.8, sad.
+
+zero point two. And it kinda gives you something like this. The sum always adds up to one. And it kind of gives you some answer along that idea. Now a new I'll let you continue. Anything you want to add to choices?
+
+@dexhorthy (09:46.64)
+No, just the very simple example of like if you were classifying text, you may get something like this. If it's like, you know and and and what goes into here as well is is the instructions, right? It's like, you know, you can put in a bunch of natural language about you know, you know, classify the text as happy or sad.
+
+SAT, and then you give basically the input is actually like a similar to how BAML works. You give it a structured input of like, you know, sat name, SAD, description, etc. And so the model knows because it's only outputting one option, or like the the the the the percentage chance for one option. And so it's like basically gonna this this basically maps to one one byte.
+
+of of output, right? So your output token your the model's gonna output like basically like and I guess I'm guessing this is coming straight from like log probabilities, but I actually haven't looked at the internals but basically yet.
+
+@vaibcode (10:39.785)
+Exactly.
+
+@vaibcode (10:48.116)
+I don't know how I haven't looked into how it works but yeah, exactly. I think the other way to think about this is like
+
+@dexhorthy (10:52.796)
+So you can control you have like this system you have this system instructions and then you have a description on each field, you know, pick this if the user is set.
+
+@vaibcode (10:58.464)
+Yeah. If you're kind of similar with like constrained decoding or other techniques like SAP or anything else that we anyone does, you can think of this as just a way to constrain the model to only output certain tokens, and the only thing can output on those tokens is the score that it has for each of these. So when it comes to a when it comes to a score category, actually we can just do the score one really fast. A score category is kind of similar, but instead of enums, you give it a
+
+score dashboard that says like this is what score zero means zero meaning
+
+@vaibcode (11:39.294)
+It's kinda like you give it a rubric, one meaning, all the way down to like whatever score y you want. Yeah, I just looked into this.
+
+@dexhorthy (11:44.634)
+really?
+
+@dexhorthy (11:48.572)
+Will it interpolate between the num numeric values? Like if you give it if you give it these okay, okay, cool. Fancy.
+
+@vaibcode (11:52.36)
+You got it. You guessed it right away.
+
+And then the output that they give you is a weighted score. So they give you something like seven point eight. And what and they have a great visual of this on their website. So I'll just grab it from there.
+
+@dexhorthy (12:07.856)
+Yeah. Let's pull that in.
+
+@vaibcode (12:12.893)
+Let me put this in, into the Excalibur.
+
+And what they're really doing here is they're getting the calculation of every single score. If you think about this, they're getting this calculation of every single score, because it's the same thing as the enum thing where they give a probability. So every single score zero, one, two, three, and four gets a s probability, and then they do the weighted average across each of these, and this is what gives it to you.
+
+@dexhorthy (12:36.005)
+Okay.
+
+So you could naively implement score on top of choices, but I'm sure they're doing some magic inside the model to make it more efficient or more accurate.
+
+@vaibcode (12:42.378)
+Yes.
+
+@vaibcode (12:46.869)
+so actually it sounds like if I were to go
+
+@dexhorthy (12:50.074)
+Or is it just a f API affordance because people don't know how to implement this?
+
+@vaibcode (12:55.257)
+I suspect if I take the screenshot directly from the website, you guys will agree with me that it seems to be very straightforward and there's nothing fancy going on. it's just literally the weighted average of exactly what it's going to be. And then the t comput confidence is computed by the probability spread across the levels. So I'm guessing they're basically measuring the variance.
+
+And like the confidence is higher if there's less variance and the confidence lower if there's if the scores are more even, which makes sense. It's again a nice way I suspect to like
+
+@dexhorthy (13:22.405)
+Okay.
+
+@dexhorthy (13:29.572)
+A classic
+
+@vaibcode (13:32.925)
+It's a really nice abstraction, you know? It's a really nice abstraction that so that you don't have to think about it. Yeah. Now you're Yeah, and your main job is to describe some sort of a linear scoring mechanism so it actually makes sense. Now this is harder than you think. Most systems don't fall into this category. but if you can describe your problem in this way, this is probably a great convenience API to be able to use.
+
+@dexhorthy (13:32.932)
+A sum. A sum. Yeah. Yeah. I mean it's good. I think
+
+Your API should have nice stuff for builders.
+
+@vaibcode (14:00.177)
+Now, while we're doing this, let's go talk about Nuls, 'cause nools I think are going to be the last thing that are that are worth discussing.
+
+Now, who's heard of the have you heard of the world nool before?
+
+@dexhorthy (14:15.218)
+Did they make it up?
+
+@vaibcode (14:17.311)
+I don't know actually if I'm completely honest. They might have. again nool meaning. yeah, I definitely cannot. I did. I did. Umul in Korean is the glowing red sky afterglow or the light after a sunset. she touched the child's nool to check for fever. I guess top of head. So I think they did make it up. I don't think it exists as a word.
+
+@dexhorthy (14:23.164)
+Let's ask Gemini.
+
+@dexhorthy (14:40.868)
+Uh-huh. Archaic English. That did I mean I'm sure they wanted to say null or like, you know, null null hypothesis type of thing, but null is taken in every language, so they had to make up a new word. Just like I don't know, some languages invented the the word nil, like Golang uses nil instead of null.
+
+@vaibcode (14:59.145)
+Yeah, exactly. Well P C C does too. Actually I don't know. I think it does. Maybe not. I think capital nil. I don't know. I haven't read C code a while. I don't know. I haven't write any code in a while. It's very sad. so a new is basically what you say is you wanna give it a you wanna say you're using the type new and you will often pose a question.
+
+@dexhorthy (15:03.792)
+I think.
+
+@vaibcode (15:20.834)
+Yeah.
+
+@vaibcode (15:30.095)
+Seeing now, you get a probability score of yes or no. And you get a score of one to zero, same with everything else, that tells you whether or not the answer is yes or no. And this is kind of the general line that as you're seeing at this point. Hopefully, you're able to see what shit, there's a freaking gecko here. that is awkward. Sorry. I love Hawaii.
+
+@dexhorthy (15:37.99)
+Yeah.
+
+@vaibcode (15:58.551)
+Okay, I'm gonna mute your mic while you're typing because it's very loud. but in general yeah, you're all good. In general when you go look at anules over here, is there a nool here? Bernoulli. I'll go check that out what what we got in the chat.
+
+@dexhorthy (16:03.236)
+sorry.
+
+@vaibcode (16:16.801)
+Null. Bernoulli is a nool, but is is the Bernoulli distribution have a nool in it? I don't think so. I'm command F ink because this is be very fascinating, but it doesn't. Okay, it's just Bernoulli is a Null. so when we go look at Nulls and we go think about this, you what you really want is you want to give it a choice. You either pose the question and you either say like true, false, yes, no, you basically give it a binary outcome of it has to pick one or the other. So like heads, tails is another one.
+
+and then it basically gives you a probability for one of these two options. I suspect that they optimize differently for the Boolean scenario than they do for the arbitrary end scenario in the chain of choices. Because there are very similar problems. But this is the general scheme of what you're getting. Now, when you think about when you think about JEV, a couple of things is true. One, you have to recognize that like why why is JEV free? Well, Jeb is free because why are output tokens in JEB free? Output tokens in JEB are free.
+
+Because they're literally only outputting one token. It's not worth billing for. It can't give you reasoning. It can't give you a sequence of texts. It can't give you it can't help you write an email, but it can still do a lot of things that LLMs were previously used for with really good semantic understanding without having to really go to the beefier models behind the scenes. So if you were previously using a model to output one token for maybe like your router agent.
+
+or maybe like for another classification system you have, should probably go look at Jeff. Your cost will almost definitely go down and I suspect your latency will as well. Anything you want to add in here, Dex, while you're while you're dis before we go on to like a real practical applications of these.
+
+@dexhorthy (18:05.564)
+no, this makes sense. Can you hear me okay? Is audio working?
+
+@vaibcode (18:08.559)
+Again. Yes.
+
+@dexhorthy (18:12.014)
+Okay. no, I mean I think this makes sense. I am curious to hear how you are using this stuff. and then I can share a weird experiment that I've been hacking on as well to turn Jev into a tool calling harness for code search, which is an absolutely an abuse of JEV and did not get good results, but it was a fun thought experiment.
+
+@vaibcode (18:33.955)
+Yes, I also went through an abusive Jeff because I thought it was so freaking cool what you could do with it. I think the latency it
+
+@dexhorthy (18:42.066)
+Yeah, I mean it's very it's very BAML coded. Like if you've been coding in BAML and using structured outputs as the core building blocks of your program, then Jeb should be yeah.
+
+@vaibcode (18:48.43)
+Yeah, it's the same exact thing.
+
+@vaibcode (18:52.663)
+I think the coolest thing for me personally when I tried Jeff was just the latency. I I I mean I latency is like half the battle in so many different scenarios. And I feel like so many people don't give it enough credit when they're trying to make their app faster because like they're trying to make it trying to use smaller models, they're trying to do something. But holy cow, when you get that like when you get that latency level, it is so freaking nice. So I'm gonna screen share and I'll show you some of the things that we did.
+
+while I started playing around with this.
+
+Windows.
+
+@vaibcode (19:31.093)
+Okay. So so when I got when I got to playing with Jab, my first idea was how do you th I mean there's this amazing tweet actually. At first I wanna show the tweet because I think this is
+
+If you haven't seen this, can you guys see my screen? you cannot see my tweet page. Let me stop screening. I'm gonna screen share my whole compute my entire screen and show this instead. So there's this really cool tweet that went around about about this probably programming language. I think someone at CloudPer he he made it and it's so freaking cool because what you could do is the syntax form where you could like get an email, get the input.
+
+And then you could say if the email feels like it needs re reply urgently with confidence 80%, do this. Otherwise, maybe do this. And what this is saying is something like if the email feels like it needs to reply urgently with really high confidence, immediately do this. Otherwise, if it says it feels like it needs reply urgently, but it's not high enough confidence, then deal with this. So like more than 50% confidence, but less than 80%, deal with the maybe. Otherwise, go to normal and finish your coffee.
+
+And you can do all sorts of things. You can match. So you can match on an email on a string. You can match on this string. And you can basically go down those lists and see what you're doing. And these are basically just what we did earlier. These are Jeb API calls where this match gives all of these options over to the Jeb API and asks it which of the which of these is the highest probability. And based on which of these is the highest probability, it then has another special coded thing for LLM. Go do the thing. So I saw this thing and I was like, this is pretty cool. I don't I I can't find the tweet for it.
+
+The tweet went kind of semi-viral. I thought this was really, really neat. And I think what they were said was this is a toy programming language. So, I mean, we obviously build a language, so I said, what if you wanted to make this a non-toy language? What could you do? And I'll show you some images I'll probably before I go into the actual code. So this is the thing that I said of what you could do. Oops. Okay. So you could do the input thing and you can do just do dot fields. And you can do dot fields urgent. If it does, then you just ask it to have to reply.
+
+@vaibcode (21:37.707)
+And what's interesting here is you can do dot fields on effectively any variable that you ever write in your code base. Any variable of any type, you can just do dot fields on it. Same with dot ask. But I think when it started to get really interesting for me and really started doing this, is like obviously you can one interesting thing about Jev that probably people don't realize is you can do like more complicated structured outputs on it. So you could, for example, you could have a class that has a bunch of stuff like urgent.
+
+like an enum for what team you're trying to fill out, your churn risk, which is almost like a score, and then a mood. And you can actually have four parallel Jev queries for the same input and just fill it out using the triage system because these are four independent JE queries. Yeah. You see how the
+
+@dexhorthy (22:18.45)
+I was gonna say, okay, cool. So you and you would basically classify it on each of each of these fields as a separate call. And now would you would you do the like sort of auto regressive thing where you are like every time it makes a decision you're including that decision and the input to the next decision, or would you just do these all in parallel?
+
+@vaibcode (22:39.993)
+So we do them all in parallel, but you're right, you could implement dot fill where instead you could pass in a parameter that here set says dependence, dependencies. And you just say that these depend on each other. So like dependencies equal dependent equals true or something. And you can modify this code to go do that. So instead of fill requiring this, you could like do it in parallel or not doing in parallel. And then you could do something else that's the way it gets implemented is like through this concept called interfaces. So if you've seen TypeScript interface, very similar.
+
+@dexhorthy (22:56.944)
+Yep. Cool.
+
+@vaibcode (23:08.89)
+And what we just say is there's a vibes interface. And you can implement vibes for every single type in the world that is ever defined. And that means every single type now has a dot fields function. And dot fields just takes the thing that you're feeling, like the feeling over here, adds it to this prompt, and calls this JEV system down below. So it becomes a really convenient way to build building blocks like this.
+
+@dexhorthy (23:21.884)
+Yeah.
+
+@vaibcode (23:37.807)
+So I wrote a function called grep with vibes. And what grep with vibes does is it takes a feeling, it reads standard in, and because it's not a toy language, you kind of have parallelism, you have everything baked in into it. And now you can just say spawn. So write run all the feelings in parallel for every single line that happens. And you just say for every line, check the feelings of the feeling that's passed in. And then you just print out only the hits. So you can say git log BAML run grep with vibes, like it'd be scary revert.
+
+And this gets you all the PRs that would be scary to revert behind the scenes, which is stuff related to a GC, which you should not revert. So I found this to be a really interesting way to build and start composing programs. And that tweet really launched kind of an interesting exploration for me of like how would software kind of feel t sword when you could just like vibe everything.
+
+@vaibcode (24:33.935)
+So it'll show the actual code here too, really fast.
+
+@dexhorthy (24:38.266)
+And you guys have basically from from day one of the BAML programming language, even even BAML, you know, the the just inference client parser shape thing have been like, Cool, how does programming change when the things we're building are non deterministic? And what syntax do we need in that world? so I'm excited. All right, keep going.
+
+@vaibcode (24:58.657)
+Here, I'll show you the readme. The readme is probably an easier way to look at the code. So, like we already went over email, right? So email is like dot feels, you can feel the email, and then you can ask. Ask is basically a way to ask an LLM to go draft something up based off of this request and this context. But if you go down, you get some other things. So once you get the once you get past feelings, you can do it like how. So you can ask like dot how, which basically gives you a confidence level coming out of it instead. So this is the score capability.
+
+In it which with the conference. You can do dot matches, which is really cool, because you can say matches on this, and you can just do judge against all these kinds. And each of these is
+
+@dexhorthy (25:29.17)
+To
+
+@dexhorthy (25:40.326)
+And this will just give you whatever one scores the best, basically.
+
+@vaibcode (25:44.257)
+Exactly. Exactly. And it's and it's type safe, so you can't ever miss an arm. You're guaranteed that have all these available right here. Now what would be cool is I think this is possible. We haven't text tested this in the language, but I think you can backwards fill this. So instead of having to fill it out here, I think you can fill it out here and this will basically just fill out the judge with the kind. So I'll try this in the code really fast. You can do dot fill, which basically just uses reflection to go and fill this stuff out. Go ahead.
+
+@dexhorthy (26:09.074)
+So you basically you would wanna basically have the match statement populate the e the enum values so you don't have to declare it twice.
+
+@vaibcode (26:19.021)
+Exactly. And I think our t our type checking should do that, but we can check that really fast. enum over here is basically just like filling out the class like I showed earlier where it's like an enum plus pool plus floats. this feels really nice. But because again this works on any type, you can even do like run on numbers, say like this feels like a suspiciously round number, one three seven, and then this this doesn't, according to the model. You get dot asks, which so
+
+@dexhorthy (26:21.158)
+Cool.
+
+@vaibcode (26:49.037)
+What Jeb does over here is ask is a way to actually use a generative model. So you can say d ask it to draft an email here. And I think what the most interesting thing about this is the loops that go ahead.
+
+@dexhorthy (26:59.279)
+And that's just that's just like a syntac that's just like a syntactic sugar of like is just like a method on the thing that would call it with an LM client and you would have some default LM client either assigned to the object or as a global or something, right?
+
+@vaibcode (27:04.449)
+It's literally just syntax.
+
+@vaibcode (27:15.066)
+That's literally what it does right here. So you can see like we have this. ask. And if I go scroll down, ask is literally just a thing that goes to writer client, which is just mapped to quad sonnet five and your enthropic API key. reply. And it's just something really, really simple. It doesn't do anything fancy over here. go back to preview.
+
+@dexhorthy (27:28.178)
+This is cool as hell.
+
+@dexhorthy (27:34.906)
+Okay, so you can actually in the language you can implement dot ask however you want. This isn't even a language feature, this is just a you implement the interface with a classifier or an L or whatever.
+
+@vaibcode (27:41.367)
+Yeah, this n nothing that I showed here exactly. So nothing I showed here is a language feature. It's just built on top of the language. And then you get to do all sorts of things, which is kind of nice, which is like you can say, like, hey, while the draft feels full of corporate jargon, keep rewriting the draft. And when you start thinking of code in this way, this actually reads really elegantly. And I think this is what I realized about like the why the tweet probably went really viral. Is because what Jeb really enables is this stuff.
+
+Is no longer like
+
+It's no longer as prompty as it used to be. It's no longer as slow. Like the loop here goes from like this plus this, basically my bottleneck being like two LM calls to basically my bottleneck being one. And this one feels invisible relative to this one. So I don't even notice that it's happening. And then obviously you get concurrency and a few other things behind the scenes. And like it just it's implemented if you've ever used Rust or something else, it's implemented what's called a blanket implementation.
+
+Which says every single type in the world that is ever defined automatically gets the vibes class category of methods applied to itself. So you never have to re implement anything from scratch. So every very go ahead.
+
+@dexhorthy (28:54.355)
+And I guess you would need technically you would you would you would only be able to implement this for things with a two string method that could be put into a prompt, but that's pretty much everything. And I guess like if you have multimodal, you can even have things implement the like two prompt method so that you could put in an image or something.
+
+@vaibcode (29:07.851)
+So the cool thing
+
+@vaibcode (29:12.569)
+Yeah, the cool thing about BAML is every single thing in the world has dot two string built in and dot two JSON. And I think most and we have a way to do dot two prompt as well, but that's not as exposed right now. But anyway, if you want to play around with this code.
+
+@dexhorthy (29:26.662)
+Because for an image you don't actually put the raw bytes in the prompt. You like attach it as base sixty four or something, right?
+
+@vaibcode (29:32.983)
+Exactly. So you have to do something slightly different. and then there's some optimizations around there that make it slightly easier. Anyway, if if you guys want to play around with this repo, I'll give you the repo. I think it's called boundaryml.com slash feelings. this I think works in the latest canary. Doesn't even need anything else. so I'd be curious to see what people's thoughts here are while they play around with it. How do I share? Screen. I'll drop in the chat.
+
+But that was kind of my biggest learnings when I started started playing with this. Like the way that you write code gets a lot cleaner behind the scenes. when you start using the Jeb model for classification. Like the speed is insane. Being able to like just like quickly filter through my git logs, or being able to turn like Jeb basically into a C L I command that I can just execute at any given time, that was so freaking cool. by default.
+
+But what about you, Dex? What have you been playing with?
+
+@dexhorthy (30:30.63)
+Yeah, this is interesting.
+
+Know if I'm to be able to share my screen, but I will try to draw it on the whiteboard if you want to share the whiteboard.
+
+@vaibcode (30:40.421)
+Okay, let me share the whiteboard again.
+
+@dexhorthy (30:46.789)
+Yeah. So if you scroll down here, basically the idea was you have we we play with like code search a lot. because one of the things that I think Human Layer does really well is like get you all the context you need to then you know seat future sessions with the right things in the code base and research from the web and stuff that is relevant to what you're building. and so you have a code base and you know you have like source
+
+apps and you have like repo, you know, app one, app two, and then here you have, you know, components
+
+Interfaces, whatever you have like a crap ton of you just have like, you know, let's say I think the human layer code base has something like thirty five hundred files or something. not crazy. but the idea was basically you would give you would build sort of a tool calling harness where you would say like, you know, you would start with here's the question what's the next action?
+
+@vaibcode (31:29.51)
+Code. Yeah.
+
+@dexhorthy (31:53.062)
+And basically what the harness is gonna do is give you options that are like read der name. So like in a in a normal model,
+
+So like this would be like read dir apps, read dir, you know, packages, let's say. so you're basically giving it I know the model is not RL done agentic work. so it was like and then it's like read file components slash whatever. And so basically you would basically take, you know, look at this list of all of the options you could take. and you're basically traversing the graph of the code and then, you know.
+
+@vaibcode (32:12.122)
+Yeah.
+
+@vaibcode (32:37.155)
+I mean, yeah, if you take the if you take the Jev philosophy, it's basically the i it it's a state transition model. It gives you the next state if you can define the state in that way. And I think what you're saying is you can break a coding agent into a snipe state transition model.
+
+@dexhorthy (32:55.586)
+Yes. and so your state accumulates like files red.
+
+@vaibcode (32:59.907)
+Yeah, that's really cool. Yeah. And you're like, what do I do next?
+
+@dexhorthy (33:03.157)
+and then you would say, you know, here's the action so far of like here's all the things that you've done. And then the next option is, you know, again, you the the tricky part here is one, this part of it, your maximum for the prompt, I think that's like thirty two K input tokens.
+
+@vaibcode (33:23.173)
+For now, yeah.
+
+@dexhorthy (33:25.372)
+For now. And I think the number of max options are basically, I think it's like 255 options. which means you actually like it, we we usually limit the number of input files to about 80 since there's like a couple different options on each one. So what happens in the harness is in between all these loops, the harness's job is to sort of read what's actually in the code base and then decide.
+
+basically what what should the set of next actions be?
+
+@dexhorthy (34:03.122)
+And that's where you can get some really interesting like basically there's a whole bunch of like deterministic like ranking.
+
+@vaibcode (34:10.993)
+I mean this is in the di in the diagrams that you've talked about, this is basically those this is like the determined next step step, right? So you get like what's a determined step and like determine next step is an enum list. The only c you know where I think LMs are gonna shine a lot more though? Actually go ahead. I'll just continue.
+
+@dexhorthy (34:17.009)
+Yeah.
+
+@dexhorthy (34:21.732)
+Exactly. Exactly.
+
+@dexhorthy (34:32.624)
+Yeah. Well so I mean like the only difference is like with an LM you say okay the next step and the LM can generate it's gonna pick the like function type. It's gonna be pick function like read file and then it like generates the arguments. So you have infinite options for file name. The LM can pick whatever it wants, whereas like with with a you know classifier model shaped model, a system
+
+@vaibcode (34:52.725)
+Exactly. Yep.
+
+@dexhorthy (35:00.306)
+call it a system one model is the generic term.
+
+all you have is the function name. You sent you can't send arguments. So it's like read file apps slash function. And then your other choice would be, you know, reader
+
+So you basically have to assemble somehow with an LM or just like infinite little JE calls to do the sorting and re-ranking and stuff. I mean you can you can basically do this deterministically or you can like wire up JEV to do the deciding what the list of tools you expose. But you only get, you know, one byte worth of worth of tools. You get about two hundred and fifty five options. And so you have to get really clever with how do you like
+
+split things up and search them and re rank them and I'll I'll post a couple screenshots of like what we ended up doing. Let's see if we can get them
+
+@vaibcode (35:59.929)
+This is so while you do this, I'm actually curious about a c while you look that up. I think what's really interesting about these like system one models and like outputting some of this stuff is like most problems, like for example, if you think about like self driving cars, they're very much more so a system one model problem than an LM problem. 'Cause at any given time you're not really outputting
+
+@dexhorthy (36:16.464)
+Yeah.
+
+@vaibcode (36:24.791)
+infinite states, there's only so much machinery that you have to output. And then you kinda want to output like the scale of that. Like how hard do you press the accelerator? As opposed to do I go ahead.
+
+@dexhorthy (36:34.044)
+Well this is gonna say, have you seen the like Jev plays snake animation? Do you wanna pull that up?
+
+@vaibcode (36:42.939)
+I don't know if I have the animation, but like Jeb is particularly great at like video game simulations. That's why I think partly why they went viral. Because like it's such a nice visual thing, but like video games Exactly, exactly. they have the video they just don't have that many things to do. So like given that given the current state representation, given the action state, you can go to the next state, and it poses a problem really well. So personally, I suspect.
+
+@dexhorthy (36:50.234)
+'Cause there's constrained action space.
+
+@dexhorthy (37:06.277)
+Go go click the link I put in the chat and pull that up in the Riverside public chat.
+
+@vaibcode (37:10.405)
+Let me tell her out.
+
+@vaibcode (37:15.183)
+working riverside does not make it easy to share.
+
+@vaibcode (37:21.062)
+So like right over here. Yeah. So you can yeah exactly. You can see exactly what it's trying to do because like it probably knows exactly what it has to do at any given time.
+
+@dexhorthy (37:31.314)
+There's only four next next options, basically. You're either going up, down, left, or right.
+
+@vaibcode (37:31.95)
+And I think
+
+Exactly. But the key but the key part the thing that this shows me by the way is that Jeb is actually an incredibly good reasoning model. Like it's if it's able to play snake for this long and keep the length going up, it is doing some kind of reasoning on top of it that is like quite good. But I suspect what it's still n I I mean like because of the context li it looks like they only have one K context. That's interesting, no way. no, it's an open source. This is a Lya thing.
+
+this is like an open source Jeb. My suspicion is in general all the Exactly. My suspicion actually I have a totally separate question for you. I think hopefully at this point people have gotten the general vibes of like Jeb is a useful model. You guys should try it for your use cases. I think actually we're gonna I'll share another tweet that's actually that John just posted about this recently. He's over Riftling and I think he talked about this too, where he's like, where'd he go?
+
+@dexhorthy (38:06.746)
+But it's a it's a application of the same thing.
+
+@vaibcode (38:35.023)
+he just posted about it recently. Right here. they tested Jev for their growth engineering team and like boom, ninety percent accuracy on top of versus a fifty percent LM baseline and it ti ran eight times faster. I think like it clearly didn't work for all use cases for them, but it did work for enough that they're definitely reevaluating it. So companies like Fripling, a bunch of other companies have been tweeting about this all over Twitter.
+
+Definitely take the time and spend like a couple hours of your team's time, run the eval benchmark and just see if it makes sense. And like use your favorite way to call Jeff. It doesn't really matter how you call it. But I have a meta question for you before we close it out. So we can both you I can go on my vacation and you can go off and get your flight really fast. When you think about Jeff.
+
+Is every model company gonna produce a Jeff?
+
+@dexhorthy (39:27.9)
+mean it's already kind of happening. Like the the wave on Twitter from the smart AI people who know a lot about serving inference have pointed out that like you can do this with any model and get comparable results and do the same optimizations with SG Lang or something for most small models. so it's I'm sure Jeb is probably, you know, gonna be like a Claude or an open AI where it's like, yeah, there's a lot of lot put into it. And so it is going to be like
+
+the frontier and people will be willing to pay frontier dollars to get ten percent or twenty percent better performance. But that like I think I don't know if every model company will create a JEV, like a custom built model for this. but I'm sure yes, there will be like a specific
+
+@vaibcode (40:03.577)
+Yeah.
+
+@dexhorthy (40:19.94)
+endpoints. If if developers really like this pattern and they start adopting it and they want it in their software, there will be the same way that JEV gives you like three different ways to ask it the same basic shape of question. I think every model company will have like a GPT whatever classifier, GPT JEV or whatever whatever w whatever the name, system one model for these fast decisions so you can get a super optimized thing for that shape of work.
+
+@vaibcode (40:25.562)
+Yeah.
+
+@vaibcode (40:29.923)
+Yeah.
+
+@vaibcode (40:45.017)
+Yeah. Yeah, I think one of the things that we were talking about on our team was like this is a new class of this is a new way to think about problem solving in a way that probably most people like if you've been doing constraint decoding, you've been doing structured outputs, you might have thought about problems this way. But the speed and the latency wins are insane and that again changes the way that changes what's possible.
+
+Like because of how fast it is, the free and how cheap it is, the frequency at which you can use the system is so much higher and therefore it's a paradigm shift, in my opinion. and the TypeSafe AI team has really outdone themselves.
+
+@dexhorthy (41:18.736)
+Yeah, I I think this is an interesting
+
+Yeah, I think there's an interesting pattern we see coming up throughout the history of like LLM development. Like when when transformers were first kind of pitched in twenty seventeen, like basically like the hardware and the software have like and the models have evolved together. Like transformers picked up because it was like GPUs were very well suited to run them, and then GPUs picked up because they were really good at running LLMs and these things kind of evolved together.
+
+And I think this is just like one more step in that evolution of like people being people seeing LLMs and then saying, cool, here's the types of problems that I can solve with LLMs, which was basically like structured output and tool calling in the GPT three days. And then the infrastructure and the model providers basically evolved their systems to make tool calling a very first class thing. And you got constrained generation and you got better tool calling because that was the things that made for really good applications and software. and so like
+
+very visionary from the from the TypeSafe team to say, like, hey, look, this classifier thing is actually like going to be really useful in lots of different applications. Let's create a model that's super optimized for that. More applications will adopt that as like a standard pattern and then the ecosystem will evolve and probably even the hardware. Someone's gonna go make a JEV chip the same way people in, you know, Groc and Cerebrus were like, let's make a chip designed for LMs back in twenty sixteen or whatever.
+
+@vaibcode (42:39.183)
+Yeah.
+
+@vaibcode (42:46.967)
+Yeah, I agree. I agree. I mean like yeah, if you're outputting one token, like suddenly the way that you process tokens is probably different and the way you run inference is definitely different.
+
+I guess I I can record the closeout really fast. While we do that, any questions that people have so far, in the chat while we're waiting out. And then I'll record the closeout and then we'll answer the questions.
+
+@dexhorthy (42:59.484)
+So yeah.
+
+@vaibcode (43:15.877)
+So I'm gonna go pull out some stuff really fast and I'm gonna start
+
+@vaibcode (43:24.168)
+I'm gonna go here and then I'm gonna go set up a screen share. It's so interesting setting up screen share. and then I'm gonna you have the tweet pulled up too. Thank you. Find a tweet. I'm gonna find one more tweet.
+
+Yes.
+
+@vaibcode (43:48.901)
+Okay. screen share and then set those up.
+
+@vaibcode (43:57.795)
+All right. Hello. what is this? All right.
+
+@vaibcode (44:08.771)
+All right. I'm gonna get rid of your face over here, Dyson.
+
+@dexhorthy (44:09.862)
+Ha ha ha.
+
+@vaibcode (44:15.481)
+All right. well we did this.
+
+All right, today's ep one second. Today's episode is going to be about this new system one model that just came out called JEV. And we're going to talk about whether or not it's useful, how you can use it, and where you might find it most productive for your businesses. We're going to start off with just be briefly describing what JEV is versus an LLM and showing you examples of how it slightly works. We're going to talk about different small little things that they do behind the scenes. But I think most importantly what we're going to get to talk about.
+
+is examples of exactly how you can apply this and one interesting use case that Dev Dexter came up with in the form of perhaps how you could build a coding agent that's formed on like state transitions, which Jev excels at in classification problems, and how to pose the same agentic harness problem in a state transition problem. We're also going to get to go pop into and see other examples of people using JEV, for example at Rippling, for example to play Snake. We're gonna go talk about
+
+How Steve pitched a new programming language that uses feels as a fun little toy example of how this could work. And then go into talking about an actual real implementation of.feels that shows you exactly how you can implement vibes for every single thing in there and build out like how you can feel for various types, variables, judge, fill, and match examples using JEV as well. But I think most importantly, this is just really nice work by the TypeSafe AI team if you haven't tried it.
+
+Definitely worth trying out the model and let's get into describing what Dexcher and I think about this problem.
+
+@vaibcode (45:55.137)
+Stopping screen sharing. It sounds like we have no questions in the chat. here we go. We got one. What are the risks of embedding Jev directly into the code if there's no fallback? when you say embedding Jev directly into the code, I would say think of it you can think of it a couple different ways. If there's no it's almost like using a small model, like what Dexter says.
+
+@dexhorthy (45:56.006)
+Nice dude.
+
+@vaibcode (46:20.461)
+If you use a small model, yes, at some point the model will get something wrong and you kind of have to build a harness around it to go track for that. So if you're building like a voice AI agent, we often talk about this, where your voice AI agent is going to have a very fast agent loop in the beginning. And you want that to be fast and perhaps not as correct. But then you build a watchdog agent that watches the context window of your main agent to see if it's wrong. And if it's ever incorrect, it injects some code in there to go ahead and actually go steer.
+
+that model correctly. So it's more about just building it it's the same stuff that we talk about, agentic engineering slash harness engineering. You're gonna have to build code to deal with the fact that it might be completely wrong because it is a smaller model. Smaller model means faster, it means cheaper, but it also means sometimes not as correct. Redron, so you've got a question, how do you define a JEV client in BAML? This one's actually quite easy. All you do is you just define a JE client
+
+As the following. You just say JEV is from the we ship a type safe AI package. You just define a client, you define the model, and you define your API key. And now you can just use the JEV client for this, and it automatically understands that certain types, like bools, floats, classes of some kind or union literals, automatically kind of just map under the hood and the Jev client implements it using reflection for your types to make it work so you don't have to go think about it.
+
+have we explored the Laya as an OSS alternative to Jeff. I personally have not played with Laya. Dex, have you had the chance to go do that?
+
+@dexhorthy (48:00.533)
+No, but there's already like a hundred recipes for doing this. So like I'm sure they're all various amounts of quality. If someone jumps up and says, Hey, this one's the winner and it's the best way to do it, I'll play with it. But for now I'm I'm content with understanding the pattern and exploring the the how you build the harnesses and the clients and the the the logic around it is the more interesting part and like once you have that right, you can build an eval and then you can swap in all the different implementations.
+
+@vaibcode (48:04.633)
+Yeah.
+
+@vaibcode (48:11.628)
+Use it. Yeah.
+
+@vaibcode (48:28.195)
+Yeah, I think Dexter and I in general fall into that category. We're we're not always looking for like trying to t like model max per se. We're mostly looking to like design max. How do we maximize the software design principles? around these new releases that came out. Bruce, you've got a question. In the BAML clients, can we get a full probability of all the options? My use case is multiple options and not just the single best. Yes, you can. if you ask Claude to go check it out.
+
+you should be able to go do that pretty easily. Claude will just ask Claude to describe how to use the Jeff client to get the probabilities out of it. And it should make it possible. I think that's all the questions we've got in the chat today. If you've got any more, let us know. we're always relive on Twitter or on Discord for us. But otherwise, thank you for joining. Dex, thank you for taking the call from the airport. I hope the editors get you with a video pasted in there of you as you're talking, or at least
+
+standalone screenshot where you maybe jiggle around a bit every now and then while you're talking, but I like the little
+
+@dexhorthy (49:29.583)
+We should get yeah, the get tell t how them try the new seed downce model and do a lip sync with that profile picture of me.
+
+@vaibcode (49:36.209)
+that'd be s that might be a little bit too much work, but we can get pretty close, I think. And then something else just happened right now. GPT six just came out. with Sol and Luna, literally while we're on the call. So and it's a lot cheaper. It's half the price of GPT five point six and that's insane.
+
+@dexhorthy (49:54.109)
+@dexhorthy (49:58.849)
+I'm I'm kicking off the slop code bench for Opus five point five already. We'll have to get the other ones in there too.
+
+@vaibcode (50:03.125)
+Yeah. There you go. And I think Claw Codex Opus five point five came out as well while we're on this call. so there you go. We've got our work cut out for us.
+
+@dexhorthy (50:12.462)
+Yeah.
+
+@vaibcode (50:21.253)
+All right, cool.
+
+@dexhorthy (50:21.795)
+Awesome. Thanks everybody.
+
+@vaibcode (50:24.837)
+Thank you, everybody. Have a good one.
+
+@vaibcode (50:32.559)
+Stop.
+

@@ -12,9 +12,9 @@
 
 <div align="center">
 <h2>🦄 <strong>Next Episode</strong></h2>
-<h3><strong>All About Jev</strong></h3>
-<p><strong>Tuesday, September 22, 2026 at 10 AM PST</strong></p>
-<p><em>Jev has been making lots of waves in the AI world this week. This week on the podcast, we will dive into jev and discuss how token generation may be holding back your agent architecture and how jev compares to and complements BAML. We'll look at what type safety means across different layers of the stack, why generating text for routing and classification is an antipattern, and how to combine fast decision models with BAML-orchestrated workflows for production agent architecture.
+<h3><strong>GTM Engineering and AI at Rippling</strong></h3>
+<p><strong>Tuesday, September 29, 2026 at 10 AM PST</strong></p>
+<p><em>In this episode, we break down GTM Engineering, the practice of applying software engineering principles, custom data pipelines, and AI agents to go-to-market ops. We will be joined by John Kutay at Rippling to see how they do this in practice
 
 Meet the Speakers🧑‍💻​
 
@@ -23,7 +23,7 @@ Meet the Speakers🧑‍💻​
 ​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
 </em></p>
 
-<a href="https://luma.com/all-about-jev" target="_blank">
+<a href="https://luma.com/gtm-engineering" target="_blank">
 <img src="https://img.shields.io/badge/🦄_REGISTER_NOW-Join_Live_Session-ff4444?style=for-the-badge&logo=calendar" alt="Register Now">
 </a>
 
@@ -124,12 +124,12 @@ Meet the Speakers🧑‍💻​
 <tr><td>
       <div style="padding: 8px 0;">
         <div style="margin-bottom: 2px;">
-          <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
+          <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">PAST</span>
         </div>
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-09-22</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#75</strong>: All About Jev</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-09-22-all-about-jev">code</a> • <a href="https://luma.com/all-about-jev">register</a>
+          <a href="https://www.youtube.com/watch?v=35PSMmDDKP8">watch</a> • <a href="./2026-09-22-all-about-jev">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">Jev has been making lots of waves in the AI world this week. This week on the podcast, we will dive into jev and discuss how token generation may be holding back your agent architecture and how jev compares to and complements BAML. We'll look at what type safety means across different layers of the stack, why generating text for routing and classification is an antipattern, and how to combine fast decision models with BAML-orchestrated workflows for production agent architecture.
