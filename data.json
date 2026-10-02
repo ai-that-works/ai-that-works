@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-10-06-building-a-memory-pipeline",
+      "guid": "aitw-077",
+      "title": "Building a Memory Pipeline",
+      "description": "We've discussed how to build memory supervisors and memory pipelines before, but in this episode we're going to dive into real code and make it happen with real problems and real constraints.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/memory-pipeline",
+      "eventDate": "2026-10-06T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-06-building-a-memory-pipeline"
+      },
+      "season": 2,
+      "episode": 77,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-09-29-gtm-engineering",
       "guid": "aitw-076",
       "title": "GTM Engineering and AI at Rippling",
@@ -17,7 +37,7 @@
       },
       "season": 2,
       "episode": 76,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1654,7 +1674,7 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 79,
+    "totalEpisodes": 80,
     "completedEpisodes": 74,
     "upcomingEpisodes": 1,
     "workshops": 3,
@@ -1662,7 +1682,7 @@
       1,
       2
     ],
-    "lastUpdated": "2026-09-27T02:54:20.644Z",
+    "lastUpdated": "2026-10-02T16:58:21.330Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

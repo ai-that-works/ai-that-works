@@ -12,9 +12,9 @@
 
 <div align="center">
 <h2>🦄 <strong>Next Episode</strong></h2>
-<h3><strong>GTM Engineering and AI at Rippling</strong></h3>
-<p><strong>Tuesday, September 29, 2026 at 10 AM PST</strong></p>
-<p><em>In this episode, we break down GTM Engineering, the practice of applying software engineering principles, custom data pipelines, and AI agents to go-to-market ops. We will be joined by John Kutay at Rippling to see how they do this in practice
+<h3><strong>Building a Memory Pipeline</strong></h3>
+<p><strong>Tuesday, October 6, 2026 at 10 AM PST</strong></p>
+<p><em>We've discussed how to build memory supervisors and memory pipelines before, but in this episode we're going to dive into real code and make it happen with real problems and real constraints.
 
 Meet the Speakers🧑‍💻​
 
@@ -23,7 +23,7 @@ Meet the Speakers🧑‍💻​
 ​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
 </em></p>
 
-<a href="https://luma.com/gtm-engineering" target="_blank">
+<a href="https://luma.com/memory-pipeline" target="_blank">
 <img src="https://img.shields.io/badge/🦄_REGISTER_NOW-Join_Live_Session-ff4444?style=for-the-badge&logo=calendar" alt="Register Now">
 </a>
 
@@ -107,10 +107,29 @@ Before joining, get familiar with our toolkit:
         <div style="margin-bottom: 2px;">
           <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
         </div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-10-06</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#77</strong>: Building a Memory Pipeline</div>
+        <div style="font-size: 13px; color: #666;">
+          <a href="./2026-10-06-building-a-memory-pipeline">code</a> • <a href="https://luma.com/memory-pipeline">register</a>
+        </div>
+      </div>
+    </td><td><div style="padding: 8px 0; line-height: 1.5;">We've discussed how to build memory supervisors and memory pipelines before, but in this episode we're going to dive into real code and make it happen with real problems and real constraints.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+</div></td></tr>
+<tr><td>
+      <div style="padding: 8px 0;">
+        <div style="margin-bottom: 2px;">
+          <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">PAST</span>
+        </div>
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-09-29</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#76</strong>: GTM Engineering and AI at Rippling</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-09-29-gtm-engineering">code</a> • <a href="https://luma.com/gtm-engineering">register</a>
+          <a href="./2026-09-29-gtm-engineering">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">In this episode, we break down GTM Engineering, the practice of applying software engineering principles, custom data pipelines, and AI agents to go-to-market ops. We will be joined by John Kutay at Rippling to see how they do this in practice

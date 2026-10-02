@@ -15,7 +15,7 @@ class GeminiImageGenerator:
             api_key: Google API key for authentication
         """
         self.client = genai.Client(api_key=api_key)
-        self.model = "gemini-3-pro-image-preview"
+        self.model = "gemini-3-pro-image"
     
     def generate_image(self, prompt: str, base_image_base64: str) -> bytes:
         """
