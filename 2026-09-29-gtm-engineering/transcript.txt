@@ -1,0 +1,719 @@
+@vaibcode (00:02.734)
+Okay, we're done with funny face, so we're getting back to business today.
+
+John Kutay (00:03.13)
+No.
+
+@dexhorthy (00:06.536)
+okay. what's up dude? We got Wait, did you switch mics again?
+
+@vaibcode (00:13.86)
+John here. No. It's the same Mike. Okay.
+
+John Kutay (00:17.55)
+No, I can I can hear him.
+
+@dexhorthy (00:17.645)
+Okay.
+
+Alright, cool. Alright. We're we're good. Sorry, go back to your intro, man.
+
+@vaibcode (00:24.836)
+what's everyone? This is AI That Works and we try and do fun little podcasts where we try and talk about real practical applications of AI every single week. I'm Bivav and that's my co-host Dexter. And today we've got a fun guest with us. John, you wanna give a quick little brief intro?
+
+John Kutay (00:43.458)
+Hey everybody, my name is John Kute. I'm head of growth GTM AI engineering at Rippling. my background's always been in mainly in
+
+Data and AI pipelines. In the beginning, it was mostly large-scale enterprise data ingestion, stream processing, and that quickly evolved into AI once there are demands there. And I took on solving some of these problems at Rippling, where we do a ton of fun agenc work to improve the quality and velocity of our of our outbound GT.
+
+Engine. And yeah, excited to be here. I've met up with you guys a bunch of times. You guys run some awesome events where people demo the latest, greatest AI implementations, and it's just been super fun to be part of the movement you created. So happy to join this pod as well.
+
+@vaibcode (01:47.856)
+I think the first time we chatted was like two years ago or a year and a half ago or something at the first on conference we had. I think.
+
+John Kutay (01:55.888)
+Dude, it couldn't have that long ago. It was probably like it probably feels like that, but maybe like six months.
+
+@dexhorthy (01:58.968)
+No.
+
+@vaibcode (02:00.654)
+Maybe a year ago. I don't know, man. Time time feels dilated in the AI world. You know, like two months feels like a year.
+
+John Kutay (02:06.094)
+Yeah, it does. It really does.
+
+@dexhorthy (02:06.145)
+Yeah.
+
+Yeah. I I mean I know you came to the second Aeon conference. Did you come to the one we did at the Chroma office, like the really small one?
+
+@vaibcode (02:16.347)
+n okay. Okay. The OG. Sadly John's not OG. yeah, no, I think one of the
+
+John Kutay (02:17.175)
+No, no.
+
+@dexhorthy (02:18.495)
+Okay. The OG. that's
+
+John Kutay (02:20.814)
+No, I didn't go to that one.
+
+@dexhorthy (02:24.321)
+That's fucking awesome.
+
+@vaibcode (02:26.03)
+One of the coolest things that I've I've learned is every time you came and gave a talk, John, one of the most fascinating things to us is a lot of people talk about how to use AI for developer workflows. That happens all the time. People have opinions on it, we have opinions on it. I'm sure you have opinions on it. But not a lot of people talk about how to use AI for totally orthogonal workflows that are just as important to a the h life cycle of a business. And what was always most fascinating to me was how much of an engineering mindset you had for things that most
+
+People don't think of as engineering. And I fa I realized after chatting with you so many times that that engineering mindset and applying that to growth and marketing is probably why you're able to successfully use AI in growth and marketing, because it is fundamentally engineering at some point. So I was like, I'd just love to hear your thoughts around like go ahead, Dex.
+
+@dexhorthy (03:14.017)
+Well and I
+
+John Kutay (03:14.041)
+Yeah.
+
+@dexhorthy (03:17.495)
+I was gonna say, like I I think there's like there's a lot of different types of of AI products out there. And there are there are the ones that like are consumer facing or like people say like AI for normies of like, hey, here's a thing that has a really cool demo that is a big splash on Twitter and everyone gets excited about it, but like you don't actually like it has to be so general because you're going for such a wide audience. And I I think it's really interesting to talk to people like John and people like other folks that we we hit we did a dinner last week of people who are like
+
+inside a company with thousands of employees, serving a set of hundreds or thousands of internal employees, like building a product that has to meet the needs of hundreds or thousands of people. it's this interesting middle ground where you can be very pragmatic and build very like specialized solutions. but also like you're actually delivering a ton a ton of value without having to be super splashy, super flashy. And I think I think it's like really like very aligned with what we like to talk about in the show here, which is just like
+
+What are things that people are really using to solve real problems and deliver a lot of value on large teams to large companies, whether you're selling a product into the enterprise or you're building a product inside an enterprise?
+
+John Kutay (04:27.77)
+Yeah, yeah. Those are yeah, I mean a lot to touch on there. I think r really like when we when we started, you know, this kind of era of growth engineering at at Rippling, I'll I'll get into this more, but I was, you know, brought in by you know, Alex Snatch and and and Conrad and Brandon Cammy.
+
+And really like the the demands of the business were were definitely to increase velocity. Like, you know, Rippling is an incredible company and shipping so many products to different you know personas and and you know job functions and really like the the goal is to be as you know consultative and direct with and relevant as as much as we are can can possibly be in our communications along with you know internal analytics.
+
+Like a lot of the problems that we have look with related to attribution, data ingestion.
+
+data processing, serving this in a useful way to sales and marketing leaders really align more with like traditional data engineering except now the the the demands are more like hey i want like an ai native way to not just like go look at a report i want to infuse ai into my operations and decision making and make it more per per prescriptive so
+
+@vaibcode (05:54.938)
+Can you make that more tangible, like from an output perspective? Like who's the person that used to do XYZ and then you guys built this whole growth engineering or like what are they doing now?
+
+@dexhorthy (06:02.081)
+Yeah, what are they doing now?
+
+John Kutay (06:05.868)
+Yeah, yeah. So a good example is is ops, you know, RevOps being able to see like, hey, as a system, like how many, how many emails are we sending? How are they converting? what are all the segments sending these emails?
+
+and understanding like you know all the personas receiving these emails what are all the sequence titles like what's performing best which teams perform best how many touches in a sequence matter like these are all just sort of you know traditional I think these are types of analytics questions that apply to like most B2B SaaS companies you know for one at at Rippling scale with you know tons of product lines and and
+
+segments and different sales teams. it's it's more of a challenging data problem, but not like insanely challenging. but this was solved by
+
+Business intelligence and reporting and ETL and you know data warehouse. and you would have all you know, and I would hear this at every enterprise that that I that I work with in the past where yes, you have the data, you have the report. Is the report bringing value? Is it in the path of operations for people to actually take actions from these reports? And there's never a good answer for that, whether it's a large enterprise or you know, a startup, like hey, are we truly actioning our analytics?
+
+because it would just sit in reports, right? Because and someone has to go find the report, they have to interpret the report, everyone has to agree that this report is the source of truth. Now
+
+@dexhorthy (07:38.901)
+And if they want to change to that report, there's like a lot of friction in turnaround time of like, Okay, well maybe it's just another column to the select, but maybe we actually have to plumb a thing through a bunch of data models to actually get you that answer.
+
+John Kutay (07:51.552)
+Yeah, exactly. So now like the the first class ex citizen of analytics is chatting with data and not only chatting with data but taking action and using data in the path of your your operation. So like hey, I wanna I wanna put together a new campaign, tell me what's working and just in just take all that data as context to to build out this campaign for me.
+
+So there, like you're actually gonna have the LLM go through and like go through your own semantic layer that like you as we as a data team have organized and take some skills, some prompts, like our internal you know, I don't want to call it ontology, but you know, at least some mapping of relations between different tables in a warehouse. And the agent can just go collate all that information and come back with some recommendations on copy, right? So that's like copy that you would use in in in emails because.
+
+@vaibcode (08:21.551)
+So
+
+John Kutay (08:51.416)
+we think it converts best and you know historically based on n number of emails to these different job titles like this is what really resonates and this is what gets people interested in the product yeah
+
+@vaibcode (09:02.393)
+So I I I'm gonna dig a little bit deeper into that 'cause that's really you know what's funny when you say that, I think of every single YC company that was going out two or three years ago that's like chat with your data, that's a good business. Is that a good business or are you guys like, no, just build it in house, it's so freaking easy. You and you can build it better in house and you can buy from somewhere else. What buy versus build, where does this fall?
+
+John Kutay (09:26.254)
+Oof.
+
+@vaibcode (09:29.155)
+Be honest.
+
+John Kutay (09:31.158)
+E y yeah, I mean I look, I we we I would say that it's it's certainly buildable at this point and it's not necessarily like super tough with all the you know everyone has access to LLM APIs. You can build a like your own like skills or a semantic layer, or you can use one of the kind of off the shelf
+
+@vaibcode (09:49.028)
+Yeah.
+
+John Kutay (09:58.754)
+Ontology products that like a Databricks or a Snowflake Cortex would give you. and I would say from that perspective, like you it still depends though, right? Because I think there's there's always gonna be gaps in you know how how frequently are you indexing this data, humans source to go update these skills.
+
+How do get access to the data in the first place? You have to build out a bunch of ETL. so I think there are like more vertical products that like productize the chat with data for a particular use case where I would say like if if if they can do that to you and kind of serve it on a platter.
+
+Then it's then it's it's useful. but if it's like generic business intelligence on your data warehouse, there's always gonna be this, you know, role of the data engineer and the architect to to fuse all that together. So I don't know if that's necessarily like a classic build versus buy. I would say it's more like implementation and internal like solution architecting.
+
+@vaibcode (11:03.661)
+Yeah, and you're and I think what I'm hearing is like you feel like it's always going to include some internal solutions architect to really get the maximum leverage out of the data. Yeah.
+
+John Kutay (11:12.526)
+Yeah, yeah, exactly.
+
+@dexhorthy (11:12.779)
+Yeah. I'd be I'd be really interested to kind of like visualize make more of this a little more tangible. do you guys want to do the whiteboard or or John, is there is there any of this that you're able to kind of like show us demo today and maybe we can do the whiteboard and we can talk through like here was the old way of thinking about this and here's here's how we think about it, or you can just show us the thing or we can save that for later. What what what would what what do you think would be more more more compelling, more tangible?
+
+@vaibcode (11:21.955)
+Yeah.
+
+John Kutay (11:38.898)
+yeah we can we can whiteboard it, sure.
+
+@dexhorthy (11:41.805)
+Okay, cool. Do you have the do you have the whiteboard link in the studio chat? You should be able to pull that up and just draw on the shared board.
+
+John Kutay (11:55.664)
+It's telling me to join. this is Excaladraw. All right. I'm I'm it's it it's suggesting my name as Rusty Hornet, and I'm just gonna go with that.
+
+@vaibcode (11:58.295)
+Yeah. We just do escalature whiteboards. this is
+
+@dexhorthy (12:05.085)
+That's that's great. All right. John Rusty Hornet coup tay. cool. Okay. So you you were talking about a couple like the old flow of like you have like ETL and then you have some warehouse. And then you this goes into like a BI system where then you have, you know, like analysts are like, you know.
+
+@vaibcode (12:05.09)
+Okay, okay.
+
+So
+
+John Kutay (12:21.52)
+Yeah.
+
+@dexhorthy (12:33.109)
+Which actually goes to actually goes to like, you know, sales, marketing, you know, GTM professionals.
+
+@vaibcode (12:33.238)
+Yeah.
+
+John Kutay (12:43.054)
+Yeah. So like, you know, you'll have like your applications and you know, email systems, website. and I'd also just say like, why don't I take this up higher?
+
+John Kutay (13:09.722)
+Data providers, you know, like your Zoom infos of the world and
+
+@vaibcode (13:14.626)
+Yeah. Like just like supporting data that you want. Yeah.
+
+John Kutay (13:18.608)
+just like data enrichment vendors to like tell you stuff about what's going like who's who and what's in the market. So then you have like you know a data sync you know pull in all this data and resolve all the relationships so actually it wouldn't resolve all the relationships and wow really I butchered this thank you
+
+@vaibcode (13:43.278)
+I can I can draw for you. Excala draw can be a pain in the ass. You just tell me where you want the arrows to go and I'll do A. Use A. A
+
+John Kutay (13:49.72)
+Yeah, yeah, yeah. What is the way to get an arrow like out of a box automatically?
+
+@dexhorthy (13:55.764)
+A for arrow.
+
+John Kutay (13:58.48)
+@dexhorthy (14:00.247)
+That's crazy. They changed the hotkeys. I actually still use five for arrows 'cause they used to all be numbers.
+
+John Kutay (14:03.785)
+no, I'm stuck to another era.
+
+@vaibcode (14:05.86)
+then you have to delete that one and you have to do it again. You can only click once. You have to click click.
+
+John Kutay (14:08.738)
+Okay. I like this
+
+No no it's stuck, dude. Not kidding. it was windmilling on me. anyways, I think everyone gets it without the arrows.
+
+@vaibcode (14:15.412)
+Yes,
+
+@dexhorthy (14:16.572)
+Ha ha ha.
+
+Yeah.
+
+@dexhorthy (14:25.217)
+Please don't blue screen our Excaladra instrument instance, sir.
+
+@vaibcode (14:28.182)
+Yeah, please.
+
+John Kutay (14:30.594)
+Yeah, yeah. And then like I guess like a lot of companies will do like actually like ELT, which is like I'm just gonna load the data and then you do your transformations in the warehouse.
+
+@dexhorthy (14:38.508)
+Like
+
+@dexhorthy (14:41.965)
+Is this D B T? Is this is this what is the
+
+@vaibcode (14:42.272)
+In
+
+John Kutay (14:45.24)
+Yeah, DBT would run like here on on your warehouse, so like
+
+@vaibcode (14:48.044)
+Yeah. It's just like pipes. It's just like data forwarding pipes basically.
+
+John Kutay (14:53.037)
+Yeah, yeah.
+
+@dexhorthy (14:53.247)
+Yeah, so this would be like insert into qualified leads or whatever, you know, select and then you have like the big table select with some joins and whatever, and you basically just have like a bunch of these queries that form a DAG that you know insert into qualified leads, you know.
+
+@vaibcode (15:03.874)
+Yeah.
+
+@dexhorthy (15:15.777)
+filtered and then you have some other query and so you like build up this set of tables basically. I think I used to have a picture of the the GitLab used to publish their DBT DAG and you can see like the thousands of like SQL queries that all build up into their one number of like what is this customer's propensity to churn or
+
+@vaibcode (15:34.606)
+Yeah. So when you guys started adding AI to the system, where did you first tackle it with? Because you have an existing system, I'm guessing. It's not like you were like ripped out every or did you guys say nope, we're gonna start from ground zero, nothing is the same.
+
+John Kutay (15:35.832)
+Yeah.
+
+John Kutay (15:42.381)
+Yeah.
+
+John Kutay (15:47.776)
+a bit of both. So then let's just take the same warehouse and like our first implementation with AI was like, hey, I'm gonna have AI agents that are just gonna like what happened there? Yeah. I'm just gonna have like AI agents like query this warehouse.
+
+@dexhorthy (15:59.863)
+Sorry, I'm just putting a picture over here.
+
+@vaibcode (16:07.854)
+So that's like V one, where you just start writing SQL queries against a known database and it kinda just starts working.
+
+John Kutay (16:13.356)
+Ye yeah, basically.
+
+So then it's a matter of, hey, how do we make sure that and and this was actually for like deterministic code paths. And when I say deterministic code paths, like we wrote code that explicitly would have a SQL query that's already defined and it would fetch data as context for an AI agent. So that's not the same thing as like Texas SQL, which I'll get get to later, right?
+
+@dexhorthy (16:41.779)
+Yeah.
+
+@vaibcode (16:44.952)
+So you guys started with actually tools.
+
+@dexhorthy (16:45.324)
+Okay, so it was literally just a tool that mapped to a like indeterministic code, the get leads tool would map to a specific query.
+
+John Kutay (16:52.612)
+Y Yeah, yes, exactly. So it was like the first phase of this was really like retrieval as a tool or an AI agent. And the the the the sequel was actually not AI code. The sequel is just executed in our deterministic code paths.
+
+@dexhorthy (17:08.62)
+Written by a written by a human, coded up by a human basically, or maybe by a coding agent.
+
+John Kutay (17:12.384)
+Yeah, exactly. Coded up by a human and executed by one. or no, it's not executed by a human, executed by deterministic code. Loads that into an AI agent's context, and then your AI agent's gonna do like something with that data, right? any number of use cases, like within a an account plan or a campaign plan or a strategy or like anything like that.
+
+@dexhorthy (17:19.85)
+Yeah. Yep.
+
+John Kutay (17:38.882)
+So the next phase of this was or do you wanna finish up what the thoughts are here?
+
+@vaibcode (17:45.676)
+Yeah you go. I guess I guess the next phase what was it? Text sequel? Like human puts in text
+
+@dexhorthy (17:52.023)
+Bye Bob, is someone is someone launching an airplane in your office? okay.
+
+John Kutay (17:56.176)
+that's me. Sorry, one second.
+
+@vaibcode (18:01.345)
+John is launching an airplane.
+
+John Kutay (18:04.857)
+I just turned I just turned it off, so we're in the boiler room here.
+
+@vaibcode (18:05.645)
+I was like where
+
+@vaibcode (18:11.157)
+Okay, I saw I apologize, John. Thank you for bearing with the heat. so yeah, what was the next phase? So you start with that, that was the first tool, and that I assume was a straight win, because now your agents can use the same tools that APIs that your humans were using. next step was what came after that?
+
+John Kutay (18:14.906)
+How good.
+
+John Kutay (18:28.812)
+Yes, the next phase of this was basically hey let's get agents to start writing SQL for us, which is like you know, text to SQL or you know, whatever, like user question.
+
+@vaibcode (18:38.975)
+Yeah, text sequel.
+
+John Kutay (18:51.824)
+Has a question AI answers it.
+
+@vaibcode (18:55.167)
+Answers. Yeah. And it can use SQL as one of the tools it has instead of just like a broad thing. And then and again, remind me, who is the user in this mind? This is an internal team user who's like trying to build like a sales report or a okay, cool.
+
+John Kutay (19:02.169)
+Yeah.
+
+John Kutay (19:11.182)
+Yeah. it it ranges from like RevOps, marketing, sales, you know, finance if they have questions about revenue.
+
+@vaibcode (19:19.981)
+So it's not an end cus it's not an end customer of Ripling, and it's not the engineering team at Ripling. It's basically anyone outside of those two buckets that is at Riplink. Cool.
+
+John Kutay (19:26.746)
+Yes. Yeah, this is this is our internal AI GTM system GTM AI system. exactly. So this is something we would we built out as a quote unquote agent loop. we tried
+
+@vaibcode (19:32.865)
+Yeah. Perfect.
+
+@dexhorthy (19:48.128)
+And is this just a web app that people use or like how did you build did you build this on top of other tech? Like how how is that architected?
+
+John Kutay (19:56.184)
+Yeah, yeah. I I have a good blog that talks about this. But basically it's all built using Rip Rippling's internal cloud infrastructure. So there's some some horizontally scalable Kubernetes pods that are handling the requests. we have one path for interactive. So maybe I'll actually diagram this out. Yeah. So
+
+@vaibcode (20:17.781)
+Maybe easier, yeah.
+
+John Kutay (20:23.84)
+we have some ECS pods here that are handling user requests and then there's a web app that is taking the requests from is there like a little user icon I can use? okay draw a little person on the left who's like asking a a a sales or marketing question. Yeah they're asking this.
+
+@vaibcode (20:42.473)
+I can draw one for you.
+
+@vaibcode (20:58.205)
+And they're basically asking that they go to your web app and that talks to like some back end system that you have that does this. Now, this is still so I'm gonna this still doesn't seem like a highly intensive token expensive system because this is still scales by number of people that you have. And while Rippling does employ a lot of people, I suspect, and tell me if this is wrong or not, I suspect more p most people were not sending like a million queries to this agent a day. They're probably sending like
+
+John Kutay (20:58.52)
+Okay.
+
+@vaibcode (21:24.555)
+Well, how many queries were like your top user sending at this time? Or was cost a concern?
+
+John Kutay (21:27.5)
+So what's interesting so the
+
+Yeah, the the one thing that's interesting is when a user asks a question like this, it's not like the agent's gonna just j write one query and execute it. The agent's actually gonna start going on its own little reasoning loop, like, okay, I'm gonna run a bunch of queries, I'm gonna collect some data, I'm gonna analyze it myself, I'm gonna come up with a summary, and then I'm gonna ask myself, did this answer the question? and that's actually later if we wanna talk about Jeb a bit and how he tested it, I can get into
+
+@vaibcode (21:41.794)
+Yeah.
+
+John Kutay (22:02.926)
+that but so it actually did create you know relative strain on our on our warehouse you know compared to like the existing traditional workloads of just like people looking up bi because bi is efficient right because you an analyst sets up the dashboard once the queries are usually pretty efficient
+
+@vaibcode (22:18.527)
+Yeah.
+
+@vaibcode (22:23.98)
+Yeah.
+
+@dexhorthy (22:27.082)
+And you can ca you can cache them and if t three people run the same query you you with the same filters, you just like already have the data on the BI side, yeah.
+
+John Kutay (22:29.967)
+Yeah.
+
+@vaibcode (22:33.419)
+Yeah.
+
+@vaibcode (22:37.036)
+So there wasn't I g there wasn't load on your AI system here, but there was load on your data warehouse because of the dynamic nature of the queries that the system was randomly making at points of the day.
+
+John Kutay (22:47.502)
+Yeah, exactly. so there's there's there's that element which is it's a probabilistic loop of you know n number of SQL queries per question. you know, it could be usually it would range from like, you know, maybe 10 to 20 SQL queries, maybe sometimes five, if it was like a really open-ended question that we hadn't seen before. and
+
+Compared to, you know, a traditional BI report where yes, there's you get the advantages of the warehouses caching and the BI tools caching and they're always good queries. A LLMs don't always generate good, efficient queries. and we had to do a lot of when after we released this, we had to do a lot of work to actually do some SQL validation and more.
+
+@dexhorthy (23:34.319)
+dude, I wanna hear about that. Like what are the things when an agent writes a query, what do you do the qu to the query before you actually allow it to run?
+
+@vaibcode (23:40.46)
+Do you do you touch the query planning? Like how do you
+
+John Kutay (23:44.63)
+Yeah, yeah.
+
+putting just together in the agent path a tool called SQL Glot, which is just an open source SQL parser.
+
+@dexhorthy (23:56.926)
+dude, we love Sequel Glott. That's the that's the what is the what is the name of their D V T competitor, SQL Mesh?
+
+John Kutay (24:06.733)
+@dexhorthy (24:06.965)
+It's Toby Mouse thing, right? SQL Glot's like a SQL parser, right?
+
+John Kutay (24:10.808)
+Yeah. I don't know the DBT's equivalent. but anyway.
+
+@dexhorthy (24:14.921)
+No, so the the guys who made SQLglot make a thing called SQL Mesh, which is like an alternative to DBT. But anyways. no, that's so there's those other guys who rewrote DBT and Rust, and they got built bought by DBT and like rebuilt basically DBT V2, but there was another company I think they got bought by Five Tran? Although I think DBT got bought by FiveTran. Wait, who bought Toby?
+
+John Kutay (24:21.572)
+Did they get acquired by DBT? Is that the same one? Or are they competitive?
+
+John Kutay (24:39.372)
+DBT is FiveTran too. So anyways.
+
+@vaibcode (24:41.708)
+Anyway, so why?
+
+@dexhorthy (24:43.869)
+I yeah, I think I think Toby Mao got bought by a five tran as well.
+
+John Kutay (24:48.919)
+Yeah.
+
+@vaibcode (24:50.422)
+So you use SQL Glot to basically like help make your query slightly more optimal and give feedback to the LLM about like this is going to be an expensive query. Like you pro be sure you want to do this or something along those lines.
+
+John Kutay (25:00.345)
+Yeah.
+
+@dexhorthy (25:02.719)
+Does SQL Glot do you understand the like indices? Like do you actually have to talk to the warehouse and do a plan, or do you just have code where you analyze the like AST itself to decide if it's efficient?
+
+John Kutay (25:13.946)
+Yeah, it's more just parsing the SQL query itself. work we did on indexing and like more efficient retrieval was basically just by looking at the common queries that these AIs are running. and then there's a we would separately in parallel like set up specific
+
+Rolled up tape like dimensions of this data that was being frequently requested by the users of this AI agent. And we would just make that a an aggregated table.
+
+@vaibcode (25:46.23)
+So you have and how was that working? Was that a human in the loop process, an automated process? Okay.
+
+John Kutay (25:49.966)
+Yeah, I was very human in the loop. It would be like, yeah, and and sometimes people would ex explicitly request that data. And if we felt like it was gonna get a lot of traffic, then yeah, we would do we would build all the joins in like our own Databricks pipeline. and then have skills and tools to retrieve that per that that specific data. So the AI the agent always knew to just like execute use this tool to retrieve like this particular bespoke data set that we already prepared. So like
+
+@vaibcode (26:12.716)
+So it wasn't just go ahead.
+
+John Kutay (26:16.911)
+So I think this is all like an evolution of like a traditional data engineer's job. Like I I think that they they they'll continue owning this this part of the problem because I I I haven't seen like a good solution that's just gonna go analyze your entire warehouse, all the queries coming in, build the semantic layer automatically. I'm sure someone would try to sell you that. but I think it would break it in.
+
+@vaibcode (26:21.387)
+Yeah.
+
+@vaibcode (26:30.23)
+Yeah.
+
+@vaibcode (26:36.788)
+I think the hard part is like if you're buying that, like that person external software doesn't know how long that that query is going to be relevant. Is it a query that's relevant for this week or is it a query that's gonna be relevant for the next two months? That's like context that kinda lives in the company's head. And like whether you spin up an index or not is literally a function of is it go how often are we gonna go do this in the future. It's like a bet on how often you'll do it.
+
+John Kutay (26:50.862)
+Yeah.
+
+@dexhorthy (26:57.45)
+Yeah, was it ex exploratory or is this like gonna become part of like a standard operating procedure?
+
+@vaibcode (27:03.156)
+Yeah, exactly.
+
+John Kutay (27:04.622)
+Yeah, precisely.
+
+@vaibcode (27:07.968)
+I'm gonna screen share something really fast because I think it's related. You wrote a really good blog post. this one.
+
+John Kutay (27:10.032)
+Okay.
+
+@vaibcode (27:17.844)
+It all comes back to Jev. And I know opening I released the model today. And there's two questions I want to phase into here. One, Jev comes out, you have this kind of pipeline. I'm sure you have a lot of control loops in there, so you're you guys are probably like, shit, can we cost cut latency, cut cost, and just swap over? It would be good. You run some tests. I don't know if I didn't see it in either. Quick one word answer. Does it work? Does it not work?
+
+John Kutay (27:40.25)
+JEV in general works if you find the right use cases for it. and I think there's there's definitely places where I kind of push it to the limit. and there's certainly a lot of use cases it works really well for. I I I did a good job finding one where it didn't work well.
+
+And it was mainly the there's a basically a step in the Texas SQL agent loop, which is like, did we actually adequately answer this question? and you can feed context to to to Jeb, right? So like we you could feed it a lot of the conversation context and some some of the data from our internal corpus of of tables and meaning and things like that. and it would work in the agent loop and make it faster and more efficient, but the answers were.
+
+wrong. so the answers were worse. Yeah it it it tanked our our evals. It didn't handle the rubric well. Maybe maybe that was just an implementation thing for me and like someone from Jet will you know come dunk on me later. It's it's it's possible. Yeah.
+
+@vaibcode (28:43.648)
+Yeah, but like basically like a heavy reasoning task didn't do well. What about this classification task that you have over here where like you know at least from what I saw when I was re reading this is like you have emails, can you somewhat extract some of the structured outputs here? How did that work?
+
+John Kutay (28:58.872)
+Yeah, that worked really well. and basically we have a similar classification workload internally that we were using. I was using an LLM for. and it performed dramatically better, it was much faster. I don't have the exact costs, but I mean you can imagine that it's it's it's much cheaper.
+
+@vaibcode (29:16.982)
+Yeah. Yeah, it's yeah, it's basic yeah.
+
+@dexhorthy (29:20.404)
+Yeah.
+
+John Kutay (29:20.746)
+It and this is a great implementation for it. So we actually built some of this into our our internal agent harness just for like, hey, I wanna classify some like broad dimensions across like data that's that's hard for me to like describe to you.
+
+So I I I I kind of like these these abstractions where people can turn kind of free-form data and you know somewhat vague questions into really structured outputs.
+
+and add clarity and add organization to things that are hard to organize for a large business. that's that's moving super fast. And I think with with like just in terms of like those aspirational goals like Jeb is super useful.
+
+And there's there's there's definitely a lot more use cases. So all the places I'm doing like LLM classification and also like s we have some some internally trained ML models that I'm I'm also just you know candidly looking at Jeb to to to replace, but it's still very early, yeah. And then
+
+@vaibcode (30:14.069)
+So
+
+@vaibcode (30:28.683)
+place. Yeah. So OpenAI released something today where they had their own little Jeb alternative.
+
+@dexhorthy (30:31.616)
+How do you
+
+John Kutay (30:35.748)
+Ye I saw that. Can you can you tell us about it? It was like a decision API, right?
+
+@vaibcode (30:40.851)
+Yeah, so like are you guys gonna what's the deal? w do you he do you look at that and you're like, okay, now to run this eval against the system. and just see how it works. Go.
+
+@dexhorthy (30:44.097)
+So
+
+@dexhorthy (30:48.81)
+I have so yeah, I have I have three interesting questions here that are all kind of related to that, which is like how do you think about finding places where dropping in a like decision model might be better than what you're doing today or unlock new things? And then how do you evaluate basically like what
+
+whether to use JEV or not. And then, you know, yeah, the third one is like if there's a new JEV or an alternative to JEV with a similar API, like how would you think about like deciding which one to use or or testing both of them?
+
+John Kutay (31:21.783)
+Yeah. I think it
+
+Definitely we we we have the internal like internal benchmark and then that makes me think, man, is our benchmark good enough? which you know only happens when we run our benchmark against new and interesting things with some urgency behind it. So I think like yeah, my my answer would be yeah, we want to test all the things. Like we ultimately want to do what works best and how do you define like what works best? It's ultimately like testing it with with real data and going to ground truth.
+
+and rolling it out to rolling it out to users and ultimately they're they're happy with it. And it's it's so if you
+
+@vaibcode (32:03.147)
+How do you measure that?
+
+What's the best proxy you have? every time I worked on an AI system there's no correct truth. It's just like the proxy.
+
+John Kutay (32:12.068)
+There's our our benchmarks on the on the engineering side, which we run to give us like a certain amount of confidence. We're like, this is gonna work great. Let's let's let's go in and deploy this. And then there's reality, which is people start slacking you that it doesn't work. Or, you know, we also there there are a lot of places where we explicitly take user feedback, like thumbs up, thumbs down feedback, and we and we do look at that that closely. there's
+
+@vaibcode (32:41.375)
+What drives you guys are interested 'cause you're basically an internal product team, effectively. What percentage your feet what percentage of decision making comes from your benchmarks? Comes from the Slack messages that are in some channel or some dire DMs or something, or from this feedback system that you've built? And like how often are you updating your core benchmarks off of user behavior? Like how what's that kind of loop looking like for your engineering team?
+
+John Kutay (33:07.682)
+Yeah, we we we we try to balance it as much as much as possible. Like we we make the the the benchmarks and internal evals and rubrics you know with an engineering mindset and then we look to real users to validate it and if if if the benchmarks says if the eval said it great and then we just see a bunch of like slack pings in the feedback channel like this isn't working, we're like, Okay, we did a bad job with our benchmarks, so we gotta go fix that. so I I would like
+
+I can conceptually at a high level I want to say it's like 50-50 almost. But the but like running our evals is like just part of our CI at this point for any AI workloads. So like we wouldn't we wouldn't make any major changes to our agents without without running yeah without running evals.
+
+@vaibcode (33:51.935)
+Without running CI.
+
+@vaibcode (33:56.416)
+Wait, how much can I ask? and you can say no, I can't answer this. How much do you spend on evals a month or okay Yeah, that's that's okay. I I you know, I I was
+
+@dexhorthy (34:00.276)
+Ha ha ha.
+
+John Kutay (34:03.586)
+Yeah, I can't I can't answer this because I I don't want to look.
+
+@dexhorthy (34:07.038)
+If you have to ask you can't afford it.
+
+John Kutay (34:09.688)
+Yeah.
+
+@vaibcode (34:13.949)
+I think w the higher level question I was trying to answer is like what's the scale of AI systems that you guys are trying to evaluate? Like how many different workflows? Are are most workflows stable or are most workflows constantly being reevaluated? And you're mostly spending most of your time on new workflows that you're adding? Like how does your engineering team split and make d like team decisions?
+
+John Kutay (34:35.602)
+y yeah, these are all
+
+good questions that yeah yeah well well look so I I I think it's it's definitely a matter of moving as fast as we can. Like we're an internal team and we're we're here to to to serve the business faster than any like collection of vendors possibly could so and we also have like a really strong intuition of like the entire like go to market system end to end and like our entire you know product
+
+@dexhorthy (34:39.276)
+Mm-hmm.
+
+@vaibcode (34:40.459)
+That you can't answer. Okay. That's okay.
+
+John Kutay (35:09.144)
+Roadmap and all the best places to use Rippling AI, like Rippling AI is really embedded into our engineering and feature management and collaboration processes too. So like the fact that it's like they they share data across each other, like our roadmap and our collaboration and like what we ship. Like we built like this, I don't want to call it a software factory yet. but we have built like a pipeline to basically triage user asks and create the PR. And we're like building our our go-to-market.
+
+you know Martex stack like like based on like real user feedback on a on a daily basis which is just insanely awesome.
+
+@vaibcode (35:44.789)
+So does that mean you guys pr your pipelines process every single email that goes in and out of Riplank?
+
+John Kutay (35:52.828)
+for for like the in the marketing and outbound stages, yeah. Not like AE's like gonna close a deal, like you know, they can send their own emails, yeah, for sure.
+
+@vaibcode (35:57.419)
+Yeah. So Yeah, yeah, yeah, yeah. Okay. Like like customer comms basically.
+
+John Kutay (36:08.448)
+Y yeah, and like and even when S DRs draft them,
+
+You know, because we we have a really strong world-class sales organization, SDR organization. and you know, we we trust them to write their emails. Like we don't need to like have AI like do that for them. but there's a lot of AI assistance and like help me like analyze the market, help me like analyze this customer, like you know, what are the opportunities and like collating all that information. So like we're we're constantly being pushed to do like more analysis.
+
+@vaibcode (36:19.423)
+Best.
+
+@vaibcode (36:26.292)
+Mm-hmm.
+
+John Kutay (36:43.522)
+like analysis as a co-pilot because that's really what people want they want to like do that part faster so they can actually do like the the the I don't want to call it human in the loop but like they can do like the real like sales and marketing work themselves and like data and you know research and ingestion all those things are kind of abstracted from them.
+
+@vaibcode (37:06.032)
+It sounds it sounds like one general trend I'm hearing from you. And this is really fascinating 'cause different than it was like two years ago. Instead of making a million micro apps that are all good for one thing, you guys are kinda really going towards like the one God app. That's like everyone logs into this one thing, it does everything for them, and you y one team owns that app and continues to make it better. And Ripley's case, that's your team.
+
+John Kutay (37:30.84)
+Yeah. And I I think you're seeing a lot of implementations of that. I you know ramp writes writes about there like GTM super app as well. and
+
+@vaibcode (37:39.142)
+instinct mews are basically that for like the common person. Where it's like the super app is the way to do it.
+
+John Kutay (37:46.135)
+Yeah, yeah. It's like
+
+I I I just gave a talk last week at the GTM engineers show in San Francisco last Thursday. I'll post about that too. and basically the the takeaway from that, you know, we had hundreds of go-to-market operators and attendance is like we all want teams that are gonna build this GTM super app. And really like the coding agents are like the the strongest agents right now, especially if you look at just like how much sheer revenue they're bringing in and like how much value they're bringing to enterprises. So like you rather than
+
+Building your whole go-to-market system around like n number of like Martech tools and like yeah, just you know, traditional slow data team and BI team. You just want like a coding agent to like own like all your all your logic and like as much context as it can. And it's either gonna do a lot of those operations itself or build the system and maintain the system and improve the system that
+
+@vaibcode (38:40.682)
+Yeah, and the guardrails and everything you need on there so that like your messaging is somewhat consistent. You're not accidentally sending something that's not in line with brand values or anything else to these motions.
+
+John Kutay (38:49.488)
+Yeah, yeah. by the way, I'm sorry to do this. I I I do have a hard stop. if we want to do something. Yeah.
+
+@vaibcode (38:56.906)
+Okay. I have one last question for you and then I'll let you go. how do you guys deal with hallucinations? How bad is it for you guys? Is it still a problem? The model's gotten good enough where you're like, it's such a small percentage of the problem we don't really think about this kind of problem as much.
+
+John Kutay (39:11.8)
+Yeah, honestly it never really comes up anymore. We're
+
+@vaibcode (39:14.202)
+matter. Accuracy is like good like baseline model given a question will probably answer it, given the right data.
+
+@dexhorthy (39:19.4)
+I Yeah, go ahead.
+
+John Kutay (39:21.346)
+Yeah. and I think we've done a lot of work to put the right guardrails around the AI and you know, there's a whole program around it. And I I think like hallucination has gone away. I think there's like slightly inaccurate output or you know, that we still deal with, or not the intended output. but it's not like a hallucination where it's like, the LM just like came up with some total garbage from nowhere, you know.
+
+@vaibcode (39:44.97)
+It's so funny you use the word slightly incorrect. It's like our our benchmark for what how b good these things are are quite good now. It's just like the default answer is correct.
+
+@dexhorthy (39:53.803)
+Yeah, I haven't I haven't heard anyone complain about hallucinations in a long time. Like the the the thing that we get sometimes in like in our GTM workflows, which for me like Cloud Code running off or a pile of markdown files with some like access to our some of our like database tables that are that are anonymized, is sometimes it will be like, Yeah, this person I couldn't figure out who they were, but it won't be like
+
+@vaibcode (39:57.609)
+In a while. Yeah.
+
+@dexhorthy (40:19.168)
+Yeah, this person is an AI engineer over there, which is like what the old chat GPT would just like make up a role for somebody 'cause it couldn't figure it out. Now it's just like yeah, search the web, I couldn't find this person, and that's what I told you. That's what I wrote in the
+
+@vaibcode (40:31.432)
+Yeah. Cool. John, this was great. Thank you for having us here. Thank you for sharing your knowledge and your thoughts with some team. I know you've got to go, so we'll let you bounce. Anything you last words you wanna say or drop out with? Otherwise we'll close it out.
+
+John Kutay (40:45.368)
+No, no. you guys are great. I I'm always following along with your stories as well. Learn so much from from you. and yeah, thank you for having me on the show.
+
+@vaibcode (40:56.276)
+Thanks for having me here. Thanks for joining, John. Dax, you wanna close out an outro? Do it. You can screen share.
+
+@dexhorthy (40:57.908)
+Thanks for coming, John. This was great. yeah, absolutely. Let's do it real quick. I'm gonna I'm gonna take over the screen share. We're gonna do this tab. real quick, so today we sat down with John from Rippling. We talked about their the old way that they had data pipelines and ELT and BI, and then their their progress towards using retrieval as a tool and then Text to SQL as a tool, and how they build kind of a unified what they call growth OS,
+
+system for people at Rippling to get answers and make decisions based on a whole bunch of data and embeddings and how they design their agent and then also like how they think about JEV and decision models and evals and deciding when to swap things in and out. obviously there's some sensitive stuff here, so John couldn't share every single detail.
+
+But a really cool deep dive in a real company building apps for thousands of of GTM professionals. so this is really fun. Actual real applied context engineering and all the stuff we talk about made real. So this was super fun. Thanks, John, for joining and let's get into the show.
+
+@vaibcode (42:01.259)
+Nice work. I'm gonna stop the recording and hopefully it was entertaining.
+

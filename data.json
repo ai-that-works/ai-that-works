@@ -29,10 +29,11 @@
       "eventDate": "2026-09-29T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=bGMiRmXbRUs",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=bGMiRmXbRUs",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-29-gtm-engineering"
       },
       "season": 2,
@@ -1675,14 +1676,14 @@
   ],
   "meta": {
     "totalEpisodes": 80,
-    "completedEpisodes": 74,
+    "completedEpisodes": 75,
     "upcomingEpisodes": 1,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-10-02T16:58:21.330Z",
+    "lastUpdated": "2026-10-02T21:09:28.800Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

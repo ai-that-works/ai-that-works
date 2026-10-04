@@ -16,8 +16,32 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Fri, 02 Oct 2026 16:58:21 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 02 Oct 2026 21:09:28 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[GTM Engineering and AI at Rippling]]></title>
+      <description><![CDATA[In this episode, we break down GTM Engineering, the practice of applying software engineering principles, custom data pipelines, and AI agents to go-to-market ops. We will be joined by John Kutay at Rippling to see how they do this in practice
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+
+
+Watch: https://www.youtube.com/watch?v=bGMiRmXbRUs
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-29-gtm-engineering
+Event: https://luma.com/gtm-engineering
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=bGMiRmXbRUs</link>
+      <guid isPermaLink="false">aitw-076</guid>
+      <pubDate>Tue, 29 Sep 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=bGMiRmXbRUs" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[All About Jev]]></title>
       <description><![CDATA[Jev has been making lots of waves in the AI world this week. This week on the podcast, we will dive into jev and discuss how token generation may be holding back your agent architecture and how jev compares to and complements BAML. We'll look at what type safety means across different layers of the stack, why generating text for routing and classification is an antipattern, and how to combine fast decision models with BAML-orchestrated workflows for production agent architecture.

@@ -12,10 +12,11 @@ description: |
 event_link: https://luma.com/gtm-engineering
 eventDate: 2026-09-29T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=bGMiRmXbRUs
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-09-29-gtm-engineering
+  youtube: https://www.youtube.com/watch?v=bGMiRmXbRUs
 season: 2
 episode: 76
 event_type: episode

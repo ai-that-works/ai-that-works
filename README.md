@@ -129,7 +129,7 @@ Meet the Speakers🧑‍💻​
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-09-29</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#76</strong>: GTM Engineering and AI at Rippling</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-09-29-gtm-engineering">code</a>
+          <a href="https://www.youtube.com/watch?v=bGMiRmXbRUs">watch</a> • <a href="./2026-09-29-gtm-engineering">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">In this episode, we break down GTM Engineering, the practice of applying software engineering principles, custom data pipelines, and AI agents to go-to-market ops. We will be joined by John Kutay at Rippling to see how they do this in practice
