@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-10-20-building-evals-on-production-data",
+      "guid": "aitw-079",
+      "title": "Building Evals on Production Data",
+      "description": "We’ve done a ton of deep dives on eval design and eval frameworks, today we’re gonna talk about practical examples for taking production data and using to design and extend your eval system.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/evals-on-prod-data",
+      "eventDate": "2026-10-20T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-20-building-evals-on-production-data"
+      },
+      "season": 2,
+      "episode": 79,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-10-13-software-factory-debate",
       "guid": "aitw-078",
       "title": "Software Factory Debate",
@@ -1695,15 +1715,15 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 81,
+    "totalEpisodes": 82,
     "completedEpisodes": 75,
-    "upcomingEpisodes": 1,
+    "upcomingEpisodes": 2,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-10-08T17:27:36.784Z",
+    "lastUpdated": "2026-10-08T17:37:32.431Z",
     "generatedBy": "validate-metadata.ts"
   }
 }
