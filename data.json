@@ -1,6 +1,26 @@
 {
   "episodes": [
     {
+      "folder": "2026-10-13-software-factory-debate",
+      "guid": "aitw-078",
+      "title": "Software Factory Debate",
+      "description": "Zach is the CTO of Warp, and he has a lot to say on software factories and how to get the most out of agentic coding. Dex and Zach agree on some things, and it seems like they might disagree on one or two. \n\nWhiteboard-backed debate format moderated by Vaibhav, so it will probably get extra spicy. don’t miss this one.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/software-factory-debate",
+      "eventDate": "2026-10-13T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-13-software-factory-debate"
+      },
+      "season": 2,
+      "episode": 78,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
       "folder": "2026-10-06-building-a-memory-pipeline",
       "guid": "aitw-077",
       "title": "Building a Memory Pipeline",
@@ -17,7 +37,7 @@
       },
       "season": 2,
       "episode": 77,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1675,7 +1695,7 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 80,
+    "totalEpisodes": 81,
     "completedEpisodes": 75,
     "upcomingEpisodes": 1,
     "workshops": 3,
@@ -1683,7 +1703,7 @@
       1,
       2
     ],
-    "lastUpdated": "2026-10-02T21:09:28.800Z",
+    "lastUpdated": "2026-10-08T17:27:36.784Z",
     "generatedBy": "validate-metadata.ts"
   }
 }
