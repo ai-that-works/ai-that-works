@@ -146,6 +146,36 @@ uv run python main.py "Start" --tui
 uv run python main.py "Start" --interactive
 ```
 
+### Optional Parallel web tools
+
+Set `WEB_SEARCH_PROVIDER=parallel` to use [Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp)
+for the existing `WebSearch` and `WebFetch` tools in both CLI and TUI mode:
+
+```bash
+uv sync
+uv run baml-cli generate
+export OPENAI_API_KEY="your-key-here"
+export WEB_SEARCH_PROVIDER=parallel
+uv run python main.py "Search the web for BAML documentation, then fetch the getting started page"
+```
+
+This connects over Streamable HTTP to `https://search.parallel.ai/mcp`. No Parallel
+account, API key or saved credentials are used. Anonymous search uses Fast mode;
+the free service has lower rate limits and is intended for light use. The agent
+still needs its model API key. Fetch returns excerpts focused on the first 200
+characters of the tool's prompt. Anonymous MCP does not support `allowed_domains`
+or `blocked_domains`; requests with these filters return an explicit error.
+
+Unset `WEB_SEARCH_PROVIDER` to keep the existing Exa search and HTML fetching
+handlers. Parallel calls have a 60-second overall timeout, propagate task
+cancellation and return MCP errors as tool results.
+
+Run the provider and runtime dispatch tests after generating the BAML client:
+
+```bash
+uv run python -m unittest discover -s tests -v
+```
+
 ### Available Commands
 
 ```bash
