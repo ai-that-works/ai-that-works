@@ -493,8 +493,11 @@ async def execute_agent(tool: types.AgentTool) -> str:
         return f"Sub-agent error: {str(e)}"
 
 
-async def execute_tool(tool: types.AgentTools, working_dir: str = ".") -> str:
+async def execute_tool(tool: types.AgentTools, working_dir: str = ".", web_session_id: str | None = None) -> str:
     """Execute a tool based on its type using match statement"""
+    if tool.action in ("WebSearch", "WebFetch") and os.getenv("WEB_SEARCH_PROVIDER") == "parallel":
+        from parallel_search import execute_parallel_tool
+        return await execute_parallel_tool(tool, web_session_id)
     match tool.action:
         case "Bash":
             return execute_bash(tool, working_dir)
