@@ -1,0 +1,2020 @@
+@dexhorthy (00:06.835)
+What's up dude? How we doin'? Vibov, are you leaving? Nice. Finally, we'll be free of your pedantry for the next hour until you until you hit me up in Slack. Alright, he's gone.
+
+@vaibcode (00:08.736)
+Pretty good. Yeah.
+
+@aaronvi (00:20.718)
+He's gone. He's gone. Right next to me. But yeah, how's it how's it going? Yeah, exactly. Now you see another another angle of our office.
+
+@dexhorthy (00:24.537)
+I know, right? I was like, wait, I see that whiteboard from both sides.
+
+@dexhorthy (00:32.947)
+what's up everybody? This is the AI that works show where we talk about AI that works, how to go beyond the demo and real techniques that help you do the thing. I'm Dex, I'm the CEO and co founder of Human Layer. We build a multiplayer coding agent workspace. I'm joined by Aaron, the co founder and CTO of BAML. Do you wanna do a quick I don't know, tell tell them about the programming language, dude?
+
+@aaronvi (00:54.454)
+Yeah, we're we're making a programming language to build with AI and build AI pipelines. And and then yeah, well I can't wait to show you what what we're building using BAML in this demo as well.
+
+@dexhorthy (01:07.911)
+Yeah, this is gonna be a really fun show. So today we're gonna talk about the human layer team and the boundary team kind of joined forces. if you remember, we did an episode probably two months ago about a memory pipeline. I actually meant to pull this up. Let me see if I can find this.
+
+@dexhorthy (01:32.627)
+The editor will.
+
+@dexhorthy (01:41.021)
+This? No. Alright. we're not gonna we're not gonna we're not gonna show what we did last time, but I will show you what we're doing this time. And Aaron, I'm gonna share the whiteboard with you. but basically we worked with the boundary team to design a system to learn from your agent traces. and it's a really interesting pipeline and pushes the pushes the boundaries of what you can do with structured output and new models like JEV, super exciting stuff. I can
+
+@aaronvi (01:50.178)
+Yeah.
+
+@dexhorthy (02:08.016)
+Erin, I'm gonna share the do you have the studio chat open? I'm just I'm gonna share the whiteboard with you in case you in case you finding yourself wanting to help draw. so there's that. I am going to share my tab. if I start sharing something else, just shout at me. But basically, the basic idea is, you know, when you're running an agent, you have your system prompt, you have your tools, you have a user message. Maybe the user says something like, you know, make make me a billion dollars, make no mistakes, ultra think.
+
+@aaronvi (02:13.378)
+Yeah.
+
+Yeah, yeah, yeah.
+
+@dexhorthy (02:37.978)
+The agent's gonna read and write and edit a bunch of stuff, and then maybe say the app is ready, and then the user might come in and say, you know, this sucks for reason one or reason two. They they reveal some preference, the agent goes and fixes it, the user gives more feedback, and we keep going on from there. And the idea is these user messages, that's not what I want. these user messages or like what the assistant is doing, if it has to change something and run bash and then change more stuff, and it's like
+
+Hill climbing. Either the agent learns something in a session or the user learns something in a session. And then when you go start your next session, that kind of learning gets lost in your in your fresh context window. So we wanted to build a system to take all of your past conversations and turn it into recommendations that the model gave for Clotum D snippets or anything like that. and Aaron Sh go ahead.
+
+@aaronvi (03:30.722)
+Yeah, just you know
+
+Stuff that like the agent gets stuck on all the time that you're like, my god, please do not run that command again. And some of this is really just tribal knowledge. and some of the other information takes like you know 500 tool calls to figure out by the agent. And maybe you don't want to spend 500 tool calls. You could just have a little snippet or like a a diagram or a a flow of the architecture of your program and put that in CloudMD, and then next time the agent
+
+@dexhorthy (03:42.63)
+Yep.
+
+@aaronvi (04:02.345)
+won't get confused. But the problem is how do you find that? And how do you decide what makes it into your Claude MD per se, or like what makes it into a into your memory spank.
+
+@dexhorthy (04:13.5)
+Yeah, and many of these memories become out of date, and we can talk about kind of like, okay, how do you actually like constantly also refine this thing? there's some there's some approaches you probably heard of, like compounding engineering, or Matt Pocock just released his retro skill, which is like go figure out what went wrong in past sessions and make sure it doesn't happen again. but yeah, I I I I would say kind of like we started this with a very naive system, which was like
+
+@aaronvi (04:21.804)
+Yeah.
+
+@dexhorthy (04:42.182)
+We would take one of these context windows and we would just take the user and assistant messages and strip out all the tool calls just for like efficiency. and we would send this into a why are these all dotted? Sorry. We would send this into a single like haiku structured output just as like a proof of concept. And what we would get out would be these blocks of like, you know, findings.
+
+And then you would have like finding number one would be you know you know, the memory that we wanted to pull out. We actually called these context shards, because memory is like too too generic and these were things we wanted to be like conditionally triggered. but you would have you would have like the shard, you would have the like reasoning of like why is this a thing that should go in your in your memory system in your Clot MD or in your skills or whatever it is. We would have
+
+@aaronvi (05:19.532)
+Yeah.
+
+@aaronvi (05:22.935)
+Yeah.
+
+@dexhorthy (05:38.738)
+Do you remember what else was in there? There was like a citation of like what was the exact Yeah, exactly. yeah, and then it would have like, you know, session ID, message ID, et cetera, so that we could tie it back to a real conversation event.
+
+@aaronvi (05:41.077)
+Yeah, citations like which sessions, yeah.
+
+@aaronvi (05:49.676)
+Yeah.
+
+@aaronvi (05:55.498)
+And and the user ID, right? One of the interesting parts about human layer is that many people are in your org and you can kinda analyze all of these sessions across your whole team, right? So if two different people are running into the same problem, it's like, okay.
+
+@dexhorthy (06:09.04)
+Right, yeah, we actually have yeah, we have
+
+Yeah, w you might have user one and then user two gives like a separate message. and so you want to be able to track who said what. and so this would give you out like a list of things that would kind of display in the UI. you know, and and then the user could like, you know, shard and then they had this like enable button basically, which would enable it for a task or for sessions or whatever it is. this was really, really bad.
+
+Like it was like directionally correct and like some of the things were good. but you know, we had to keep adjusting the prompt here. And so the BAML guys were doing some work where they work with companies they like to and by the way, if you're building an AI pipeline, you should talk to them. but they built they they basically are looking for use cases for BAML as a language for building AI pipelines and for building really good sort of tools of this shape. And so Aaron's gonna I'm gonna stop sharing, I'm gonna let Aaron kind of talk through the process and and what they built.
+
+@aaronvi (07:07.211)
+Yes.
+
+Yeah. Yeah, so I'll share my screen. I have a little a few set of slides we can sort of like look at and then the actual sort of final results. So why don't we start with the final results maybe? Like just to like what it what it looks like. give me a sec.
+
+@dexhorthy (07:25.311)
+yeah. Do you want me to do you want me to run the run the run the the dev server?
+
+@aaronvi (07:32.301)
+I have it here, but I do need to share my screen and I might need to rejoin. Yeah.
+
+@dexhorthy (07:38.534)
+Okay, drop and come back. I will get the thing running, open.
+
+@dexhorthy (07:55.154)
+Stand by folks.
+
+@dexhorthy (08:27.73)
+cool.
+
+@aaronvi (08:31.693)
+Cool.
+
+Okay, you should see this window with kind of like this pipeline view. So this is essentially the I'll show you what we generated first. So I ran this in like you know one week of sessions for our repo for my team. And you'll see that we created like three different sort of like MD files. And they're actually tied to specific regions in the code. So if the agent is working on this thing called BAML compiler to TIR.
+
+@dexhorthy (08:47.142)
+This is for your team, for the BAML team. Yeah.
+
+@dexhorthy (08:58.034)
+Yeah.
+
+@aaronvi (09:03.145)
+Yeah, you know, we we added like one thing here and like you know it's just saying like a very very generic like this is what this thing does. It's just like a one-liner. not all of these are amazing, we're still tweaking them. But if you go into like BAML built-ins, for example, it gives you like some insights that are just like kind of more tribal knowledge, like don't use add at internal syntax and like here's the two sessions that you know came up with that information. And
+
+This website is definitely Yeah.
+
+@dexhorthy (09:32.53)
+So this is this is a this is a web app you built to kind of inspect the results of the pipeline so that you could iterate on
+
+@aaronvi (09:40.839)
+Exactly. So like for example in in in CloudMD, it's like it has sections of like where should you look at? You know, like if you're an agent looking at this repo and you're trying to find information, how can you find that information? Like what what's the general architecture of this thing? then there's also rules and then there's also like BAML language facts. So for example, an explicit first self parameter marks an instance method and becomes its receiver. methods without self are static. So you know if
+
+If you don't understand what that means, that's okay. But this is a very specific language thing about BAML that an agent should know about. And in here there were three sessions and two people that kind of like gave this feedback or like that ran into this fact, essentially. And then we like coalesced that using our pipeline that I showed you earlier and came up with these three categories of things that you might want to put in your context chart, essentially. So that's the end result.
+
+@dexhorthy (10:13.468)
+Ha ha.
+
+@dexhorthy (10:37.766)
+Yep. And and what's really interest what's really interesting here is like I kind of think of this, we we actually like didn't like you actually have multiple different classes of I guess context shards, which is like you have where where to find things. You have rules which are like behavioral. This is like a human asks the model to behave in a certain way or take a certain approach, versus information, which is like here is a thing which is true, which may be hard to discover from the repo itself.
+
+@aaronvi (10:48.011)
+Yeah.
+
+@aaronvi (10:52.18)
+Yeah. Yeah, exactly. Yeah.
+
+@aaronvi (11:04.178)
+Exactly, exactly. A human specifically said, please don't F this up, like you're doing the wrong thing to an agent. And we detected that and we like noticed that there was a message like that and then we marked it down as like, Hey, this this fact might be useful. Let's see if it shows up in more sessions. So that's the end result. We also have a little report here, like, you know, we don't need to read all this, but for example, here's a chart that just says like, what are what's the stuff that agents keep
+
+Asking, right? How are the current built-in BAML files organized? This is kind of like an agent asking, hey, how do I declare something in the BAML standard library? And you notice notice that like 11 sessions and two people kind of like ran into this. Like this is a top question that's being asked. and and it's interesting because once I ran this and I also gave it the repo, like this information is not using our repo, it's just using our sessions, like sessions.
+
+@dexhorthy (12:03.976)
+Yep.
+
+@aaronvi (12:04.082)
+data. But once I give it the repo, it like realized that agents aren't reading a a file we a file we have called architecture.md and it's like yeah they don't know what's going on because they're not even reading that file because you're not telling them to read that file. So yeah.
+
+@dexhorthy (12:19.474)
+I see. Okay, so the the answer may not necessarily be to dump a crap ton of facts into the into the clotmd. It may be like, hey, give an agent this report in the repo and then tell it like, hey, figure out how we fix this. And it might find architecture.md and say, actually this can all be solved by just putting a reference file in, you know, a reference in clotmd to tell it to read architecture.
+
+@aaronvi (12:26.665)
+Exactly.
+
+@aaronvi (12:45.162)
+Yeah, exactly. And like and another interesting part that when I started, you know, working with Dex on this project was like the cost, right? So like Dex's original pipeline, you know, you prune all the tool calls, you get the human messages and the agent messages and that gets you pretty what's it called? pretty lenient on the amount of data that you analyze, but it still can be very expensive to like get good results. Yeah.
+
+@dexhorthy (13:11.184)
+Yeah, we did that to keep it we did that to keep it cheap, and it still wasn't that cheap because Haiku four point five is not that cheap of a model, but but it was like, okay, cool, like how do what you know, and i you leave out a ton of data.
+
+@aaronvi (13:15.937)
+Ha ha.
+
+Yeah.
+
+@aaronvi (13:24.874)
+Yeah, so for like one of the things that I focused on is like, okay, yeah, sure, I could ask an agent to always generate a report for this and you know, just go dive into all the logs and spend a a ton of time doing this. but we do want to have a workflow that is like cheap. So for example, this one analyzed a week's worth of our coding data for like two dollars or sorry, one two cents, sorry, two cents. so very, very cheap. Yeah, two cents per session, right?
+
+@dexhorthy (13:51.378)
+Two cents per session.
+
+@aaronvi (13:54.998)
+so it's very, very cheap to do this and like think of of how many tokens you can spend on one session. And the fact that we were able to analyze that for two cents is kinda nuts. Like how do we do that? so anyway, when I got this problem, the first thing was here, let me skip through this.
+
+@dexhorthy (14:16.85)
+This looks cool. We're skipping all of this? All right, cool.
+
+@aaronvi (14:19.073)
+Yeah, we're skipping, we're skipping this. so the first thing that I was looking at. Bivab has echo. Yeah, the first thing that I sort of started doing here is
+
+Bef you know, like I I clearly have a task and it's like let's generate good context charts for my repo. Like where do I start? I have so much data to analyze. I can't possibly read everyone's coding sessions and figuring out what's what's happening. So the first thing that I had to do is like build lots of tools. And I'm not even kidding, like this dashboard that I I'm showing here, this is like one out of ten dashboards that I built. and so for example
+
+@dexhorthy (14:48.198)
+Yeah.
+
+@dexhorthy (15:00.91)
+this is version ten of it.
+
+@aaronvi (15:02.864)
+Yeah, this is version 10. So like you we you know there's this view like sessions. This actually stayed the same throughout because I'm just like okay, I just want to like go through each each session and like look at the messages, right? It's very simple. But then it's like okay, what if I yeah, what if I want to filter tool calls or filter only by human messages? That way I can just figure out what's happening here. It's like okay, this this human is saying all these things and maybe they're frustrated or whatever. Let's see if it if it showed up in our actual
+
+@dexhorthy (15:15.568)
+Yeah, verify the findings.
+
+@aaronvi (15:32.93)
+Context shard somewhere. I even had like Sankey diagrams. Like, okay, from these sessions, we like extracted this information and then it outputted some other stuff. But yeah, that's the main thing. It's like you need to build lots of tooling to understand the data that you're dealing with. Then and then this is just kind of like what I was telling you: like, just build so many websites. And then the other thing that I did is okay, like
+
+@dexhorthy (15:38.14)
+Ha ha.
+
+@aaronvi (16:02.703)
+Like we clearly have cloud code, cloud code can do a lot of things for me to like investigate what the best approach is. So the first thing that I did is like let's just fit create one of these reports using cloud code, right? Like an agent. Just an agent going through the data and figuring out what actually matters and what doesn't matter.
+
+@dexhorthy (16:22.163)
+Just
+
+Yep.
+
+@aaronvi (16:25.351)
+And when you do that, you start realizing, like Claudia's like filtering these messages out, or it's like doing this other thing and it's doing this other thing. And then you start realizing what patterns it's using and what data it's looking at to make these decisions. So
+
+@dexhorthy (16:40.347)
+And this is a this is a thing we say on the show all the time, which is like start with the smartest model and the most like you know open open-ended pipeline shaped thing and like see what is possible, see what is possible with maximum intelligence, and then as you figure out patterns that work, then you distill that down and try to optimize for like latency or price or whatever it is as you build a more opinionated work.
+
+@aaronvi (16:48.288)
+Yes.
+
+@aaronvi (16:56.06)
+Exactly.
+
+@aaronvi (17:05.618)
+Exactly. You kinda wanna see like what's possible first. And you know, if if I
+
+If I look at the cloud code bill, like the actual API usage, I probably spent like a hundred bucks just to like do the same report that cost me fifty cents at the end, right? So so yeah, like you know, we basically started in cloud code, you know, watch it with watch which which scripts it it it it wrote. And then we came up with like we we started getting a sense of like what we wanted, right? It's like okay, we need to extract sessions, find some memories,
+
+collect some tool calls, figuring out like what activity is happening in this repo and then like write the insights. So this is a very early, very early like kind of workflow of like what we were having.
+
+and in BAML like in BAML we just like like added functions essentially. Like here's an LLM function that like scores messages, for example. And I can just think about like inputs and outputs in my workflow. it just makes it easy to like exactly.
+
+@dexhorthy (18:09.939)
+Okay, so this is a Jev prompt that out outputs a basically a single float number, which is like, you know, from zero to one, like how true is this or what is the score of this thing?
+
+@aaronvi (18:19.486)
+Exactly.
+
+Exactly. It just outputs a float and then it just kinda works. Like in BAML we like make sure that this float is the actual like probabilistic number, like the probability that it matches this description. so yeah, that's a basic gist. And I'll dive more into the actual prompts and outputs and inputs and that kind of thing. But yeah, you can see like, you know, this is kinda like a message. There's a target message, like the agent was looking at some media and then Jev is kinda like figuring out whether the agent
+
+@dexhorthy (18:32.595)
+Okay.
+
+@dexhorthy (18:39.067)
+Nice.
+
+@aaronvi (18:50.924)
+trying to discover something or not. So
+
+@dexhorthy (18:54.937)
+I see. So you these you're just trying to filter out which of the messages are the agent looking for information or trying to understand something. Okay.
+
+@aaronvi (18:59.91)
+Exactly. Exactly. Exactly. So you can filter out a lot of things. and then the other part, like and I haven't even d dove into like what we actually did and I'll get that into a second, but I think this is more important of like how do you build any pipeline in general. But another interesting part was that if if you can't iterate quickly, you're gonna spend too much time building this thing. So one of the initi exactly.
+
+@dexhorthy (19:05.395)
+Cool.
+
+@dexhorthy (19:22.963)
+Yeah, if you have to run the if you have to run the whole workflow end to end to test one change halfway through the middle of it, it's gonna take way too long to figure out the right answer.
+
+@aaronvi (19:30.878)
+Yeah. Exactly. so the first thing that I did is like can I just rerun this using the previous data in my workflow? So note that we have a very simple workflow, like can I just like cache data? And yeah, we did that. We like just cache requests. and you know, it's interesting. Yeah.
+
+@dexhorthy (19:51.571)
+So you're hashing the inputs and then caching that as just a JSON file on disk.
+
+@aaronvi (19:57.168)
+Exactly. I'm just doing it on disk. And I was also thinking like why isn't this kind of like more part of the language, right? Like since we're if we're building BAML, like how can we like make this even faster and just like you don't have to think about it? And and it's funny, like, 'cause I saw this tweet by Jared Sumner for Bun and he's like man, what if Fetch made it easy to cache requests and responses into a SQLite DB? Right? And I was like, interesting, interesting. and you know you can just
+
+@dexhorthy (20:04.52)
+Yeah.
+
+@dexhorthy (20:14.993)
+Yep.
+
+@dexhorthy (20:22.31)
+Yep.
+
+@aaronvi (20:26.995)
+Just like kind of replay messages, replay a whole pipeline, and like not worry about it. So one of the things that you should do is figure out how like you can iterate quickly and what tools you can build to do that. One of them is like this replay capability. and then the other thing is as I'm iterating through these prompts and you know, like trying to figure out what's happening in this pipeline, and let me just give you a refresher of the pipeline.
+
+@dexhorthy (20:41.724)
+Cool.
+
+@aaronvi (20:56.352)
+This takes a little bit to load, but
+
+This is kind of like the pipeline. So it's divided into three things. Like what did the agents find out in general? Like what are facts about the about the transcript? this is what the people, like humans, actually corrected agents. Like when did they correct agents and what did they say? And then this is like what agents kept researching. but as I'm working on these things and there's like filtering steps and all kinds of stuff, like I I actually had some bugs.
+
+Where like I was, for example, I pruned messages that were human messages that were too long, or like agent messages that were too long. And what you really want to do is you wanna prune the middle of the message, right? Because the end of the message sometimes has like
+
+@dexhorthy (21:33.305)
+Mm-hmm.
+
+@dexhorthy (21:43.134)
+you don't want to just truncate from the end.
+
+@aaronvi (21:45.776)
+Exactly. You wanna truncate the middle of it and then that way you can get like a summary and you can get like the beginning of the message. And you don't want like some like random design doc that the agent came up with. and that saves a lot of tokens. But how did I realize that? Well, I actually just asked my cloud code as I'm iterating on this, like, hey, can you just print out all the prompts at each step? Like I wanna know what's happening. and then by doing that I was able to like figure out what this pipeline is even doing.
+
+And what all the interest Yeah, of course. Yeah. yeah, I can show you. Yeah.
+
+@dexhorthy (22:16.444)
+Can you show us one of the prompts? Like I guess you're only sharing your window. but we'll we can get into it later too if you wanna if you wanna keep going on this on the on the slides.
+
+@aaronvi (22:26.165)
+Yeah, yeah, yeah. I can almost done through the slides and then I can show you more details. But I think I might have
+
+@aaronvi (22:35.82)
+yeah, I'm only showing my window. but yeah, here's like inputs and outputs that I can show in a bit.
+
+But yeah, and here like Jeb is just classifying replies as like not a correction. Like, the agent did this stuff, the human said do phase six, and then Jeff said, hey, this is not a correction, it's just the a the human saying like do the next step. so that's like one thing. but yeah, so I'm going through that and yeah, just read the prompts, read like what what the heck is if you're not gonna read the code, at least read some of the prompts.
+
+@dexhorthy (22:57.98)
+Mm-hmm.
+
+@dexhorthy (23:08.144)
+I th I think I think actually the prompts are some of the most important things to read because I think in general models are bad at at writing prompts. I d I I I I I think this comes down to I've said this about skill writing too, is like when a model writes a skill, it's mostly taking what you said and then combining it with what's already in the weights and then writing that into a file. So like you often get skills that say things like always run the tests or like make sure you keep code concise, and it's like
+
+@aaronvi (23:25.536)
+Yeah.
+
+@dexhorthy (23:35.822)
+Anything that is in the skill or the prompt that you yourself did not write is by definition something that is already in the model weights, because the model put it there out of the weights. And so you are by definition not adding any useful content by by letting the model write the prompts.
+
+@aaronvi (23:40.746)
+Yeah.
+
+@aaronvi (23:45.502)
+Yeah. Yeah, yeah.
+
+Yeah, it's just slop. Yeah, just basic slop essentially. so read read the prompts. and so for example this is what I I was telling you about that I like I'm like shit I'm truncating like viable data here and I should just truncate like the top and the and the bottom of the message.
+
+@dexhorthy (23:55.74)
+Ha ha.
+
+@aaronvi (24:11.229)
+And and then yeah, like the other thing is yeah, you can just iterate faster. Like for example, I w I had like all these rules for Jev. It's like is this tribal knowledge? Like I was just asking all these questions and then eventually I landed in like this question. Like just because I was like looking at the prompt and looking at the data structures of like what Jev was trying to get. and then eventually. Exactly.
+
+@dexhorthy (24:33.926)
+And you were looking at the outputs too. You were like, Okay, which of which one of these when I eyeball them? This is like the vibe eval, right? Like when I eyeball this, which ones of these are are are useless and how how can I change the question to eliminate these?
+
+@aaronvi (24:40.308)
+Yeah.
+
+Yeah.
+
+And even even also like since I ran this thing with cloud code initially and I produced like this amazing set of like context shards at the start of this whole project, I always like compared I always compared everything I ran to that run. So like for example, it says key messages kept, and in here it's just saying like out of all the messages from the golden data set, like how many does this prompt actually filter out? And the question is like it keeps all of the ones that are relevant.
+
+exactly, recall is high. So literally it it only kept 60% of the text, but it kept 100% of the data that was that was valuable. So I'm like, hell yeah, like let's do that, right?
+
+@dexhorthy (25:16.37)
+So your recall is high.
+
+@dexhorthy (25:26.962)
+Nice.
+
+@aaronvi (25:31.806)
+And so yeah, like this is kinda like Jeff, you know, running through this prompt called score discovery, like figure out which messages are just trying to find things. and then, you know, like pruning a ton of data, like just to like save tokens. so yeah, that's the thing. And then once I did that, like and I built this little pipeline, I showed it to my team. And obviously you need to get feedback. You need to get feedback for from humans and you need to get those humans to
+
+@dexhorthy (25:40.466)
+Yeah.
+
+@dexhorthy (25:46.619)
+Yep.
+
+@aaronvi (26:01.753)
+figure out if this is even useful. and the key question is like would you add this to your code, right? Because like people were like very very very lukewarm of like, maybe this could work, maybe this couldn't work. But I think once I had like more precise information of like like the different contextual sort of like Clot MDs of like yeah this is like this is the one for the top repository. This is the one for like VAML built-ins then it made more sense to
+
+then these like context charts actually were more useful essentially. so yeah initially we had like so many of these like memories like 947 and
+
+@dexhorthy (26:37.638)
+Yeah, this is sick.
+
+@aaronvi (26:47.136)
+And then we like just split it into this pipeline and I can dive into the actual pipeline. so essentially this is what you you guys are seeing. remember like that we divided into three sections what agents find found out, the corrections that people gave agents, and what agents kept researching. And so in here we go ahead.
+
+@dexhorthy (27:05.116)
+What is what is the difference between what agents found out and what agents kept researching?
+
+@aaronvi (27:11.54)
+Yes. So what agents found found found out is just like basic small little facts of the code base. so it like includes more more data than just like what agents kept researching. This is more like an agent got stuck. Literally it
+
+@dexhorthy (27:27.41)
+It's what researching is like what what it what what were agents like deciding they needed to figure out versus what did they accidentally figure out?
+
+@aaronvi (27:33.905)
+Exactly. And not only that, but yeah, and and for this one for example, what we do is we actually build a map of the code.
+
+Like we take every single path that the agents are measuring and and looking through. and then we like build a map of the code and we actually like kinda create a heat map of the code base. And we say, okay, this one fact that like spans throughout the whole code base or spans like 17 files, we should probably like put that into some sort of context shard. these ones are more like a simple fact like, you know, BAML requires decorator in this position.
+
+@dexhorthy (27:54.13)
+Okay.
+
+@aaronvi (28:12.187)
+That kind of thing. And so this is more generic and and yeah, sure, initially like a fact is like whatever, like you don't really care much about it. But once you start having more sessions and more data, then you start like grouping these together. And so for example, like here we have a grouping step. And we say like, hey, these facts were extracted from separate co coding sessions. Find facts that are the same thing as another fact, right? Then you start building sort of like exactly you start building
+
+@dexhorthy (28:13.646)
+I see.
+
+@dexhorthy (28:39.226)
+Okay, the de dupe.
+
+@aaronvi (28:41.91)
+Building sort of like a model of like, okay, these facts are gonna turn into sort of a memory. Like I've seen them so often that I need to remember them. Right? And so then we can like start grouping things, and you know that's why in in here we for each single memory or context shard that we put in here, we put like all the sessions. And these come from all of those different facts. Yeah.
+
+@dexhorthy (28:51.271)
+Yep.
+
+@dexhorthy (29:03.878)
+I see. Okay, so the same kind of fact gets extracted from ten different sessions or eleven different sessions, and then you group them together.
+
+@aaronvi (29:09.688)
+Exactly. Exactly. Exactly. Exactly. So that's the main main gist. And here's all the all the prompts as well. So like in here we're just filtering all the messages with Jev. And what was also funny is that as I'm working on this project, Jev came out.
+
+@dexhorthy (29:15.186)
+Cool.
+
+@dexhorthy (29:28.912)
+Right.
+
+@aaronvi (29:29.862)
+So that was also like a really cool moment of like having an immediate use case for it. And I think a lot of people can relate to this, that like you can use these classifier models to reduce how much data you're processing very easily. and having such a capable model is super useful. like classification is one of like a very common problem in any pipeline.
+
+@dexhorthy (29:55.386)
+If you if you didn't have Jev, like what was what was the plan to do this without Jev? Like would you just use a small model? Use Luna?
+
+@aaronvi (30:00.767)
+It was just like Luna. Yeah, exactly. Yeah. Like I would just use Luna. But even Luna is more expensive than than Jeff. So Jeff was definitely clutch. Definitely clutch.
+
+@dexhorthy (30:08.848)
+Yeah.
+
+Cool.
+
+Awesome.
+
+@aaronvi (30:14.977)
+so yeah we like filter things. Here's like the prompt and in BAM, like I said, you just put like the float and we just figure out how to convert it into a probability from Jeff. Then we like find facts. It's just like like hey, like these are all the instructions. You're reading a coding session between person and AI agent.
+
+Skip generic advice, personal preferences, plans that were not carried out, fixed recipes and UI styling, like that kind of thing. This could be like very custom made, right? To like each team, but in general, you want to avoid personal preferences or like very generic things. Like why do I care about just super generic advice? That's in the weights already. so so yeah, that's the basic gist.
+
+@dexhorthy (30:58.351)
+Yeah. Yep.
+
+@aaronvi (31:05.002)
+Then we group things, as I mentioned, and then after grouping we actually do another filtering step. And even in the filtering step
+
+For each of these memories, we judge them. We're like, hey, is this tribal knowledge? is this like readable? Would an agent see this as as soon as it opens a file or function? Like what I want to know about this readable thing is whether you're just kind of like the documentation is the code, right? So I don't need to restate the code in some file. You can just read the code and the agent can just read the code. What I really wanna keep is stuff that is not obvious by reading the code.
+
+@dexhorthy (31:40.207)
+Yeah. Yep.
+
+@aaronvi (31:45.358)
+So that's kind of like what I wanted to get.
+
+@dexhorthy (31:47.129)
+Or stuff that like has to be there's like one that is like, Okay, you have to read ten files to understand this.
+
+@aaronvi (31:54.3)
+Exactly, exactly. So that's a thing that I did at the bottom here. Like, you know, there's a code map and I have to figure out essentially did it read ten files to understand this or not.
+
+@dexhorthy (32:06.29)
+I'm excited to see the output format for the code map, like what that actual data structure looks like, but we'll keep going through the top pipeline first.
+
+@aaronvi (32:11.433)
+Yes. And then Yeah yeah. Then we judge memories, so
+
+We run it through a like a stronger model. So again, you you'll notice how there's like a pre-screening and then like a strong model. So it's always like, you know, the the weak model, strong model, strong model, weak model, strong model. And we wanna have like good results in like judging these memories and you know, dedupe things, dedupe memories that don't make sense, things like that. and then we just like sort these memories again into like these rules, the thing that I
+
+@dexhorthy (32:37.062)
+Mm-hmm.
+
+@aaronvi (32:48.6)
+I showed you in the report. And this is just very easy to do. And like we could probably join this with this.
+
+@dexhorthy (32:50.886)
+Mm-hmm.
+
+@dexhorthy (32:55.696)
+What is d what are those types map to? Like defect or internals, like are those enum values or?
+
+@aaronvi (33:01.002)
+Yeah, so yeah, they're they're enums. So you just in BAML you can just literally give it an enum and we'll figure out, you know, we'll give this to Jeff in a way that makes sense. We'll just say like, hey Jeff. Exactly. It's just like out of these enums, choose the best one and we'll just give you the best one that Jeff said.
+
+@dexhorthy (33:12.634)
+And so it'll classify it. Okay.
+
+Okay. Cool.
+
+@aaronvi (33:22.516)
+So yeah, it's just that and then eventually you write the drafts and write the report, right? and in here it's just very simple, like we're looking through messages. and let me see if I have a
+
+@dexhorthy (33:27.505)
+Cool.
+
+@aaronvi (33:36.864)
+Yeah, for example, the human could say, hey, it should be root cispanic, because we don't have relative namespaces. All names are local to the namespace. So clearly, this is like a correction by the human. And we want to like highlight these messages and be like, let's not lose this data. Like we need to store this data somewhere. Because the human is literally correcting the agent. and it's something that the other pipeline might not completely get, but because the other pipeline is like more generic approach.
+
+@dexhorthy (33:49.958)
+Mm-hmm.
+
+@aaronvi (34:06.938)
+so in this pipeline, this sub pipeline we wanna like classify everything that is a human correction. Does that make sense?
+
+@dexhorthy (34:16.911)
+Yeah, yeah, I like this. Okay.
+
+@aaronvi (34:19.181)
+Cool. but yeah, we like add this, we group the rules again with opus, and then we send it out to this draft writer thing. And then the final it just like creates this I'll show you. It creates this report.
+
+@dexhorthy (34:27.631)
+What is the draft writer?
+
+@aaronvi (34:36.906)
+So it's just like, fix these first. Built-in pipeline, like like compiler to state asked for in six hundred and seventy-seven sub agent tool calls. These four questions reoccur in in four or five sessions each. So we first generate this kind of like report, and then from that report we also generate this stuff. It's all like tied together.
+
+@dexhorthy (34:59.857)
+Cool.
+
+@aaronvi (35:01.514)
+And then the last one is like, okay, how are agents, you know, navigating through the code and and what's the heat map of this? And I wish I had a visualization for this because that would be super cool, but I don't have one. But if if not yet, but like maybe soon. but yeah, it's essentially like
+
+@dexhorthy (35:13.967)
+Not yet.
+
+@aaronvi (35:21.12)
+You know, we group some questions saying like, Hey, this is a recurring question. would a developer to the repository what's it called?
+
+Yeah, find questions about how the repository works that come up again and again, asked in different sessions ideal by different people. So in here we're like grouping more sessions together and then just saying like give me things that people keep asking. and actu the input
+
+@dexhorthy (35:47.845)
+What is the input to that? Is that like sub agent intro prompts or
+
+@aaronvi (35:54.257)
+this one is sub agents, like sub agent data. And what I did here is I don't have it here.
+
+@dexhorthy (36:01.286)
+Yeah, okay, so it's the it's like whatever the the like first user message that the parent model passes into the sub agent. Okay.
+
+@aaronvi (36:07.711)
+Yeah. And actually I pass in like I I basically have like a gazillion rejects on the tool calls that are being made. And these rejects like extract like paths, you know, like directory names, things like that. And then I send it to these models and they can figure out like, this directory was visited like five times or this one was visited like X amount of times.
+
+@dexhorthy (36:16.945)
+Okay.
+
+@dexhorthy (36:32.891)
+How do we find the answers?
+
+@aaronvi (36:35.052)
+what do you mean, how do we find the answers?
+
+@dexhorthy (36:37.433)
+Yeah, so this this prompt, what are the inputs to this? This is the questions and then the
+
+@aaronvi (36:42.41)
+The docs. Yeah. So like in here for each question say which doc answers is best. So essentially like I also extract I I read the read tools and then I I understand like what docs are being read. And I create like a Yeah.
+
+@dexhorthy (36:50.705)
+Where do you get the docs from?
+
+@dexhorthy (36:58.181)
+Like so like the files, are you just you're only looking at MD files or are you looking at code files too?
+
+@aaronvi (37:03.052)
+I I look at all the files. It's not just co it's not just MD files. I look at all the files and I build
+
+@dexhorthy (37:08.759)
+Okay, so Opus is getting the contents of every file that is being put in. Okay.
+
+@aaronvi (37:14.172)
+Exactly. So like it's reading it's like doing a tool call to read a file. So then the output of that tool call is like the actual contents of the file. So then I can just like
+
+@dexhorthy (37:21.455)
+Okay, so if I say that again, it's we would take what was the initial message passed into the subagent of like, here's what I want you to go find, and then you take every file the sub agent read during its trajectory, and then you take their contents and you pass the question and the docs in, and then Opus's job is to figure out which docs. Okay, cool.
+
+@aaronvi (37:28.927)
+Yes.
+
+Exactly. Exactly.
+
+@aaronvi (37:37.895)
+Exactly.
+
+@aaronvi (37:42.804)
+Yeah, yeah, yeah, exactly. Which docs were relevant to answering that sort of question as well. but yeah, then we like write these code maps and we tell
+
+@dexhorthy (37:48.145)
+Cool.
+
+@aaronvi (37:55.37)
+We tell Jeff as well to like just figure out does this report answer the question? Like which components were involved where they live and how they connect. So I just kinda like create a a summary of like what the sub agent did and then ask Jeff like, did it answer the question? Essentially.
+
+@dexhorthy (38:10.811)
+So the report is the sub agent's kind of final answer back to the parent model.
+
+@aaronvi (38:16.075)
+Yeah, exactly. Exactly. and then yeah, from here we create the drafts and then write the the actual report. But that's the basic gist and you know I wanted to basically say Jeff is a lifesaver here.
+
+It's like ninety-seven percent of the cost, five percent of the five percent of the bill, which is insane. Essentially if you're spending like fifty cents on something, you can just slap Jev into it and like get the cost reduced by a a ton. and then yeah, I had some other deep dives, but we can we already went through this. It's just some animations. observability.
+
+@dexhorthy (38:45.307)
+Awesome.
+
+@dexhorthy (38:53.391)
+Nice.
+
+@aaronvi (38:56.138)
+The other thing that I wanted to highlight that was interesting is this dashboard is actually made with a thing that we called BAML query. So what is BAML query? So whenever we're writing like any regular code, I think I have it here.
+
+Whenever we're writing anyone co any code, like usually you have to like add spans to track everything. Like you you do like start active span, then you do the open AI responses, you catch the error, you set like the error in the span thing, and then you like set the status. But with BAML that that stuff comes for free. So we just made it really efficient in how we capture information. And we have like we like create spans automatically for certain types of
+
+@dexhorthy (39:21.68)
+Yeah.
+
+@dexhorthy (39:31.675)
+Yep.
+
+@aaronvi (39:44.942)
+Functions like LLM functions in a way that we detect.
+
+@dexhorthy (39:48.837)
+Okay, so that basically means like I run my program and then what I get like a C L I where I can run BAML query and ask things about how it ran and then the model can use that to like pipe that into a report.
+
+@aaronvi (39:55.038)
+Literally. Yes.
+
+Yeah, actually and I'll I'll show you what's happening when I run this. maybe let's let me share my entire screen so you can see it.
+
+So here
+
+@dexhorthy (40:16.057)
+Can I still see just your browser? there we go. Okay, nice.
+
+@aaronvi (40:18.144)
+Yeah, yeah, yeah. I am loading this.
+
+So here is this app.
+
+And when you can see what you can see here is that it's running BAML query. BAML query, like BAML query. Literally all of this data here that I'm populating in this giant diagram comes from this BAML query thing. And what we do is we use yeah. So r remember what what Jared said about SQLite of like, let's store all these HTTP requests and store them in SQLite? I'm kinda like I was kinda alluding to this.
+
+@dexhorthy (40:44.571)
+How is that stored? Is that like a SQLite database on disk or okay.
+
+@dexhorthy (40:56.101)
+Yeah.
+
+@aaronvi (40:58.286)
+It's like, yeah, you could literally just store all of your data, not just HTTP requests, but literally anything that you need when you're building an AI pipeline. And
+
+@dexhorthy (41:06.793)
+shit. Okay, so instead of using like the BAML playground to inspect my program as it's running, I can actually just like vibe my own UI.
+
+@aaronvi (41:11.743)
+Yeah.
+
+Yes. Yeah yeah yeah. So yeah, so in the past, you know, you've used the Bannel playground before, but the Bannel Playground is has been outdated by like it it's it's no longer tenable because people need to build like really bespoke UIs to make good decisions. And like this UI I won't find this stuff in any of AI observability dashboard. Like that will just not happen. Like who's gonna build this for you?
+
+@dexhorthy (41:21.263)
+Yeah.
+
+@dexhorthy (41:31.033)
+Yeah. Yep.
+
+@dexhorthy (41:38.767)
+Yep. Yep, because it's it's really hard to build a UI that is like generic enough to meet it's like even if this could be made, you'd be clicking around and dragging things or like it's like, well I just want to write code. Just let me let my model write code on top of the data.
+
+@aaronvi (41:45.173)
+Yeah.
+
+Exactly.
+
+@aaronvi (41:56.242)
+Exactly. And like even you know clicking here, like I can load each of the recordings. So you know, this is Bammel query running again and it's like giving me the inputs and outputs. Like the inputs was this stuff, the output was this stuff. I can like iterate over these things. Like each each individual thing.
+
+@dexhorthy (41:58.02)
+incredible.
+
+@dexhorthy (42:04.882)
+That's sick.
+
+@vaibcode (42:09.232)
+Bien pues.
+
+@dexhorthy (42:15.801)
+Okay, so you have a you have a w you have a web server running in the background that is just executing BAML query like with a with a shell command, but you could have a like you could have native bindings to it if you wanted to.
+
+@aaronvi (42:20.437)
+Yes. Literally. The only AP yeah. The exactly the only API you need here is Vamlo query. Like
+
+essentially. You we converted all of your basically what we built is a program database of just like when you run a program, we create a database for you that just works and you can query all sorts of stuff from it. So that was one of the things that I I wanna wanted to highlight of just like, okay, when you have this kind of tooling, I don't need to add these like spans everywhere. And not only that, but I have a language that agents can use which is SQL to build anything.
+
+@dexhorthy (42:45.753)
+That's awesome.
+
+@dexhorthy (42:55.824)
+Yeah.
+
+@dexhorthy (43:02.511)
+That's awesome.
+
+@aaronvi (43:02.53)
+yeah, like the output tokens, that kind of stuff, we already just store this for you by like using one of these you know LLM calls. And Bamel is a fully Turing complete language now. I mean you can write any sort of web app or anything in it. Or sorry, not a web app but like a server.
+
+@dexhorthy (43:11.63)
+And we
+
+@dexhorthy (43:17.411)
+And so you could you could do something like I know Golang supports like you can just mount a route on your API that it like serves up the profile or UI. So like your running program could serve an API into its own like internal state. Yeah.
+
+@aaronvi (43:28.596)
+Yeah. Yes. Yes, yeah. Yeah, you could do that. You could literally do that as well. and then yeah, like these are just some other queries.
+
+And and you know, I just showed you this. But yeah, that's basically the BAML query thing of like how do we make it such that we can create a product that also helps people iterate and build these these tools quickly, right? Without having to reinvent the data store. yeah, thanks. but
+
+@dexhorthy (43:57.925)
+Dude, this is insanely cool. This is so sick.
+
+@aaronvi (44:06.699)
+But yeah, that was the main thing of like, okay, can we just come up with a language that every agent understands and you can query all your program? And like before it would be untenable to give this to a human. Like imagine giving a human six tables and being like, here is the manual on how you use these and then giving them like a one hundred page PDF of just like how to query your program. Like now that you don't need to do that. You can literally just give the agent keys to the database and be like, yeah, this you can just run this.
+
+@dexhorthy (44:23.612)
+Ha ha ha ha.
+
+@dexhorthy (44:28.785)
+Yeah.
+
+@aaronvi (44:36.622)
+But yeah, I did want to chat about like one remaining problem here with this whole pipeline. And I think you you were also alluding to this at the beginning of like, okay, now that we have a context chart and maybe we accept some of them and deny some of them, like how do we track the health of a memory, right? And
+
+@dexhorthy (44:51.846)
+Yeah.
+
+@dexhorthy (45:05.36)
+Yeah. If the model gets smarter and suddenly something we needed to tell it all the time is now in the weights like how do we how do we identify that and like remove it from context because we may be like Tariq calls it like hobbling the model by giving telling it to do things that it already knows how to do.
+
+@aaronvi (45:06.592)
+How do we know whether it's stale? Yeah.
+
+@aaronvi (45:22.59)
+Yeah, yeah. And so I don't know if you had some ideas here. I don't have anything else here by the way in these slides, but if you have any ideas on how we we could do the health of of a memory.
+
+@dexhorthy (45:32.742)
+Yeah, I think I health of a memory is interesting. I also think that like there's some like problem of like how do you store this and make it available to the model? Obviously, like the really naive approach is like put it in Claude MD or put it in a skill. But like what you don't want to do is have, you know, two hundred new skills, each of which is like one fact, and like rely on the model to go call those as it needs to. I I don't think skills stack very well since they put in a bunch of like user messages and like
+
+@aaronvi (45:48.267)
+Yeah.
+
+@aaronvi (45:53.226)
+Yeah.
+
+@aaronvi (46:02.292)
+Yes.
+
+@dexhorthy (46:02.554)
+If you invoke two hundred skills, like I don't know how well the attention following is. We should probably I d I don't know if there's an eval for this, but that would be an interesting like public benchmark of like, you know, big skill eval.
+
+@aaronvi (46:11.379)
+Yeah. Yeah, yeah, big skill eval or like what skills go stale. I don't think anyone has worked on this stuff too in too much detail. Even cognition. Cognition like cognition release this thing, I don't know if you have the the link somewhere.
+
+@dexhorthy (46:19.971)
+Yeah. I could I could s I could see yeah, we can we can talk we should talk about the cognition thing too.
+
+@dexhorthy (46:33.607)
+I think I sent it to you.
+
+@aaronvi (46:36.47)
+Let me see. I I have it in human layer.
+
+yeah, I have it here.
+
+@dexhorthy (46:45.505)
+Nice. Because their thing was more about like how do you like store memories and less about like the pipeline for identifying what's worth remember remembering.
+
+@aaronvi (46:54.452)
+Yeah, exactly. So it's in here and what they do is like
+
+Yeah, like you know, introducing dreaming across sections, Devin builds a memory graph of how you like to work. So then I'm like, okay, that's cool. It's very similar to what I was working on, right? Just like how do you create memories and stuff like that? But if we click here, there's nothing that really tells you how something makes it into a memory. so that's like I think that's the hardest part. One of the hardest parts. There's like you know, this repository layout, and here's how you can organize your memory.
+
+@dexhorthy (47:13.477)
+Mm-hmm.
+
+@aaronvi (47:31.118)
+Memories and entries and metadata and composability and like all of that is really cool. Like, how do you store this for later referencing by the model? But an interesting part is just like how they decide what goes into a memory file. And in here, it's probably the agent deciding that. So like the agent tracks who said what and writes each memory to the right repo. and this is one of the interesting parts about like writing memories and calculating memories and
+
+And do it in after the fact. So for example, our team could just have a a what's it called? A CloudMD instruction that says, hey, if you find anything that should be a memory, just put it in a file. Right? But the problem with doing that is that if you're just in a single session, you're not able to make correlations across many sessions, for example. so I don't know, that's one interesting part about this, is that it's not a fully sort of it's not
+
+like a full complete workflow on how you create memories. It's just like leave it to the agent and we'll see what happens. so yeah, that's one thing. and then the other part was
+
+@dexhorthy (48:45.189)
+Yeah, okay. And like how do you share things and how do you remix them and like like I said, yeah, I think I think something like you know, when when Gmail came out, they were like, Hey, we're not gonna have folders, we're gonna have labels. Like because folders enforce like a very specific hierarchy and like what they wanted was a thing to be able to be in multiple folders, but like basically a thing can be have multiple labels, without you like committing to a place like once it's in a place it can't be in any other place.
+
+@aaronvi (48:57.248)
+Yeah.
+
+@aaronvi (49:06.475)
+Yeah.
+
+Yeah.
+
+@aaronvi (49:14.506)
+Yeah, yeah, exactly. and I think you sort of need these almost icon jobs that do like it they do like RAM sleep, right? And then you go over all the memories and compact them and coalesce them and do the kind of stuff that I was doing in this pipeline, essentially.
+
+@dexhorthy (49:32.017)
+Well you almost need to like I feel like to tell if a memory is stale, you almost need to like run some percentage of your sessions without the memories. but like what user is gonna be like, yeah, I'm I'm fine with my agents being slow or confused if it on the off chance that maybe they don't need the memories anymore. So like I don't know how you I guess you could back test it on take the new model and back test it on old like traces and see if it still needs the memory. Like say, hey, same initial prompt.
+
+@aaronvi (49:41.674)
+Yeah, yeah, yeah, yeah.
+
+@aaronvi (49:51.553)
+Yeah.
+
+@dexhorthy (50:01.444)
+And then but like yeah, long horizon evals are really hard because it's like, okay, if something in the first hundred messages changes, maybe just feeding in the next user message that that was that was done in the past eval of the trace we have doesn't make sense anymore. Like it's very hard to determine if you are actually using the same inputs to evaluate the outputs.
+
+@aaronvi (50:01.972)
+Yeah.
+
+@aaronvi (50:16.459)
+Yeah.
+
+@aaronvi (50:20.993)
+Yeah, and I think my my w one idea I had actually to like figure out how to figure out whether whether something is stale is it's like tie each sort of memory to like a place in the codebase or a s or a a region in the code base. And
+
+And there's various ways of like doing that. Like the code map that I mentioned, where like you tie each memory to like a place in the code base. But also you can probably ask the agent also, like, hey, if I'm here and this is in your context now and you just worked on these this file, like is this outdated or not? And then you kind of just let the agent decide, like, yeah, this thing is stale, it's incorrect, let me fix that. Or you just analyze it after the fact, just like we did, where we analyze a session again and we find the message where an agent says,
+
+@dexhorthy (51:06.586)
+Yeah.
+
+@aaronvi (51:10.892)
+snap, that was not correct. Let me fix that. and I think you could get a similar sense of like the health of a of a memory. or let let a a human do it.
+
+@dexhorthy (51:14.925)
+Interesting.
+
+@dexhorthy (51:20.889)
+Have have youth
+
+Have you thought at all, obviously you can just run this pipeline and run it once a day or once a week or whatever and generate new suggestions. Have have you thought at all how you would kind of continuously evolve the pipeline itself based on feedback? Like, hey, like, hey, let's say we generate all these memories and you know, we serve it to a bunch of users and users be like, I want to keep those four and I wanna don't care about these four because they're bad. Like, how how would you think about like ingesting that feedback to improve the
+
+@aaronvi (51:29.792)
+Yeah.
+
+@dexhorthy (51:51.067)
+pipeline itself. What would your what would your like Eval hill climb look like?
+
+@aaronvi (51:52.564)
+Yeah. I think that will be like a another fourth input. So you know how the pipeline had like three different inputs. There will be a fourth one that just goes into like the final draft and report that has either the existing saved memories from previous sessions. and exactly it's gonna regenerate the same stuff.
+
+@dexhorthy (52:01.222)
+Yeah.
+
+@dexhorthy (52:10.097)
+because otherwise it's gonna regenerate the same if you pass the same sessions in, it's gonna regenerate Okay, so if you the first step is make it incremental, where like, hey, if I run it again, the final step will t will have awareness of hey, what memories do we already have? So it won't generate a report for stuff we already have kind of logged and and in circulation. Okay.
+
+@aaronvi (52:18.878)
+Exactly.
+
+@aaronvi (52:23.26)
+Exactly. Yeah.
+
+Exactly. Exactly. Like there's it's almost like a memory gets upgraded into like approved, right? Like the the user approved it. So you should just put that data in there. Like
+
+@dexhorthy (52:34.191)
+Yeah. Yeah.
+
+@aaronvi (52:38.864)
+If we run it again, we should put the memories that were already approved. and maybe put like the whole like Cloud MD that someone has in there. or the skill that someone has. And these skills at least, ideally they won't be they wouldn't be too many tokens, right? So it's easier to process this. so I think that would scale for quite a bit before you need to group like dedupe stuff and group again.
+
+@dexhorthy (52:39.3)
+Okay.
+
+@dexhorthy (52:47.952)
+Yeah.
+
+@dexhorthy (52:59.077)
+Yeah.
+
+@dexhorthy (53:06.777)
+And then and then it's fairly trivial to take that fourth pipeline that is the input to the final report and just include, by the way, here's ten memories that the user dismissed, and maybe they even left feedback about why it's bad, and like incorporate that into your next flow. And maybe the final report has not only what to what to add to the report, but also like, hey, what should be removed from your memory system because users said, hey, this is not relevant, or this is already handled somewhere else.
+
+@aaronvi (53:11.443)
+Exactly.
+
+Literally. Literally.
+
+Yeah, exactly. Yeah.
+
+@aaronvi (53:30.868)
+Yeah, and the exactly and the easiest part to modify is that final like step of the pipeline like that the human's going to see.
+
+but once you start getting more information, for example, what if there's memories that the human rejected or they're like this is bad, don't do this. Then I think you could start building a feedback loop on the rest of the pipeline. So then you could start using either agents or something to get all this feedback and figure out like, okay, do I need to change earlier steps here? And maybe like change what criteria I have for finding a fact or finding a correction, things like that.
+
+so it would be like yeah having our own feedback sort of engine for this whole system as well. Yeah.
+
+@dexhorthy (54:13.605)
+Fascinating.
+
+@dexhorthy (54:21.605)
+That's cool. I love it. sick. dude, this was super fun. I know we're almost at time. I know you put in a ton of work and the slides were super I really liked that we could just like pull up the prompts during the slides. That was that was awesome.
+
+@aaronvi (54:25.621)
+Yeah. Yeah.
+
+@aaronvi (54:32.953)
+yeah, yeah, yeah. Yeah, exactly. but yeah, it's a quick project, but you know it's it's just cool using the tooling and testing things out and seeing what works and the lessons that we learned.
+
+@dexhorthy (54:45.115)
+Amazing. Dude, this is gonna be awesome. Any any questions from the chat or Vibov, you have any like steering or questions?
+
+@aaronvi (54:51.508)
+I'll mute so Vibup can talk.
+
+@dexhorthy (54:57.467)
+He's he's locked in.
+
+@vaibcode (54:58.332)
+Nah, I'm sorry, I was in the zone. I was just vibing. Sorry. I was I was just here because my apparently didn't set the video correctly for the screen share until I logged on and adjusted it 'cause I think I'm the admin of this thing. No, but I was li I was I had you guys on no volume for a while. Sorry. I hope the editors cut me out completely and I'm not in this podcast at all.
+
+@dexhorthy (55:13.072)
+Nice.
+
+@dexhorthy (55:18.585)
+Nice. I'm trying to th
+
+@dexhorthy (55:24.785)
+cool. that was great. Should we do a quick recap?
+
+@vaibcode (55:33.482)
+Yeah.
+
+@dexhorthy (55:36.122)
+@aaronvi (55:36.597)
+you wanna do you want me to do the recap? I can do the recap or you can do the recap, I don't really mind.
+
+@dexhorthy (55:43.493)
+yeah, you have the you have the slides, so why don't you do a quick recap and just like kind of like power through the slides and maybe show the dashboard real quick and yeah, that would be great.
+
+@aaronvi (55:48.96)
+Yeah. Okay. Yeah, yeah. Let me do that. One second.
+
+@aaronvi (56:01.664)
+Okay.
+
+So in this podcast we talked about how to build a pipeline that stores memories or creates memories from coding sessions so that you can use for your latest coding sessions and improve results. So we can find out places where agents get stuck, where humans corrected the agent and find all that tribal knowledge in your repo and put it in a single sort of plot MD file to help your agents.
+
+and what else? yeah, and so we in this podcast we we also one second, let me go through these lessons. The editors will have to do some work here.
+
+@dexhorthy (56:46.341)
+Mm-hmm.
+
+@aaronvi (56:57.32)
+yeah. We also talked about some lessons. we also talked about some lessons on how to build these pipelines effectively. One of them, for example, is you know, iterating quickly. How do we do that? How do we build this sort of dashboard using a query system? Like for example, here we used a thing called BAML query. And yeah, how do you iterate quickly with these pipelines?
+
+@dexhorthy (57:26.349)
+Awesome. that was great. I'm gonna I'm gonna try one too and and we'll we'll we'll decide which one was better.
+
+@aaronvi (57:26.582)
+That's it.
+
+@aaronvi (57:31.754)
+Yeah, go ahead, go ahead. Yes. Yeah, go ahead. I don't have much practice on this.
+
+@dexhorthy (57:36.817)
+No, it was good. It was good. I like if we if we ship the episode with that, I'm sure it would be great. I wanna see I don't have your slides, but I'm gonna I'm gonna I'm gonna give it a shot.
+
+@aaronvi (57:40.382)
+No, it was to all good, all good. I don't care.
+
+@aaronvi (57:48.48)
+Do it, do it.
+
+@dexhorthy (57:51.32)
+This out. Alright, y'all. So on this week's AI That Works, we talked about a pipeline for generated memories and all of the different steps that go into taking a set of coding agent sessions and turn them into a set of structured memories. and basically the outputs of this is proposed changes to your Claude MD, and then
+
+@dexhorthy (58:16.485)
+gonna I'm gonna do this one more time. We're gonna do one more take. all right y'all. So this is this is the AI that works show. today we went really deep on a pipeline that the boundary folks wrote for building memory systems off of coding agent sessions. And so one of the things we see here is Mother Fuck. right, we're gonna do one more. These are slow. How do I make it faster?
+
+@aaronvi (58:20.502)
+Do it.
+
+@aaronvi (58:37.101)
+it can't read them for some reason. I don't know why. I guess you don't have the latest version or something. I'm not sure what happened. Yes. Yeah.
+
+@dexhorthy (58:44.217)
+Okay. All right. We're gonna do one more. I'm not gonna try to open the things. what's up, y'all? on today's AI That Works, we talked about a system for generating memories from AI eight coding agent sessions and generating a proposed changes to your Claude MD or your agents MD, a report on what to fix, what agents get stuck on, what humans keep correcting them on, and how you would basically go from a very naive pipeline of user and assistant messages
+
+And basically taking key content from what the user said and turning it into memories and then building that out and evaling it and making a really sophisticated system of every single thing that the agent may have learned while running through stuff. So super fun episode. Aaron did a really, really good job. We dig into the individual prompts, the workflow steps, and it's it's a lot of fun. You're gonna learn a lot. I learned a lot. I'm very excited to ship this. hopefully we'll be able to open source parts of this too and get you all the code. But yeah, this was great. Let's get into it.
+
+@aaronvi (59:40.169)
+that was so much better. Ship it. That was really good.
+
+@dexhorthy (59:42.167)
+I d you know, it's I'm good for I'm not good at building memory pipelines, but I can I can I can hype up the guy who did.
+
+@aaronvi (59:47.892)
+Ha ha
+
+No, that is definitely I'm I'm all for it. Let's do that. Perfect. All right, man.
+
+@dexhorthy (59:56.21)
+Cool guys.
+
+@dexhorthy (00:06.835)
+What's up dude? How we doin'? Vibov, are you leaving? Nice. Finally, we'll be free of your pedantry for the next hour until you until you hit me up in Slack. Alright, he's gone.
+
+@vaibcode (00:08.736)
+Pretty good. Yeah.
+
+@aaronvi (00:20.718)
+He's gone. He's gone. Right next to me. But yeah, how's it how's it going? Yeah, exactly. Now you see another another angle of our office.
+
+@dexhorthy (00:24.537)
+I know, right? I was like, wait, I see that whiteboard from both sides.
+
+@dexhorthy (00:32.947)
+what's up everybody? This is the AI that works show where we talk about AI that works, how to go beyond the demo and real techniques that help you do the thing. I'm Dex, I'm the CEO and co founder of Human Layer. We build a multiplayer coding agent workspace. I'm joined by Aaron, the co founder and CTO of BAML. Do you wanna do a quick I don't know, tell tell them about the programming language, dude?
+
+@aaronvi (00:54.454)
+Yeah, we're we're making a programming language to build with AI and build AI pipelines. And and then yeah, well I can't wait to show you what what we're building using BAML in this demo as well.
+
+@dexhorthy (01:07.911)
+Yeah, this is gonna be a really fun show. So today we're gonna talk about the human layer team and the boundary team kind of joined forces. if you remember, we did an episode probably two months ago about a memory pipeline. I actually meant to pull this up. Let me see if I can find this.
+
+@dexhorthy (01:32.627)
+The editor will.
+
+@dexhorthy (01:41.021)
+This? No. Alright. we're not gonna we're not gonna we're not gonna show what we did last time, but I will show you what we're doing this time. And Aaron, I'm gonna share the whiteboard with you. but basically we worked with the boundary team to design a system to learn from your agent traces. and it's a really interesting pipeline and pushes the pushes the boundaries of what you can do with structured output and new models like JEV, super exciting stuff. I can
+
+@aaronvi (01:50.178)
+Yeah.
+
+@dexhorthy (02:08.016)
+Erin, I'm gonna share the do you have the studio chat open? I'm just I'm gonna share the whiteboard with you in case you in case you finding yourself wanting to help draw. so there's that. I am going to share my tab. if I start sharing something else, just shout at me. But basically, the basic idea is, you know, when you're running an agent, you have your system prompt, you have your tools, you have a user message. Maybe the user says something like, you know, make make me a billion dollars, make no mistakes, ultra think.
+
+@aaronvi (02:13.378)
+Yeah.
+
+Yeah, yeah, yeah.
+
+@dexhorthy (02:37.978)
+The agent's gonna read and write and edit a bunch of stuff, and then maybe say the app is ready, and then the user might come in and say, you know, this sucks for reason one or reason two. They they reveal some preference, the agent goes and fixes it, the user gives more feedback, and we keep going on from there. And the idea is these user messages, that's not what I want. these user messages or like what the assistant is doing, if it has to change something and run bash and then change more stuff, and it's like
+
+Hill climbing. Either the agent learns something in a session or the user learns something in a session. And then when you go start your next session, that kind of learning gets lost in your in your fresh context window. So we wanted to build a system to take all of your past conversations and turn it into recommendations that the model gave for Clotum D snippets or anything like that. and Aaron Sh go ahead.
+
+@aaronvi (03:30.722)
+Yeah, just you know
+
+Stuff that like the agent gets stuck on all the time that you're like, my god, please do not run that command again. And some of this is really just tribal knowledge. and some of the other information takes like you know 500 tool calls to figure out by the agent. And maybe you don't want to spend 500 tool calls. You could just have a little snippet or like a a diagram or a a flow of the architecture of your program and put that in CloudMD, and then next time the agent
+
+@dexhorthy (03:42.63)
+Yep.
+
+@aaronvi (04:02.345)
+won't get confused. But the problem is how do you find that? And how do you decide what makes it into your Claude MD per se, or like what makes it into a into your memory spank.
+
+@dexhorthy (04:13.5)
+Yeah, and many of these memories become out of date, and we can talk about kind of like, okay, how do you actually like constantly also refine this thing? there's some there's some approaches you probably heard of, like compounding engineering, or Matt Pocock just released his retro skill, which is like go figure out what went wrong in past sessions and make sure it doesn't happen again. but yeah, I I I I would say kind of like we started this with a very naive system, which was like
+
+@aaronvi (04:21.804)
+Yeah.
+
+@dexhorthy (04:42.182)
+We would take one of these context windows and we would just take the user and assistant messages and strip out all the tool calls just for like efficiency. and we would send this into a why are these all dotted? Sorry. We would send this into a single like haiku structured output just as like a proof of concept. And what we would get out would be these blocks of like, you know, findings.
+
+And then you would have like finding number one would be you know you know, the memory that we wanted to pull out. We actually called these context shards, because memory is like too too generic and these were things we wanted to be like conditionally triggered. but you would have you would have like the shard, you would have the like reasoning of like why is this a thing that should go in your in your memory system in your Clot MD or in your skills or whatever it is. We would have
+
+@aaronvi (05:19.532)
+Yeah.
+
+@aaronvi (05:22.935)
+Yeah.
+
+@dexhorthy (05:38.738)
+Do you remember what else was in there? There was like a citation of like what was the exact Yeah, exactly. yeah, and then it would have like, you know, session ID, message ID, et cetera, so that we could tie it back to a real conversation event.
+
+@aaronvi (05:41.077)
+Yeah, citations like which sessions, yeah.
+
+@aaronvi (05:49.676)
+Yeah.
+
+@aaronvi (05:55.498)
+And and the user ID, right? One of the interesting parts about human layer is that many people are in your org and you can kinda analyze all of these sessions across your whole team, right? So if two different people are running into the same problem, it's like, okay.
+
+@dexhorthy (06:09.04)
+Right, yeah, we actually have yeah, we have
+
+Yeah, w you might have user one and then user two gives like a separate message. and so you want to be able to track who said what. and so this would give you out like a list of things that would kind of display in the UI. you know, and and then the user could like, you know, shard and then they had this like enable button basically, which would enable it for a task or for sessions or whatever it is. this was really, really bad.
+
+Like it was like directionally correct and like some of the things were good. but you know, we had to keep adjusting the prompt here. And so the BAML guys were doing some work where they work with companies they like to and by the way, if you're building an AI pipeline, you should talk to them. but they built they they basically are looking for use cases for BAML as a language for building AI pipelines and for building really good sort of tools of this shape. And so Aaron's gonna I'm gonna stop sharing, I'm gonna let Aaron kind of talk through the process and and what they built.
+
+@aaronvi (07:07.211)
+Yes.
+
+Yeah. Yeah, so I'll share my screen. I have a little a few set of slides we can sort of like look at and then the actual sort of final results. So why don't we start with the final results maybe? Like just to like what it what it looks like. give me a sec.
+
+@dexhorthy (07:25.311)
+yeah. Do you want me to do you want me to run the run the run the the dev server?
+
+@aaronvi (07:32.301)
+I have it here, but I do need to share my screen and I might need to rejoin. Yeah.
+
+@dexhorthy (07:38.534)
+Okay, drop and come back. I will get the thing running, open.
+
+@dexhorthy (07:55.154)
+Stand by folks.
+
+@dexhorthy (08:27.73)
+cool.
+
+@aaronvi (08:31.693)
+Cool.
+
+Okay, you should see this window with kind of like this pipeline view. So this is essentially the I'll show you what we generated first. So I ran this in like you know one week of sessions for our repo for my team. And you'll see that we created like three different sort of like MD files. And they're actually tied to specific regions in the code. So if the agent is working on this thing called BAML compiler to TIR.
+
+@dexhorthy (08:47.142)
+This is for your team, for the BAML team. Yeah.
+
+@dexhorthy (08:58.034)
+Yeah.
+
+@aaronvi (09:03.145)
+Yeah, you know, we we added like one thing here and like you know it's just saying like a very very generic like this is what this thing does. It's just like a one-liner. not all of these are amazing, we're still tweaking them. But if you go into like BAML built-ins, for example, it gives you like some insights that are just like kind of more tribal knowledge, like don't use add at internal syntax and like here's the two sessions that you know came up with that information. And
+
+This website is definitely Yeah.
+
+@dexhorthy (09:32.53)
+So this is this is a this is a web app you built to kind of inspect the results of the pipeline so that you could iterate on
+
+@aaronvi (09:40.839)
+Exactly. So like for example in in in CloudMD, it's like it has sections of like where should you look at? You know, like if you're an agent looking at this repo and you're trying to find information, how can you find that information? Like what what's the general architecture of this thing? then there's also rules and then there's also like BAML language facts. So for example, an explicit first self parameter marks an instance method and becomes its receiver. methods without self are static. So you know if
+
+If you don't understand what that means, that's okay. But this is a very specific language thing about BAML that an agent should know about. And in here there were three sessions and two people that kind of like gave this feedback or like that ran into this fact, essentially. And then we like coalesced that using our pipeline that I showed you earlier and came up with these three categories of things that you might want to put in your context chart, essentially. So that's the end result.
+
+@dexhorthy (10:13.468)
+Ha ha.
+
+@dexhorthy (10:37.766)
+Yep. And and what's really interest what's really interesting here is like I kind of think of this, we we actually like didn't like you actually have multiple different classes of I guess context shards, which is like you have where where to find things. You have rules which are like behavioral. This is like a human asks the model to behave in a certain way or take a certain approach, versus information, which is like here is a thing which is true, which may be hard to discover from the repo itself.
+
+@aaronvi (10:48.011)
+Yeah.
+
+@aaronvi (10:52.18)
+Yeah. Yeah, exactly. Yeah.
+
+@aaronvi (11:04.178)
+Exactly, exactly. A human specifically said, please don't F this up, like you're doing the wrong thing to an agent. And we detected that and we like noticed that there was a message like that and then we marked it down as like, Hey, this this fact might be useful. Let's see if it shows up in more sessions. So that's the end result. We also have a little report here, like, you know, we don't need to read all this, but for example, here's a chart that just says like, what are what's the stuff that agents keep
+
+Asking, right? How are the current built-in BAML files organized? This is kind of like an agent asking, hey, how do I declare something in the BAML standard library? And you notice notice that like 11 sessions and two people kind of like ran into this. Like this is a top question that's being asked. and and it's interesting because once I ran this and I also gave it the repo, like this information is not using our repo, it's just using our sessions, like sessions.
+
+@dexhorthy (12:03.976)
+Yep.
+
+@aaronvi (12:04.082)
+data. But once I give it the repo, it like realized that agents aren't reading a a file we a file we have called architecture.md and it's like yeah they don't know what's going on because they're not even reading that file because you're not telling them to read that file. So yeah.
+
+@dexhorthy (12:19.474)
+I see. Okay, so the the answer may not necessarily be to dump a crap ton of facts into the into the clotmd. It may be like, hey, give an agent this report in the repo and then tell it like, hey, figure out how we fix this. And it might find architecture.md and say, actually this can all be solved by just putting a reference file in, you know, a reference in clotmd to tell it to read architecture.
+
+@aaronvi (12:26.665)
+Exactly.
+
+@aaronvi (12:45.162)
+Yeah, exactly. And like and another interesting part that when I started, you know, working with Dex on this project was like the cost, right? So like Dex's original pipeline, you know, you prune all the tool calls, you get the human messages and the agent messages and that gets you pretty what's it called? pretty lenient on the amount of data that you analyze, but it still can be very expensive to like get good results. Yeah.
+
+@dexhorthy (13:11.184)
+Yeah, we did that to keep it we did that to keep it cheap, and it still wasn't that cheap because Haiku four point five is not that cheap of a model, but but it was like, okay, cool, like how do what you know, and i you leave out a ton of data.
+
+@aaronvi (13:15.937)
+Ha ha.
+
+Yeah.
+
+@aaronvi (13:24.874)
+Yeah, so for like one of the things that I focused on is like, okay, yeah, sure, I could ask an agent to always generate a report for this and you know, just go dive into all the logs and spend a a ton of time doing this. but we do want to have a workflow that is like cheap. So for example, this one analyzed a week's worth of our coding data for like two dollars or sorry, one two cents, sorry, two cents. so very, very cheap. Yeah, two cents per session, right?
+
+@dexhorthy (13:51.378)
+Two cents per session.
+
+@aaronvi (13:54.998)
+so it's very, very cheap to do this and like think of of how many tokens you can spend on one session. And the fact that we were able to analyze that for two cents is kinda nuts. Like how do we do that? so anyway, when I got this problem, the first thing was here, let me skip through this.
+
+@dexhorthy (14:16.85)
+This looks cool. We're skipping all of this? All right, cool.
+
+@aaronvi (14:19.073)
+Yeah, we're skipping, we're skipping this. so the first thing that I was looking at. Bivab has echo. Yeah, the first thing that I sort of started doing here is
+
+Bef you know, like I I clearly have a task and it's like let's generate good context charts for my repo. Like where do I start? I have so much data to analyze. I can't possibly read everyone's coding sessions and figuring out what's what's happening. So the first thing that I had to do is like build lots of tools. And I'm not even kidding, like this dashboard that I I'm showing here, this is like one out of ten dashboards that I built. and so for example
+
+@dexhorthy (14:48.198)
+Yeah.
+
+@dexhorthy (15:00.91)
+this is version ten of it.
+
+@aaronvi (15:02.864)
+Yeah, this is version 10. So like you we you know there's this view like sessions. This actually stayed the same throughout because I'm just like okay, I just want to like go through each each session and like look at the messages, right? It's very simple. But then it's like okay, what if I yeah, what if I want to filter tool calls or filter only by human messages? That way I can just figure out what's happening here. It's like okay, this this human is saying all these things and maybe they're frustrated or whatever. Let's see if it if it showed up in our actual
+
+@dexhorthy (15:15.568)
+Yeah, verify the findings.
+
+@aaronvi (15:32.93)
+Context shard somewhere. I even had like Sankey diagrams. Like, okay, from these sessions, we like extracted this information and then it outputted some other stuff. But yeah, that's the main thing. It's like you need to build lots of tooling to understand the data that you're dealing with. Then and then this is just kind of like what I was telling you: like, just build so many websites. And then the other thing that I did is okay, like
+
+@dexhorthy (15:38.14)
+Ha ha.
+
+@aaronvi (16:02.703)
+Like we clearly have cloud code, cloud code can do a lot of things for me to like investigate what the best approach is. So the first thing that I did is like let's just fit create one of these reports using cloud code, right? Like an agent. Just an agent going through the data and figuring out what actually matters and what doesn't matter.
+
+@dexhorthy (16:22.163)
+Just
+
+Yep.
+
+@aaronvi (16:25.351)
+And when you do that, you start realizing, like Claudia's like filtering these messages out, or it's like doing this other thing and it's doing this other thing. And then you start realizing what patterns it's using and what data it's looking at to make these decisions. So
+
+@dexhorthy (16:40.347)
+And this is a this is a thing we say on the show all the time, which is like start with the smartest model and the most like you know open open-ended pipeline shaped thing and like see what is possible, see what is possible with maximum intelligence, and then as you figure out patterns that work, then you distill that down and try to optimize for like latency or price or whatever it is as you build a more opinionated work.
+
+@aaronvi (16:48.288)
+Yes.
+
+@aaronvi (16:56.06)
+Exactly.
+
+@aaronvi (17:05.618)
+Exactly. You kinda wanna see like what's possible first. And you know, if if I
+
+If I look at the cloud code bill, like the actual API usage, I probably spent like a hundred bucks just to like do the same report that cost me fifty cents at the end, right? So so yeah, like you know, we basically started in cloud code, you know, watch it with watch which which scripts it it it it wrote. And then we came up with like we we started getting a sense of like what we wanted, right? It's like okay, we need to extract sessions, find some memories,
+
+collect some tool calls, figuring out like what activity is happening in this repo and then like write the insights. So this is a very early, very early like kind of workflow of like what we were having.
+
+and in BAML like in BAML we just like like added functions essentially. Like here's an LLM function that like scores messages, for example. And I can just think about like inputs and outputs in my workflow. it just makes it easy to like exactly.
+
+@dexhorthy (18:09.939)
+Okay, so this is a Jev prompt that out outputs a basically a single float number, which is like, you know, from zero to one, like how true is this or what is the score of this thing?
+
+@aaronvi (18:19.486)
+Exactly.
+
+Exactly. It just outputs a float and then it just kinda works. Like in BAML we like make sure that this float is the actual like probabilistic number, like the probability that it matches this description. so yeah, that's a basic gist. And I'll dive more into the actual prompts and outputs and inputs and that kind of thing. But yeah, you can see like, you know, this is kinda like a message. There's a target message, like the agent was looking at some media and then Jev is kinda like figuring out whether the agent
+
+@dexhorthy (18:32.595)
+Okay.
+
+@dexhorthy (18:39.067)
+Nice.
+
+@aaronvi (18:50.924)
+trying to discover something or not. So
+
+@dexhorthy (18:54.937)
+I see. So you these you're just trying to filter out which of the messages are the agent looking for information or trying to understand something. Okay.
+
+@aaronvi (18:59.91)
+Exactly. Exactly. Exactly. So you can filter out a lot of things. and then the other part, like and I haven't even d dove into like what we actually did and I'll get that into a second, but I think this is more important of like how do you build any pipeline in general. But another interesting part was that if if you can't iterate quickly, you're gonna spend too much time building this thing. So one of the initi exactly.
+
+@dexhorthy (19:05.395)
+Cool.
+
+@dexhorthy (19:22.963)
+Yeah, if you have to run the if you have to run the whole workflow end to end to test one change halfway through the middle of it, it's gonna take way too long to figure out the right answer.
+
+@aaronvi (19:30.878)
+Yeah. Exactly. so the first thing that I did is like can I just rerun this using the previous data in my workflow? So note that we have a very simple workflow, like can I just like cache data? And yeah, we did that. We like just cache requests. and you know, it's interesting. Yeah.
+
+@dexhorthy (19:51.571)
+So you're hashing the inputs and then caching that as just a JSON file on disk.
+
+@aaronvi (19:57.168)
+Exactly. I'm just doing it on disk. And I was also thinking like why isn't this kind of like more part of the language, right? Like since we're if we're building BAML, like how can we like make this even faster and just like you don't have to think about it? And and it's funny, like, 'cause I saw this tweet by Jared Sumner for Bun and he's like man, what if Fetch made it easy to cache requests and responses into a SQLite DB? Right? And I was like, interesting, interesting. and you know you can just
+
+@dexhorthy (20:04.52)
+Yeah.
+
+@dexhorthy (20:14.993)
+Yep.
+
+@dexhorthy (20:22.31)
+Yep.
+
+@aaronvi (20:26.995)
+Just like kind of replay messages, replay a whole pipeline, and like not worry about it. So one of the things that you should do is figure out how like you can iterate quickly and what tools you can build to do that. One of them is like this replay capability. and then the other thing is as I'm iterating through these prompts and you know, like trying to figure out what's happening in this pipeline, and let me just give you a refresher of the pipeline.
+
+@dexhorthy (20:41.724)
+Cool.
+
+@aaronvi (20:56.352)
+This takes a little bit to load, but
+
+This is kind of like the pipeline. So it's divided into three things. Like what did the agents find out in general? Like what are facts about the about the transcript? this is what the people, like humans, actually corrected agents. Like when did they correct agents and what did they say? And then this is like what agents kept researching. but as I'm working on these things and there's like filtering steps and all kinds of stuff, like I I actually had some bugs.
+
+Where like I was, for example, I pruned messages that were human messages that were too long, or like agent messages that were too long. And what you really want to do is you wanna prune the middle of the message, right? Because the end of the message sometimes has like
+
+@dexhorthy (21:33.305)
+Mm-hmm.
+
+@dexhorthy (21:43.134)
+you don't want to just truncate from the end.
+
+@aaronvi (21:45.776)
+Exactly. You wanna truncate the middle of it and then that way you can get like a summary and you can get like the beginning of the message. And you don't want like some like random design doc that the agent came up with. and that saves a lot of tokens. But how did I realize that? Well, I actually just asked my cloud code as I'm iterating on this, like, hey, can you just print out all the prompts at each step? Like I wanna know what's happening. and then by doing that I was able to like figure out what this pipeline is even doing.
+
+And what all the interest Yeah, of course. Yeah. yeah, I can show you. Yeah.
+
+@dexhorthy (22:16.444)
+Can you show us one of the prompts? Like I guess you're only sharing your window. but we'll we can get into it later too if you wanna if you wanna keep going on this on the on the slides.
+
+@aaronvi (22:26.165)
+Yeah, yeah, yeah. I can almost done through the slides and then I can show you more details. But I think I might have
+
+@aaronvi (22:35.82)
+yeah, I'm only showing my window. but yeah, here's like inputs and outputs that I can show in a bit.
+
+But yeah, and here like Jeb is just classifying replies as like not a correction. Like, the agent did this stuff, the human said do phase six, and then Jeff said, hey, this is not a correction, it's just the a the human saying like do the next step. so that's like one thing. but yeah, so I'm going through that and yeah, just read the prompts, read like what what the heck is if you're not gonna read the code, at least read some of the prompts.
+
+@dexhorthy (22:57.98)
+Mm-hmm.
+
+@dexhorthy (23:08.144)
+I th I think I think actually the prompts are some of the most important things to read because I think in general models are bad at at writing prompts. I d I I I I I think this comes down to I've said this about skill writing too, is like when a model writes a skill, it's mostly taking what you said and then combining it with what's already in the weights and then writing that into a file. So like you often get skills that say things like always run the tests or like make sure you keep code concise, and it's like
+
+@aaronvi (23:25.536)
+Yeah.
+
+@dexhorthy (23:35.822)
+Anything that is in the skill or the prompt that you yourself did not write is by definition something that is already in the model weights, because the model put it there out of the weights. And so you are by definition not adding any useful content by by letting the model write the prompts.
+
+@aaronvi (23:40.746)
+Yeah.
+
+@aaronvi (23:45.502)
+Yeah. Yeah, yeah.
+
+Yeah, it's just slop. Yeah, just basic slop essentially. so read read the prompts. and so for example this is what I I was telling you about that I like I'm like shit I'm truncating like viable data here and I should just truncate like the top and the and the bottom of the message.
+
+@dexhorthy (23:55.74)
+Ha ha.
+
+@aaronvi (24:11.229)
+And and then yeah, like the other thing is yeah, you can just iterate faster. Like for example, I w I had like all these rules for Jev. It's like is this tribal knowledge? Like I was just asking all these questions and then eventually I landed in like this question. Like just because I was like looking at the prompt and looking at the data structures of like what Jev was trying to get. and then eventually. Exactly.
+
+@dexhorthy (24:33.926)
+And you were looking at the outputs too. You were like, Okay, which of which one of these when I eyeball them? This is like the vibe eval, right? Like when I eyeball this, which ones of these are are are useless and how how can I change the question to eliminate these?
+
+@aaronvi (24:40.308)
+Yeah.
+
+Yeah.
+
+And even even also like since I ran this thing with cloud code initially and I produced like this amazing set of like context shards at the start of this whole project, I always like compared I always compared everything I ran to that run. So like for example, it says key messages kept, and in here it's just saying like out of all the messages from the golden data set, like how many does this prompt actually filter out? And the question is like it keeps all of the ones that are relevant.
+
+exactly, recall is high. So literally it it only kept 60% of the text, but it kept 100% of the data that was that was valuable. So I'm like, hell yeah, like let's do that, right?
+
+@dexhorthy (25:16.37)
+So your recall is high.
+
+@dexhorthy (25:26.962)
+Nice.
+
+@aaronvi (25:31.806)
+And so yeah, like this is kinda like Jeff, you know, running through this prompt called score discovery, like figure out which messages are just trying to find things. and then, you know, like pruning a ton of data, like just to like save tokens. so yeah, that's the thing. And then once I did that, like and I built this little pipeline, I showed it to my team. And obviously you need to get feedback. You need to get feedback for from humans and you need to get those humans to
+
+@dexhorthy (25:40.466)
+Yeah.
+
+@dexhorthy (25:46.619)
+Yep.
+
+@aaronvi (26:01.753)
+figure out if this is even useful. and the key question is like would you add this to your code, right? Because like people were like very very very lukewarm of like, maybe this could work, maybe this couldn't work. But I think once I had like more precise information of like like the different contextual sort of like Clot MDs of like yeah this is like this is the one for the top repository. This is the one for like VAML built-ins then it made more sense to
+
+then these like context charts actually were more useful essentially. so yeah initially we had like so many of these like memories like 947 and
+
+@dexhorthy (26:37.638)
+Yeah, this is sick.
+
+@aaronvi (26:47.136)
+And then we like just split it into this pipeline and I can dive into the actual pipeline. so essentially this is what you you guys are seeing. remember like that we divided into three sections what agents find found out, the corrections that people gave agents, and what agents kept researching. And so in here we go ahead.
+
+@dexhorthy (27:05.116)
+What is what is the difference between what agents found out and what agents kept researching?
+
+@aaronvi (27:11.54)
+Yes. So what agents found found found out is just like basic small little facts of the code base. so it like includes more more data than just like what agents kept researching. This is more like an agent got stuck. Literally it
+
+@dexhorthy (27:27.41)
+It's what researching is like what what it what what were agents like deciding they needed to figure out versus what did they accidentally figure out?
+
+@aaronvi (27:33.905)
+Exactly. And not only that, but yeah, and and for this one for example, what we do is we actually build a map of the code.
+
+Like we take every single path that the agents are measuring and and looking through. and then we like build a map of the code and we actually like kinda create a heat map of the code base. And we say, okay, this one fact that like spans throughout the whole code base or spans like 17 files, we should probably like put that into some sort of context shard. these ones are more like a simple fact like, you know, BAML requires decorator in this position.
+
+@dexhorthy (27:54.13)
+Okay.
+
+@aaronvi (28:12.187)
+That kind of thing. And so this is more generic and and yeah, sure, initially like a fact is like whatever, like you don't really care much about it. But once you start having more sessions and more data, then you start like grouping these together. And so for example, like here we have a grouping step. And we say like, hey, these facts were extracted from separate co coding sessions. Find facts that are the same thing as another fact, right? Then you start building sort of like exactly you start building
+
+@dexhorthy (28:13.646)
+I see.
+
+@dexhorthy (28:39.226)
+Okay, the de dupe.
+
+@aaronvi (28:41.91)
+Building sort of like a model of like, okay, these facts are gonna turn into sort of a memory. Like I've seen them so often that I need to remember them. Right? And so then we can like start grouping things, and you know that's why in in here we for each single memory or context shard that we put in here, we put like all the sessions. And these come from all of those different facts. Yeah.
+
+@dexhorthy (28:51.271)
+Yep.
+
+@dexhorthy (29:03.878)
+I see. Okay, so the same kind of fact gets extracted from ten different sessions or eleven different sessions, and then you group them together.
+
+@aaronvi (29:09.688)
+Exactly. Exactly. Exactly. Exactly. So that's the main main gist. And here's all the all the prompts as well. So like in here we're just filtering all the messages with Jev. And what was also funny is that as I'm working on this project, Jev came out.
+
+@dexhorthy (29:15.186)
+Cool.
+
+@dexhorthy (29:28.912)
+Right.
+
+@aaronvi (29:29.862)
+So that was also like a really cool moment of like having an immediate use case for it. And I think a lot of people can relate to this, that like you can use these classifier models to reduce how much data you're processing very easily. and having such a capable model is super useful. like classification is one of like a very common problem in any pipeline.
+
+@dexhorthy (29:55.386)
+If you if you didn't have Jev, like what was what was the plan to do this without Jev? Like would you just use a small model? Use Luna?
+
+@aaronvi (30:00.767)
+It was just like Luna. Yeah, exactly. Yeah. Like I would just use Luna. But even Luna is more expensive than than Jeff. So Jeff was definitely clutch. Definitely clutch.
+
+@dexhorthy (30:08.848)
+Yeah.
+
+Cool.
+
+Awesome.
+
+@aaronvi (30:14.977)
+so yeah we like filter things. Here's like the prompt and in BAM, like I said, you just put like the float and we just figure out how to convert it into a probability from Jeff. Then we like find facts. It's just like like hey, like these are all the instructions. You're reading a coding session between person and AI agent.
+
+Skip generic advice, personal preferences, plans that were not carried out, fixed recipes and UI styling, like that kind of thing. This could be like very custom made, right? To like each team, but in general, you want to avoid personal preferences or like very generic things. Like why do I care about just super generic advice? That's in the weights already. so so yeah, that's the basic gist.
+
+@dexhorthy (30:58.351)
+Yeah. Yep.
+
+@aaronvi (31:05.002)
+Then we group things, as I mentioned, and then after grouping we actually do another filtering step. And even in the filtering step
+
+For each of these memories, we judge them. We're like, hey, is this tribal knowledge? is this like readable? Would an agent see this as as soon as it opens a file or function? Like what I want to know about this readable thing is whether you're just kind of like the documentation is the code, right? So I don't need to restate the code in some file. You can just read the code and the agent can just read the code. What I really wanna keep is stuff that is not obvious by reading the code.
+
+@dexhorthy (31:40.207)
+Yeah. Yep.
+
+@aaronvi (31:45.358)
+So that's kind of like what I wanted to get.
+
+@dexhorthy (31:47.129)
+Or stuff that like has to be there's like one that is like, Okay, you have to read ten files to understand this.
+
+@aaronvi (31:54.3)
+Exactly, exactly. So that's a thing that I did at the bottom here. Like, you know, there's a code map and I have to figure out essentially did it read ten files to understand this or not.
+
+@dexhorthy (32:06.29)
+I'm excited to see the output format for the code map, like what that actual data structure looks like, but we'll keep going through the top pipeline first.
+
+@aaronvi (32:11.433)
+Yes. And then Yeah yeah. Then we judge memories, so
+
+We run it through a like a stronger model. So again, you you'll notice how there's like a pre-screening and then like a strong model. So it's always like, you know, the the weak model, strong model, strong model, weak model, strong model. And we wanna have like good results in like judging these memories and you know, dedupe things, dedupe memories that don't make sense, things like that. and then we just like sort these memories again into like these rules, the thing that I
+
+@dexhorthy (32:37.062)
+Mm-hmm.
+
+@aaronvi (32:48.6)
+I showed you in the report. And this is just very easy to do. And like we could probably join this with this.
+
+@dexhorthy (32:50.886)
+Mm-hmm.
+
+@dexhorthy (32:55.696)
+What is d what are those types map to? Like defect or internals, like are those enum values or?
+
+@aaronvi (33:01.002)
+Yeah, so yeah, they're they're enums. So you just in BAML you can just literally give it an enum and we'll figure out, you know, we'll give this to Jeff in a way that makes sense. We'll just say like, hey Jeff. Exactly. It's just like out of these enums, choose the best one and we'll just give you the best one that Jeff said.
+
+@dexhorthy (33:12.634)
+And so it'll classify it. Okay.
+
+Okay. Cool.
+
+@aaronvi (33:22.516)
+So yeah, it's just that and then eventually you write the drafts and write the report, right? and in here it's just very simple, like we're looking through messages. and let me see if I have a
+
+@dexhorthy (33:27.505)
+Cool.
+
+@aaronvi (33:36.864)
+Yeah, for example, the human could say, hey, it should be root cispanic, because we don't have relative namespaces. All names are local to the namespace. So clearly, this is like a correction by the human. And we want to like highlight these messages and be like, let's not lose this data. Like we need to store this data somewhere. Because the human is literally correcting the agent. and it's something that the other pipeline might not completely get, but because the other pipeline is like more generic approach.
+
+@dexhorthy (33:49.958)
+Mm-hmm.
+
+@aaronvi (34:06.938)
+so in this pipeline, this sub pipeline we wanna like classify everything that is a human correction. Does that make sense?
+
+@dexhorthy (34:16.911)
+Yeah, yeah, I like this. Okay.
+
+@aaronvi (34:19.181)
+Cool. but yeah, we like add this, we group the rules again with opus, and then we send it out to this draft writer thing. And then the final it just like creates this I'll show you. It creates this report.
+
+@dexhorthy (34:27.631)
+What is the draft writer?
+
+@aaronvi (34:36.906)
+So it's just like, fix these first. Built-in pipeline, like like compiler to state asked for in six hundred and seventy-seven sub agent tool calls. These four questions reoccur in in four or five sessions each. So we first generate this kind of like report, and then from that report we also generate this stuff. It's all like tied together.
+
+@dexhorthy (34:59.857)
+Cool.
+
+@aaronvi (35:01.514)
+And then the last one is like, okay, how are agents, you know, navigating through the code and and what's the heat map of this? And I wish I had a visualization for this because that would be super cool, but I don't have one. But if if not yet, but like maybe soon. but yeah, it's essentially like
+
+@dexhorthy (35:13.967)
+Not yet.
+
+@aaronvi (35:21.12)
+You know, we group some questions saying like, Hey, this is a recurring question. would a developer to the repository what's it called?
+
+Yeah, find questions about how the repository works that come up again and again, asked in different sessions ideal by different people. So in here we're like grouping more sessions together and then just saying like give me things that people keep asking. and actu the input
+
+@dexhorthy (35:47.845)
+What is the input to that? Is that like sub agent intro prompts or
+
+@aaronvi (35:54.257)
+this one is sub agents, like sub agent data. And what I did here is I don't have it here.
+
+@dexhorthy (36:01.286)
+Yeah, okay, so it's the it's like whatever the the like first user message that the parent model passes into the sub agent. Okay.
+
+@aaronvi (36:07.711)
+Yeah. And actually I pass in like I I basically have like a gazillion rejects on the tool calls that are being made. And these rejects like extract like paths, you know, like directory names, things like that. And then I send it to these models and they can figure out like, this directory was visited like five times or this one was visited like X amount of times.
+
+@dexhorthy (36:16.945)
+Okay.
+
+@dexhorthy (36:32.891)
+How do we find the answers?
+
+@aaronvi (36:35.052)
+what do you mean, how do we find the answers?
+
+@dexhorthy (36:37.433)
+Yeah, so this this prompt, what are the inputs to this? This is the questions and then the
+
+@aaronvi (36:42.41)
+The docs. Yeah. So like in here for each question say which doc answers is best. So essentially like I also extract I I read the read tools and then I I understand like what docs are being read. And I create like a Yeah.
+
+@dexhorthy (36:50.705)
+Where do you get the docs from?
+
+@dexhorthy (36:58.181)
+Like so like the files, are you just you're only looking at MD files or are you looking at code files too?
+
+@aaronvi (37:03.052)
+I I look at all the files. It's not just co it's not just MD files. I look at all the files and I build
+
+@dexhorthy (37:08.759)
+Okay, so Opus is getting the contents of every file that is being put in. Okay.
+
+@aaronvi (37:14.172)
+Exactly. So like it's reading it's like doing a tool call to read a file. So then the output of that tool call is like the actual contents of the file. So then I can just like
+
+@dexhorthy (37:21.455)
+Okay, so if I say that again, it's we would take what was the initial message passed into the subagent of like, here's what I want you to go find, and then you take every file the sub agent read during its trajectory, and then you take their contents and you pass the question and the docs in, and then Opus's job is to figure out which docs. Okay, cool.
+
+@aaronvi (37:28.927)
+Yes.
+
+Exactly. Exactly.
+
+@aaronvi (37:37.895)
+Exactly.
+
+@aaronvi (37:42.804)
+Yeah, yeah, yeah, exactly. Which docs were relevant to answering that sort of question as well. but yeah, then we like write these code maps and we tell
+
+@dexhorthy (37:48.145)
+Cool.
+
+@aaronvi (37:55.37)
+We tell Jeff as well to like just figure out does this report answer the question? Like which components were involved where they live and how they connect. So I just kinda like create a a summary of like what the sub agent did and then ask Jeff like, did it answer the question? Essentially.
+
+@dexhorthy (38:10.811)
+So the report is the sub agent's kind of final answer back to the parent model.
+
+@aaronvi (38:16.075)
+Yeah, exactly. Exactly. and then yeah, from here we create the drafts and then write the the actual report. But that's the basic gist and you know I wanted to basically say Jeff is a lifesaver here.
+
+It's like ninety-seven percent of the cost, five percent of the five percent of the bill, which is insane. Essentially if you're spending like fifty cents on something, you can just slap Jev into it and like get the cost reduced by a a ton. and then yeah, I had some other deep dives, but we can we already went through this. It's just some animations. observability.
+
+@dexhorthy (38:45.307)
+Awesome.
+
+@dexhorthy (38:53.391)
+Nice.
+
+@aaronvi (38:56.138)
+The other thing that I wanted to highlight that was interesting is this dashboard is actually made with a thing that we called BAML query. So what is BAML query? So whenever we're writing like any regular code, I think I have it here.
+
+Whenever we're writing anyone co any code, like usually you have to like add spans to track everything. Like you you do like start active span, then you do the open AI responses, you catch the error, you set like the error in the span thing, and then you like set the status. But with BAML that that stuff comes for free. So we just made it really efficient in how we capture information. And we have like we like create spans automatically for certain types of
+
+@dexhorthy (39:21.68)
+Yeah.
+
+@dexhorthy (39:31.675)
+Yep.
+
+@aaronvi (39:44.942)
+Functions like LLM functions in a way that we detect.
+
+@dexhorthy (39:48.837)
+Okay, so that basically means like I run my program and then what I get like a C L I where I can run BAML query and ask things about how it ran and then the model can use that to like pipe that into a report.
+
+@aaronvi (39:55.038)
+Literally. Yes.
+
+Yeah, actually and I'll I'll show you what's happening when I run this. maybe let's let me share my entire screen so you can see it.
+
+So here
+
+@dexhorthy (40:16.057)
+Can I still see just your browser? there we go. Okay, nice.
+
+@aaronvi (40:18.144)
+Yeah, yeah, yeah. I am loading this.
+
+So here is this app.
+
+And when you can see what you can see here is that it's running BAML query. BAML query, like BAML query. Literally all of this data here that I'm populating in this giant diagram comes from this BAML query thing. And what we do is we use yeah. So r remember what what Jared said about SQLite of like, let's store all these HTTP requests and store them in SQLite? I'm kinda like I was kinda alluding to this.
+
+@dexhorthy (40:44.571)
+How is that stored? Is that like a SQLite database on disk or okay.
+
+@dexhorthy (40:56.101)
+Yeah.
+
+@aaronvi (40:58.286)
+It's like, yeah, you could literally just store all of your data, not just HTTP requests, but literally anything that you need when you're building an AI pipeline. And
+
+@dexhorthy (41:06.793)
+shit. Okay, so instead of using like the BAML playground to inspect my program as it's running, I can actually just like vibe my own UI.
+
+@aaronvi (41:11.743)
+Yeah.
+
+Yes. Yeah yeah yeah. So yeah, so in the past, you know, you've used the Bannel playground before, but the Bannel Playground is has been outdated by like it it's it's no longer tenable because people need to build like really bespoke UIs to make good decisions. And like this UI I won't find this stuff in any of AI observability dashboard. Like that will just not happen. Like who's gonna build this for you?
+
+@dexhorthy (41:21.263)
+Yeah.
+
+@dexhorthy (41:31.033)
+Yeah. Yep.
+
+@dexhorthy (41:38.767)
+Yep. Yep, because it's it's really hard to build a UI that is like generic enough to meet it's like even if this could be made, you'd be clicking around and dragging things or like it's like, well I just want to write code. Just let me let my model write code on top of the data.
+
+@aaronvi (41:45.173)
+Yeah.
+
+Exactly.
+
+@aaronvi (41:56.242)
+Exactly. And like even you know clicking here, like I can load each of the recordings. So you know, this is Bammel query running again and it's like giving me the inputs and outputs. Like the inputs was this stuff, the output was this stuff. I can like iterate over these things. Like each each individual thing.
+
+@dexhorthy (41:58.02)
+incredible.
+
+@dexhorthy (42:04.882)
+That's sick.
+
+@vaibcode (42:09.232)
+Bien pues.
+
+@dexhorthy (42:15.801)
+Okay, so you have a you have a w you have a web server running in the background that is just executing BAML query like with a with a shell command, but you could have a like you could have native bindings to it if you wanted to.
+
+@aaronvi (42:20.437)
+Yes. Literally. The only AP yeah. The exactly the only API you need here is Vamlo query. Like
+
+essentially. You we converted all of your basically what we built is a program database of just like when you run a program, we create a database for you that just works and you can query all sorts of stuff from it. So that was one of the things that I I wanna wanted to highlight of just like, okay, when you have this kind of tooling, I don't need to add these like spans everywhere. And not only that, but I have a language that agents can use which is SQL to build anything.
+
+@dexhorthy (42:45.753)
+That's awesome.
+
+@dexhorthy (42:55.824)
+Yeah.
+
+@dexhorthy (43:02.511)
+That's awesome.
+
+@aaronvi (43:02.53)
+yeah, like the output tokens, that kind of stuff, we already just store this for you by like using one of these you know LLM calls. And Bamel is a fully Turing complete language now. I mean you can write any sort of web app or anything in it. Or sorry, not a web app but like a server.
+
+@dexhorthy (43:11.63)
+And we
+
+@dexhorthy (43:17.411)
+And so you could you could do something like I know Golang supports like you can just mount a route on your API that it like serves up the profile or UI. So like your running program could serve an API into its own like internal state. Yeah.
+
+@aaronvi (43:28.596)
+Yeah. Yes. Yes, yeah. Yeah, you could do that. You could literally do that as well. and then yeah, like these are just some other queries.
+
+And and you know, I just showed you this. But yeah, that's basically the BAML query thing of like how do we make it such that we can create a product that also helps people iterate and build these these tools quickly, right? Without having to reinvent the data store. yeah, thanks. but
+
+@dexhorthy (43:57.925)
+Dude, this is insanely cool. This is so sick.
+
+@aaronvi (44:06.699)
+But yeah, that was the main thing of like, okay, can we just come up with a language that every agent understands and you can query all your program? And like before it would be untenable to give this to a human. Like imagine giving a human six tables and being like, here is the manual on how you use these and then giving them like a one hundred page PDF of just like how to query your program. Like now that you don't need to do that. You can literally just give the agent keys to the database and be like, yeah, this you can just run this.
+
+@dexhorthy (44:23.612)
+Ha ha ha ha.
+
+@dexhorthy (44:28.785)
+Yeah.
+
+@aaronvi (44:36.622)
+But yeah, I did want to chat about like one remaining problem here with this whole pipeline. And I think you you were also alluding to this at the beginning of like, okay, now that we have a context chart and maybe we accept some of them and deny some of them, like how do we track the health of a memory, right? And
+
+@dexhorthy (44:51.846)
+Yeah.
+
+@dexhorthy (45:05.36)
+Yeah. If the model gets smarter and suddenly something we needed to tell it all the time is now in the weights like how do we how do we identify that and like remove it from context because we may be like Tariq calls it like hobbling the model by giving telling it to do things that it already knows how to do.
+
+@aaronvi (45:06.592)
+How do we know whether it's stale? Yeah.
+
+@aaronvi (45:22.59)
+Yeah, yeah. And so I don't know if you had some ideas here. I don't have anything else here by the way in these slides, but if you have any ideas on how we we could do the health of of a memory.
+
+@dexhorthy (45:32.742)
+Yeah, I think I health of a memory is interesting. I also think that like there's some like problem of like how do you store this and make it available to the model? Obviously, like the really naive approach is like put it in Claude MD or put it in a skill. But like what you don't want to do is have, you know, two hundred new skills, each of which is like one fact, and like rely on the model to go call those as it needs to. I I don't think skills stack very well since they put in a bunch of like user messages and like
+
+@aaronvi (45:48.267)
+Yeah.
+
+@aaronvi (45:53.226)
+Yeah.
+
+@aaronvi (46:02.292)
+Yes.
+
+@dexhorthy (46:02.554)
+If you invoke two hundred skills, like I don't know how well the attention following is. We should probably I d I don't know if there's an eval for this, but that would be an interesting like public benchmark of like, you know, big skill eval.
+
+@aaronvi (46:11.379)
+Yeah. Yeah, yeah, big skill eval or like what skills go stale. I don't think anyone has worked on this stuff too in too much detail. Even cognition. Cognition like cognition release this thing, I don't know if you have the the link somewhere.
+
+@dexhorthy (46:19.971)
+Yeah. I could I could s I could see yeah, we can we can talk we should talk about the cognition thing too.
+
+@dexhorthy (46:33.607)
+I think I sent it to you.
+
+@aaronvi (46:36.47)
+Let me see. I I have it in human layer.
+
+yeah, I have it here.
+
+@dexhorthy (46:45.505)
+Nice. Because their thing was more about like how do you like store memories and less about like the pipeline for identifying what's worth remember remembering.
+
+@aaronvi (46:54.452)
+Yeah, exactly. So it's in here and what they do is like
+
+Yeah, like you know, introducing dreaming across sections, Devin builds a memory graph of how you like to work. So then I'm like, okay, that's cool. It's very similar to what I was working on, right? Just like how do you create memories and stuff like that? But if we click here, there's nothing that really tells you how something makes it into a memory. so that's like I think that's the hardest part. One of the hardest parts. There's like you know, this repository layout, and here's how you can organize your memory.
+
+@dexhorthy (47:13.477)
+Mm-hmm.
+
+@aaronvi (47:31.118)
+Memories and entries and metadata and composability and like all of that is really cool. Like, how do you store this for later referencing by the model? But an interesting part is just like how they decide what goes into a memory file. And in here, it's probably the agent deciding that. So like the agent tracks who said what and writes each memory to the right repo. and this is one of the interesting parts about like writing memories and calculating memories and
+
+And do it in after the fact. So for example, our team could just have a a what's it called? A CloudMD instruction that says, hey, if you find anything that should be a memory, just put it in a file. Right? But the problem with doing that is that if you're just in a single session, you're not able to make correlations across many sessions, for example. so I don't know, that's one interesting part about this, is that it's not a fully sort of it's not
+
+like a full complete workflow on how you create memories. It's just like leave it to the agent and we'll see what happens. so yeah, that's one thing. and then the other part was
+
+@dexhorthy (48:45.189)
+Yeah, okay. And like how do you share things and how do you remix them and like like I said, yeah, I think I think something like you know, when when Gmail came out, they were like, Hey, we're not gonna have folders, we're gonna have labels. Like because folders enforce like a very specific hierarchy and like what they wanted was a thing to be able to be in multiple folders, but like basically a thing can be have multiple labels, without you like committing to a place like once it's in a place it can't be in any other place.
+
+@aaronvi (48:57.248)
+Yeah.
+
+@aaronvi (49:06.475)
+Yeah.
+
+Yeah.
+
+@aaronvi (49:14.506)
+Yeah, yeah, exactly. and I think you sort of need these almost icon jobs that do like it they do like RAM sleep, right? And then you go over all the memories and compact them and coalesce them and do the kind of stuff that I was doing in this pipeline, essentially.
+
+@dexhorthy (49:32.017)
+Well you almost need to like I feel like to tell if a memory is stale, you almost need to like run some percentage of your sessions without the memories. but like what user is gonna be like, yeah, I'm I'm fine with my agents being slow or confused if it on the off chance that maybe they don't need the memories anymore. So like I don't know how you I guess you could back test it on take the new model and back test it on old like traces and see if it still needs the memory. Like say, hey, same initial prompt.
+
+@aaronvi (49:41.674)
+Yeah, yeah, yeah, yeah.
+
+@aaronvi (49:51.553)
+Yeah.
+
+@dexhorthy (50:01.444)
+And then but like yeah, long horizon evals are really hard because it's like, okay, if something in the first hundred messages changes, maybe just feeding in the next user message that that was that was done in the past eval of the trace we have doesn't make sense anymore. Like it's very hard to determine if you are actually using the same inputs to evaluate the outputs.
+
+@aaronvi (50:01.972)
+Yeah.
+
+@aaronvi (50:16.459)
+Yeah.
+
+@aaronvi (50:20.993)
+Yeah, and I think my my w one idea I had actually to like figure out how to figure out whether whether something is stale is it's like tie each sort of memory to like a place in the codebase or a s or a a region in the code base. And
+
+And there's various ways of like doing that. Like the code map that I mentioned, where like you tie each memory to like a place in the code base. But also you can probably ask the agent also, like, hey, if I'm here and this is in your context now and you just worked on these this file, like is this outdated or not? And then you kind of just let the agent decide, like, yeah, this thing is stale, it's incorrect, let me fix that. Or you just analyze it after the fact, just like we did, where we analyze a session again and we find the message where an agent says,
+
+@dexhorthy (51:06.586)
+Yeah.
+
+@aaronvi (51:10.892)
+snap, that was not correct. Let me fix that. and I think you could get a similar sense of like the health of a of a memory. or let let a a human do it.
+
+@dexhorthy (51:14.925)
+Interesting.
+
+@dexhorthy (51:20.889)
+Have have youth
+
+Have you thought at all, obviously you can just run this pipeline and run it once a day or once a week or whatever and generate new suggestions. Have have you thought at all how you would kind of continuously evolve the pipeline itself based on feedback? Like, hey, like, hey, let's say we generate all these memories and you know, we serve it to a bunch of users and users be like, I want to keep those four and I wanna don't care about these four because they're bad. Like, how how would you think about like ingesting that feedback to improve the
+
+@aaronvi (51:29.792)
+Yeah.
+
+@dexhorthy (51:51.067)
+pipeline itself. What would your what would your like Eval hill climb look like?
+
+@aaronvi (51:52.564)
+Yeah. I think that will be like a another fourth input. So you know how the pipeline had like three different inputs. There will be a fourth one that just goes into like the final draft and report that has either the existing saved memories from previous sessions. and exactly it's gonna regenerate the same stuff.
+
+@dexhorthy (52:01.222)
+Yeah.
+
+@dexhorthy (52:10.097)
+because otherwise it's gonna regenerate the same if you pass the same sessions in, it's gonna regenerate Okay, so if you the first step is make it incremental, where like, hey, if I run it again, the final step will t will have awareness of hey, what memories do we already have? So it won't generate a report for stuff we already have kind of logged and and in circulation. Okay.
+
+@aaronvi (52:18.878)
+Exactly.
+
+@aaronvi (52:23.26)
+Exactly. Yeah.
+
+Exactly. Exactly. Like there's it's almost like a memory gets upgraded into like approved, right? Like the the user approved it. So you should just put that data in there. Like
+
+@dexhorthy (52:34.191)
+Yeah. Yeah.
+
+@aaronvi (52:38.864)
+If we run it again, we should put the memories that were already approved. and maybe put like the whole like Cloud MD that someone has in there. or the skill that someone has. And these skills at least, ideally they won't be they wouldn't be too many tokens, right? So it's easier to process this. so I think that would scale for quite a bit before you need to group like dedupe stuff and group again.
+
+@dexhorthy (52:39.3)
+Okay.
+
+@dexhorthy (52:47.952)
+Yeah.
+
+@dexhorthy (52:59.077)
+Yeah.
+
+@dexhorthy (53:06.777)
+And then and then it's fairly trivial to take that fourth pipeline that is the input to the final report and just include, by the way, here's ten memories that the user dismissed, and maybe they even left feedback about why it's bad, and like incorporate that into your next flow. And maybe the final report has not only what to what to add to the report, but also like, hey, what should be removed from your memory system because users said, hey, this is not relevant, or this is already handled somewhere else.
+
+@aaronvi (53:11.443)
+Exactly.
+
+Literally. Literally.
+
+Yeah, exactly. Yeah.
+
+@aaronvi (53:30.868)
+Yeah, and the exactly and the easiest part to modify is that final like step of the pipeline like that the human's going to see.
+
+but once you start getting more information, for example, what if there's memories that the human rejected or they're like this is bad, don't do this. Then I think you could start building a feedback loop on the rest of the pipeline. So then you could start using either agents or something to get all this feedback and figure out like, okay, do I need to change earlier steps here? And maybe like change what criteria I have for finding a fact or finding a correction, things like that.
+
+so it would be like yeah having our own feedback sort of engine for this whole system as well. Yeah.
+
+@dexhorthy (54:13.605)
+Fascinating.
+
+@dexhorthy (54:21.605)
+That's cool. I love it. sick. dude, this was super fun. I know we're almost at time. I know you put in a ton of work and the slides were super I really liked that we could just like pull up the prompts during the slides. That was that was awesome.
+
+@aaronvi (54:25.621)
+Yeah. Yeah.
+
+@aaronvi (54:32.953)
+yeah, yeah, yeah. Yeah, exactly. but yeah, it's a quick project, but you know it's it's just cool using the tooling and testing things out and seeing what works and the lessons that we learned.
+
+@dexhorthy (54:45.115)
+Amazing. Dude, this is gonna be awesome. Any any questions from the chat or Vibov, you have any like steering or questions?
+
+@aaronvi (54:51.508)
+I'll mute so Vibup can talk.
+
+@dexhorthy (54:57.467)
+He's he's locked in.
+
+@vaibcode (54:58.332)
+Nah, I'm sorry, I was in the zone. I was just vibing. Sorry. I was I was just here because my apparently didn't set the video correctly for the screen share until I logged on and adjusted it 'cause I think I'm the admin of this thing. No, but I was li I was I had you guys on no volume for a while. Sorry. I hope the editors cut me out completely and I'm not in this podcast at all.
+
+@dexhorthy (55:13.072)
+Nice.
+
+@dexhorthy (55:18.585)
+Nice. I'm trying to th
+
+@dexhorthy (55:24.785)
+cool. that was great. Should we do a quick recap?
+
+@vaibcode (55:33.482)
+Yeah.
+
+@dexhorthy (55:36.122)
+@aaronvi (55:36.597)
+you wanna do you want me to do the recap? I can do the recap or you can do the recap, I don't really mind.
+
+@dexhorthy (55:43.493)
+yeah, you have the you have the slides, so why don't you do a quick recap and just like kind of like power through the slides and maybe show the dashboard real quick and yeah, that would be great.
+
+@aaronvi (55:48.96)
+Yeah. Okay. Yeah, yeah. Let me do that. One second.
+
+@aaronvi (56:01.664)
+Okay.
+
+So in this podcast we talked about how to build a pipeline that stores memories or creates memories from coding sessions so that you can use for your latest coding sessions and improve results. So we can find out places where agents get stuck, where humans corrected the agent and find all that tribal knowledge in your repo and put it in a single sort of plot MD file to help your agents.
+
+and what else? yeah, and so we in this podcast we we also one second, let me go through these lessons. The editors will have to do some work here.
+
+@dexhorthy (56:46.341)
+Mm-hmm.
+
+@aaronvi (56:57.32)
+yeah. We also talked about some lessons. we also talked about some lessons on how to build these pipelines effectively. One of them, for example, is you know, iterating quickly. How do we do that? How do we build this sort of dashboard using a query system? Like for example, here we used a thing called BAML query. And yeah, how do you iterate quickly with these pipelines?
+
+@dexhorthy (57:26.349)
+Awesome. that was great. I'm gonna I'm gonna try one too and and we'll we'll we'll decide which one was better.
+
+@aaronvi (57:26.582)
+That's it.
+
+@aaronvi (57:31.754)
+Yeah, go ahead, go ahead. Yes. Yeah, go ahead. I don't have much practice on this.
+
+@dexhorthy (57:36.817)
+No, it was good. It was good. I like if we if we ship the episode with that, I'm sure it would be great. I wanna see I don't have your slides, but I'm gonna I'm gonna I'm gonna give it a shot.
+
+@aaronvi (57:40.382)
+No, it was to all good, all good. I don't care.
+
+@aaronvi (57:48.48)
+Do it, do it.
+
+@dexhorthy (57:51.32)
+This out. Alright, y'all. So on this week's AI That Works, we talked about a pipeline for generated memories and all of the different steps that go into taking a set of coding agent sessions and turn them into a set of structured memories. and basically the outputs of this is proposed changes to your Claude MD, and then
+
+@dexhorthy (58:16.485)
+gonna I'm gonna do this one more time. We're gonna do one more take. all right y'all. So this is this is the AI that works show. today we went really deep on a pipeline that the boundary folks wrote for building memory systems off of coding agent sessions. And so one of the things we see here is Mother Fuck. right, we're gonna do one more. These are slow. How do I make it faster?
+
+@aaronvi (58:20.502)
+Do it.
+
+@aaronvi (58:37.101)
+it can't read them for some reason. I don't know why. I guess you don't have the latest version or something. I'm not sure what happened. Yes. Yeah.
+
+@dexhorthy (58:44.217)
+Okay. All right. We're gonna do one more. I'm not gonna try to open the things. what's up, y'all? on today's AI That Works, we talked about a system for generating memories from AI eight coding agent sessions and generating a proposed changes to your Claude MD or your agents MD, a report on what to fix, what agents get stuck on, what humans keep correcting them on, and how you would basically go from a very naive pipeline of user and assistant messages
+
+And basically taking key content from what the user said and turning it into memories and then building that out and evaling it and making a really sophisticated system of every single thing that the agent may have learned while running through stuff. So super fun episode. Aaron did a really, really good job. We dig into the individual prompts, the workflow steps, and it's it's a lot of fun. You're gonna learn a lot. I learned a lot. I'm very excited to ship this. hopefully we'll be able to open source parts of this too and get you all the code. But yeah, this was great. Let's get into it.
+
+@aaronvi (59:40.169)
+that was so much better. Ship it. That was really good.
+
+@dexhorthy (59:42.167)
+I d you know, it's I'm good for I'm not good at building memory pipelines, but I can I can I can hype up the guy who did.
+
+@aaronvi (59:47.892)
+Ha ha
+
+No, that is definitely I'm I'm all for it. Let's do that. Perfect. All right, man.
+
+@dexhorthy (59:56.21)
+Cool guys.
+

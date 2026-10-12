@@ -109,6 +109,27 @@ Before joining, get familiar with our toolkit:
         <div style="margin-bottom: 2px;">
           <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
         </div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-10-27</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#80</strong>: Using AI for Writing</div>
+        <div style="font-size: 13px; color: #666;">
+          <a href="./2026-10-27-using-ai-for-writing">code</a> • <a href="https://luma.com/ai-for-writing">register</a>
+        </div>
+      </div>
+    </td><td><div style="padding: 8px 0; line-height: 1.5;">Everyone is complaining about how bad AI is at writing prose, but with the right workflow, you can produce good things.
+
+Vaibhav and Dex will share their workflow for writing no-slop technical posts that are actually fun to read.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+</div></td></tr>
+<tr><td>
+      <div style="padding: 8px 0;">
+        <div style="margin-bottom: 2px;">
+          <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
+        </div>
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-10-20</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#79</strong>: Building Evals on Production Data</div>
         <div style="font-size: 13px; color: #666;">
@@ -152,7 +173,7 @@ Meet the Speakers🧑‍💻​
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-10-06</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#77</strong>: Building a Memory Pipeline</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-10-06-building-a-memory-pipeline">code</a>
+          <a href="https://www.youtube.com/watch?v=mAKUL12h1n8">watch</a> • <a href="./2026-10-06-building-a-memory-pipeline">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">We've discussed how to build memory supervisors and memory pipelines before, but in this episode we're going to dive into real code and make it happen with real problems and real constraints.
