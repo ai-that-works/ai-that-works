@@ -13,6 +13,7 @@ description: |
   ​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
 event_link: https://luma.com/software-factory-yap
 eventDate: 2026-10-20T18:00:00Z
+eventTime: 10:15 AM PST
 media:
   url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
   type: video/youtube

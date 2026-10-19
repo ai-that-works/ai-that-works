@@ -13,7 +13,7 @@
 <div align="center">
 <h2>🦄 <strong>Next Episode</strong></h2>
 <h3><strong>Software Factory Debate</strong></h3>
-<p><strong>Tuesday, October 20, 2026 at 10 AM PST</strong></p>
+<p><strong>Tuesday, October 20, 2026 at 10:15 AM PST</strong></p>
 <p><em>Zach is the CTO of Warp, and he has a lot to say on software factories and how to get the most out of agentic coding. Dex and Zach agree on some things, and it seems like they might disagree on one or two. 
 
 Whiteboard-backed debate format moderated by Vaibhav, so it will probably get extra spicy. don’t miss this one.

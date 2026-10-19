@@ -12,6 +12,7 @@ const MetadataSchema = z.object({
   description: z.string().min(1, "Description is required"),
   event_link: z.string().url("Event link must be a valid URL"),
   eventDate: z.string().datetime("Event date must be ISO 8601 format"),
+  eventTime: z.string().optional(),
   event_type: z.enum(['episode', 'workshop']).optional(),
   media: z.object({
     url: z.string().url("Media URL must be valid").or(z.null()),
@@ -315,7 +316,7 @@ function writeReadmeFile(episodes: ValidationResult[], rootPath: string): void {
   year: 'numeric', 
   month: 'long', 
   day: 'numeric' 
-})} at 10 AM PST</strong></p>
+})} at ${upcomingEpisode.metadata!.eventTime ?? '10 AM PST'}</strong></p>
 <p><em>${upcomingEpisode.metadata!.description}</em></p>
 
 <a href="${upcomingEpisode.metadata!.event_link}" target="_blank">
