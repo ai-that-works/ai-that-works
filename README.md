@@ -25,7 +25,7 @@ Meet the Speakers🧑‍💻​
 ​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
 </em></p>
 
-<a href="https://luma.com/software-factory-debate" target="_blank">
+<a href="https://luma.com/software-factory-yap" target="_blank">
 <img src="https://img.shields.io/badge/🦄_REGISTER_NOW-Join_Live_Session-ff4444?style=for-the-badge&logo=calendar" alt="Register Now">
 </a>
 
@@ -152,7 +152,7 @@ Meet the Speakers🧑‍💻​
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-10-20</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#78</strong>: Software Factory Debate</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-10-20-software-factory-debate">code</a> • <a href="https://luma.com/software-factory-debate">register</a>
+          <a href="./2026-10-20-software-factory-debate">code</a> • <a href="https://luma.com/software-factory-yap">register</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">Zach is the CTO of Warp, and he has a lot to say on software factories and how to get the most out of agentic coding. Dex and Zach agree on some things, and it seems like they might disagree on one or two. 
