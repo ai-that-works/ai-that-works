@@ -3,6 +3,7 @@ Shared agent runtime and state management
 """
 from typing import Optional, Callable, Awaitable
 from dataclasses import dataclass, field
+from uuid import uuid4
 
 from baml_client import types
 from baml_client.async_client import b
@@ -22,6 +23,7 @@ class AgentState:
     current_iteration: int = 0
     current_depth: int = 0
     working_dir: str = "."
+    web_session_id: str = field(default_factory=lambda: str(uuid4()))
 
 
 @dataclass
@@ -49,7 +51,7 @@ class AgentRuntime:
         if tool.action == "Agent":
             return await self.execute_sub_agent(tool, depth)
         else:
-            return await _execute_tool(tool, self.state.working_dir)
+            return await _execute_tool(tool, self.state.working_dir, self.state.web_session_id)
     
     # @trace
     async def execute_sub_agent(self, tool: types.AgentTool, parent_depth: int) -> str:

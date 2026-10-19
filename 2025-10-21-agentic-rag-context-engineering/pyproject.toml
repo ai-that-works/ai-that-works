@@ -13,4 +13,5 @@ dependencies = [
     "rich>=13.0.0",
     "exa-py>=1.16.1",
     "beautifulsoup4>=4.14.2",
+    "mcp>=1.10.0,<2",
 ]
