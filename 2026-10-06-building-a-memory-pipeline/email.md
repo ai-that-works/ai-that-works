@@ -18,7 +18,7 @@ The full recording is on [YouTube](https://www.youtube.com/watch?v=mAKUL12h1n8),
 
 The best memory isn't always a new fact. When Aaron gave the pipeline access to the repo, it found that agents kept asking how the codebase was laid out because nobody told them to read the existing `architecture.md`. The fix was one line in CLAUDE.md pointing to that file, not a pile of new facts. Before you add 200 one-fact skills, hand the report to an agent in your repo and ask it how to fix the root cause.
 
-**Next session: Software Factory Debate, October 13th**
+**Next session: Software Factory Debate, October 20th**
 
 Zach, CTO of Warp, has strong opinions on software factories and how to get the most out of agentic coding. Dex agrees with him on most of it but maybe not all of it. Vaibhav is moderating with a whiteboard, so expect it to get spicy. Sign up here: https://luma.com/software-factory-debate
 

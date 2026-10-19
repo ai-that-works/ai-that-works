@@ -1,19 +1,19 @@
 {
   "episodes": [
     {
-      "folder": "2026-10-27-using-ai-for-writing",
+      "folder": "2026-11-03-using-ai-for-writing",
       "guid": "aitw-080",
       "title": "Using AI for Writing",
       "description": "Everyone is complaining about how bad AI is at writing prose, but with the right workflow, you can produce good things.\n\nVaibhav and Dex will share their workflow for writing no-slop technical posts that are actually fun to read.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
       "event_link": "https://luma.com/ai-for-writing",
-      "eventDate": "2026-10-27T18:00:00Z",
+      "eventDate": "2026-11-03T18:00:00Z",
       "event_type": "episode",
       "media": {
         "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
         "type": "video/youtube"
       },
       "links": {
-        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-27-using-ai-for-writing"
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-03-using-ai-for-writing"
       },
       "season": 2,
       "episode": 80,
@@ -21,19 +21,19 @@
       "isWorkshop": false
     },
     {
-      "folder": "2026-10-20-building-evals-on-production-data",
+      "folder": "2026-10-27-building-evals-on-production-data",
       "guid": "aitw-079",
       "title": "Building Evals on Production Data",
       "description": "We’ve done a ton of deep dives on eval design and eval frameworks, today we’re gonna talk about practical examples for taking production data and using to design and extend your eval system.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
       "event_link": "https://luma.com/evals-on-prod-data",
-      "eventDate": "2026-10-20T18:00:00Z",
+      "eventDate": "2026-10-27T18:00:00Z",
       "event_type": "episode",
       "media": {
         "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
         "type": "video/youtube"
       },
       "links": {
-        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-20-building-evals-on-production-data"
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-27-building-evals-on-production-data"
       },
       "season": 2,
       "episode": 79,
@@ -41,19 +41,19 @@
       "isWorkshop": false
     },
     {
-      "folder": "2026-10-13-software-factory-debate",
+      "folder": "2026-10-20-software-factory-debate",
       "guid": "aitw-078",
       "title": "Software Factory Debate",
       "description": "Zach is the CTO of Warp, and he has a lot to say on software factories and how to get the most out of agentic coding. Dex and Zach agree on some things, and it seems like they might disagree on one or two. \n\nWhiteboard-backed debate format moderated by Vaibhav, so it will probably get extra spicy. don’t miss this one.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
       "event_link": "https://luma.com/software-factory-debate",
-      "eventDate": "2026-10-13T18:00:00Z",
+      "eventDate": "2026-10-20T18:00:00Z",
       "event_type": "episode",
       "media": {
         "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
         "type": "video/youtube"
       },
       "links": {
-        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-13-software-factory-debate"
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-20-software-factory-debate"
       },
       "season": 2,
       "episode": 78,
@@ -1744,7 +1744,7 @@
       1,
       2
     ],
-    "lastUpdated": "2026-10-12T03:03:07.476Z",
+    "lastUpdated": "2026-10-19T17:59:49.339Z",
     "generatedBy": "validate-metadata.ts"
   }
 }
