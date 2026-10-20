@@ -14,7 +14,7 @@
 
 import { readFileSync, existsSync } from "node:fs";
 import { stdin } from "node:process";
-import { query } from "@anthropic-ai/claude-agent-sdk";
+import { query } from "./agent-sdk";
 import { BLUE, CYAN, RESET, YELLOW, log, printEvent } from "./utils";
 
 const LOOP_DELAY_MS = 10000;
