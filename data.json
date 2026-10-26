@@ -50,15 +50,16 @@
       "eventTime": "10:15 AM PST",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=XUEfIxkdT2Q",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=XUEfIxkdT2Q",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-20-software-factory-debate"
       },
       "season": 2,
       "episode": 78,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1738,14 +1739,14 @@
   ],
   "meta": {
     "totalEpisodes": 83,
-    "completedEpisodes": 76,
-    "upcomingEpisodes": 3,
+    "completedEpisodes": 77,
+    "upcomingEpisodes": 2,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-10-19T18:13:07.537Z",
+    "lastUpdated": "2026-10-26T14:24:41.022Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

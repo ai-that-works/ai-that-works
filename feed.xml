@@ -16,8 +16,34 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 19 Oct 2026 18:13:07 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 26 Oct 2026 14:24:41 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[Software Factory Debate]]></title>
+      <description><![CDATA[Zach is the CTO of Warp, and he has a lot to say on software factories and how to get the most out of agentic coding. Dex and Zach agree on some things, and it seems like they might disagree on one or two. 
+
+Whiteboard-backed debate format moderated by Vaibhav, so it will probably get extra spicy. don’t miss this one.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+
+
+Watch: https://www.youtube.com/watch?v=XUEfIxkdT2Q
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-20-software-factory-debate
+Event: https://luma.com/software-factory-yap
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=XUEfIxkdT2Q</link>
+      <guid isPermaLink="false">aitw-078</guid>
+      <pubDate>Tue, 20 Oct 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=XUEfIxkdT2Q" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[Building a Memory Pipeline]]></title>
       <description><![CDATA[We've discussed how to build memory supervisors and memory pipelines before, but in this episode we're going to dive into real code and make it happen with real problems and real constraints.

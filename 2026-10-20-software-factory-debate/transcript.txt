@@ -1,0 +1,1070 @@
+@vaibcode (00:00.128)
+And we're live. There we go.
+
+@dexhorthy (00:00.207)
+this Amazing. Incredible. Nice work, Vibov, pressing the go live button. you're very good at that. I hope you never I don't know what we would do without you.
+
+@vaibcode (00:07.202)
+Got one job.
+
+@vaibcode (00:11.096)
+Dude, as long as I can click I will be we're good to go.
+
+@dexhorthy (00:14.275)
+What's up everybody? we're gonna stand by real quick, Zach. If you go on my Twitter you should see the post and then you can repost it if you so desire. And then we're gonna get into a super fun software factory argument, debate, violent agreement, probably all of the above.
+
+Zach (00:22.609)
+All right, give me a second.
+
+@vaibcode (00:33.006)
+I expect it's gonna be more agreement than you think. I I says I I know it feels like the world is kind of converging in the direction of most things. But before we get into that, let's do really brief intros. Today's conversation is on AI Thatworks is gonna be about software factories and what they are, how they work, and how they don't work, I think. my name is Vibob, I'm the co-founder at Boundary. I'm joined by my co-host Dexter, who's the co-founder over at HumanLair.
+
+@dexhorthy (00:35.959)
+This always happens.
+
+@vaibcode (01:02.446)
+And then we have a guest today, Zach. You wanna give a brief little introduction?
+
+Zach (01:06.597)
+Yeah, give me one sec. I'm just finishing posting this on my Twitter. I should just be about good.
+
+@dexhorthy (01:11.652)
+Cool.
+
+@vaibcode (01:11.694)
+Let's do it.
+
+Zach (01:14.703)
+Yeah, so I'm I'm Zach. Can you guys hear me? Yeah, I'm live. I posted it. I'm Zach. I am the founder and CEO of Warp. Warp is folks not familiar, we're in the agenic development space. We trying to help developers ship better software more quickly. Our focus these days is is on what we call Warp Factories, which is a platform for companies to build their own internal software factories. But we're also pretty well known for Warp Terminal, which is an open source agent.
+
+@dexhorthy (01:15.267)
+Got it?
+
+Zach (01:44.707)
+Terminal. We have almost a million active developers who use it to build software with agents. So psyched to be here and chat about factories.
+
+@dexhorthy (01:51.247)
+I was I remember I remember when Warp came out. It was like there was that that hyper terminal and then Warp was the first terminal that was like, okay, we're gonna use like browser tech, like web tech to build a a terminal, right? Is it still written using like okay, that was just the hyper thing?
+
+Zach (02:05.486)
+No. So we we explicitly didn't do what Hyper did. So Warp's 100% native Rust. So Warp is like Rust based GPU accelerated. like hyper was cool, hyper was from like the I wanna say the Vercel folks, but very very slow.
+
+the things that Warp does have maybe that are more similar with hyper is like, you know, we we focused on really like updating the user experience of the terminal. So like the the big kind of features that we're known for is like the terminal input in Warp like a real text editor, for instance. So you can like click and put the mouse someplace, you can double click and delete text. We provide all this structure on the output of like your terminal so we like know when a terminal command starts, what output it's associated with. And so those are like the the big things. Yeah.
+
+@vaibcode (02:35.137)
+Yeah.
+
+@vaibcode (02:52.437)
+I mean when the first when you guys first started doing the AI stuff to to be completely honest, it was kinda nice that I could just like write five words and it just like go into a model. Like small UX stuff that you guys did. Yeah. Yeah, that was kinda nice. Yeah.
+
+@dexhorthy (03:01.432)
+And you could switch back to bash commands and then you could switch back to typing and it was all one shell, right?
+
+Zach (03:01.678)
+Yeah.
+
+Exactly. Yeah, so the the way that agents work in Warp is like you can basically you could just type it English work command, it's like talk to your computer and so it's it's a lot of people love that for doing a kind of agency work.
+
+@vaibcode (03:10.837)
+It's like English or commands and you kinda just choose which one you are. Yeah. Yeah.
+
+@vaibcode (03:19.019)
+Yeah, it's kinda nice. but now you guys are go ahead. But now you guys are doing
+
+@dexhorthy (03:21.036)
+Okay, cool. that's the background. You guys are doing Yeah, go ahead. I was gonna say you guys are doing factories now. I know. This happens all the time, Zach. it's we like to bring guests on because otherwise it's just me and Vibov shouting at each other and talking over each other. So now you get to just sit here and get talked over by both of us. I would love to hear kind of in your words, you know, we can talk through, we can do a little bit of drawing. I have the whiteboard here, I can share my screen, or we can just talk, but like
+
+Zach (03:27.354)
+Correct.
+
+@vaibcode (03:29.825)
+Yeah.
+
+@vaibcode (03:35.285)
+And now we can shout out the guests.
+
+@dexhorthy (03:50.537)
+software factory is a term that has been around for a very long time. I think my research came up that it was and by my research, I of course mean Claude's research, came up that it was the term was coined in 1968 at a NATO conference. it's been around for a while. So software factory is super in vogue. People say, AI means you need a software factory. And it's like, well, we kind of already had this and like it's been around for a while, but it definitely means something new, and it's it's one of those terms that's right on the brink of
+
+Zach (04:05.232)
+Okay, I didn't know that.
+
+@vaibcode (04:13.269)
+Yeah.
+
+@dexhorthy (04:18.412)
+becoming meaningless because it means ten different things to ten different people. so I'm very curious in your own words, like what does software factory mean to you and like what is what is a software re like conceptually what are the concepts that make up a factory?
+
+@vaibcode (04:19.157)
+Realization. Yeah.
+
+Zach (04:34.222)
+Yeah, so it's it's probably different than the the NATO conference definition from nineteen seventy-eight or whatever. for for for me, like the idea behind Software Factor is basically companies are gonna set up sort of agentic loop that looks a lot like the traditional software lifecycle. So you know, ideas come in at the top of this loop and then you have agents that do
+
+the various jobs that that humans have traditionally done to take something all the way from like an issue to a launch feature. So that's like triaging an issue, it's optionally like writing a spec, it's implementing, it's code reviewing, it's QAing, it's pushing things through CI C D, and then it's like monitoring. so it's like a identic loop and everyone knows like the loop concept. The
+
+The key thing about the software factory to me is like this is a loop that lives in the cloud, and that is something that is like highly measurable. So you can actually see how work is flowing through it, and something that you can improve over time and have confidence that you're improving it with the, you know, the kind of
+
+way that we talk about this is like as a developer, your job is not just going to be building products anymore, it's going to be building, maintaining, and tuning this loop to make software production as good as possible.
+
+@vaibcode (06:02.689)
+So
+
+Okay, let's take this loop for example really fast. Cause I think if I were to go ahead and describe this right now, most of Twitter will probably agree with this broad definition of what a software factory is. I think, Dexter, do you agree? Is this your definition as well?
+
+Zach (06:11.087)
+Yep.
+
+Zach (06:15.183)
+Yeah.
+
+@dexhorthy (06:18.946)
+I mean, mostly what's really funny is we did implementing and then code review and then QA, and then I changed it to do code review and then QA and then you changed it back. So it's actually a very interesting tangent of like should you test it before someone reviews it or should you test it after and it I think it depends on which which part is more expensive and we can get into all of that. But yes, in general I think for most of this shape I think this this is pretty pretty established as an idea and
+
+@vaibcode (06:30.112)
+Yeah.
+
+@vaibcode (06:35.533)
+For sure.
+
+Zach (06:36.986)
+Totally.
+
+@vaibcode (06:40.279)
+Yeah.
+
+@vaibcode (06:44.503)
+Okay.
+
+Zach (06:46.948)
+Yeah.
+
+@vaibcode (06:47.159)
+So
+
+@dexhorthy (06:47.244)
+That's actually my favorite part about this conversation is like AI doesn't actually change too much of this. But sorry, Bybal, go ahead.
+
+@vaibcode (06:53.485)
+So I think the most interesting part to this that I really want to have both of you guys really think about is like, okay, we have this loop concept. It makes sense. Like, and the idea is like, what's a good factory? It's one that has massive yield. It's gonna produce the most throughput out of this loop as much as possible, as fast as possible. Why don't we have these yet? Like, why doesn't it work? We all know the definition. Like, where is it breaking?
+
+Zach (07:11.204)
+So
+
+Yeah, so so I would go this is like I think the general concept. Th there's a couple other pieces of it from from my perspective at warp that are really important. The first is like this this thing needs to be like real. And to make it real, it's like we actually have this concept of you define your factory in code. So think of like Terraform, where it's like,
+
+At any given time, you should be able to say, okay, like what is what is the shape of this workflow? What are the agents involved? What are the skills? What are the MCPs they have access to? Where do they run? What models do they use? And so as much as possible, I'm a big proponent of like a declarative approach to saying this is a software factory, because otherwise it's just an abstract thing. And so Warp we're trying to say, like, okay, there actually is a file and a s and a folder structure that defines what one of these things is. And then there's like a way of taking that file.
+
+folders and like feeding it to like a an orchestration runtime that that implements that one factory at any given time. So that's like how we get out of the realm of like wishy-washing to an actual thing is through this concept of having factories be code. Does that make sense?
+
+@dexhorthy (08:25.272)
+This is the this is yeah, I just dropped in a screenshot of the like d the the the structure of the channel.
+
+Zach (08:28.875)
+amazing. Yeah, and so once you have this,
+
+You have like a concrete thing, okay, like this is your factory. It says work comes in here, agents take it through. Then you get the ability to like actually test different versions of this by branching the factory code. You get the ability for coding agents to suggest changes to your factory by making diffs against the factory code. And so you start to actually get to a closed loop system, which again, whether or not this is through Warp's factory platform or some other one, I think this is I think this is a good approach. How do we measure?
+
+@vaibcode (09:02.903)
+How do you measure though? I think the the here's the part where I get stuck on on this is like this factory concept is awesome, but I think so. I mean, if a good factory has great yield, you first need to define yield. And that's where I get stuck on software factories. I don't have a good definition of yield because I think it's different per business. It's probably per different per change that you're making.
+
+Zach (09:08.815)
+Yeah.
+
+Zach (09:28.654)
+Yeah, so this I think by the way this problem is more general than software factories. It's just like how do you measure engineering productivity? And that's like been a problem absolutely forever. Yeah.
+
+@dexhorthy (09:35.284)
+Yeah. This keeps coming up. We keep doing episodes that we keep getting in I'm not gonna do it this time, but we last I think a couple w mo weeks ago we did a long tangent on like Dora metrics and why they're interesting and well you can measure revenue, but it's a super lagging metric. So can you find leading metrics? But like counting lines of code is is bullshit. So what can we do?
+
+@vaibcode (09:35.431)
+Yeah.
+
+@vaibcode (09:48.173)
+Yeah.
+
+@vaibcode (09:56.789)
+Yeah.
+
+Zach (09:58.862)
+Yeah, I don't this this question's too big for for for me to solve, just to be honest. But like to the extent that like the the way that we the dumb way is kinda like how many PRs are you shipping. I think you can kinda go up and up a level of abstraction and be like,
+
+@dexhorthy (10:02.925)
+Ha ha ha.
+
+@vaibcode (10:13.099)
+Okay, yeah.
+
+Zach (10:18.595)
+Bring it into the realm of like project management is where I think this will kind of go, which is like, hey, we want to ship this whole new feature. you know, and did the factory ship it, what did it cost to ship it? If you want to bring it up one level further, you could bring it up into the realm of like business impact. Again, I think the further up you go, the harder it is to truly measure. But those are the types of things.
+
+@vaibcode (10:22.103)
+So like you
+
+@dexhorthy (10:40.066)
+Yeah, I I
+
+@vaibcode (10:40.301)
+So number of PRs, y what was the other thing? Like sh feature shift?
+
+Zach (10:46.031)
+So PRs, then I would go up one level to like features, like like what's a user, what's a thing that's valuable to the user? Like instead of measuring it in terms of code output, measure it in terms of user value in some way, and then measure it in terms of like business value if you can.
+
+@dexhorthy (10:46.712)
+Yeah, projects.
+
+@vaibcode (11:00.877)
+So like this is often measurable, like directly measurable. This this becomes like a probably some L L stuff. I'm gonna say LM stuff 'cause I don't know how you i some LM has to look at this and be like, did you ship this feature, yes or no?
+
+@dexhorthy (11:01.09)
+So I
+
+Zach (11:04.109)
+That's measurable. I think so.
+
+Yes. LM or yeah.
+
+@dexhorthy (11:14.862)
+I mean you can count the number of Jira tickets, right?
+
+@vaibcode (11:18.901)
+Not really, 'cause that goes into PRs again. You can say like intel there's some intelligence. You apply some intelligence to know if you apply a user feature. And then business outcome is again very measurable actually, surprisingly.
+
+Zach (11:19.331)
+Yeah, it's yeah. Any kind of like counting of work item is not good enough.
+
+@dexhorthy (11:22.712)
+Yeah.
+
+@dexhorthy (11:32.075)
+Is like I so yeah, I think about this in terms of less business outcome, but more like customer outcome between those, which is like, hey, we enabled this user to do this workflow that used to take twenty minutes and now they can do it in 10 minutes. It's not actually like you didn't put money in the bank, but there's like an outcome that you can prove. What's what's interesting to me about all of this is like most businesses end up drawing a line somewhere around here where it's like
+
+@vaibcode (11:33.643)
+Like revenue.
+
+Zach (11:44.131)
+Yeah.
+
+@dexhorthy (11:57.559)
+Everything above the line is owned by engineering and everything below the line is owned by product and it's like product's job to decide what is worth shipping and engineering's job to ship it. And that's a thing that people have to do at big companies, I guess. But I think there's also like the best companies, right? The post hog product engineering thing is like, no, make the engineers own the customer outcomes. Make the engineer not make i it it encourage the engineers to talk to users, see what's broken, understand w how we're solving their pain point, because then you remove the middleman basically.
+
+@vaibcode (12:29.154)
+Yeah, so what's missing I guess? I mean like what would make factories go burr?
+
+Zach (12:35.019)
+So the the state of the world that that I see a lot today, I'm curious what what you all see is like we go into companies and for the most part they're in the world of like
+
+@dexhorthy (12:35.054)
+Ha ha.
+
+Zach (12:46.415)
+Every engineer has like Cloud Code or Codex or some like local harness, they're running it either in the terminal or through like the Codex app. Everyone has their own like skills and MCPs and basically is treating these coding agents as like dev tools. And then and what I mean by that is like they all work independently. Then you pus something up into PR, and then there's like a code review bot that looks at it, and that's kind of where most companies are. A lot of companies I'm talking
+
+@dexhorthy (13:13.154)
+Right, you're just you're just kind of swapping out this implementing step with a new a new tool, a new it's not an IDE, but you're replacing the IDE with a different thing, but everything else kinda stays the same.
+
+Zach (13:19.161)
+Okay.
+
+Zach (13:24.259)
+That's most of what I see. And then with some agents at different points in this, like a code review, yeah. and so the and then the other thing I see a lot is like companies are trying to build their own like bespoke internal cloud software factory, and they tend to start doing this by sort of stitching together more automations. that's kinda how it's kinda how they do it. So they might like
+
+@vaibcode (13:28.972)
+Like this, right?
+
+Zach (13:51.448)
+put cloud code into a Docker container and then have a web portal where you can like launch cloud code or they might have a Slack bot where you can do it. and so people are starting to sort of be like, how do we how do we get more things happening off of triggers? Because it's faster. And like otherwise you're just kind of fundamentally limited by like your human prompters. and so companies want more automation and they also want
+
+@dexhorthy (13:57.368)
+Sessions.
+
+@vaibcode (14:06.99)
+Yeah, it's faster. Yeah.
+
+Zach (14:20.601)
+They want some amount of more standardization and centralization, primarily so that you can control the costs of these coding agents. I see that a lot. And also so that you can Yeah, and also there's like a got like a security and like auditing and like things can go very wrong when every individual
+
+@dexhorthy (14:28.684)
+It's like a governance thing.
+
+Zach (14:39.055)
+person is setting up their own local tool with something so powerful as these agents. So that's where everyone's at. And then to answer your question about like where do folks want to go go to, I think like you you got the before you could really get like factories like humming, you have to get some amount of this like factory infrastructure in place where you truly have like a measurable loop and stuff is happening in the cloud.
+
+And so just like getting to that is kind of the the f the first step.
+
+@vaibcode (15:12.589)
+Yeah, I think
+
+@dexhorthy (15:12.814)
+Okay.
+
+Zach (15:13.187)
+What do you what do you guys see? Like when you talk to people.
+
+@vaibcode (15:16.524)
+I think when I think about the go ahead, Dex. Tell me what you think.
+
+@dexhorthy (15:16.696)
+I I No, go ahead. Give me your take 'cause mine's gonna take longer.
+
+@vaibcode (15:22.786)
+I mean my my take is like I agree that it's very important to put all these together in some like building blocks that are like somewhat automated fundamentally. But I think most companies don't have enough automation processes set up to actually do this. Like they don't have enough definitions built in place. So I actually think the
+
+Zach (15:31.343)
+Yeah.
+
+@dexhorthy (15:40.428)
+Most companies are not set up to measure customer outcomes. Most companies are used to like PM says to build a thing and we count the engineering metrics and we count the product metrics and this is very top-down hierarchical like siloed.
+
+Zach (15:40.495)
+Yeah.
+
+@vaibcode (15:44.192)
+Mm yeah. And you build it.
+
+@vaibcode (15:52.153)
+Yeah. So I think the best thing to actually do if someone's trying to build a software factory is just to decide how can you remove humans out of your existing loop as much as possible. and then once you've removed humans out of your loop enough, and once you've gone to a point where like people are merging PRs in a more automated way, then you say, Okay, now let me take the workflow of my best engineers and then build that into a pipeline. But until you've done like the removing humans bits, or you until you can define where you need humans involved.
+
+Zach (15:52.399)
+Mm-hmm.
+
+@vaibcode (16:21.816)
+explicitly or where you explicitly want humans, it's really hard to build that like gating system up front.
+
+Zach (16:28.313)
+We we approach this actually the other way. So our our our approach is like it's really, really hard to get to full automation because
+
+@dexhorthy (16:28.814)
+Yeah.
+
+Zach (16:39.907)
+You just need a ton of like trust and verification and like and like the the actual complexity of things that can be automated, in my opinion, at this point is pretty low. And so actually what we try and do when we onboard people to warp factories is actually just get them all working, even if it's interactive agents, through this loop, meaning like, can you contribute to this loop through Slack? you contribute through Jira? Can you contribute through an MCP? And when you get contributions into this cloud.
+
+loop happening, even if they're happening with a direct prompt, all of a sudden you get all these benefits around like, okay, now everything is tracked, everything is measurable. You have the ability to do a learning loop. And then over time you basically can take some percentage of those things that are going in as direct prompt today and turn them into full automation. But I think starting like trying to do full automation is actually is is too hard. It doesn't work that well.
+
+@vaibcode (17:19.277)
+That's true.
+
+@dexhorthy (17:37.048)
+Yeah, you start kind of hill he'll climb you you you just I I think this is the the the mistake that a lot of people make when designing their software factory is you have like a company that is doing things in an old way or they're still in this kind of like okay, we have AI, but we're still doing the same work with better tools. It's still IDE shaped, it's still like cool, we use this to implement and I've talked to EMs, engineering managers who are like, Yeah, when it's when I w come into the morning I have Claude pull down all the PRs that are open for my review and walk me through them, but it's still like
+
+@vaibcode (17:37.175)
+Yeah, I
+
+@dexhorthy (18:06.381)
+All of these things are kind of siloed and and once you start like measuring it, it's great. But what people decide they have to do is a is a throw out everything we had and redesign our entire process of building software in this new way, this factory way. And I've given the advice a bunch of times is like that's a that's a great way to like it's the same thing as like you go build a product in in a in a hole for six months, you're gonna come out you don't know if you're gonna come out with something that anybody actually wants.
+
+@vaibcode (18:17.367)
+Wait.
+
+Zach (18:29.868)
+Yeah. I don't think that works.
+
+@vaibcode (18:30.754)
+We've got a we've got a really interesting we've got a really interesting question in the chat, which is how how how big size of a company are we talking? Like where does this apply what what of what rules apply to let's say a five percent startup, fifty percent startup, and a thousand percent company? Is there a difference?
+
+@dexhorthy (18:55.715)
+Yeah, Zach, where are you where are you spending your most of your time? Like what are you what what
+
+Zach (18:56.44)
+The Yeah, so so really, really giant companies that are tech companies, so take take like Uber or Stripe. the
+
+@dexhorthy (19:09.571)
+Yeah, we call these the the hipster enterprises, where they have like large enterprise requirements, but they also are tend to be quite modern in terms of their technology choices.
+
+Zach (19:16.44)
+They're very they're very tech savvy. They're gonna build their own and they've like they're gonna build their own internal software factories and have like written pre Ramp is doing it. Ramp's basically a DevTools company at this point, as far as I can tell. it's like it's pretty it's pretty wild to see. yeah. Something. whereas
+
+@vaibcode (19:17.532)
+Yeah. Yeah.
+
+@vaibcode (19:23.692)
+Yeah, like ramp is doing this, like right yeah.
+
+@vaibcode (19:29.986)
+Ha ha ha
+
+@dexhorthy (19:33.667)
+And an and an AI lab, right? Didn't they publish some like archive paper about rag or something?
+
+@vaibcode (19:40.706)
+Dex, I'm on a screen share by the way so I can zoom in a little bit more.
+
+@dexhorthy (19:43.896)
+Yeah, sure, go for it.
+
+Zach (19:45.643)
+So like where we're finding that there's demand for building these software factories. So at the other end, if you're too small, like just a few engineers, so all this infrastructure around software factories is like overkill and like it's gonna honestly you should just be using like multiple cloud subs, mm, maybe five people. I I don't know, maybe three people. Yeah.
+
+@vaibcode (20:05.784)
+What's too small?
+
+@dexhorthy (20:10.489)
+I think I think there's a level it's it's less about the size, it's more about like where are you in the like product market fit cycle, right? Is like if you are if you are pre-PMF, then a lot of the constraints and rules and requirements probably don't exist for you. And so you're you're living in a very different world. And this is actually why I was at the AI engineer conference in New York last week, this where we met, but like I think there is a lot of
+
+There's a lot of like you go to an a AI conference in SF and you hear from all these founders that are living in the future and on the frontier, and a lot of people at, you know, you work at a bank or you work at a large financial institution or even a small financial institution. I mean, we have cust customers with like, you know, three, four, or five hundred engineers, right? Not giant enterprise, but like have real things that are just like, Yeah, we just we can't do any of that. Like, yeah, you are you are via like, yeah, we can't run without code review because we have auditors and compliance, and if something is broken
+
+Someone's getting fined millions of dollars. and I think I think like
+
+@vaibcode (21:12.374)
+I think it's actually more about this definition. It's like if you're pre-PMF, you can't define yield. Cause you don't know what you're building towards. So like you don't know if anything is worth building really fast. Cause like your yield is effectively, if you go down to like what we were talking about earlier, when you're when you're pre PMF, this is yield. Right? Like this is the only definition of yield. Everything else almost doesn't matter. And this is a very far sparse outcome. It's like probably in your text messages.
+
+It's probably in the event that you went to, you shield to like your one customer that you signed up at that event at that one time. Like it's in like your s it's like too far. So even if you could automate your whole software factory, like sure. But the problem is you have no metric to optimize for of like, are you building the right thing? Cause like you don't even like if you're gonna look at customer outcomes and happiness and like metrics of let's say some telemetry system or something else that you build.
+
+Zach (21:45.698)
+Yeah, that's probably true.
+
+@vaibcode (22:05.794)
+You only have like 10 users or 20 users or a hundred users. You can watch every session. You can literally watch every session replay yourself every single day and digest it probably better than LM will. And it's probably more valuable to do that. I think it's like once you've broken past a certain point of like how many users you have, then you can actually make data driven decisions. And now you can start basically making these kinds of judgments. I think like Theo posted a really interesting thing where he's like one of his engineers is pushing like 350 PRs a day or something.
+
+@dexhorthy (22:09.263)
+You're not gonna have enough data.
+
+@vaibcode (22:36.538)
+for a T three code. yeah, it's a lot. It's it's it's a shit ton to be completely honest. It's and like I th I'll see if I can find the tweet actually. I think I have it. But like when I when I look at that stuff, let me open this up. Like here, I think I found it. There we go.
+
+@dexhorthy (22:38.606)
+Yeah.
+
+@vaibcode (23:01.838)
+This over onto the right screen.
+
+@vaibcode (23:06.862)
+Okay.
+
+Can you guys see this? Like check this thing out. Like what the heck?
+
+@dexhorthy (23:12.715)
+my god.
+
+Zach (23:13.059)
+Yeah.
+
+@dexhorthy (23:16.571)
+Looking at the trading card actually, but
+
+@vaibcode (23:19.458)
+This is PR's merge per day. and clearly something happened. Something happened on October 17th. I'm not sure what's gonna happen.
+
+But I think the point here is like once you have metrics and you have users, you actually can do this to some degree. Cause you can detect regressions really fast. A certain percentage of user base upgrades, you find a bug, boom, you can go back and revert the change. Now you can decide if your software factory is increasing or decreasing yield if you have numbers to measure it by in an automated way. But yeah.
+
+@dexhorthy (23:51.49)
+Yeah, I wanna I wan I wanna come back to this measurement thing and like hill climbing. Cause yeah, basically my my my pitch is always like start with the thing you have and make it a little bit better every day and define what better looks like and then you can kind of hill climb against a goal a little bit. and that's how you get to this self-improving thing. But but Zach, I'm I'm curious, like tactically, what what else have you found people measuring? 'Cause I know I talked to someone who works on a software factory for like three hundred engineers and she's doing a lot of looking at like, hey, how
+
+Zach (24:14.264)
+Gee.
+
+@dexhorthy (24:21.423)
+How are the skills that we're giving people working out and like mapping skill used to and version of the skill used to like the sentiment of the session and then creating analytics dashboards based on that so they can like make the actual base prompts better? But like what are some tactical stuff you've seen that is working well for people who want to improve this?
+
+Zach (24:24.12)
+Yeah.
+
+@vaibcode (24:26.246)
+yeah.
+
+Zach (24:40.772)
+can I screen share? Can I show you how how we do this?
+
+@dexhorthy (24:43.639)
+Absolutely.
+
+@dexhorthy (24:48.461)
+Or you also if you if you go in the studio chat, you also have access to the whiteboard. Sorry, I I I I forgot to mention that. Okay. Okay. Yeah, you should be able to screen share. Nice.
+
+@vaibcode (24:48.482)
+Take it away.
+
+Zach (24:53.1)
+I'm not gonna be good at doing the white y you guys should do the whiteboard, I'm not gonna be good at doing it. but let me let me and you're gonna get some so this is like I'll just show you the stuff that we provide out of the box because I I think it's like representative.
+
+@vaibcode (24:56.706)
+Ha ha ha
+
+@vaibcode (25:11.032)
+Can you hit X on the riverside thing so it only shows your screen? Yeah. There you go. It's easier to see. Yeah. Yeah.
+
+@dexhorthy (25:11.555)
+Yep.
+
+Zach (25:16.386)
+Yeah, can you see this now? Yeah, so the types of things that we any that we look at in just like our default factory metrics are like they're kind of things we've been talking about. So we have some view of like how automated are you, which is like how many human interactions per PR is the kind of proxy for like this, and you kind of want to drive this down, but the assumption isn't like that it's like a binary, like automated or not.
+
+@vaibcode (25:42.798)
+Yeah.
+
+Zach (25:43.672)
+We provide things like Dora Dora metrics, it's like how long does it take to go from starting something to getting it merged, what's your volume of work you're pushing through? We provide
+
+This is like a major one where you could have a product honestly that's just around this and this is like sort of showing cost yeah. Exactly. So you can do this by engineer, we could do this by like stage of the factory. And then the other thing that people
+
+@dexhorthy (26:03.864)
+There are yeah, there are products that are just around this.
+
+@vaibcode (26:05.954)
+Yeah, I wanna know how much engineers are spending on different platforms makes sense.
+
+@vaibcode (26:13.773)
+Yeah.
+
+Zach (26:17.208)
+get a bunch of value out of is like kind of an online eval concept within the factory. And so this is like you have like assuming you're you're running you're recording everything that's happening in your factory, which to me is a prerequisite for having any kind of real improvement. you can basically put online evals against some sample of those prior runs, meaning like you could be like,
+
+Here's a good one. It's like what percentage of your coding agent runs are generating redundant tests according to LLM as a judge. And so this is like we you know track track something like this, and then like I said, the prerequisite.
+
+@dexhorthy (26:52.142)
+Cool.
+
+@dexhorthy (26:57.41)
+This is sick, so if you switch models you can you could probably split that out by model and you could say like, yes, like it's no longer just vibes of people being like, Yeah, I think Opus Vrites too many tests. You can actually show based yeah, that's awesome.
+
+Zach (27:07.854)
+Exactly. And so so so just to to to talk a little more about like what I meant by having the loop, so this is like if you set if you set things up, like y you know, we have visibility into what everyone on our team is doing with coding agents at all times and all of this is like stored in the cloud someplace. It could be stored on your own.
+
+infrastructure but it stored someplace and that's the raw material for then getting this type of you know the ability to then go and put online evals on it and do grades on it. And you know the other thing I mentioned, I'll bring it up again, is that there's this other core concept I think is really important, which is the if you store everything in code
+
+This is like a definition of like a factory with all the agents, automations, benchmarks, all this stuff. And again, this could be, it doesn't have to be the warp factories approach, but this is how we do it. Then you get the ability to add this other layer of agents that are looking for.
+
+@vaibcode (28:13.174)
+Yeah, just improving your factory. Yeah.
+
+Zach (28:14.786)
+That are just improving your factory and and the way that they do it, which is really cool. So they look for patterns of failed runs, and then they're able to suggest changes against the factory definition itself. So this is like an actual diff against one of our MD files that's in the factory definition. And so
+
+get that capability and then I'll sh I'll show you one other thing just in in the interest of like what can you do once you have this closed loop system is other thing you can do is you can create basically I could go over here I and for anything that's been done I could say okay let's look at this this was an interesting task I want to say this should become a a benchmark and so you can build up these sets of like hey these are this is a set of like front end tasks for example that were real tasks that were done
+
+that you can then go and say, okay, I want to create my own version of like terminal bench or sweet bench or whatever, but off of my own real work, and you can generate you know a sort of like your own Pareto curve for how models perform. And so yeah.
+
+@dexhorthy (29:06.317)
+Yeah.
+
+@dexhorthy (29:21.484)
+Yeah. Cause if 'cause if you ran if you ran if you ran the session and you knew the model, you knew the thing, you knew the environment, you knew the starting SHA and you knew the base, you know, Linux image or whatever you're using, you now have an RL environment and then you can replay other things on it. That's sick. Okay.
+
+Zach (29:32.244)
+Exactly. You replay. Yes.
+
+@vaibcode (29:39.07)
+How do you prevent the model from the problem that the this is really cool. how do you prevent the model what I'm curious about, my first thought is like how do you prevent the model from like not being too smart and just looking the future commit and be like, got
+
+Zach (29:39.608)
+So
+
+Zach (29:53.209)
+This is this is an awesome qu so to actually make this work reliably
+
+@dexhorthy (29:53.218)
+Ha ha.
+
+Zach (29:57.943)
+should do a whole like end blog on it. It's it's tricky to prevent cheating because it could just like fast forward. it's tricky to prevent like there's you know s a bunch of these tasks will have side effects, they'll create PRs. And so you need some way of basically making it not be able to see the finished PR. And so you have to do you know you gotta do a good job replicating the environment so it's close to like a clean rerun to get something like this to work well. And so we're yeah that like making that work is has been
+
+@vaibcode (30:05.223)
+Mm. Yeah.
+
+Zach (30:27.856)
+has been fun, but is it really, really powerful once you have you know once you have it all tied together like this. Anyway, I can stop sharing. I just want to show you like how to how to make it like how we try to make this real, not just like vibes.
+
+@dexhorthy (30:41.678)
+That's good.
+
+Tactical tactical tips on on on on how to measure things. Okay, so we had Vibe, do you have the whiteboard up? so the things things to measure, I'm gonna start writing these down. So you have basically like good slash bad runs become benchmarks. You have what else was it? It was
+
+@vaibcode (30:52.845)
+I can pull back up.
+
+Actually
+
+Zach (31:00.546)
+Yeah. Yeah.
+
+Zach (31:06.434)
+So yeah, so we did like just to summarize, we did like standard Dora metrics, we did cost metrics, we do some index of like how automated are you, which is not binary, it's more like
+
+@vaibcode (31:22.262)
+Yeah, you try and put a number so you can actually like grow it, right? 'Cause if it's a number it's binary, you're th there's not much you can improve on.
+
+@dexhorthy (31:22.69)
+Just like how many
+
+Zach (31:25.701)
+Yeah.
+
+Yeah, and then we do yeah.
+
+@dexhorthy (31:29.144)
+So is this like how many user messages or like how much human steering needs to go into a task?
+
+Zach (31:33.44)
+Exactly. It's it's like it's like a steering it's like a a metric that counts steering. Yeah, exactly. And you can get more sophisticated. Yeah.
+
+@vaibcode (31:37.058)
+Yeah, measure steering in some way. And yeah.
+
+@dexhorthy (31:40.643)
+There's there's another one here. There's another one here I think that is interesting. I mean cost is is part of this, but there's almost like another thing that is like the the hill climbing index when I say hill climb in this case, it's like when a model like tries to run the tests and then it like doesn't know the right command and it tries six different commands to run them, it's like w time wasted trying to learn how to use the system, right?
+
+@vaibcode (31:55.979)
+yeah.
+
+Zach (32:00.338)
+It's okay, so that's that's an example of one where we would do an online eval. So we would have an online eval for like like dead ends or verbosity or like relearning something that should be a skill. And so we would essentially be looking for these failure modes of agents with online evals and then feeding that into a like a skill improvement essentially.
+
+@dexhorthy (32:05.953)
+Yeah.
+
+@dexhorthy (32:21.878)
+Yeah. Relearning is a is a great way to put it. Is like, hey, having to start over and over again. I mean, we did an episode two weeks ago about the memory system that Aaron and Aaron and Vibob basically took a bunch of their data out of human layers, basically just session traces, and then built this crazy like soul plus Jev pipeline of like how do you detect when an agent is like when multiple agents are getting stuck on the same thing, multiple traces have this pattern.
+
+@vaibcode (32:37.506)
+Yeah. That was really good.
+
+@vaibcode (32:46.136)
+Yeah.
+
+Zach (32:46.411)
+Yeah. Yeah. yeah, and so like you can kinda see where this can go too. It's like once you have this in place, all of a sudden you could be like, okay, I wanna run like a like an A B test in my factory or something. I wanna like have some some factory test funnel to like one model, some factor to another and measure like see if there's a statistical s significant difference. But yeah. But
+
+@dexhorthy (32:50.115)
+Cool.
+
+@dexhorthy (33:08.462)
+I wanna test out V V one point one of this skill.
+
+@vaibcode (33:09.248)
+Yeah, you just look for this. If you have numbers if you have numbers that you trust, then you can optimize around them. Like basically anything that can be measured. Yeah. Go ahead.
+
+Zach (33:15.819)
+Yeah. But the first thing is like yeah. The first thing is just like you gotta get this system in place and you gotta get people to use it. And so all those challenges are are like those are human there's it's also there's technical challenges in building this, but like the biggest challenge is like developers are very used to working in this sort of private inner loop. and
+
+@vaibcode (33:26.52)
+Well those are human challenges. Yeah.
+
+Zach (33:41.261)
+When you move to this more like public factory approach, it's a totally different developer behavior. Yeah.
+
+@vaibcode (33:43.823)
+Cloud top. Yeah. Also, the job is different, to be completely honest. The job is like f like Yeah, the job is just fundamentally different when you're accessing a remote machine and doing shit and interacting with it sparsely rather than it being on your machine, like you control the execution system effectively. Like this is basically like I this has basically turned the job into a paging system. I get paged and I fucking text back and I deal with that shit.
+
+Zach (34:03.159)
+Totally.
+
+@dexhorthy (34:03.255)
+I think was
+
+@vaibcode (34:10.86)
+And then I go back to whatever I'm doing. I'm just texting all freaking day long, right? That's that is effectively the job. It's it's a fundamentally different job than like I'm sitting on my computer like actively. I'm literally just like, I'm kind of just working a call center and just dealing with issues that this factory is sending me, and I'm just freaking paging back and back and back and back. That's kind of the job in many senses.
+
+Zach (34:10.87)
+Yeah.
+
+Zach (34:14.401)
+That's interesting.
+
+Zach (34:34.516)
+It's
+
+@vaibcode (34:34.696)
+It's like a totally different
+
+Zach (34:37.399)
+There's like an intermediate phase, which is how we use it a lot of the time, where basically our work starts in Slack. Is like and it's still starting with a prompt. So it's still like some engineer on our team is like, hey, I want to fix this issue that's impacting users. Here's some screenshots, here's a link to a Figma, take a crack at it. but it's different because it's in public.
+
+It's interesting because it can be multiplayer, like inherently, even at the time you're building it. And so you can like tag in someone else on the team to like be like, Hey, does this look right?
+
+@vaibcode (35:10.294)
+Yeah, by default. Yeah.
+
+@dexhorthy (35:18.872)
+Do you were you the one who was telling me about this like like psychology shift that happens when you go from single player to malt multiplayer, where basically like people people think differently and their like creativity becomes sometimes like like scientifically proven that like you become less creative if you think you're being watched or if you think people are anyone's gonna be able to see what you're doing versus if you're actually totally siloed.
+
+Zach (35:26.987)
+Yeah.
+
+Zach (35:41.771)
+I don't think I told you that, but it's interesting. That makes sense.
+
+@dexhorthy (35:46.435)
+yeah, we we've hit this a lot is like I think the sometimes when we go into a team that doesn't have like high psychological safety or doesn't have a culture of working in the open, it's a lot slower for them to adopt these sort of like multiplayer first systems. they're much more used to like I have my own space, my own time, I go and work on my thing, and then I come back and share the result with the team, not the process of how I got there.
+
+Zach (36:10.945)
+Yeah. That makes sense. I've always even before like long before agents, I've always been like a big work in public person because the it's just a big failure mode for engineers I've seen in my career where someone will take a thing off into the woods for a couple weeks, they'll come back with you know, it used to be they'll come back with one huge PR, and then you're like
+
+That's yeah, this doesn't actually you did something that different than what we thought we were doing or it's built in a way that we could never merge it. And now and and now we have this like we have this like Exactly, so we then we have this like sunk costs issue to deal with where it's like, do we like and oftentimes you end up merging a thing that's not not what you want it to be. And so I'm o I've always been just like the more you work in public, the more everyone gets alignment, the more you you
+
+@vaibcode (36:41.847)
+yeah. Dude, you look at the PR, it's like it's trash. They're every single
+
+@dexhorthy (36:45.454)
+And you're like, why didn't you ask for help with this?
+
+@vaibcode (37:02.03)
+I mean
+
+Zach (37:05.889)
+You can demo as you're going and make sure we're actually building the right thing, the better. And so I like that this pushes the public aspect earlier in the cycle, but I totally that that that point you made around like does that stifle someone's creativity because all of a sudden you can't take risks in the same way if you're like doing it in front of everyone is interesting. That's a good point. Yeah. Yeah.
+
+@dexhorthy (37:24.654)
+Well it depends on psychological safety. Like
+
+@vaibcode (37:24.876)
+You it think a junior a junior engineer is much less likely to take risks than a more established engineer. That's it's actually not about like risk. I think it's like like Dexter's, I guess, was going towards like psychological safety is the hardest part. Like, am I gonna get told like why weren't you working on this other thing instead of this other like that's like everything else measures like fuck my boss knows exactly what I worked on. Shit. I didn't do the thing he told me to do, I did this other thing, it didn't pan out.
+
+Zach (37:45.047)
+Totally.
+
+@dexhorthy (37:45.23)
+Yeah.
+
+Zach (37:48.276)
+I think that's a feature as someone who's been an engineering manager a long time. It's like, this is awesome. Like I can just pull up what everyone's doing and it's like
+
+@vaibcode (37:51.054)
+Ha ha
+
+@dexhorthy (37:52.527)
+I mean like I I have the I have the opposite too. Sorry, go ahead. Maliciously compliant.
+
+@vaibcode (37:55.919)
+As someone as someone that's been I mean, I've been maliciously compliant my whole career.
+
+Zach (38:00.439)
+Yeah.
+
+@vaibcode (38:05.45)
+I I will do the minimum I'll do the work that is useful, but I'll try and if I identify a thing that I think is higher value, I'm gonna go do that thing, more important than anything else. unless my boss yeah. Well, mm depends on your boss.
+
+Zach (38:14.861)
+There there is one what I will say one one cool thing is like the is that you know, people on the team naturally prompt these agents in different ways. And it does give like everyone on the team a chance to see like how do our most senior engineers do their prompting. When it happens in Slack. Yeah. Yeah.
+
+@dexhorthy (38:14.946)
+That's the opposite of malicious compliance.
+
+@dexhorthy (38:19.981)
+Yeah.
+
+@vaibcode (38:26.732)
+Yeah.
+
+@vaibcode (38:34.828)
+Yeah, pu public prompting.
+
+@dexhorthy (38:34.99)
+This is I say this I say this all the time. I it the the pair programming thing is so huge right now. Number one is this, is like there is a million things to learn right now and everyone's learning different dimensions of the problem space and the more you can get people to watch each other work, the faster everybody learns and picks up from everybody's random discoveries in this like entirely new space that we're all working in.
+
+Zach (38:46.774)
+Yeah.
+
+@vaibcode (38:52.322)
+Yeah, the better.
+
+@dexhorthy (38:59.64)
+But I also think the pairing's really good for this, like, I mean, we can get into the parallelism thing, right? There was a thread on Twitter that Tariq from Anthropic posted this morning where he's like, I think people who work with a lot of agents should probably slow down. and like basically doing ten things in parallel actually reduces the quality and slows everything down, and you should just do like one or two things. and I think if you're pairing with somebody, it's a lot easier to stay focused on the one thing or not go check Twitter
+
+@vaibcode (39:22.818)
+Doothing.
+
+@dexhorthy (39:26.53)
+But actually just like sit there like when I'm sitting side by side, Vibob, when we were pairing like over a year ago, when the first time that I like tried to claude pill vibov over the summer and it was like, Okay, cool, when you have downtime 'cause the agent is working, you go engage with the problem, you look ahead, you work draw on the whiteboard, you like start navigating ahead and you you can talk and riff instead of like, Great, Claude's working for ten minutes, what do I do now?
+
+@vaibcode (39:32.546)
+Hundred percent better.
+
+Zach (39:36.887)
+Mm-hmm.
+
+@vaibcode (39:48.747)
+I mean
+
+That's the best thing about public, I think. Yeah. You know what's another problem though? on this whole thought fracture thing. So we've dealing with this problem internally, which is like, look, I don't I agree that coding agents can write a lot of the code, right? So like recently we just added atomics and synchronization primitives to BAML. I literally wrote the spec myself. I wrote everything, I put it out there, people are gonna review the spec. But the other thing I did is drafted the PR while it was being done. And it take a it did take steering for me to make it happen. Like
+
+@dexhorthy (40:09.048)
+Course you did.
+
+@vaibcode (40:20.788)
+Once I did the steering and once I did the final affirmative test, I mostly trust the stack. But I don't trust the code at all times. And I feel like there's still a portion of the software factory which is like, how do you guarantee that a human has looked at certain parts of the system? Like, for example, if you run any sort of SaaS company, you don't want your agent randomly adding a new S3 dependency. Like you want that to be like
+
+Zach (40:34.763)
+Yeah.
+
+@dexhorthy (40:42.422)
+Or making new tables without a c human looking at them.
+
+Zach (40:45.047)
+Totally.
+
+@vaibcode (40:45.654)
+Yeah. Like and how do you like I don't know how you guys have been thinking about but like this is problem we've been dealing with, which is like like anything that is serialized or persisted needs to have a human review it, 'cause I don't trust these agents today. And maybe not be true tomorrow, but like today, as of right now, I don't trust agents to deal with like serialized states at all. So like
+
+Zach (41:04.599)
+Yeah, so I think like the what you're saying I think generalizes into like code review is becoming an exercise in like risk management is is kind of how I think about it. And there like sure. What is this? Yeah.
+
+@vaibcode (41:19.5)
+You you wanna see a weird thing we've been cooking up?
+
+@dexhorthy (41:24.108)
+Yeah, all right, vibe I was from the thing, but I I love this conversation in general as like I really wanted to spend some time on like what is the role of review? How do you do review well? What does it mean these days?
+
+@vaibcode (41:24.643)
+So we have
+
+@vaibcode (41:31.362)
+Yeah. So, you know, you've seen Code Rabbit. Code Rabbit's pretty good. 'Cause but you sometimes need to go slow. It explicitly makes you go slow. And the reason it makes you go sl go ahead.
+
+Zach (41:33.447)
+Yeah, we're Okay. So code Turtle.
+
+Yeah, so No, explain how this works.
+
+@vaibcode (41:46.115)
+Basically, we have like an owner's file, and the owner's file like tags like who owns what. But instead of the owner's file like just being blatant, you actually can run code. You can run functions on every single file or whatever you want. And you just sort of like, yeah. If an nvar happens in a file change, if it added code that includes like literally this needle, which is like we write Rust code. So stood nvar anywhere in the source code, boom. Literally just make it a bool.
+
+Zach (41:48.289)
+Okay.
+
+@dexhorthy (41:56.523)
+You have an expression language.
+
+Zach (42:09.076)
+Yeah.
+
+@dexhorthy (42:11.854)
+Okay, so you can do regex or you can do it looks like you can also do like Jev of like the do a prompt based detector.
+
+@vaibcode (42:16.502)
+Yeah, you can just use Jeb. It's like, does this code? Yeah, does this code do this? And it basically just turns everything into a Boolean. And once a Boolean triggers, it basically just leaves you a PR in your stack that says, hey, this human has to explicitly review this file. And it just waits for the human to explicitly go and review that specific file until they've approved it. Because otherwise, like, how do you guarantee that they've looked at that slice of code?
+
+Zach (42:18.336)
+Yeah, Jack, that makes sense. Yeah.
+
+Zach (42:38.24)
+Yep.
+
+No, this this seems smart. This is like in the j the general principle to me is like we're gonna get to a point where it's like we whatever we consider to be low risk, we're not gonna look at. there's gonna be some stuff that's like medium risk where maybe it takes one one approver and then there's gonna be stuff that's like changes your database or user data or security roles or whatever, which
+
+@dexhorthy (43:03.064)
+Yeah.
+
+Zach (43:04.428)
+Absolutely should be looked at. And so you need some way of like annotating a whole PR, parts of PR or something to it to get to that. So this makes a ton of sense.
+
+@dexhorthy (43:14.22)
+And I I have some interesting like anec anecdote like outcomes of doing this is I talked to a founder who had kind of like built his own software factory and then moved it to one of the you know lab lab based ones. but he basically they had too many PRs and he basically the piloted a a policy where it's like, okay, I don't know the exact policy, but it's like if the PR is under a certain number of lines and it doesn't touch any of these core like, you know, modules in in the mono repo.
+
+@vaibcode (43:38.014)
+Does auto merge?
+
+@dexhorthy (43:40.043)
+It can be merged without review. It can be merged with a human review. You're still gonna get an AI review, whatever it was. And like, that's great. Everyone loves that. We all hate code review. But the interesting shift that happens was that the number of the percentage of PRs that met that policy shot up from like 10% to like 80%. It actually incentivized engineers to make like smaller, tighter PRs and keep the parts keep the critical parts of their their changes separated out.
+
+@vaibcode (43:57.094)
+Ha ha ha.
+
+@vaibcode (44:01.017)
+Yeah.
+
+Zach (44:01.814)
+That's kind of awesome actually. Yeah. That's really interesting. That's a really interesting effect.
+
+@vaibcode (44:06.698)
+Separate, yeah. Because otherwise people are gonna make massive PRs. Like CICD is freaking annoying, and like the default thing is make the biggest freaking PRs so I can just like merge once. And like no one's gonna read the code anyway. If it's bigger, they're less likely to read it. Even better for me, you know? And this happened before AI too. I don't know if you guys like if you there's a meme, right? Very famous meme. You put a 20-line PR, you get forty comments. You put a five thousand line PR, you get 10 comments. You get to come no comments, just like merge. LG DM exactly.
+
+Zach (44:21.622)
+That's really interesting.
+
+Zach (44:30.614)
+No comments. Yeah. Look good me. Yeah. Totally. the other the other things I think can help here are better better specing and then like
+
+@dexhorthy (44:31.756)
+Yeah, one con L G T
+
+Zach (44:48.606)
+agentic like checking for spec adherence. So if you like the more you spec, the more and the more confidence you have in the agents actually adhering to the spec, I think the lesser the code reburden. And then on the other side I think the like a thing that we do a lot is for more UI oriented changes, we have like computer use videos and screenshots and like you can kind of verify the user behavior and if you don't
+
+@vaibcode (44:56.43)
+It kind of.
+
+@vaibcode (45:06.606)
+I can't spell.
+
+Zach (45:15.798)
+Sometimes that's good enough, just like, this thing works the way that we want it to work. I d I don't really care that much about how it was coded. So those are two, I think, two things that can help as well.
+
+@dexhorthy (45:22.327)
+Yeah.
+
+@vaibcode (45:23.724)
+Yeah. The hard part I think about I was gonna say the hard part that I've seen about s yeah the
+
+@dexhorthy (45:25.078)
+I can share I can share yeah, go ahead. See this this podcast is really hard with three people. It's already it's already me and Vibob is already too many people, honestly. But go go ahead and then I'm I'm gonna share I have some thoughts on specing and like not over specing.
+
+@vaibcode (45:36.142)
+Yeah.
+
+@vaibcode (45:39.82)
+The hardest thing I've seen about spec alignment, to be completely honest, is that like you're gonna spend a lot of engine work on here, but usually what I find is the model discovers something else in here. Just like you as a human would too. You wrote a design document and learned something new while implementing it. Then you're like,
+
+Zach (45:45.909)
+Yeah.
+
+Zach (45:51.788)
+That's true.
+
+@dexhorthy (45:54.671)
+Okay, that's a perfect lead in. So let me let me let me share real quick. share screen. these are some slides actually. This talk just went out last week. but basically like yeah, you should plan before you build. because like even in this like pre-AI software factory where humans were implementing all the code, we did this thing a long time ago because the build part takes hours or days, and because the review part used to or used to take hours or days, the review part
+
+@vaibcode (45:56.737)
+Okay, go.
+
+@dexhorthy (46:23.842)
+Probably still takes hours or days if the changes are big. We built these processes like, hey, we're gonna talk about the architecture together. Hey, we're gonna do a sprint planning. We're gonna get aligned with all the other people on our team and like loop through on what are we kind of building, what's the idea behind it, in the hopes that it would decrease the percent chance that the thing that came out the other end would need to be heavily reviewed or need to be reworked, basically. but like on the other hand, you can overplan, right? And so like I I I basically draw out this curve of like, hey, I could YOLO a two sentence prompt in Slack.
+
+Zach (46:49.664)
+Yeah.
+
+@dexhorthy (46:53.282)
+And there's like a fifty percent chance I'll have to rework it, either send additional prompts or say, Hey, go delete these tests, or like, no, this should live over there. or it could handwrite a very detailed spec for five hours, or you know, with a either handwrite or with a model, and then maybe there's a ten percent chance you have to rework it, right? Like there's less likely that the agent's gonna have mistakes. Or you could write all the code by hand in twenty hours, and then there's a zero percent chance. Well, you might still have to rework it, but n not because of not because of something the agent did. Like we still have
+
+@vaibcode (47:04.76)
+But yeah. Yeah.
+
+@vaibcode (47:16.416)
+Well. Two percent. Yeah.
+
+@dexhorthy (47:21.566)
+rework stuff all the time since before AI. And so like and I think about this in terms of expected pain, right? Like there's the chance you'll have to change something later times how painful that changes. I never discuss the color of a button in the UI with the agent. I don't care about planning that because I know that's really easy to change later, just like change the button color. But if it's a database table or something, like you want to find your like point on this curve based on the code base, the hardness of your problem, how well suited it is to agents
+
+How what how smart of a model you're using and decide like, okay, cool, like how do I eliminate 80% of the expected pain in 20 or 30 minutes? But if you try to do everything, it's actually like you get very diminishing returns on your time as you as you keep trying to plan. At a certain point, it's like, cool, just go write it. There's gonna be surprises. What's the amount of planning that like maximizes the the or minimizes the expected pain, basically? That's that's kind of how I like to think about this.
+
+Zach (48:18.304)
+That resonates. Also, it's just like I think the point is very valid. Like sometimes you just don't know what you want and like you discover it by trying to like iteratively build. so I I agree with all this, yeah.
+
+@vaibcode (48:26.798)
+You know, I I convince one of my engineers the way that we should do merges is actually really easy. You actually, whenever someone does a big PR, you just have an agent literally take your current code changes to English and describe everything in English again. And you sync and you reapply all the changes once again, effectively as if from spec. And I actually like when I do my like harder problems, the spec to implementation loop is actually spec to implementation to spec to implementation. I just do like two loops.
+
+Zach (48:55.328)
+Huh.
+
+@vaibcode (48:56.216)
+Does it cost me anything? It I mean it does, but like in the form of tokens, but like I d I don't give a shit because it's like
+
+@dexhorthy (48:58.577)
+Interesting.
+
+What if this what if the second implementation is worse? I see, because you discovered stuff while you were building and you tweaked and the model probably cut corners and then you have the final design and then you go rebuild it from scratch and probably like get rid of a bunch of noise that got left behind.
+
+@vaibcode (49:05.142)
+It's unlikely because I I
+
+@vaibcode (49:14.23)
+Yeah, I literally have a thing at the
+
+I have a li thing of the implementation that says, What did I learn from this? Rewrite the spec as if we're writing it from scratch. Delete all the code, redo that again.
+
+@dexhorthy (49:24.002)
+I do this I do this for prototypes all the time. I will like vibe a thing and leave Opus running overnight and then give it some feedback and then be like, Cool, take the thing we just built and reverse engineer it into a P R D and then I'm gonna give it to my co founder to actually like design the sequel tables and the architecture properly.
+
+@vaibcode (49:36.61)
+Yeah. Yeah, it is for like atomics and everything.
+
+Zach (49:39.552)
+Makes sense. It's just it's like the old process of building a prototype and then the real thing, but highly compressed, you know. Yeah.
+
+@vaibcode (49:45.506)
+Yeah, now I just do it for all things. It's like why why not? It literally is just like I will literally just get better code if I do it twice. Right. So like yeah.
+
+@dexhorthy (49:45.699)
+Yeah.
+
+@dexhorthy (49:52.59)
+Yeah. Dude, this was super fun, guys. I know we're almost at time. Zach, is there anything you want to leave the audience with? I I'm glad you got a chance to show off some of this cool stuff you're working on. but general I don't have a lightning round like Lenny. We should have a lightning round for guests, but anything you want any final thoughts?
+
+Zach (50:06.027)
+No, I mean with w would love people to check out warp factories, give us feedback. we're helping on Ward people and teams now. other than that, this was awesome. This is a great, great conversation. I was expecting more of a more of a more of a debate. It wasn't so much of a debate, it was more of a like Yeah, we're pretty aligned. Very cool.
+
+@dexhorthy (50:19.341)
+Yeah, this is fine. A little
+
+@vaibcode (50:19.502)
+Thanks for joining.
+
+It turns out we're aligned.
+
+@dexhorthy (50:24.825)
+Ha ha ha.
+
+Yeah, no, I know the our style is probably a little a little disorganized, but we tend to find it it gives good results. I mean this is my like I don't know, stand up comedians talk about like going to tiny clubs and just like working out their shit and what they have to say. And for me I think this is a really good like half the stuff we say on this show ends up going into somebody's conference talk, whether mine or vibe of's or maybe yours. Yeah.
+
+@vaibcode (50:47.734)
+You know what's biggest takeaway that I got from here? The biggest takeaway I got from here was actually this. This is really fascinating in terms of like how you define measurements for the factory and the yield. It's like I found it really interesting. specifically, Dexter, your comment about the fact that like typically that this part is engine and this time is product. and like fundamentally, you cannot have a factory if you have two companies, two separate orgs that have to own bar both of it.
+
+And you just can't build a fast factory there. And like how do you tie these two together? I think is perhaps the most interesting question here. and like this is probably why software factories aren't realized as much as they could be. Because structurally your companies aren't set up for them. Like people problem. Not even engineering I mean, there's engineering problems too, but people problem. Who wants to give up their fiefdom? Is Ench gonna give up the Yeah, go ahead.
+
+@dexhorthy (51:37.808)
+Michel Hashimoto Michel Hashimoto has this Sorry. Yeah, no, Mitch Michel Hashimoto has this story about like s when they were selling Vault in the early days and they were going to enterprises, and there was a customer that they talked to that really wanted to work with them, really wanted to use Vault, and they had to say no. They literally were like, We will not sell you this. We don't want the deal. Like, you need to go spend like here's your homework. I promise if you try to do this today, your organ, your culture is not set up for this to work.
+
+Zach (52:05.515)
+Mm-hmm.
+
+@dexhorthy (52:06.349)
+And then they came back six months later and they had fixed a bunch of the problems and they respected the team so much more for having you know said no, said, Hey, look, like we don't want to just take your money if we don't think it's gonna work. And then they came back and they bought it and it worked great. and I think there's something similar there for factories. You need this, I mean, this thing of talk about you need a culture of working in the open, you need this like
+
+like very much like alignment or even like stitching together of engineering and product to make something like this work. Otherwise it's gonna be really, really hard.
+
+@vaibcode (52:35.17)
+Yeah. Like will your VP of product give up power to the Eng team or vice versa? Will your VP of Engine give power to the product team to make s to make that system be co owned effectively?
+
+@dexhorthy (52:48.52)
+cool. Vibob, do you want to the outro?
+
+Zach (52:48.667)
+Interesting. Cool.
+
+@vaibcode (52:52.546)
+Yeah, let's do it. all right everyone. Today's conversation is going to be a really fun one about a common topic that we talk about, which is software factories. It's titled The Great Debate. As I might tease, there's not much of a debate. Software factories are pretty well defined concepts and if you go to all of SF, you ideas, triaging, specs, implementation, QA, code review, down to monitoring. And then Zach and then Zach from Boy I'm gonna try again. Sorry.
+
+all right, sorry. We're not yeah, exactly, we'll compress it. All right, everyone, today's conversation about software factories is going to be a fun one. We're gonna go deep into exactly what is a software factory, the exact loop of what it looks like, how it differs from traditional SDLC. We're gonna talk about one implementation of a software factory, about what the warp company is doing with Zach over here. If you're familiar with them from the terminal, they now help you build software factories.
+
+Zach (53:22.613)
+Very good.
+
+@dexhorthy (53:24.739)
+Less, less is more.
+
+@vaibcode (53:48.333)
+And we're gonna go back into defining these metrics in terms of how do you actually build the yield of your software factory up and what are the engineering cultures you might change and also what are the process changes you might have, such as all the way ranging from like actual measurements and Slack metrics and quality metrics you might have all the way down to like the process changes you might have to bring as well. Let's get started. All right, and we got the outro right there.
+
+@dexhorthy (54:12.131)
+Awesome. I think that was I think that was great. That'll do. Dude, Zach, thanks so much for coming. if you ever if you ever wanna come on again, you wanna rift more, do more updates, I think I think it could be really fun. But yeah, I really appreciate you coming. Added a lot to the episode.
+
+Zach (54:12.491)
+Cool. It's great. Yeah, this is awesomeness.
+
+@vaibcode (54:25.122)
+Yeah, thank you, man. I'm sure you're busy, so thank you for making time.
+
+Zach (54:26.667)
+Cool, thanks for having me. This was cool. So are you are you guys gonna the l this live stream I feel like is done is that we're gonna post get posted too in its complete form, or how does work? Cool. Perfect, let me know. All right, sounds great.
+
+@vaibcode (54:35.628)
+Yeah, we'll get edited, we'll get posted on YouTube and then we'll get you out there. it goes live on Fridays. Yeah.
+
+@dexhorthy (54:39.823)
+There'll be some shorts. And if you if you want we can if you I don't know if warp has a YouTube but we can we can we can we can collab post it with warp, so
+
+@vaibcode (54:46.018)
+We can like co post or yeah.
+
+Zach (54:46.304)
+We do. Alright. Yeah, just let me know. Sounds good. Thanks guys. Alright, take it easy.
+
+@vaibcode (54:49.784)
+Yeah. Cool. Yeah. Thank you, man.
+
+@dexhorthy (54:51.961)
+Cool dude. Alright, guy. Thanks. Cheers.
+
+@vaibcode (54:57.049)
+Nice. Good episode, said.
+

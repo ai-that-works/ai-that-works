@@ -15,10 +15,11 @@ event_link: https://luma.com/software-factory-yap
 eventDate: 2026-10-20T18:00:00Z
 eventTime: 10:15 AM PST
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=XUEfIxkdT2Q
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-20-software-factory-debate
+  youtube: https://www.youtube.com/watch?v=XUEfIxkdT2Q
 season: 2
 episode: 78
 event_type: episode
