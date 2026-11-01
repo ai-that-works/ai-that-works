@@ -49,10 +49,11 @@
       "eventDate": "2026-10-27T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=VLonoD9m4VY",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=VLonoD9m4VY",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-27-slopcodebench-new-metrics"
       },
       "season": 2,
@@ -1759,14 +1760,14 @@
   ],
   "meta": {
     "totalEpisodes": 84,
-    "completedEpisodes": 77,
+    "completedEpisodes": 78,
     "upcomingEpisodes": 2,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-11-01T01:27:30.316Z",
+    "lastUpdated": "2026-11-01T01:33:18.000Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

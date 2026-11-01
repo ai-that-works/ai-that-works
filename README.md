@@ -150,7 +150,7 @@ Meet the Speakers🧑‍💻​
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-10-27</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#79</strong>: SlopCodeBench: The New Metrics</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-10-27-slopcodebench-new-metrics">code</a>
+          <a href="https://www.youtube.com/watch?v=VLonoD9m4VY">watch</a> • <a href="./2026-10-27-slopcodebench-new-metrics">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">Back in August we dug into SlopCodeBench, the benchmark that makes coding agents build on their own prior code across checkpoints and measures whether they bury themselves in slop. Since then the benchmark has grown (more problems, more checkpoints, more models) and shipped a new set of metrics for measuring how code degrades.

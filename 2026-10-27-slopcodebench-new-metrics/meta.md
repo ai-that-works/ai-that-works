@@ -16,10 +16,11 @@ description: |
 event_link: https://luma.com/slopcodebench-metrics
 eventDate: 2026-10-27T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=VLonoD9m4VY
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-10-27-slopcodebench-new-metrics
+  youtube: https://www.youtube.com/watch?v=VLonoD9m4VY
 season: 2
 episode: 79
 event_type: episode

@@ -1,0 +1,596 @@
+@dexhorthy (00:00.4)
+What's up dude?
+
+@vaibcode (00:01.461)
+What up, what up, what up?
+
+@dexhorthy (00:03.15)
+I got I'm in I'm in the new the new conference room. We have a chalkboard, so we could do we could do chalkboard instead of Excala draw today if you wanted. so I'm super excited today. This is gonna be quick episode. I'm Dex. I'm the CEO and co founder of Human Layer. this is the AI That Works show. Bybob, intro yourself and then I'll intro the show and then we'll get into it.
+
+@vaibcode (00:07.213)
+shit.
+
+Ha ha ha.
+
+@vaibcode (00:25.012)
+I'm Viboff, I'm one of the co founders over at Boundary, and we make a programming language built for the AI era.
+
+@dexhorthy (00:31.632)
+Amazing. And this is the AI That Works Show where we talk about AI that works. I know AI is getting a lot better these days, but we are always you know the the the title made a lot more sense eighteen months ago when AI was really bad at most things. We're talking pre-cloud code here, folks, or like around the advent. We pre-cloud code being good. but the the theme is always gonna be what are the like systems design techniques, pipeline design techniques, context engineering techniques.
+
+@vaibcode (00:47.286)
+Ha ha ha.
+
+@dexhorthy (01:01.942)
+and just LM intuition that you can use to get the most out of today's model. So that even if the model is really, really good and can solve most tasks, how do you get it to do that thing that it still can't do reliably? How do you find the thing that's like right on the boundary of the capability and you get it right all the frickin' time? Does that sound accurate? Is that a good pitch?
+
+@vaibcode (01:17.302)
+I think that is the perfect way to describe what we chat yep about.
+
+@dexhorthy (01:21.264)
+Amazing. I do really like this meme of the chalkboard, so I'm gonna try it for a sec. But today we are talking about something I love called slop code.
+
+@dexhorthy (01:37.872)
+Is that in frame? Can we see that? Amazing.
+
+@vaibcode (01:39.631)
+yeah, yeah, slapcode bench is good enough.
+
+@dexhorthy (01:42.521)
+Amazing. And the I promise we'll get into normal whiteboards and we'll go look at some cool charts in a sec. But the coolest thing with slop code bench is basically most benchmarks give a model a problem, the model goes and codes, you get a solution, you get a check, or you get a fail. Right? One problem, the you know the entire problem up front. This could be like you know, two lines of Ruby, or it could be implement all of red.
+
+@vaibcode (02:10.006)
+Yep. So and it basically yeah, and it turns into a very, very small benchmark. And the problem is the models they kind of end up over engineering for this and you end up in this world where it doesn't model real software development. I don't care if you can solve one problem today. I care from
+
+@dexhorthy (02:11.46)
+Yes.
+
+@dexhorthy (02:26.628)
+Yeah, I don't well I don't care if you can fix one little bug or if you can like clone all of Redis and like get to feature parity. I care are you going to in the world of the the way slop code bench model, the way we actually build software is you you build something.
+
+And then your requirements change. And then you build something else. And then your requirements change. And then you build something else. And your requirements change. And the thesis behind Slop Code Bench is like if a model doesn't know this end state, because we humans don't know the end state, we don't know what to ask for yet, because we haven't put our thing in user hands and learned about the problem. Then like you're gonna solve it in one way, and then you're gonna have some cruft. And then you're gonna have more cruft, and then you're gonna have more cruft, and that the models are not good at centralizing, at redefining abstractions, at creating like doing refactoring. obviously, if you ask a model to do a refactor.
+
+Then then it will go do it and it will do a good job. But the the idea here is if you just let a model, if you just do the lights off factory thing and just feed a model features and high-level design, you will over time accumulate so much slop that by the time you're here, the it's your your your odds of actually getting a correct answer here without breaking any of the requirements from here or here go way down. That's what slop code bench is a paper that tries to prove. and now
+
+@vaibcode (03:22.156)
+It doesn't work for this reason. Yeah.
+
+@vaibcode (03:39.287)
+I think that's the best way to describe it. And what's really fascinating is if you think about like what is a lightsop factory, it's basically to some degree trying to get to a point where you're effectively operating like a VP of engineering at a giant corporation where you have like 2,000 or 20 or like 10,000 devs underneath you and somehow the system works. Like the guy in charge of like the iPhone fold did not design every single thing himself. Probably wasn't even involved in like 80 or 90% of the decisions that got made.
+
+@dexhorthy (04:09.764)
+Yep.
+
+@vaibcode (04:10.178)
+But yet the phone works at the end. And that requires a lot of like re engineering, a lot of redesign, a lot of rethinking that you rely on engineers to do independently. And models don't stop to do that at all. They just do the thing.
+
+@dexhorthy (04:20.078)
+Yep. You're you're and peep people see that a model can implement Redis from scratch or can implement Microsoft Excel from scratch. There's benchmarks that show that models can do this more or less like to to an eighty or ninety percent parity. and so they say, software is solved, models can code. But like the thing that I'm that's this though we're trying to prove is like human engineers have a set of intuitions that have been built up over years and years of
+
+@vaibcode (04:33.71)
+To a T, yeah.
+
+@dexhorthy (04:47.012)
+Mostly getting burned by bad design and having to like wade through messy code and like, this should have been a ten minute change, but it took me three hours because I had to like work around a bunch of like spaghetti. and that like humans have built that intuition. And like in my my like framing of this is that models do not
+
+yet have the intuition. They ha we haven't figured out, because we teach models things through mostly through a little bit through pre-training. That's like jet base like knowledge and behavior, but then through RL we make them really good at coding. And we haven't figured out how to RL models on like software maintainability.
+
+@vaibcode (05:16.462)
+I mean if
+
+@vaibcode (05:23.864)
+You know what's interesting about this is like software maintainability is almost a sign of disobedience. Like if you think about what maintenance is, is like to some degree you're gonna disobey the command that like the person telling you what to do is said to do in favor of doing something else that's orthogonally different in in the service of doing what you really need to do. And it's it's ex
+
+@dexhorthy (05:34.916)
+Yeah.
+
+@dexhorthy (05:42.902)
+D the number
+
+Well, it's like it's sacrificing the short term for the medium term and long term. It's like
+
+@vaibcode (05:50.304)
+In theory, let's be real. Re factors re
+
+@dexhorthy (05:51.407)
+Yes, in theory, not all refactoring is good. some of it is like you know, the mental masturbation exercise of just like, can I design the most beautiful thing? Obviously, everything we do as engineers has to lead to outcomes. I mean, there are people who just like writing code for the sake of producing a beautiful algorithm or proving something. But at the end of the day, most of us are building stuff because we want to create value and we wanna create we wanna solve problems, whether it's free open source or whether we're building an enterprise software platform. We wanna solve people's problems, make their lives better.
+
+Make them they make it so they can do a thing that used to take thirty minutes and now they can do it in five minutes, for example.
+
+@vaibcode (06:24.76)
+Yeah. The Yeah, but I think we have to think really carefully about how we get models to be disobedient because fundamentally, like it's the alignment problem. It's like if you want alignment, you want the model to do what you tell told it to do. But what if effectively what we're saying is the requirements are incorrect. They're requ for for that for that third point to go to a fourth action, like third checkpoint to go to a fourth check action where you have the X behind you, Dexter. What we're really trying to say is no, we were wrong.
+
+@dexhorthy (06:31.226)
+Yes.
+
+@dexhorthy (06:50.256)
+Yeah.
+
+@vaibcode (06:54.242)
+These requirements are not correct. There's actua intermediate requirement that no one has mentioned.
+
+@dexhorthy (06:56.176)
+Yeah.
+
+The model has to disobey and do this other thing and make the code base better so that we can pass this one. Yeah, I love it.
+
+@vaibcode (07:03.722)
+Exactly. And like that's that's gonna be tricky. Like aligning for that is literally aligning the model to not do what you told it to do. That means like making your age like, for example, all these like chat bots are going or like personal assistant bots are going around where you tell it to do something, it does a bunch of stuff for you. That means like now you're like gonna tell it to like, hey, I want an apartment that's like for I can you find me apartments for rent that costs like five thousand a month? Fucking SF prices, but like anyway.
+
+I want an apartment that costs $5,000 a month. But and it's gonna be like, no, actually, huh? No, that's separate. that's separate. But I want an apartment that costs five thousand a month, and then on top of that, you're like, the model's like, no, what you really want is a washer dryer, so I'm gonna increase that to six thousand a month. Right? That's really what the model's gonna kind of do. It's like, nope, you're wrong. And like
+
+@dexhorthy (07:37.114)
+Wait, bro, are you moving to S F? Are you getting an apartment in S F? Is that was that a leak on live on stream? With
+
+@dexhorthy (08:00.56)
+I mean it when it's like it's I'm making the final decision anyway, it's okay. But in a dark factory, you're not making the final decision. You're just saying like whatever you want however you can get to this goal, if I, you know, show up on day one and I'm happy with the apartment, I don't care how you got it.
+
+@vaibcode (08:06.145)
+Exactly.
+
+@vaibcode (08:14.466)
+Yeah. And that's kind of interesting. I think it's terrifying because I actually don't know how alignment and other problems are gonna get solved in this way. yeah. And like the chat is right. The model adding shims is basic it's like the model's gonna decide to add abstraction layers for the sake of adding abstraction layers and now we're back to Java.
+
+@dexhorthy (08:34.34)
+Yep. Yep. So, yeah, the I think I think this is all this is all right. I think you're right about like basically I mean, Uncle Bob wrote this book called The Clean Coder. And it was he had clean code, which was like, what does good software look like and what does maintainable code look like? And then he had the clean coder, which is like, what does it mean to be a professional software engineer and like
+
+make accurate commitments and like push back on executives. Like there will always be in every good org, there is like a healthy tension between maybe healthy, maybe toxic, tension between engineering and product. Because product wants more features, and engineering's job is to make it so that like they don't wake up in six months and like suddenly we can't ship anything because we stopped caring about code quality. We didn't do any of these diversions. And so it's like
+
+Yes, we have to figure out how to train the models to like push back and to do things that we're not asked for because they have this deeper understanding of like, okay, cool, this project needs to be around in three months or six months or two years. And in order to keep our velocity high, our ability to ship, and like not slow down over time because the code is getting more complicated and it's it's harder and harder over time to break something like to fix something over here without breaking two things over here. Like that is what slows us down and that is what like degrades both like
+
+the quality of the product and also the speed at which we can make progress.
+
+@vaibcode (09:53.935)
+have something I have something fun to I have something fun to show you.
+
+@dexhorthy (09:57.905)
+Amazing. Yeah.
+
+@vaibcode (10:03.502)
+Let me get the I I have
+
+@vaibcode (10:09.391)
+let me find the artifact that we made. I actually was going if you do you have something you want to show first, actually.
+
+@dexhorthy (10:15.586)
+I have so I just published this morning, I just ran the latest slop code bench on a bunch of models. So I can we can run through the charts.
+
+@vaibcode (10:19.33)
+Okay, let's go through that. Let's go through that first and then I have some very interesting things to show right along this vector that we're chatting about, which is long term maintainability of software.
+
+@dexhorthy (10:31.61)
+Yep. So I'm gonna pop over here. We have the slop code bench results. I think I just posted it on the live stream as well. so interesting headline here. I love Opus five point five. I think everyone's found it to be like the best model to work with for most tasks. but that actually Astra performed better on this most recent run of the benchmark. So this is kind of like the headline chart.
+
+@vaibcode (10:41.326)
+Perfect.
+
+@dexhorthy (11:00.008)
+what I care about is the strict pass rate. This is basically like how many how many like challenges did you complete? you know, how many checkpoints did you complete where like at the end of checkpoint three, all the checkpoint three tests are passing? That's the gray line. That's like did you solve it for the checkpoint? And then the the solid line is basically did you solve it for the checkpoint and not break any of the previous things? So like the strict pass is basically
+
+The current checkpoints tests and every previous test has to pass in order to get a strict pass. And so a lot of the times we find like, okay, cool, yes, we shipped the last thing, but there were failing tests in the first one.
+
+@vaibcode (11:41.92)
+Okay. Yep. I think I I think that makes sense. It's like, yes, we don't care really about shipping the last. We want to c you want to run like full C I C D effectively.
+
+@dexhorthy (11:41.936)
+Does that make sense? And so we see
+
+@dexhorthy (11:49.999)
+Yeah, you want everything to pass. and some of these actually like I will I will say like if you ship this one and there are failing tests, you are now unable to get a strict pass at any like further checkpoint. So like this score will be quite low. And the idea of this benchmark is to create something that is very unsaturated, with very strict requirements, because that is how we build software. Like if if we ship the first two things and there's two bugs that we don't find until later, like those are still bugs. Yeah, those are still problems.
+
+@vaibcode (11:59.821)
+Yeah, exactly. Yeah.
+
+@vaibcode (12:16.268)
+Yeah, you still have that. Yeah. Those bugs don't go away magically.
+
+@dexhorthy (12:19.918)
+Those are still failing tests. I mean, if you're moving really fast and you're zero to one, you're throwing everything out every three months, like obviously this is a little less important.
+
+@vaibcode (12:25.602)
+I'm gonna have a I have a whole nother thing to go on about like how tests are freaking pointless now. But that's a that's a separate thing. Yeah. Yeah.
+
+@dexhorthy (12:32.642)
+Okay, let me let me go through the charts and again like this is gonna be a fairly short episode, but basically the yeah, the headline one of the headlines was like Astra did Astra did the best, but I don't have the original results in here, but GPT five point five is right between Astra Medium and Opus five point five medium. one of the most interesting findings here is like Opus five point five median did way better than Opus five point five X high, like three percentage points.
+
+@vaibcode (12:50.178)
+Nice.
+
+@vaibcode (12:59.656)
+I mean yeah, I actually that's funny. Intuitively I actually never use X High and I've just got seen way worse code. And it's cool to see the data on there. But on GPT huh? Yeah.
+
+@dexhorthy (13:05.124)
+Yeah. I use I use medium almost always, ever since Ben Davis told me that GPT five point five worked best on low for most things. And I tried it and I was like, yeah, actually like some of these bigger, like juicier models, if you ask them to think more, they will like think themselves out of the right solution.
+
+@vaibcode (13:17.39)
+That's funny.
+
+@vaibcode (13:25.516)
+Yep. I I guess in Astra I'm I'm about to change my system to X High because that seems like that's the way here.
+
+@dexhorthy (13:31.896)
+If you have if you have a lot of time and money, which I mean you don't have time but you can paralyze, so if you're not paying a lot of attention, you get better results.
+
+@vaibcode (13:37.964)
+I do have money to spend. but the other thing that's really fascinating about this, and can you go back to that? the only thing that's really counterintuitive here, if I were to be really transparent, is for myself, the code Astro I'm gonna show you something. Armin has this great thing. I'm gonna take over really fast for one second.
+
+@dexhorthy (13:43.685)
+Yeah.
+
+@dexhorthy (13:54.948)
+Yeah, yeah, yeah.
+
+@vaibcode (13:57.377)
+Armor has great thing, is it's AGI if you don't look on one of his blog posts. and like Astro 5.5 whatever the Astro thing is, it's truly just AGI if you don't look. Because if you actually look at the code that it produces, yes, it works, but it's absolutely freaking disgusting. And it just like puts like random it like you literally cannot re- this code is like disgusting. You cannot use this.
+
+@dexhorthy (14:18.991)
+Very ugly.
+
+@dexhorthy (14:26.096)
+I mean you can't as a human like this is the thing we always talk about is like, yeah, if you not look and you're never gonna hit a problem that the model can't solve, then it's fine that you can't read it. But like so far
+
+@vaibcode (14:34.218)
+No, no, no. It's not about it's not about not being able to read it. It's that the complexity of the code base increases over time dramatically. So like every compounding feature puts the complexity of the code base at a super increasing curve point. And like that's where Astra for me has been falling apart a little bit more now. Cause it keeps on adding like the code quality is sh and I think this is what Slop Code Bench isn't measuring yet, which is code quality. Which is yeah, okay, go ahead.
+
+@dexhorthy (14:53.189)
+So I mean
+
+@dexhorthy (15:01.518)
+Yeah, just we'll get into that. let me let but like this is a put a pen in this, make a note. I wanna talk more about this because like I think we may even disagree on this, but let me keep going through the results. this is this is a great example though.
+
+@vaibcode (15:03.754)
+Go I'll take back over it though, by the way. I did want to call us out
+
+@vaibcode (15:12.374)
+Yeah, go ahead. Take over.
+
+@vaibcode (15:17.196)
+Yeah, this blog post is great by Armin if you haven't read it.
+
+@dexhorthy (15:20.122)
+We'll check it out. I have not. So again, slot code bench, we go through a challenge over checkpoints, and like throughout the checkpoints of a single, so each challenge has three to eight checkpoints, and there's like 30 challenges with 196 checkpoints. So like a checkpoint is a single prompt that you ask it to do a thing. and then at each checkpoint of a single challenge, it's like re-inheriting the same code base. So we force it to build on its own slot. And then yeah, so that's core versus strict.
+
+The other interesting one is this like, hey, if you use medium, it's cheaper and better for Opus. But if you use medium for Astra, it's cheaper, but not as good. And the so so like the it's interesting the the open AI models seem to actually perform better. You know, you're paying more, but you get better performance from these models when you use X High versus like the Claude models we looked at basically tend to do better on a medium issue. And that might just be the the the shape of this benchmark. but this is really interesting.
+
+@vaibcode (15:52.555)
+Yep.
+
+@vaibcode (15:56.365)
+Yeah.
+
+@vaibcode (16:13.644)
+Yeah. But still Yeah.
+
+@dexhorthy (16:17.828)
+so and then yeah, we have a little bit of like cost versus versus success rate here. Same data, but just in a graph. So you see like, here the actual performance went down for the Opus models, but like overall there's kind of an upwards trend of the more money you spend, the the better results you get. The really funny one over here is Fable, Fable five point one X High, which was like way more expensive and not impressive at all in terms of like its actual ability to solve the problems.
+
+@vaibcode (16:43.618)
+Fable is great, in my opinion, just for like double checking a spec and like confirming whether or not it abides by that spec, but it's not good for coding.
+
+@dexhorthy (16:52.184)
+Yeah, okay. That makes sense. the and then this is like, okay, cool. Like this is the number of tests fail. So all of these finished with some number of failing tests across the thirty-six problems that they did. So we look at the final snapshot, we run the tests, and we see the failing tests. so again, none of these is like perfect. and only Astra was like basically like s like three out of yeah, three out of six thirty-six it actually completed like
+
+all the problems with with with all the test passing. the code quality findings is interesting. So I I was talking to the model I was working I think it was a claude model. It might have op it might have been Sol. but basically it was like, well the model's left around a bunch of trash code that like I think we should exclude for let's like test code and verifier code and like a bunch of scripts to like check the stuff. And like I was like, let's exclude that. But I go ahead.
+
+@vaibcode (17:41.612)
+Yeah. Well no, that stuff matters. I don't know if you can yeah, go ahead.
+
+@dexhorthy (17:48.623)
+Well, I talked to the researcher Gabe and he was like, No, like we actually want to measure like how much garbage the models leave in your code base. Because if you're just committing and merging everything without looking, the and the model is not going to clean up its like work in progress and test stuff without being asked to, then like we have to assume that that is part of the slop. And so Yeah, go ahead.
+
+@vaibcode (17:53.172)
+Yep, I agree.
+
+@vaibcode (18:06.178)
+Yeah. And no, we have this like this is the same rule. Like we have a rule on our read in our repo, like you can't check in a README file. Because by default, models or like an MD file, because models will just produce so much MD crap that's like temporary MD files. And like if you leave that in the repo, everyone is going to be degraded. Cause I'm some agent will read that file and it'll be pollute its context in a totally illigible way.
+
+@dexhorthy (18:29.23)
+It'll be extra context. It'll be extra context and also it might be out of date. Like it might be literally incorrect information. Yep. and then also like the more markdown files you have, the more the model's like, cool, the way we work in this code base, so we drop fucking markdown files everywhere.
+
+@vaibcode (18:33.504)
+It's definitely out of date. There's no might there.
+
+@vaibcode (18:43.68)
+Exactly. And it just it just reinforces its belief constantly, which is not and that's the same thing with like garbage scripts. You leave garbage scripts in there, eventually those scripts stop working because you don't run them all the time. And the model's like, I can just check in garbage scripts into this repo. It's an acceptable pattern. Which it is, because you've done that.
+
+@dexhorthy (18:59.524)
+Yep. Yep. So this is we also do this thing. They have this thing called like they have like two hundred and twelve all these all these challenges get written in Python. This actually thing I want to work with the researcher on is like making this work for TypeScript. But they built a bunch of custom linters where they looked at repos. Here, let me go back to Excala Draw. So they took a bunch of like pre-AI repos or like pre-AI like like commits. And then they looked at a bunch of like repos with a
+
+Lot of AI contributions. And they basically took these things, looked at them like basically like qualitatively. Like I'm sure they used AI to help, but there's like a human making decisions about like they probably came up with like about, I want to say like 150 custom linters, like AST-based linters to like detect like patterns that are like AI slot patterns that like we've all seen like the
+
+The JavaScript thing with like is record everywhere, and you have fifty instances of is record across your code base. So they like f detected these specific things. And then into this you actually add probably around like fifty to sixty like standard linters. So things things that we've they've been metrics, code base metrics that have been around forever, like cyclomatic complexity.
+
+graph traversal depth. Just other metrics of just like how how messy is this code and how hard is it to understand. I think there's things like tramp tramp data, like variables that basically get passed through a call stack and like it gets passed in at the top and passed all the way down through and then used like seven functions down the down the stack. but what you get by combining all of this is you get about two, I think it was two hundred and twelve custom like
+
+@vaibcode (20:21.644)
+Yeah, there's a bun that's funny. Yeah.
+
+@vaibcode (20:41.335)
+Yeah.
+
+@dexhorthy (20:48.204)
+Slop detectors. basically understanding like how how much is and some of these are at the function level, so it's like if a function triggers the complexity, then every line of that function gets treated as slop. and some of these are I think at the line level. So it's like okay, if this line of code has this pattern or like a multi-line single expression has this pattern, then it gets triggered. And so the
+
+@vaibcode (21:11.586)
+You want me to go ahead go ahead. I was gonna say I can show some really interesting data on right on that. That's exactly what I was gonna loop in at the beginning. It's so funny we're thinking about that. Yeah.
+
+@dexhorthy (21:14.768)
+What were you gonna say?
+
+@dexhorthy (21:22.276)
+We got two more charts and then I wanna I wanna get your take on this. so this is the slop coverage, which is basically like what percent of the created lines triggered the slop filter? and so actually this yeah, it's i I mean, the rules are very aggressive. and like again, the goal of this benchmark was to create something that is very unsaturated. You may not even agree with all of the linters you created. There may be a hundred of these like detectors.
+
+@vaibcode (21:34.23)
+Okay. Yep, makes sense. That's crazy it's that high.
+
+@vaibcode (21:49.666)
+Yep. Sure.
+
+@dexhorthy (21:52.133)
+That they made that you're like, I'm actually fine with that. I don't care. But basically, yeah, so Opus it's funny actually, so Opus five point five X High did the best on the slop metrics. It had the least like triggers. This also might be like these are newer models and I'm running on a version of the benchmark from you know, the the actual like linters are all from like some of them are from May and some of them a lot of them are from March. So they're they're a little eight dated.
+
+@vaibcode (22:04.366)
+Swap.
+
+@vaibcode (22:15.726)
+So it's like trained in.
+
+@dexhorthy (22:17.44)
+Probably need to be updated. And actually, Gabe from Slop Code Bench is going to, I think we should do another podcast. We'll we'll get him on the podcast at some point. He's going through all this data. And he said he wants to come up with some like qualitative observations of like what are the new slot patterns, which ones have like kind of no longer like being seen. What what have they trained out of the models and what have they accidentally trained into the models? and then the last chart here is
+
+Yeah, actually the only one we filtered was Opus five point five. The rest of them, basically none of it really was a canon. Opus five point five was the only one that left a lot of like things in like dot folders that were like clearly meant to be excluded. but it did write 200,000 lines of code where like Soul Medium actually wrote the least amount of code. And so like I actually I don't have a chart for this, but I actually want to compare like total lines of code to actual like pass rate.
+
+we have cost, which is probably a good proxy for that. I'm sure it will look a little bit like this chart. But yeah, total lines of code, two pass rate. And then the last one is like the number of functions and methods, and then the like weighted mean cyclomatic complexity. And so the other interesting thing here is like Fable actually had the the like the almost the most functions, the second most functions, and had the lowest like average complexity of those functions. So it actually did a good job of like
+
+@vaibcode (23:26.702)
+That's interesting.
+
+@dexhorthy (23:40.302)
+Making smaller functions, that doesn't mean they're not slop. I haven't looked at the code yet. but this is kind of like your like fifty thousand foot view of like how do these models behave and how do they compare to one.
+
+@vaibcode (23:51.459)
+Yeah, that's that's a great I think this is really interesting. I think and also just for everyone watching, I suspect just for full clarification, this is running a the standard benchmark for each model. So for GPT, we're probably running codex. For Claude models, we're running Claude. Yeah.
+
+@dexhorthy (24:07.435)
+we're using Cloud Code as the harness and then yeah, for GPT we're using the codex harness. For GLM we're using open code.
+
+@vaibcode (24:11.532)
+Yeah. Yeah. So it's we're not we're using the best possible harness for that model at that given time, at least the or the most aligned harness, I should say. Maybe not the best. That's the wrong word, but like the default harness for that model. but I'm gonna go into something actually just riffing off really you wanna say your final takeaway?
+
+@dexhorthy (24:26.158)
+Yep.
+
+@dexhorthy (24:30.564)
+I think we're there. I I think that's it. The the last thing I wanted to show is we did other posts on this and I think this one has this one from when was this? I don't remember. It was a couple months ago. but this one actually does a good job of it it outlines in an appendix a bunch of the challenges. So if you want a summary of like, okay, cool, we take this thing that is like JQ for XML and then we build it out to like basically a generic like serializer deserializer for any binary data.
+
+And like what are the actual like checkpoints and challenges? So if you want to get a better sense of that, I mean you can clone the repo and ask your model to explain it to you. But I have a little summary of that here. All right, over to Vibov.
+
+@vaibcode (25:08.024)
+Yeah. It's really funny. when we went, we spent a lot of time thinking about code quality a lot. And the reason I spent a lot of time thinking about code quality is actually exactly first inspired by you, Dax, when you start first shared slop code bench with me. and like I know you didn't make slop code bench, but like just the way that you dug into it and really started talking about like this pattern of like long-term maintainability raised a lot of concerns. And the first thing I noticed is
+
+When models first wrote any BAML code, it basically was absolutely freaking garbage. Right. And I'll show you how garbage it was because it goes straight into this problem of slob code bench. Because I think the BAML is a really easy way to prove that models are going to produce garbage code when it doesn't know what it's doing perfectly by default. But if you go in an established code base and you let the model run wild, it basically converges to garbage in every language really fast.
+
+Right. because like it tries to follow the patterns and can, but it quickly devolves into trying to solve the problem, not r current like quickly.
+
+@dexhorthy (26:10.2)
+This is comes back to the junior engineer versus senior engineer thing of like a junior engineer just builds what you ask for. A senior engineer like plans for the future and pushes back and says, Actually we like literally can't do that until we do this other thing first.
+
+@vaibcode (26:22.624)
+Yeah, so I'll look I'll show some code really fast, just to show how bad it was. And then after that I I I think it's useful. I think it's super useful to see like disgusting code. To see the like these things these benchmarks are good, but the benchmarks can sometimes be a little bit like removed, you know? 'Cause because it
+
+@dexhorthy (26:27.687)
+Ha ha ha.
+
+@dexhorthy (26:41.306)
+Well you need to what you need to do is you need to make a BAML prompt for slop code bench and a slop linter for BAML.
+
+@vaibcode (26:45.794)
+So I'll show you that next. I'll show you that right after that too. Because that is, I think, gonna be really interesting. as soon as you see that, let me open the repo really fast. Demos. Where is this? I think I have this somewhere. file open repo. I I can just open GitHub actually. GitHub will probably just open it.
+
+@vaibcode (27:12.782)
+Let me see if we update the repo as well. Okay. And then I want to go to an older commit of this thing so we can see the absolute shit that it produced. and then I think if we do that, we will get to see some really disgusting code. And really disgusting code is what I want to show. there we go. Okay. So let's and once you get into this, then you start into this. So like
+
+@dexhorthy (27:34.232)
+Awesome.
+
+@vaibcode (27:40.687)
+Okay, it wants me to sign into GitHub for some reason. Okay. So this is like a random project that I mode, but I wanted I want you to start looking at like how ugly the code ends up getting really, really fast. let me see if I can find this. Like some of the patterns that it does, for example, is like it starts in Rust, you would never write if-else statements. You would use something like match. It starts like, do you see how deeply nested this code starts getting? Exactly. You instantly are like,
+
+@dexhorthy (28:04.708)
+Gross. Yeah. Cyclomatic complexity.
+
+@vaibcode (28:08.45)
+Yeah, you're not even thinking about it, but you're like instantly exactly. And given arbitrary code bases, you're not gonna start writing code in any other way except this if you don't know any better. And once you start really go ahead.
+
+@dexhorthy (28:20.12)
+Right, this is this is how I wrote code in like the first program I ever wrote when I did like the internship at NASA writing code. It was like literally one giant function with like tons and tons of ifs and loops in it.
+
+@vaibcode (28:32.482)
+Yeah, and what's funny here is like we're literally looking at this code in a way that a model does. There's no syntax highlighting, there's no nothing. You're just kind of staring at this. I should turn on syntax highlighting, but I it's on the browser version. Like right over here, for example, you would never write not equal to null. You would literally just write if not something. These are small things that make a huge difference. And yes, linters can help. Yes, a lot of things can help. no, this is please don't judge me. This is the browser version. I just press dot in the browser to open this very quickly.
+
+So I I am not a heathen. I don't actually huh. I don't have the in the browser version, it doesn't come with any default extensions included. So like I would have to open it locally. But we looked at this code, and what's interesting is to reduce the skill, what we did is we literally just put together a list of rules, mostly just by being like, here's examples of good code, and here's examples of bad code. And like, for example, one thing is like don't put magical constants everywhere. We all know that's bad. But a model does, every model does this.
+
+@dexhorthy (29:01.338)
+Yeah, where's your syntax highlighting, dude? Where's your syntax highlighting, dude?
+
+@dexhorthy (29:09.296)
+Extensions.
+
+@dexhorthy (29:27.652)
+Yep. No magic numbers.
+
+@vaibcode (29:30.598)
+Exactly. Don't do magic numbers. And you can just like tell a model this. You can do things like don't create like complex classes. Use like exceptions, because we prefer exceptions in the language. And there's a whole bunch of things like you generally shouldn't write if else and construct lists. Use like filter and dot map. They're better ways to write code. It makes it easier to write the code and read the code and understand it.
+
+@dexhorthy (29:52.335)
+I mean that that one is a little bit more of an opinion. I I think I think you can overdo the fil I'm a huge FP guy. I love filter fold and map, but I I I do remember having like PRs completely rejected. It like you have an eight like thing pipeline with like a bunch of reduces and folds in it, like you're just
+
+@vaibcode (29:55.072)
+No, this is a fact.
+
+@vaibcode (30:06.486)
+Okay, look, reduces and folds I agree are controversial. Filter and map is objectively the best way to do it in my opinion.
+
+@dexhorthy (30:13.538)
+Okay. Okay. I mean I I agree with you. I just I don't I don't know if that is like a a universal truth, but I'm you know what?
+
+@vaibcode (30:20.67)
+Okay, well, like for this this should be a universal truth at the very least. Like an if else is strictly worse than a match. Right? Because again, one is b one is guaranteed to abide by your type system, the other one is not. So like if you add a new enum, the second one fixes it. And what's really interesting is like a lot of this is actually inspired by Google has this thing, their CPP style guide for Absol. It's one of the most beautiful style guides ever made. It really helps.
+
+@dexhorthy (30:27.78)
+Yep, a hundred percent.
+
+@dexhorthy (30:44.206)
+Yeah. yeah, I've read their their Java style guide is also really good.
+
+@vaibcode (30:49.779)
+well Java's bad by default, so but otherwise, yeah.
+
+@dexhorthy (30:52.602)
+C plus plus is not good, dude.
+
+@vaibcode (30:55.272)
+C'est I'm sadly a sucker for pain. There's other things like truthiness, like don't write this, just use if name, because truthiness exists, right? And I see this even in TypeScript. Models will write this crap when they really should be doing s something like this. But what's interesting is the way that you would typically write a linter to solve like there's like a bunch of rules here. There's a there the way you typically write a linter to solve these rules would be you'd convert everything to a linting rule and you'd make that work, and that's nice programmatically.
+
+@dexhorthy (30:59.908)
+Okay.
+
+@dexhorthy (31:03.77)
+Yep. Yep.
+
+@dexhorthy (31:09.424)
+Well they have yeah.
+
+@vaibcode (31:24.91)
+Well we kind of live in a new world now where you can just like make your Linter an LLM command. And it's like a skill that you can go do. But when we actually started measuring this, I think this is where we got some really interesting results. And I think the way the biggest difference in the way that the world has changed is we used to care a lot about how expensive. Yeah, in TypeScript, not equal to null versus truthy is fundamentally different. But 90% of the time the usage is almost always the same.
+
+@dexhorthy (31:55.544)
+Yeah. And technically Python like things can be nullish, but like you actually only care if they're none. But anyways, keep going.
+
+@vaibcode (31:56.15)
+@vaibcode (32:00.756)
+Yeah, exactly. But what's interesting is I think when we first started building BAML, we really started I'll show you in a I'll describe that in second, but I just want to describe the high level metrics. When we really first started to care about it, what we really cared about was making sure that you could come to good code in a cheap way up front. But I think many people now would sacrifice a little bit of cost in favor of maintainability.
+
+@dexhorthy (32:05.188)
+Yeah, wait, hold on. What am I looking at here? Can you explain this this chart to me?
+
+@dexhorthy (32:28.004)
+Yep, they would pay more to basic they would spend twice the tokens if it meant that like the code was much cleaner. Or even a little bit clean even twenty percent cleaner.
+
+@vaibcode (32:33.802)
+Exactly. So what we started Yeah. So we started to do was actually like start evaluating like what does it look like if the system started to go do this for like arbitrary systems. So we like we gave it a bunch of tasks to go implement, like a chess move generator, GTFS departures, and a whole bunch of things like an ERE engine, which is like a regex thing. So these are like fairly complex systems to go build. And we just asked itself like how many lines of code do you end up with in every single world? And more lines of code is not necessarily bad.
+
+Tests are not necessarily bad at tests. We we try and have a metric for with tests, without tests. And then we try and have an answer for like exactly what is going on. So like let's use where's the one? There's more metrics here. Like this one is might be more interesting. But what's really interesting is actually these first metrics, which are very high-level calls of like just like roughly what did the coding agent, what did the coding harness do at any given time. But
+
+We actually started ignoring these metrics. We said, let's just not care at all about how long the agent took to solve the problem. Let's not care at all how many times it ran tests or how many times it ran like the actual script to make sure stuff worked.
+
+@dexhorthy (33:38.542)
+Okay, so BAML BAML run calls and BAML test calls kind of shows it like how much is it like hill climbing against something. Or is is running more test calls better or worse? Or we don't care. It's just it's just kind of like blurry signal that gives you a shape of it. We don't care about like we're not ascribing a value to it. But yeah, okay, cool. Now we have the complexity metrics.
+
+@vaibcode (33:49.763)
+So that's why we said we just ignored this. Like it's like, let's ignore this.
+
+@vaibcode (33:58.484)
+Exactly. But now we act what we said is what if the compiler gave the system runtime pressure? Yeah. It not for a lot, for every single thing.
+
+@dexhorthy (34:05.805)
+this is fucking sick. Okay, so your guidelines worked for a lot of things.
+
+@dexhorthy (34:12.002)
+Except for cyclomatic complexity worst function, it seems like it's about the
+
+@vaibcode (34:15.072)
+No, no skill guy guidelines is worse. Guidelines is better. You want lower is better.
+
+@dexhorthy (34:20.398)
+Yeah, yeah, but your guidelines, your like mean bar is to the right of the one for BAML core.
+
+@vaibcode (34:26.186)
+what are you talking? Which one? bottom left. Yeah, the worst function is w yeah, yeah. Sorry, yes. Yeah.
+
+@dexhorthy (34:27.424)
+The bottom left chart. That's yes. That's the only one where it's like still up in the air. But yeah, all the rest of them are like basically like across the board getter better.
+
+@vaibcode (34:36.738)
+But even then, that one is still like roughly in the same order of magnitude. So what that leads me to believe is like that that code base is probably going to be roughly around the same system. Right.
+
+@dexhorthy (34:46.776)
+Right. You're always gonna have one big crazy function and it's like the least it's the least interesting metric probably of all of these. Yeah. Yep.
+
+@vaibcode (34:52.462)
+F at least for this problem, like it feels like that doesn't help us converge. And that's where like seeing the difference here helps a lot. But the really interesting insight here that we've had was like you can take all these benchmarks and now you can start measuring skills, you can measure linters, you can measure all sorts of things to see if they help conver
+
+@dexhorthy (35:07.214)
+Yeah, you can try ten different you can have instead of three versions, you can have ten versions and you can like look at all of them.
+
+@vaibcode (35:12.8)
+Exactly. You can look at a git diff and the git diff can now tell you what your what your next step did. But what's really fascinating is if the compiler starts to actually the most interesting insight we had here was like one, yes, our guidelines are clearly being merged into the system and our skill is getting updated with these guidelines because it clearly just objectively makes the code base better. But I think the more interesting insight was like, you can just see like less nesting, l a maintainab this is very interesting, like the maintainability index of how you actually run the house set volume.
+
+and all a few other things was like really fascinating of like, you your code base just gets better over time. But I think the most fast and what we did is every single project was started from scratch like n times. So instead of just running it once, we actually ran everything ten times.
+
+@dexhorthy (35:42.864)
+Yeah.
+
+@dexhorthy (35:55.374)
+Okay, so you ran the same challenge n times for these three different like prompts that you gave it. But this was one shotted, right? This wasn't this wasn't like accumulating code over time. You should do this with slop code bench.
+
+@vaibcode (36:01.28)
+Exactly. But the most interesting
+
+@vaibcode (36:06.782)
+Well, yeah, exactly. But the most interesting insight that we had out of this was actually if you just bake these metrics into the compiler, you can now give the LM back pressure of like, you made the code base worse over time. And it's like super trivial to go give it to, right?
+
+@dexhorthy (36:21.976)
+Yeah, this is the this is the thing that I think is missing from slop code benches. Like nobody in their like generic, like if you're serious about making a dark factory, you have feedback for all of these things going into the agent. And I'd be really interested to see the difference between a like here's the thing, go build it prompt versus a like, here's the thing, go build it, and then run this battery of tests and then like, you know, try to get to some goal score, basically. Like
+
+@vaibcode (36:45.698)
+Well, what I mean is like, for example, one really interesting I I wish I had the code bases here to show you. But one really fascinating thing is like just by reducing the complexity of the code base, you often reduce bugs. Right? So like like the worst function, like making the worst function go ahead.
+
+@dexhorthy (36:56.046)
+Yep. A hundred percent. 'Cause it's yeah. It's easier for the model to understand. It's easy it's easier for the model to understand your abstractions are better, your data models are better. You like eliminate whole classes of bugs.
+
+@vaibcode (37:07.028)
+Exactly. And that I think is the key insight here. So we talk about back pressure in a previous episode, but like if you give the model more back pressure, then boom, you actually get to like this whole thing where like you're gonna produce way, way better code bases over time. And I think this will actually help with slob code bench with the exact same way. Cause I saw one of my tasks for next week, and maybe we should do a fun little episode on this.
+
+@dexhorthy (37:15.205)
+Yeah.
+
+@dexhorthy (37:22.371)
+Awesome.
+
+@dexhorthy (37:30.788)
+We gotta I yeah I gotta I'm getting kicked out of this room in like two minutes. So I think w I th I wanna pause it. I think we should do a two part intro for this one. So I'm going to like walk through my stuff really quickly and then I'm gonna hand it to you. We can have a little pause and then you basically gonna be like and then I talked about how we did this for BAML and you can share your screen basically. And the editors can collapse it together. okay, awesome.
+
+@vaibcode (37:33.889)
+Okay.
+
+@vaibcode (37:49.422)
+Let's do it.
+
+Total random aside. Where are you right now?
+
+@dexhorthy (37:55.34)
+I'm I'm at at the office of someone who is hopefully buying some human layer. cool. So I am cool. let me pull up the article. Cool. All right, y'all. on this week's episode of A That Works, a little bit of a short one, but we went through the latest slop code bench results. Slop code bench, of course, is a benchmark that makes a model inherit a code base as it goes through and learns more about the requirements.
+
+@vaibcode (38:01.678)
+Nice.
+
+@dexhorthy (38:24.756)
+and is really maps better to like how we build actual software. I go through the results where Astra X High actually tops the pack, even though I think Opus 5.5 for me is my favorite model these days. So we have a bunch of results from recent runs. we talk through not only the performance but how effort affects cost and performance for different model families, the overall spread here. We talk about the like failure cases.
+
+some interesting stuff on like the actual code quality metrics and the number of functions written, like fable wins on this one weird dimension of like mean cyclomatic complexity. and and just talk more about like what it means to maintain a code base over time. And the vibe of you wanna share and and do your part.
+
+@vaibcode (39:05.356)
+And then Yeah. And then right after that, we go deeper, a little bit deeper into exactly what it looks like to write a maintainable code base over time and how to think about skills, how to think about linters in a way that helps you go and optimize, not really for agent time, because agent time and how long it takes to produce a task matters way less. Now how many tokens it costs to produce task matters way less than the maintainability of the software over time, because that is a compounding impact.
+
+So we looked at various metrics, we looked at various ways of how we go do this, and then we dig into various actual the actual guidelines that actually reduce the cost along the way and how we got the cyclomatic complexity, how we got the depth of the functions to be way cheaper over time in terms of making the system more maintainable. Let's get into it.
+
+@dexhorthy (39:48.676)
+So this was a super fun episode. Thank you all for jumping in and really excited to share what's next on this benchmark. And shouts out to the team at University of Wisconsin who created Slop Code Bench. Everyone thinks it was me. I don't know why. Sorry, Gabe. they are they are the the brilliant minds behind this. I just I just run the inference. So this is a fun episode, let's get into it.
+
+@vaibcode (40:09.582)
+All right. I'm gonna pause this. All right.
+
+@dexhorthy (40:11.153)
+yeah, dude. Thanks everybody.
+
