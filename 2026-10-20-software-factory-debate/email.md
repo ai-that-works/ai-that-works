@@ -20,7 +20,7 @@ The full recording is on [YouTube](https://www.youtube.com/watch?v=XUEfIxkdT2Q),
 
 The bottleneck is your org chart, not your agents. Most companies draw a line where product owns what's worth building and engineering owns building it. A factory needs one owner for the whole loop, all the way to the customer outcome, like "this workflow used to take a user twenty minutes and now takes ten." If your VP of Product and VP of Engineering won't co-own that, the factory stays a nicer IDE. Working in the open matters too. When prompts happen in a public Slack channel, everyone gets to see how your most senior engineers steer an agent.
 
-**Next session: Building Evals on Production Data, tomorrow (October 27th) at 10 AM PT**
+**Next session: SlopCodeBench: The New Metrics, tomorrow (October 27th) at 10 AM PT**
 
 We've done plenty of deep dives on eval design and eval frameworks. This time it's practical: taking your production data and using it to design and extend your eval system. Sign up here: https://luma.com/evals-on-prod-data
 

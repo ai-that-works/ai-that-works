@@ -13,7 +13,7 @@
 <div align="center">
 <h2>🦄 <strong>Next Episode</strong></h2>
 <h3><strong>Building Evals on Production Data</strong></h3>
-<p><strong>Tuesday, October 27, 2026 at 10 AM PST</strong></p>
+<p><strong>Tuesday, November 10, 2026 at 10 AM PST</strong></p>
 <p><em>We’ve done a ton of deep dives on eval design and eval frameworks, today we’re gonna talk about practical examples for taking production data and using to design and extend your eval system.
 
 Meet the Speakers🧑‍💻​
@@ -107,10 +107,10 @@ Before joining, get familiar with our toolkit:
         <div style="margin-bottom: 2px;">
           <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
         </div>
-        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-11-03</div>
-        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#80</strong>: Using AI for Writing</div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-11-17</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#81</strong>: Using AI for Writing</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-11-03-using-ai-for-writing">code</a> • <a href="https://luma.com/ai-for-writing">register</a>
+          <a href="./2026-11-17-using-ai-for-writing">code</a> • <a href="https://luma.com/ai-for-writing">register</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">Everyone is complaining about how bad AI is at writing prose, but with the right workflow, you can produce good things.
@@ -128,13 +128,36 @@ Meet the Speakers🧑‍💻​
         <div style="margin-bottom: 2px;">
           <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
         </div>
-        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-10-27</div>
-        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#79</strong>: Building Evals on Production Data</div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-11-10</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#80</strong>: Building Evals on Production Data</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-10-27-building-evals-on-production-data">code</a> • <a href="https://luma.com/evals-on-prod-data">register</a>
+          <a href="./2026-11-10-building-evals-on-production-data">code</a> • <a href="https://luma.com/evals-on-prod-data">register</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">We’ve done a ton of deep dives on eval design and eval frameworks, today we’re gonna talk about practical examples for taking production data and using to design and extend your eval system.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+</div></td></tr>
+<tr><td>
+      <div style="padding: 8px 0;">
+        <div style="margin-bottom: 2px;">
+          <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">PAST</span>
+        </div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-10-27</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#79</strong>: SlopCodeBench: The New Metrics</div>
+        <div style="font-size: 13px; color: #666;">
+          <a href="./2026-10-27-slopcodebench-new-metrics">code</a>
+        </div>
+      </div>
+    </td><td><div style="padding: 8px 0; line-height: 1.5;">Back in August we dug into SlopCodeBench, the benchmark that makes coding agents build on their own prior code across checkpoints and measures whether they bury themselves in slop. Since then the benchmark has grown (more problems, more checkpoints, more models) and shipped a new set of metrics for measuring how code degrades.
+
+This week we're going back to see what's new: verbosity and structural erosion scores alongside strict and isolated pass rates, how effort levels and cost change the picture, and what the numbers say about whether higher-effort runs actually leave you with cleaner code.
+
+If you missed the original episode, catch up on the August 4th session first, but you don't need it to follow along.
 
 Meet the Speakers🧑‍💻​
 
