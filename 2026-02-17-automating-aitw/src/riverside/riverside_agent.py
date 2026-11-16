@@ -222,6 +222,14 @@ class RiversideAgent:
 
     def _open_new_session_form(self) -> None:
         """Navigate to Planner and open the new session form."""
+        # Dismiss any announcement modal ("New! ...") that blocks sidebar clicks
+        for _ in range(3):
+            try:
+                self.page.keyboard.press("Escape")
+                self.page.wait_for_timeout(500)
+            except Exception:
+                break
+
         print("Clicking on Planner in sidebar...")
         planner_selectors = [
             "text=Planner",

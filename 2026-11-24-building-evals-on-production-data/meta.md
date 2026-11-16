@@ -1,5 +1,5 @@
 ---
-guid: aitw-081
+guid: aitw-082
 title: "Building Evals on Production Data"
 description: |
   We’ve done a ton of deep dives on eval design and eval frameworks, today we’re gonna talk about practical examples for taking production data and using to design and extend your eval system.
@@ -10,13 +10,13 @@ description: |
 
   ​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
 event_link: https://luma.com/evals-on-prod-data
-eventDate: 2026-11-17T18:00:00Z
+eventDate: 2026-11-24T18:00:00Z
 media:
   url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
   type: video/youtube
 links:
-  code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-17-building-evals-on-production-data
+  code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-24-building-evals-on-production-data
 season: 2
-episode: 81
+episode: 82
 event_type: episode
 ---

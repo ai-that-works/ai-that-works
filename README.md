@@ -12,11 +12,9 @@
 
 <div align="center">
 <h2>🦄 <strong>Next Episode</strong></h2>
-<h3><strong>Using AI for Writing</strong></h3>
-<p><strong>Tuesday, November 10, 2026 at 10 AM PST</strong></p>
-<p><em>Everyone is complaining about how bad AI is at writing prose, but with the right workflow, you can produce good things.
-
-Vaibhav and Dex will share their workflow for writing no-slop technical posts that are actually fun to read.
+<h3><strong>Emergent Behaviors with Gabe Orlanski, creator of SlopCodeBench</strong></h3>
+<p><strong>Tuesday, November 17, 2026 at 10 AM PST</strong></p>
+<p><em>We've done a few episodes on our favorite benchmark, SlopCodeBench, and this week we'll be joined by Gabe Orlanski from UW Madison to chat about what's underneath the data: new slop patterns that are emerging or worsening in modern models like Fable and Opus 5.5, and how agents do at building and designing libraries and interfaces. We'll also dig into what Dex and Vaibhav are doing to fight slop, and some go-forward ideas for Fable 5.2.
 
 Meet the Speakers🧑‍💻​
 
@@ -25,7 +23,7 @@ Meet the Speakers🧑‍💻​
 ​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
 </em></p>
 
-<a href="https://luma.com/ai-for-writing" target="_blank">
+<a href="https://luma.com/emergent-slop-behaviors" target="_blank">
 <img src="https://img.shields.io/badge/🦄_REGISTER_NOW-Join_Live_Session-ff4444?style=for-the-badge&logo=calendar" alt="Register Now">
 </a>
 
@@ -109,10 +107,10 @@ Before joining, get familiar with our toolkit:
         <div style="margin-bottom: 2px;">
           <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
         </div>
-        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-11-17</div>
-        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#81</strong>: Building Evals on Production Data</div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-11-24</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#82</strong>: Building Evals on Production Data</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-11-17-building-evals-on-production-data">code</a> • <a href="https://luma.com/evals-on-prod-data">register</a>
+          <a href="./2026-11-24-building-evals-on-production-data">code</a> • <a href="https://luma.com/evals-on-prod-data">register</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">We’ve done a ton of deep dives on eval design and eval frameworks, today we’re gonna talk about practical examples for taking production data and using to design and extend your eval system.
@@ -128,10 +126,29 @@ Meet the Speakers🧑‍💻​
         <div style="margin-bottom: 2px;">
           <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
         </div>
+        <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-11-17</div>
+        <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#81</strong>: Emergent Behaviors with Gabe Orlanski, creator of SlopCodeBench</div>
+        <div style="font-size: 13px; color: #666;">
+          <a href="./2026-11-17-emergent-slop-behaviors">code</a> • <a href="https://luma.com/emergent-slop-behaviors">register</a>
+        </div>
+      </div>
+    </td><td><div style="padding: 8px 0; line-height: 1.5;">We've done a few episodes on our favorite benchmark, SlopCodeBench, and this week we'll be joined by Gabe Orlanski from UW Madison to chat about what's underneath the data: new slop patterns that are emerging or worsening in modern models like Fable and Opus 5.5, and how agents do at building and designing libraries and interfaces. We'll also dig into what Dex and Vaibhav are doing to fight slop, and some go-forward ideas for Fable 5.2.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+</div></td></tr>
+<tr><td>
+      <div style="padding: 8px 0;">
+        <div style="margin-bottom: 2px;">
+          <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">PAST</span>
+        </div>
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-11-10</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#80</strong>: Using AI for Writing</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-11-10-using-ai-for-writing">code</a> • <a href="https://luma.com/ai-for-writing">register</a>
+          <a href="./2026-11-10-using-ai-for-writing">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">Everyone is complaining about how bad AI is at writing prose, but with the right workflow, you can produce good things.

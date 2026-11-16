@@ -1,11 +1,31 @@
 {
   "episodes": [
     {
-      "folder": "2026-11-17-building-evals-on-production-data",
-      "guid": "aitw-081",
+      "folder": "2026-11-24-building-evals-on-production-data",
+      "guid": "aitw-082",
       "title": "Building Evals on Production Data",
       "description": "We’ve done a ton of deep dives on eval design and eval frameworks, today we’re gonna talk about practical examples for taking production data and using to design and extend your eval system.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
       "event_link": "https://luma.com/evals-on-prod-data",
+      "eventDate": "2026-11-24T18:00:00Z",
+      "event_type": "episode",
+      "media": {
+        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "type": "video/youtube"
+      },
+      "links": {
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-24-building-evals-on-production-data"
+      },
+      "season": 2,
+      "episode": 82,
+      "isPast": false,
+      "isWorkshop": false
+    },
+    {
+      "folder": "2026-11-17-emergent-slop-behaviors",
+      "guid": "aitw-081",
+      "title": "Emergent Behaviors with Gabe Orlanski, creator of SlopCodeBench",
+      "description": "We've done a few episodes on our favorite benchmark, SlopCodeBench, and this week we'll be joined by Gabe Orlanski from UW Madison to chat about what's underneath the data: new slop patterns that are emerging or worsening in modern models like Fable and Opus 5.5, and how agents do at building and designing libraries and interfaces. We'll also dig into what Dex and Vaibhav are doing to fight slop, and some go-forward ideas for Fable 5.2.\n\nMeet the Speakers🧑‍💻​\n\n​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!\n\n​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.\n",
+      "event_link": "https://luma.com/emergent-slop-behaviors",
       "eventDate": "2026-11-17T18:00:00Z",
       "event_type": "episode",
       "media": {
@@ -13,7 +33,7 @@
         "type": "video/youtube"
       },
       "links": {
-        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-17-building-evals-on-production-data"
+        "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-17-emergent-slop-behaviors"
       },
       "season": 2,
       "episode": 81,
@@ -37,7 +57,7 @@
       },
       "season": 2,
       "episode": 80,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1759,7 +1779,7 @@
     }
   ],
   "meta": {
-    "totalEpisodes": 84,
+    "totalEpisodes": 85,
     "completedEpisodes": 78,
     "upcomingEpisodes": 2,
     "workshops": 3,
@@ -1767,7 +1787,7 @@
       1,
       2
     ],
-    "lastUpdated": "2026-11-09T22:24:49.904Z",
+    "lastUpdated": "2026-11-16T13:13:04.882Z",
     "generatedBy": "validate-metadata.ts"
   }
 }
