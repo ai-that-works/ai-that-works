@@ -49,10 +49,11 @@
       "eventDate": "2026-11-10T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=V5X34C9qvX4",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=V5X34C9qvX4",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-10-using-ai-for-writing"
       },
       "season": 2,
@@ -1780,14 +1781,14 @@
   ],
   "meta": {
     "totalEpisodes": 85,
-    "completedEpisodes": 78,
+    "completedEpisodes": 79,
     "upcomingEpisodes": 2,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-11-16T13:13:04.882Z",
+    "lastUpdated": "2026-11-16T13:19:16.586Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

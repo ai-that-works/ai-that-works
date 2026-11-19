@@ -148,7 +148,7 @@ Meet the Speakers🧑‍💻​
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-11-10</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#80</strong>: Using AI for Writing</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-11-10-using-ai-for-writing">code</a>
+          <a href="https://www.youtube.com/watch?v=V5X34C9qvX4">watch</a> • <a href="./2026-11-10-using-ai-for-writing">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">Everyone is complaining about how bad AI is at writing prose, but with the right workflow, you can produce good things.

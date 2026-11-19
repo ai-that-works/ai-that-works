@@ -1,0 +1,644 @@
+@vaibcode (00:01.11)
+Alright, I think we are live and good to go. Sorry for the delay, folks. it's gonna be a couple minutes and then we'll get started in a second.
+
+@vaibcode (00:15.714)
+But today's
+
+@vaibcode (00:28.443)
+And we'll be on in just a couple seconds.
+
+@vaibcode (00:49.494)
+Alright. And I think I'll get I'll kick us off in a second and do you wanna join from here or do you wanna join from How's it going everyone? So today's episode on AI That Works is going to be one that I'm particularly excited about.
+
+Sadly, Dexter can't make it, so we'll have to go ahead with myself and I believe Erin's gonna be joining in just a second. But just to give you a brief intro, this is AI That Works. This is a show where we talk about real systems that leverage AI and help us build real pipelines that actually go to production. One of the things that we like to do is skip all the hype and go to things that are practical and ways that we operate our companies today. Today's episode is one in particular that we are super excited about, which is how do you use AI for writing?
+
+I think there's a lot of controversy out there. There's people out there that say, I will never use AI for writing. There's people where, I mean, we have all seen the LinkedIn slop where everything is full slop. So finding that striking that balance and figuring out where that is, and how good the models are at it, how to make the models better at it, is the whole topic for today's conversation. And I think a particular place that we're gonna dive into is in the angle of what models do we use, exactly how do we make certain decisions in terms of how much.
+
+AI writing is allowed. And also second dimension, which is is that okay? Like, is it okay to have a lot of slop writing on the wall? and how much slop is acceptable? With me, I've got my co-host today, Aaron. Do you want to give a brief intro?
+
+@aaronvi (02:23.148)
+yeah, I'm the co founder of Boundary. before this I worked at Amazon for like seven years working on E C two and Prime Video. And yeah, happy to be here.
+
+@vaibcode (02:34.111)
+Is the audio better on the channel? If you guys have better audio, let us know. If it's still a problem, let us know. I reduce my softness as well. all right, Aaron, let's get into it. So we're gonna talk about using AI for writing. I know you are a writer that has been writing for quite some time. you you choose your words very, very wisely.
+
+How much writing is acceptable for AI in your mind? And how do you get our team to kind of meet that bar?
+
+@aaronvi (02:57.591)
+Yeah.
+
+@aaronvi (03:04.427)
+Yeah, so the thing with AI writing is I think the process of writing should always start with the human. like the human should outline what the outline is. they should outline the like the main talking points. And then yes, you could use AI to like fill out part of the document. But I do prefer like starting out writing as much as as much
+
+of it as you can yourself. It really depends what you're writing. Is this like a technical doc? Is this like a blog post? If it's a blog post, I would only write it myself. If it's like an internal doc that like it's a technical doc and we're reviewing together, I do prefer sort of like having the main ideas, the main outline and then just having AI fill in the blanks. Cause you know it's not like I'm presenting to the whole internet.
+
+@vaibcode (04:00.781)
+Okay. So it sounds like there's some dimension of like who's the audience. If the audience is a well established audience and you want levels of detail, AI is good. But if it's a broad audience that doesn't know you, you prefer no AI at all.
+
+@aaronvi (04:04.386)
+Yeah.
+
+@aaronvi (04:13.205)
+Yeah, exactly. I mean what about you?
+
+@vaibcode (04:16.041)
+I so I kind of flop back and forth. I actually find that AI is an amazing way to convey the idea I have to all sorts of people. Sometimes when I'm rushed for time or it can like contextualize a conversation much, much better. So like
+
+let's say it's a domain that I'm not as experienced in. The act of leveraging AI and writing, I think if you do it thoughtfully, raises questions in your mind that you haven't thought of asking because you're like, why did why did the model mention that component in it? Like I think a great example for is like when you're chatting with customers, sometimes a really rookie mistake that a lot of bad founders make, mostly myself, is you're talking about the thing that you are building, and it's really easy to forget in the message. The most important thing is to talk about the
+
+outcome that you are using. So I'm not saying that you should use AI to talk to customers, but what I am saying is leveraging it to draft a small sentence here and there can just briefly reiterate and remind you back that, yeah, focus on the outcome. So I think covering for your weaknesses is a part that I find AI incredibly powerful in. But like go ahead. I was gonna say like you said, when it comes to a broad audience, I don't trust AI for shit.
+
+@aaronvi (05:25.451)
+Yeah, like no no, go ahead, go ahead.
+
+@vaibcode (05:34.465)
+Like I I don't want a blog post that I wrote written by AI out there because it is it basically affects my reputation in the way and like I don't want to be known as a slop rack.
+
+@aaronvi (05:45.709)
+So it's not like you're against the AI writing itself, but you're against the perception of AI writing. Like you'd totally be fine if people were fine with it, on like making a blog post fully AI written, provided you read it.
+
+@vaibcode (05:59.662)
+Assuming it's good writing, yeah, I personally have no morality clause against it. But I know there's a lot of folks that like and and rightfully so. There's so man I mean, we've all seen the startup websites that look you can read the claudisms in a startup website now. It's like you can just see it and it's so clear. There's like this small text or like there's these phrases that are like three words, comma, three words. And
+
+@aaronvi (06:04.215)
+Yeah.
+
+@aaronvi (06:18.732)
+Yeah, it's like
+
+@aaronvi (06:23.009)
+Yeah, it immediately like lowers the reputation of the author or the website or the company. I think it just signals that you just didn't bother to think of these words yourself and some AI is doing it for you. And yeah. no, go ahead. Yeah.
+
+@vaibcode (06:38.529)
+I have somet go ahead. I have three so now that we've gone over the high level, I have three specific things that I wanna show as an example that I think are gonna be amazing. One, I think we'll just cover really quickly what models we like to use. and I think both of us probably have different preferences. and I think it's gonna interesting to know that. Two, I wanna go over a real I wanna go over two practical examples immediately after this. So the second example the second thing I wanna talk about is how we prepared
+
+@aaronvi (06:53.41)
+Yeah.
+
+@vaibcode (07:07.191)
+For the presentation that we gave at the most recent conference. And I think that was a very interesting collaboration of both AI to leverage AI for some of the writing, but almost none of it, but not much of the ideation. But actually, some of the ideation too. And then also I want to talk about the third thing, which is our BEPS platform, which is how we do AI for internal teams in our system, where we do heavily use AI, but we still somehow manage to hold it to some level of a standard, though sometimes it is pure slot.
+
+@aaronvi (07:11.017)
+yeah.
+
+@aaronvi (07:35.243)
+Yeah, I mean and on that note I also wanna touch on a point where it's like at the end of the day you're trying to transmit ideas, whether it's through writing or maybe some other media, like as like slides or a video. and now it is much easier to make like insane slides with like animations to actually like show what you're thinking. So yeah, it's interesting. Yeah.
+
+@vaibcode (07:56.27)
+Okay, so that's a little teaser about what we're gonna talk about in the second part. But let's start with the most easy part. What models do you like to use? When you're using AI for writing, what model are you using?
+
+@aaronvi (08:08.192)
+I just use cloud mod models like Opus five point five. and the reason is I usually do like high but I'm doing more like medium thinking. And I don't know, they seem to be changing how many thinking tokens it emits on each level. So but yeah, usually high to medium and I have tried Astra like Astra and Sol.
+
+@vaibcode (08:12.685)
+Okay. Medium high.
+
+@aaronvi (08:34.849)
+The problem with Astra and Soul for me is that it's just so much I feel like it just emits like a scientific paper. I'm sure it can be prompted to not do that, but I'm too lazy sometimes to tell it like what writing style I want.
+
+@vaibcode (08:49.645)
+Okay, that's r that's really interesting because I have the exact opposite preference for writing. I actually strongly prefer the soul models and I think it's just a matter of like the ways we like to read are different. I like to read the more like practical, like literally just like here's the facts, bullet points, nothing else. that's so funny.
+
+@aaronvi (08:55.051)
+Yeah.
+
+@aaronvi (09:06.827)
+Yeah, yeah, yeah. Yeah, I think I'd like to read maybe Opus has more of a little you know story or like maybe like slightly better structure. It was definitely super sloppy, like before five point five. It was actually terrible. Like I'd rate it like a zero out of ten. It was literally non comprehensible. It's like its own language at some points. It's like using metaphors all over the place. I find that
+
+@vaibcode (09:26.157)
+Ha ha ha.
+
+@aaronvi (09:36.417)
+I find that telling these models to use like Google dev docs style writing helps. yeah. Just because Google has literally like writing guidelines that like they write they wrote about them and it's probably in the training data. they just have so much engineering content that they've written. so
+
+@vaibcode (09:40.039)
+yeah. I've seen you do that actually a qu a few times.
+
+@vaibcode (09:55.639)
+Let me pull that up really fast just so people get an idea of what that is. 'cause
+
+@aaronvi (10:01.163)
+Yeah, it's like technical writing or engineering writing or something. There's like a website about it. Yeah.
+
+@vaibcode (10:05.866)
+I found it. It's right here. So like every page in the devo and I think this is because Google has like it's one of the few companies that has a very holistic single developer documentation site. And because it has a single one, it can probably enforce a very strong policy across everything. And it literally talks about everything. It's like it actually talks about like here's your organization's documentation structure. It tells you how to view the Ngrams viewer 'cause like we want to minimize the number of words that are being produced in any documentation style. it has like actual it has
+
+@aaronvi (10:20.823)
+Yeah.
+
+@aaronvi (10:28.141)
+Yeah.
+
+@vaibcode (10:35.83)
+actual like how to actually write preferences as well. It gets a little bit deeper in the in in more detail as well as you keep reading this. It's all it's really, really detailed.
+
+@aaronvi (10:44.786)
+yeah, there's like a ton of stuff. Yeah.
+
+@vaibcode (10:50.314)
+When we were writing our developer docs, I actually downloaded all of this and started having AI leverage this because like to be candid, most systems are some stuff should be written by humans, like the concepts pages. But actual documentation how to guides like
+
+@aaronvi (11:02.871)
+Yeah.
+
+@vaibcode (11:06.386)
+I see more and more people use AI to write code anyway. So having a how to guide that's more practical, it doesn't have the whole story around it, just tells you the meat and details and it's more dense is much more acceptable now than it used to be. But concepts are still useful for humans as well, along with models. And having that follow this kind of prose is highly, highly useful. okay, so use Opus five five. Do you ever use Fable for writing?
+
+@aaronvi (11:34.093)
+I mean after Opus five point five came out I stopped using all the other models. including Fable five point one. Now Fa Fable five point two came out, so maybe I'll use that. I'm st I'm starting to use that. I mean yeah, maybe. Maybe I need to get ultra code or whatever it is, a twelve X speed thing.
+
+@vaibcode (11:40.574)
+Okay.
+
+@vaibcode (11:44.628)
+I'm about to cancel your codec sub.
+
+Ha ha ha.
+
+@vaibcode (11:54.399)
+I will say the main reason that I use GPT models is I feel like they're slightly faster.
+
+and I specifically don't use Astra, I use soul. And I think for that is because when it comes to writing, like you said, it's about idea creation. I use as much as possible of like speed as the main thing that helps my brain think. Because I can't writing, unlike engineering tasks, is not something that I can like put on a long-form task for, context switch away, paralyze something else, and then come back. I have to kind of serially do writing, at least for myself. And therefore speed ends up being the biggest bottleneck.
+
+@aaronvi (11:59.703)
+Yeah.
+
+@aaronvi (12:24.012)
+Yeah.
+
+Yeah, I mean I like to do like a breadth first search across many ideas and AI does help with that, but it basically gets converted into like a soup of concepts in my brain. And at some point you need to tie them together into a neat structure. and that that just takes time. I I don't think there's like a shortcut to that. You literally have to like soak in the ideas. same like with code, you know how code used to be and now
+
+You were mentioning this week, like, man, I feel like I miss just like sitting down and coding for a while. I think the same process can be happening with writing. If you're not writing stuff yourself or you're not sitting with your ideas yourself, like the act of typing out each word and letter just helps slow you down. and allows you to like form these thoughts in a more structured way.
+
+@vaibcode (13:00.62)
+I did.
+
+@vaibcode (13:21.388)
+Cool. With that.
+
+Let's go on to the next thing, which is breadth first search and leveraging AI for that. So, this second piece I think is a really fascinating one. We recently went to a conference, Codot Talks. Shout out to Benedict and the rest of the team, Alpha List putting together a great conference in Hamburg, Germany. but as we are prepping our slide talk together, I actually learned a lot from Aaron on exactly how he does his thinking process and how he uses AI for writing. So I'm gonna screen share. I'm gonna show this, I'm gonna show my whole screen.
+
+screen so please again yeah that works we provides safety and security so if you run into any issues where you're seeing something you shouldn't please don't nah please don't go shout on Twitter about it we'll edit in the video later but in the spirit of transparency you get to see everything how about I close all the tabs there we go
+
+Alright, so let's start off with how we did this presentation talk. But before we get into that, maybe I should give people should I give people a sneak peek of what the talk ended up being? Okay. So these are some of the slides that we ended up producing at the end. and I'm just gonna briefly go through it just so you guys get an idea of like what the slides end up looking like. And like you can kind of get an idea for like what the story ended up being. I'm not gonna tell the whole story over time, but it will give you an idea of roughly what we're talking about.
+
+@aaronvi (14:18.669)
+Can you zoom in a little more?
+
+Yeah, yeah.
+
+@vaibcode (14:46.344)
+And like I think the main purpose that we want to go with is how do we go from ideas to actually going through and like coming up with concepts over here that are like actually tied to the final raw idea we started with, how we used AI for this process as well.
+
+@aaronvi (15:02.113)
+Yeah, you're just here mentioning how everything is like super disjointed, there's many tools in this like loop programming languages have absorbed more things, more tooling.
+
+@vaibcode (15:07.7)
+Exactly.
+
+And time
+
+@vaibcode (15:16.874)
+And I'm like, they haven't absorbed anything past production. And then like what would that look like? We talk about vertical integration. We talk about concept about hyper observability. And like talk about how tracing code is really ugly. And like you're kind of the see the story. the talk will be live. We might do a proper episode on the talk later.
+
+@aaronvi (15:17.066)
+And
+
+@vaibcode (15:35.744)
+But like I think the gist that you're seeing is like there is a story in place over here that is that hopefully doesn't feel like AI slot. And I think that's the purpose of using AI for writing. If you use it well, you get to do incredible transfer of ideas without anything feeling like slot. And that's like the balance that we're trying to do. and then it just talks about a few more things. I you get the idea at this point. Like it's not it's not that fascinating.
+
+But I think the more interesting thing is how we did the process. So, Aaron, why don't you talk through this a little bit? And then we'll go into a script and I can kind of walk us through.
+
+@aaronvi (16:09.484)
+Yeah, so essentially this is literally a scratch pad. Like if you were to translate this to a notebook, you'd see like a ton of scribbles all over the place. so there's no real like outline to this document or anything. It's just like a dump of ideas.
+
+@vaibcode (16:27.069)
+And this actually was a later addition that we added after the fact, while ideas were actually the first thing we started with. So yeah.
+
+@aaronvi (16:32.939)
+Yeah, so the way if you like keep scrolling down, you know, I can just yeah, so we have the title, right? So that's the title's the most important thing. And it's about like software factories and what the missing piece is for software factories. So like I if you if you go all the way down, 'cause I started I think down and I actually started adding things at the top, which is funny. I just started adding ideas.
+
+@vaibcode (16:38.911)
+This was our starting piece by the way. We started with a title.
+
+@vaibcode (17:01.001)
+Yeah Aaron likes to err Aaron has actually watched Silicon Valley, so he likes to do middle out, fill out the top, fill out the bottom and just middle out, you know? Or I guess middle in. where should I go? yeah. yeah.
+
+@aaronvi (17:06.259)
+Exactly. Exactly. So like I yeah, it's just here like you know, I've started writing like a structure, like okay, a software factory. little look, some of these are just like screenshots that I saw that were interesting. And I don't have an o at this point I don't have an opinion yet on these things. I just know that someone, you know, produced this this video, like I shipped two thousand PRs last month, like Lauren from SpaceX.
+
+And I'm just kind of like thinking about that. And it's almost like I'm loading my context window and just being like, okay, I am just like loading information, loading context, and each of these will eventually emit some structured English, you know. so it's like software factory, you know, maybe there's a a section here like how to build one. Vercell has an example on how to build one, like what can I learn from that? And then, you know.
+
+There's a bottleneck here, there's like humans, decision making, spread out tooling. you know, you can keep scrolling down.
+
+And then it's just like random ideas like, what if everyone using Python already had the software factory pieces in place from day one? Like what if this is secretly a programming language thing? or like for example, we say like, you can just run tests, right? Like today we say run the test, and we're like, yeah, I'll just go run like go test or like V test or whatever. But I just started working with this concept of like before you had to figure out what even was a test, like what assertions
+
+Did you add or how did you add assertions? Like
+
+@vaibcode (18:44.593)
+If any of you have ever written C code or C plus plus code, running tests is not as it's not as easy as just run the test. It's a beast of a task.
+
+@aaronvi (18:51.829)
+Yeah, it's like yeah, it's like go figure out yeah, everything. and and so like for example here I have imagine the C devs, they had to invent their own testing framework, sometimes it sucked. And then I'm like, my god, are there any like startups that have like pitched testing as a as a software product? I don't know if I I wrote it here, but
+
+@vaibcode (18:58.069)
+Yeah.
+
+@vaibcode (19:10.092)
+yeah, where'd he go?
+
+@vaibcode (19:14.847)
+They're actu I mean I I mean it's I think we had so I mean I'll I'll give a right here.
+
+@aaronvi (19:18.848)
+Yeah.
+
+@vaibcode (19:26.923)
+I mean, there's not one slide of this one. There's many slides. I think we had the startup. Like this one, Agitar. This literally came from Aaron having that idea of like, I wanna tell a story of like automated testing and you literally used to buy this company has rated millions of dollars literally to automate unit testing. And that's literally just
+
+@aaronvi (19:31.201)
+Yeah, so there's many different stories here, like yeah.
+
+@aaronvi (19:47.906)
+And that seems ridiculous today, right? It's just like I don't know, it's just it's a cool story, right? Like the point of these talks and and blog posts and everything, like humans want a good story. and also the story needs to make sense and you have to like learn something. so I'm just like, you know, putting stuff in here. Like I talk about how CI is super lucrative. Like we have these software factories, so like what are the components? One of them is CI.
+
+And it's like, okay, CI is super lucrative, like we're writing way more code, shipping way more code. Like there's some startups spending like twenty million on anthropic and then scroll all the way down.
+
+and then yeah, they they have this concept that they call like hyper observability in their blog post. And then and then yeah, so it's just like closing the loop. Like what are the ideas from here? Like SpaceX did vertical integration and there's a couple of interesting stories there as well. So like like I said, this all seems super disjoint. I'm literally pulling like a random screenshot from somewhere. I'm pulling like random CI things from somewhere else. And I'm just putting them in this like context soup.
+
+@vaibcode (20:33.433)
+this one. Yeah.
+
+@aaronvi (20:57.473)
+for me. And I literally just kind of go on a walk, maybe, or like start thinking about these things and start forming various like threads in a way. And so like obviously we're building a programming language as well. So like how does that translate to our efforts? like what are what is the stuff that you can do with BAML when you're like fully vertically integrated like SpaceX? You know, like if we're the first language to tackle like production essentially.
+
+what does that look like? What's the stuff that you can do? and so I just, you know, put like interesting things here like you know, how do you capture exceptions? Like what's the stuff that Sentry does to capture traces when an exception happens? And you know, here's a set of things, go ahead.
+
+@vaibcode (21:43.145)
+And you can s and you guys can and you guys can see like this like obviously we are not gonna go read all the blog posts of what Sentry does, but in this thread of this idea, really quickly we can part out, go to ChatGPT, have it go read a bunch of their blog posts and just see at a high level what are they doing, to see if this is the thread that's worth interesting to kind of explore.
+
+I think this exploration phase is super underutilized by many people during writing. And one of the key takeaways I had from Aaron actually, because I had this urge. I love this idea that Aaron proposed in the very beginning of like, this idea of vertical integration. Like SpaceX literally reduced a part of a cost from a hundred twenty thousand to thirty nine hundred. That's a beautiful story. And my hunch, immediately after that, I kind of took that idea and I built a whole deck around it and I like going down that road.
+
+And the key learning I had from Aaron here actually was when you use AI for writing, or actually probably just in general for good quality writing, and AI just amplifies this more, it's actually really important to not do that right away. Not take your first instinct and go deep on it. L go allow yourself to go deep. And there and I reflected on this after the conference. actually a little bit. Sorry, to go wide, not deep.
+
+@aaronvi (22:53.421)
+To to go wide you mean allow yourself to go wide. Yeah.
+
+@vaibcode (22:57.189)
+and I reflected on why going wider even earlier is better. Because naturally, what are you going to do? The process of doing this is literally what is the next step here of some kind. You're gonna copy and paste this content, put it into chat GPT, put it into codex, and tell it to do some shit with it. Maybe you'll prompt it better and it'll do something more interesting. But effectively we're gonna paste this as a context window. If all you've given the AI is one idea, it will do what you say and follow that one idea.
+
+The value of going broad is when you tell the AI, I'm not sure about exactly which idea I want to explore, it truly knows that. Context window is seated with the entire breadth of options. And it's much easier to tell AI to pick certain elements of it. And it's much easier for it to propose different ideas that you might not be thinking about as you go down one specific vertical because it has the context of everything you're exploring.
+
+@aaronvi (23:54.734)
+I mean AI is really good at joining ideas together. I mean you could literally say like, you know, write a story about a pelican talking to a Muppet doing some blah blah blah, and like it'll just tie it together into some coherent thing. so this a similar thing can happen here, but you do have to be careful of you do have to make sure that it does make sense and there's like some data backing the stories that you're telling.
+
+@vaibcode (24:23.41)
+Like one really interesting idea, like off of all the things we've had, we we we were talking about PGO, we've been talking about like optimizing the G C and these are all ideas we had on the team and like reducing sampling rates. But one idea that should be obvious in hindsight, but wasn't, was we can actually use profiling as a way of basically sampling rare paths. Where like if you have a match statement with three arms and only some of them are rare, well guess what? We only will actually will densely trace the more rare ones and everything else gets kinda gets dropped.
+
+Because it's like not really a problem. It's a thing that happens all the time. Now I had I didn't have this it's very obvious in hindsight, but again, as a part of this talk and this idea of coming up with stories, it's very useful to use AI to come up with these concepts and join those ideas together, like Aaron was saying here.
+
+@aaronvi (25:12.823)
+Yeah. And so
+
+@vaibcode (25:14.132)
+There's another one I came out with, which is like, hey, you can only capture all the I.O. code, so everything else is deterministic. And like we were just like, holy crap, that's just a good idea. We should do that regardless. But also a talk can form really interesting concepts there.
+
+@aaronvi (25:27.509)
+Yeah, yeah, it's like interesting concepts in here of like but even before I go even further, I like step back out and I say, okay, programming languages were hard to adopt, but now things have changed. You can rewrite it all in Rust or you know you can use another programming language like BAML. You can just swap things instantly to test things out. if you're like just experimenting with your factory, I guess, your software factory.
+
+@vaibcode (25:54.911)
+This is that startup right there that got killed. Justone has a really interesting question. As this outlining is being made, are you using your own manual research or using Claude to help you narrow in narrow in and populate this outline at this phase?
+
+@aaronvi (26:11.536)
+is this are you you're saying
+
+so a lot of the research comes from me browsing maybe like X or like browsing hacker news. So a lot of this is actually just comes from my brain and like my own context. Literally like just the data that I am ingesting, you know, from a day to day basis. but even the sentry blog post, for example, I had seen that somewhere, like how do they capture trace source maps?
+
+@vaibcode (26:22.578)
+Yeah.
+
+@aaronvi (26:43.367)
+And I had seen that a while back, maybe like even years ago. And so yeah, it just comes from there. But I do ask I do ask AI like, hey, I have this idea, like the startup thing or like the SpaceX thing. Maybe you heard something similar, but you don't have all the details. So definitely I do ask a lot to like give me more details and I can just read about it and like I just post the whole screenshot in here and and maybe something will happen with it.
+
+@vaibcode (26:53.672)
+Yeah, I mean right here, right.
+
+@vaibcode (27:05.16)
+Like
+
+@vaibcode (27:10.698)
+And like for example, we would have not found a startup that raised thirty-five million in two thousand two. It's just not gonna happen, let's be real. And AI was it's phenomenal for like taking this idea and taking it to that next level.
+
+@aaronvi (27:21.547)
+Yeah, thirty five million today is like insane. Twenty and twenty twenty two two thousand two, yeah, today is insane.
+
+@vaibcode (27:26.44)
+2002. There's also these awesome tweets by Theo that he made where he's like, yeah, I just ported this like I just wrote the TypeScript compiler in Rust. And like that concept came from Aaron being like you can just rewrite things, but that was inspired by seeing this on Twitter. So there's this amalgamation that we're trying to do, which is like we're letting our brain dump as we happen. And the the practice, at least what Aaron taught me, was dump from your brain.
+
+@aaronvi (27:31.68)
+Yeah.
+
+@aaronvi (27:41.27)
+Yeah.
+
+@vaibcode (27:52.49)
+Fill in details using AI, when some ideas are more interesting, and then search for context that you've probably not heard of that are just wild ideas from AI like again using AI as well. And then there's a second part to this whole thing, which is once all that was done.
+
+Then we started writing the slide. And obviously every, I mean every YouTube video, every thumbnail, everything starts in the thumbnail. So we just started with like what is a hook slide? and in our case, I don't know if it was a good hook slide, but like this was the one that we picked. And then we just started like outlining the key slides. And there's a lot of things that are crossed out actually. And there's a lot of things that didn't make it into the final deck. But it starts the I think the key let me see if I can scroll slower.
+
+@aaronvi (28:24.407)
+Yeah.
+
+@aaronvi (28:34.625)
+The main thing, the problem with just vibing the whole thing and not having an outline is that you might end up somewhere you're like, am I even answering the question in the title of the slides? It's literally just our own you literally just forget because it's it's not outlined. If you're able to read the outline and each part of the outline answers a question or poses a question that's related to the title, and you could just read all the titles in your slides.
+
+@vaibcode (28:45.949)
+Yeah.
+
+@aaronvi (29:03.993)
+And it tells a very cohesive and very simple and concise story. you're golden.
+
+@vaibcode (29:11.849)
+Exactly. And you can see over here at this point we're still really liking the Raptor 3 idea. This was sadly me really liking and pushing this a little bit more than I should have, probably. or like this was the best idea we had at the time. And the final slide deck did not have the Raptor 3 in it. But this idea of like writing it down was like coming over the Raptor 3 of Software Dilemma. And like the funny thing that we realized while we did this is like I think there's a there should be a question in here. Which is the Raptor 3 makes sense? Or is this?
+
+@vaibcode (29:47.968)
+it's on here. We were asking ourselves the question, like when you're trying to build a rocket that goes to Mars, that's a very aspirational goal. And when it comes to building the Raptor 3 of software development, you're basically asking, like, what is the equivalent of going to Mars for software development? And Aaron and I both concluded we could not come up with something. So we really had to abandon ship on that idea. And just like it's just not a good story. And yes, AI will vibe off something. If we tell it to come up with the equivalent of Mars for software development, it will give us something.
+
+But this is that human element that you have to apply of like, is that in good faith, is that in good taste? And like is that the right thing you wanna really hit on? I wanna show the second part of this now, which is what we did after this. So funnily enough I was using quad. but as I was doing this, when
+
+What I told this thing to do is I literally took the transcript and all the notes and gave it access to the notion. And once it did this, I just told it to start using our brand guide and everything else to start putting slides together. And it came up with a lot of slots. You can literally start seeing the slot that it made. And these are screenshots along the way. And like this stuff is not very good. But I think the most interesting thing that you can do with AI that you could never do before is you could generate
+
+so many versions of everything that you're never able to do again that you would never be able to do before. So like
+
+Eventually I concluded that the style I like the most, you've seen me and Dexter talk. We love Excala Dra. It's a phenomenal product. I think it has like a really nice way of storytelling when you do this. Well, we basically built a bunch of slides that talked about this with different concepts, different titles, and different ways. And instead of actually like anchoring on something, we literally just like went through and like found like the most interesting things. So like what I what I love about this one, I'll show you. I love this UI. So you can first of all, Claude made this. This is incredible.
+
+@vaibcode (31:47.068)
+Incredible. This would be impossible to build in the past. And the fact that you can just do this and prompt this to make this kind of slide deck is incredible. But the most interesting idea was like it was talking about how software is a belt, and it literally put like humans in the loop, and it's talking about different steps of it, and like you were gonna replace some of this stuff with AI, and then it started like talking about all these other tools, and it was like, you're actually slowing them down. But the funniest thing I saw that I want to use.
+
+@aaronvi (32:14.529)
+Yeah, I mean there was an interesting concept of like, you know, people are saying I'm shipping two thousand PRs or whatever. But what you really want to do is like create experiments. Like all you wanna do is like just create an experiment, look at the metrics, and then do something else. I think the concept and the word PR like anchors people to like, you know, pushing to GitHub and then there's an agent comment on things and then there's
+
+@vaibcode (32:20.83)
+Yeah.
+
+@aaronvi (32:42.123)
+A bunch there's like a whole process involved with just the word pull request. And it's like, can we stop with the 2000 PR thing and then just like talk about what you're trying to do, which is a like fix the box and run experiments? Do you need CI C D to run an experiment? What if you just like do a feature flag or like swap a function or in real time? I don't know, some wild ideas, right? Obviously,
+
+Yeah, it's just like just trying to rethink what people are doing with software factories. But yeah, there's this cool animation of languages sort of like eating each part of the tool chain. Like Bon, for example. Bon added testing and a bunch of other stuff and S three, you know.
+
+@vaibcode (33:28.051)
+And like I don't really know if this idea would make it or not. Maybe we'll use it in a future talk. But like I would have never had the patience to build this kind of storytelling here. And like just being able to experiment with like these kind of wild ideas, I think this is the benefit of AI and being able to come up with these concepts.
+
+But the last tip that I'll give you when it comes to you building slide decks with AI, is first have a good outline. You need to work with someone, you need to do breath research, you really need to explore ideas. But the thing that I have found the most powerful way to make your make slides not feel like disgusting. And I think this is again just a good tip when you do slides in general. The way that you make content engaging is just don't put words on the slides.
+
+And it turns out it's very hard to have AI AI isms in your slides if you just have less words. Because the likelihood of an AI ism is based on the frequency of words on the side. so the trick that I use is I just tell the AI like delete every possible word. And like maybe you can sense it like one shared core, but I mean a human could write that as well. And that's not like too far off. these slides could very well have been written by exactly by a human. And all the words here are picked by me.
+
+@aaronvi (34:16.247)
+Yeah.
+
+@vaibcode (34:38.973)
+Just to be very particular, like I it did not automatically start saying efficiently build incredible products. That was like a thing that I had to kind of gear towards 'cause the phrases that it was originally using were not the ones I liked. But it was able to creatively it take my juices and have it happen.
+
+@aaronvi (34:46.509)
+Mm-hmm.
+
+@vaibcode (34:57.657)
+I think that's it for AI slides and how you build presentations with AI and the breadth and how where the AI feeds in. So it seems like if you were to summarize all of this, Aaron, how would you say that? And if there's questions in the chat meanwhile, feel free to drop them.
+
+@aaronvi (35:11.673)
+first figure out who your target audience is. Figure out if you need to write a blog post or what the medium is. AI has unlocked creating little explainable videos to people or like you know doing a bunch of diagrams that before were very, very, very expensive to create. humans are very visual creatures. So this might be a better thing than, you know, some random blog post. Even if it's a technical thing, you could just do
+
+slightly more like animations and things to make people understand what's going on. And start breadth first breadth first search with ideas and then coalesce them into one single unified structure using an outline and then start writing. And you might have to create many outlines and you might have to write many scripts. But you'll have a better product in the end.
+
+@vaibcode (36:08.137)
+Cool. someone asked, like, what do I use for slide creation? Honestly, if I'm completely transparent. so the first draft of slides did not work. so I actually didn't do that. I actually abandoned that work tree. I made a new work tree after that. And this one I was much, much more particular on, and I steered it in the right direction from the very beginning.
+
+@aaronvi (36:28.237)
+It's just React, so like RIP, Canva and all these other platforms. And Google Slides.
+
+@vaibcode (36:32.145)
+Yeah. It's literally just React. I just if I can s if I can move up. I literally just use HTML. This is a plain HTML system. I do not use any I do not use any framework. I literally just had it build its own. And I basically said and I but I did have it go and refactor the framework like twice to make the animations very smooth along the way. So it's HTML, it's JavaScript. I don't even know if it's React to be completely honest. I actually have no idea what powers this.
+
+I think the slides are gonna be
+
+@aaronvi (37:00.609)
+You can literally say like yeah, like make some slides,
+
+@vaibcode (37:05.553)
+I think I am about about to publish these slides. If you want to access them, you guys can scan the QR code. I will post them. you'll get access to it really fast. This was the thing. But yeah, definitely, definitely do not use any existing slide platform. Your iteration speed is so low. Like, look at this, look at this cool freaking animation that I built. Like, look at this. It's it was freaking magical. First, you can swap everything out to BAML, so it's magical. And it's like boom, you just get rid of all these tools that you're used to using. And like they just all go away. And like, could you imagine building that animation like some
+
+GitHub Action. Like, could you imagine building this animation in PowerPoint? Like, it would take I would need a whole team of people just building slide decks for me all day long. And like this is kind of what this works with. I can yeah.
+
+@aaronvi (37:39.917)
+Yeah, it would take like five thousand five thousand dollars.
+
+@aaronvi (37:47.757)
+Yeah.
+
+Don't go overboard, you know, it's like you know something happens in music production, I make music on the side too, and like with music production people start adding reverb to everything, 'cause it sounds cool. and then it just makes everything super muddy. So I think use things in moderation.
+
+@vaibcode (38:07.184)
+Yeah.
+
+@vaibcode (38:11.38)
+okay, let's go to the second part of this though. it people might have I'll I'll check out the slide dev thing. It might be interesting. if people have more questions about this, definitely drop them. I think there's a second thing I wanna talk about though. The second thing I wanna talk about is engineering docs. Engineering docs with AI is a whole different beast. we have our own opinions on this. I suspect me and you are somewhere aligned but somewhere misaligned on certain things, and that's I think that's part of the process of this.
+
+I'm gonna pick apart some of these, but do you wanna describe your general philosophy of building an engineering doc and how you think about this?
+
+@aaronvi (38:46.921)
+I mean we try to practice a culture of writing. I think writing your thoughts down makes sure that you've thought about many, many of the corner cases. and in in these kind of docs I still think an outline is super useful. an outline is super useful and also if you're gonna use AI to write this, you should always say, Look, I'm gonna present this to someone that has no idea. They have not seen the code, they have not read the code.
+
+Please explain, as if they were like a be like an entry level engineer. Every time, every single technical doc, no matter how complex it was, here or at Amazon, I always wrote it with the expectation that a entry level engineer would be able to understand it by the end.
+
+@vaibcode (39:35.632)
+And there's a another thing that we found, at least internally, that's useful, which is the doc is not an engineering implementation doc. It is a how am I going to use this kind of doc? And what is the how what concepts does an end user need to know? Not what end con what concepts does a implementer need to know? Because those are often very different.
+
+@aaronvi (39:55.247)
+yeah. Yeah, sometimes I r I I tell the AI like write it as if almost as if this was almost the end user doc essentially. The actual documentation.
+
+@vaibcode (40:06.972)
+Yeah. Like one really easy example is like string interpolation. When Antonio was writing string interpolation, you can see like this had multiple versions of this thing out here. had this written on here. But like when he wrote this, there's a small summary. Now we do a couple of things on here. So this is actually fully written by AI.
+
+However, we actually don't let humans read this from AI. So the trick is we want humans to read it and humans to comment on it. There's no API to comment. There's only a human API to comment. I guess you can use computer yeast now, but it's not with the ethic it's not with the ethos of the system.
+
+So human has to read it, but you can the author can use AI. And what that does is it creates a really interesting paradigm where if an author produces too much slop, we're literally ping you on Slack being like, let me actually I have a funny one right now.
+
+@aaronvi (40:56.176)
+yeah, there is one that I I don't know if you made or someone made.
+
+@vaibcode (40:58.884)
+That was me, that was me. I may I made one that was like absolute frickin' slob.
+
+@aaronvi (41:02.868)
+yeah, you guys can read it too. we can show you literally it was like unreadable.
+
+@vaibcode (41:08.996)
+Yeah. Well like here's this in Slack for example. Right over here. You can actually see what's going on, which is like Avery created a bep last night and he was like slightly slop, do not read yet. Just letting us know that it's not ready for human consumption. I was like, Oops, you said not to read. And I like clearly there was a thing. But you can see the level of communication that we have established in the team culture on this, which is it is not meant to be slop.
+
+and the quality must be high. And when you think about string interpolation, there's so many thoughts that you have to do. And because we're designing a language, we have to make no mistakes effectively. like you know, slightly less than quadily. And we actually have to go through and do a lot of prior art research. And oftentimes our design docs have prior art research.
+
+where we talk about like different things, like for example, JS allows SQL directly inside of JS. Actually many languages do. And what does that look like? Do we want to enable that capability? And then we start outlining goals, non-goals, and the design decisions in place that start describing it. So like one of the things we wanted was we wanted auto-dentation. So you can just like some of it.
+
+You can just indent your strings and I'll just auto-dedent it for you, just so it reads nicer along the way. So we have all these goals in there, and we just describe exactly how this works. And the goal is at the end of this, let's see if I can show some of comments. you can actually see some of the comments that people leave. You can read comments, and you I have earlier ones. Earlier ones comments are actually better to read. But then you can actually see the kind of feedback that we get.
+
+@aaronvi (42:46.965)
+You need faster scroll.
+
+@vaibcode (42:47.272)
+Sometimes we give the feedback so I do need I I actually can't work with high mouth sensitivity.
+
+@aaronvi (42:50.539)
+We just need a better ergonomics here. Obviously this is a vibe coded tool. We we don't know what this code looks like underneath.
+
+@vaibcode (42:58.546)
+We never will.
+
+@aaronvi (43:01.143)
+But it served us it's been pretty useful.
+
+@vaibcode (43:02.056)
+Let me find the one. yeah. There's some comments here. Let me find the actual ones. these are older reps. Let me find the more recent one, like the CLI redesign that Avery did.
+
+You're gonna see like how we're having these conversations. We're literally just talking about different things along the way. We're just highlighting different concepts. And again, like we Avery knows that I'm gonna read every word of it. So he's gonna design it in a way that makes sense. and the level and similarly, that means that my comments are taken very seriously because he knows that I'm putting the effort into it. we can have an actual faithful discussion around this in good way. Where's the one that's like the level of detail? I think metrics.
+
+@vaibcode (43:50.513)
+like forty five comments. Like our reflection system had a shit ton of comments because like it was just not reflection as it turns out is a complicated concept. And you can see like some of these some of these docs get to be multiple pages because of how complicated they are. And like yes, it doesn't mean that we write short docs.
+
+And doesn't even mean that we don't use AI. Like this is written by AI. But the important part is someone needs to understand exactly how C sharp is going to go do. And sometimes, yes, we have AI isms. But the idea is AI is are well understood. It's like, yes, in prior art, it's okay to have more AI isms than in the main README because prior art is just like catching everyone up to speed. Like not everyone on a team is gonna go understand reflection in every single language at all times. But the person writing the bet better.
+
+@aaronvi (44:26.988)
+Yeah, I mean
+
+@aaronvi (44:35.243)
+Yeah. Usually you want to put your proposal at the top in a technical doc, like here's what's happening, here's the standard library changes, and then you dive into everything. So someone can just get like a see, like in here you say what you can do, right? We s we specify the problem, we tell you literally how you use this stuff, and then you dive into the design. that way you can get a mental framework on what to look for. you might have a lot of questions when you first see the A.
+
+@vaibcode (44:45.308)
+Like right over here.
+
+@vaibcode (45:04.648)
+Yeah. and then I'll leave you guys with one last thing, which is like actually the AI workflow that we use on here. So we don't prescribe anyone use any model. It's actually really simple. You can just download all these BEPs. And once you download all these BEPs, I actually don't even know how to write a BEP manually anymore. I I'll open this in cursor, I guess. Zed actually. I love Zed.
+
+@aaronvi (45:34.433)
+Yeah, we just have a prompt. I think every tool that we make is self describing. so this is another one of those tools. and each tool just has like, hey, here's how you would use this tool in the future f for another agent to use.
+
+@vaibcode (45:50.866)
+That zip file basically just downloads into here. It downloads every bep into here. And every bep has a skill attached to it that literally just has a CLI baked in that says exactly how to use it. You can just like bet pull, bet push, and it just does the whole thing like Git, but it's not Git. Because Git is not very good for docs because of merge conflicts and a bunch of other reasons that we're not gonna get into now. and lever. Yes.
+
+@aaronvi (46:13.739)
+BEP is a BAML enhancement proposal, by the way.
+
+@vaibcode (46:18.741)
+and what we do here is like it's we have comments. So again, you can fetch all the comments, but you cannot and we did make it so you can reply to a comment. You just cannot create a comment. So again, the code the author of the BEP is given more convenience than the readers of the BEP. And that has a nice balancing function because the author will literally be told in the team being like, Why are you producing BEPs? Why are you that are slop? And we will remove their BEP privileges and their BEPs will be deprioritized in terms
+
+Of how the other team devotes reading their BEPS. So it's like a self-balancing system on the quality side of it. and yeah, we just use Claude to write all this stuff out and like address all the concerns on there. or any agent really. Any questions from anyone on there or Aaron, any other thoughts you want to leave around the BEPS thing?
+
+@aaronvi (46:51.181)
+Mm.
+
+@aaronvi (47:09.409)
+no, I mean yeah, just build these you can build these kind of tools yourself and deploy them and and then just use a whole system for writing docs. That being said, we are like kinda using a bunch of cloud artifacts to also share some docs, so I think it's just a cloud artifact is inherently less friction, which leads to people using them and we just need to create a system that makes this bep site even
+
+less friction than writing a cloud artifact. and also cloud artifacts, you know, you have like HTML, you can add a little animation, do that kind of thing. And we haven't updated our website yet to do this kind of thing. so yeah, we have to add that in. We have to keep updating it and making it more flexible.
+
+@vaibcode (47:41.645)
+Yeah.
+
+@vaibcode (47:59.418)
+And I mean the main benefit of having this is like we don't use this for every design doc in the company, just for a little bit more transparency. We use this specifically for new language features or new capabilities. A lot of the other stuff can be notion docs, it can be Slack docs. It doesn't really matter. But if it's a thing that affects the language, it needs to be in here kind of approach.
+
+and I found that to be a very useful structure behind scenes. I have a couple of questions to ask you on top of this. Now we've talked about three different ideas. We've talked about what models we use, we talked about how to use AI to build slide decks, we talked about how what structure we've put in place to actually have engineering docs and the quality of writing that we expect on them. And obviously people want to see this. There's there can be a link to the website. You guys can go poke around and like go see if it's interesting or like how we write it. like our
+
+sandboxes bep is kind interesting probably when you're reading it. But in as a final closing thought, when we introduce these first few processes, what do you think what do you remember your first reaction to? You actually don't remember. like when we first said we're gonna use write beps on here.
+
+@aaronvi (49:06.099)
+I don't know, it could've felt overkill potentially. I'm not sure. it's like, man, another tool to maintain. But I think agents has made it easier to to do this. but that being said, I love I love having the culture of a culture of writing. And I think every just having people write makes them better thinkers. For sure. So yeah, I like it. I like the comment section. I think initially we did a version of this where
+
+@vaibcode (49:33.231)
+I think that's
+
+@aaronvi (49:37.939)
+Some features didn't really work or the layout didn't really work and then it didn't really get much use and then we iterated on it and then it became better.
+
+@vaibcode (49:40.305)
+Yeah.
+
+@vaibcode (49:47.643)
+Yeah, it did take a while to actually find a workflow that worked. And the reason we even sought this out for context is like before we were literally sharing markdown files. And be and after that we were sharing like Slack DMs and they would just get lost. There's no like written record. Like Aaron says, like there's no culture writing, there's no written record of where certain dots live and where decisions
+
+@aaronvi (50:06.497)
+How decisions are taken, yeah.
+
+@vaibcode (50:09.029)
+Yeah. And I think in the world of AI where you're moving extremely fast, having a written record of what decisions were made and why, specifically the why, 'cause if you need to go back and walk through and go back and like open a different door, like you need a written record really quickly or building that context is like too expensive now. Like code bases are
+
+@aaronvi (50:29.739)
+Yeah. There's just things are moving so fast. Like think of how much software will be created in the next three years. Like you're gonna create all of these webs in one go with like a single prompt. a lot of these decisions will be done for you. but there will be just more decisions just for humans to understand and humans to take. So you want a writ record of what those decisions were.
+
+@vaibcode (50:55.783)
+I mean, was it Bezos who was talking about like, hey, I th I I don't work that many hours a day, but like when I do work, I have to make every decision perfectly correct and it's more important that I get all those decisions correct than like any amount of work that I do. Like that's effectively going down to every human in the chain. And right
+
+@aaronvi (51:07.411)
+yeah, yeah. Yeah, exactly.
+
+I could imagine y yeah, yeah, it's like going down every humanity chain and figuring out if all the decisions were correct. But
+
+@vaibcode (51:17.829)
+Yeah. And the writing is like the way of transferring that idea.
+
+@aaronvi (51:22.357)
+I could imagine this website having like working proof of concepts for each of the things. Like actually working things. And it's like, yeah, try out the demo here. And then you can just like say a comment and it'll just rewrite the thing and be like different. so it'll be interesting.
+
+@vaibcode (51:27.984)
+Yeah.
+
+Yeah.
+
+Yeah.
+
+@vaibcode (51:39.559)
+Exactly. I think on that note, let's close that out, which is just a brief summary of what today was about. what we walked away with, and hopefully all of you are gonna find more interesting ways to use AI in writing like practical examples of it. and again, drop down question in the chat while I did the closing really fast. So
+
+@vaibcode (52:23.494)
+Right.
+
+Alright everyone, today's episode was one that we have been waiting to do for a while, which was exactly how do you use AI for writing? Is there is there such thing as too much? Is there such thing as too little? We talk about a couple of things over with Aaron, co-founder over at Foundry, which is one, what models should you use for AI for writing? Two, how do you use AI to actually plan out presentation and slide decks that you're going to give to an audience that has never met you? And how do you not have a reputation of being a slot factory by accident?
+
+We go through the general outlining process, how we use AI during the outlining process, all the way from like starting footbread for search to grabbing tweets and blog posts that are relevant to it, all the way down to actually producing slides that are generated by AI and actually show really interesting animations. And again, don't feel like slop, even though they're still using AI behind the scenes. And the last thing that we talk about is how do you build true engineering docs internally in your team?
+
+That records some of the decisions and what level of AI do you build into it? What level of automation do you give to people? So that again your team isn't exhausted by AI slop being regurgitated around between everyone. We don't want teams of Claude talking to Claude. We want humans talking to humans, but by leveraging the tools that are out there today. So with that, let's get started.
+
+All right, I think that's it. if everyone's got any more questions, we'll stick around for a little bit. But otherwise, it's been a blast.
+
+@aaronvi (53:55.233)
+All right.
+
+@vaibcode (53:57.895)
+And see if anyone hops in. But otherwise, yeah, it's been really interesting, man. The writing thing, especially the breath for search thing that you did, it like changed my perspective completely on how I'm gonna write forever. It's like I saw blog posts now. and I know a lot of people put on their blog posts, this thing was artisanally written by 100% human. But that's like saying, like, this code was written by human. Like, fundamentally, if it's good code, it serves the needs of what you want. It doesn't matter. And it's the same with writing. If it's like
+
+@aaronvi (54:08.941)
+thanks, man.
+
+@aaronvi (54:16.875)
+Yeah.
+
+@aaronvi (54:25.324)
+Yeah, yeah.
+
+@vaibcode (54:26.862)
+If it's good writing, it conveys the idea really well, and it makes your brain think it the way you want, who created it doesn't matter. I mean ghostwriters are a thing. Does that make the book any less bad?
+
+@aaronvi (54:36.012)
+Yeah.
+
+@aaronvi (54:39.415)
+That's yeah, yeah, I mean they they might be amazing ghostwriters for sure. I think part of it is just the care that people put into it and people like that. They'll read your article with a s smile on their face versus like skeptic.
+
+@vaibcode (54:56.088)
+I I do agree though. When I read an AI article by default, I feel like it's just The minute I read like an A Exactly. 'Cause I'm like, bro, you didn't use you didn't use you didn't spend time reading it. I'm writing it. I'm not gonna spend time reading it. It's like a tit for that tat kind thing. Anyway, I'll see you back in a bit. But thank you everyone.
+
+@aaronvi (55:00.917)
+Yeah, I'm like trying to sk I like almost start skimming immediately. Yeah.
+
+@aaronvi (55:09.142)
+Yeah. Yeah, yeah, exactly. Exactly. Yeah. Cool. Alright, peace.
+

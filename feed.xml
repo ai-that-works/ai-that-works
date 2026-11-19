@@ -16,8 +16,34 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 16 Nov 2026 13:13:04 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 16 Nov 2026 13:19:16 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[Using AI for Writing]]></title>
+      <description><![CDATA[Everyone is complaining about how bad AI is at writing prose, but with the right workflow, you can produce good things.
+
+Vaibhav and Dex will share their workflow for writing no-slop technical posts that are actually fun to read.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+
+
+Watch: https://www.youtube.com/watch?v=V5X34C9qvX4
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-10-using-ai-for-writing
+Event: https://luma.com/ai-for-writing
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=V5X34C9qvX4</link>
+      <guid isPermaLink="false">aitw-080</guid>
+      <pubDate>Tue, 10 Nov 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=V5X34C9qvX4" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[SlopCodeBench: The New Metrics]]></title>
       <description><![CDATA[Back in August we dug into SlopCodeBench, the benchmark that makes coding agents build on their own prior code across checkpoints and measures whether they bury themselves in slop. Since then the benchmark has grown (more problems, more checkpoints, more models) and shipped a new set of metrics for measuring how code degrades.
