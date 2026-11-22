@@ -16,8 +16,32 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 16 Nov 2026 13:19:16 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 22 Nov 2026 10:52:34 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[Emergent Behaviors with Gabe Orlanski, creator of SlopCodeBench]]></title>
+      <description><![CDATA[We've done a few episodes on our favorite benchmark, SlopCodeBench, and this week we'll be joined by Gabe Orlanski from UW Madison to chat about what's underneath the data: new slop patterns that are emerging or worsening in modern models like Fable and Opus 5.5, and how agents do at building and designing libraries and interfaces. We'll also dig into what Dex and Vaibhav are doing to fight slop, and some go-forward ideas for Fable 5.2.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+
+
+Watch: https://www.youtube.com/watch?v=3WSxv4vzLhM
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-17-emergent-slop-behaviors
+Event: https://luma.com/emergent-slop-behaviors
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=3WSxv4vzLhM</link>
+      <guid isPermaLink="false">aitw-081</guid>
+      <pubDate>Tue, 17 Nov 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=3WSxv4vzLhM" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[Using AI for Writing]]></title>
       <description><![CDATA[Everyone is complaining about how bad AI is at writing prose, but with the right workflow, you can produce good things.

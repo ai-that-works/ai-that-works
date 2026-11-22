@@ -12,11 +12,11 @@ description: |
 event_link: https://luma.com/emergent-slop-behaviors
 eventDate: 2026-11-17T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=3WSxv4vzLhM
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-17-emergent-slop-behaviors
-  # no youtube link here yet
+  youtube: https://www.youtube.com/watch?v=3WSxv4vzLhM
 season: 2
 episode: 81
 event_type: episode

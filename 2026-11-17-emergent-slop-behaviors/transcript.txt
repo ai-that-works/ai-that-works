@@ -1,0 +1,550 @@
+@vaibcode (00:00.344)
+Can you guys hear background noise?
+
+@dexhorthy (00:02.838)
+No, it sounds great. what's up everybody? We are live. welcome to AI That Works. Today we are gonna talk once again about swap code.
+
+@vaibcode (00:04.442)
+Perfect.
+
+@dexhorthy (00:16.494)
+Right.
+
+We have a very special treat today. We are joined by Gabe Orlanski from the University of Wisconsin, who created Slop Code Bench. We're gonna talk about some of his recent findings. you know, we talked about the numbers and the quantitative results. Dave went, Gabe went really deep on the on the qualitative results, so excited to talk about that. I'm also joined by Vybov, my co-host here, who is the founder of Boundary ML, who builds a programming language called BAML.
+
+That is optimized for agents and everything else. I would be shocked if in a couple years it wasn't the only programming language on Earth. I'm Dex. I'm a member of technical staff here at Factory. before that I was the founder of Human Layer. welcome Gabe.
+
+Gabe (00:58.92)
+Thanks, thanks for having me on. Excited to be here and excited to talk about Slop Code Bench.
+
+@dexhorthy (01:02.646)
+Amazing. so I would love to hear maybe from you just a little bit of background before we get into the most recent findings of like what made you want to create this benchmark? What was the process like? Like talk talk about the journey so far.
+
+Gabe (01:16.126)
+Yeah, yeah. So I'm currently a fourth year PhD here at University of Wisconsin Madison. You know, I've been focusing, I think, since twenty twenty one on coded like code related machine learning. I started a long time ago with you know, canala and very simple translation and then continuously moved through like multilingual human eval to where we are today. And the main impetus, honestly, I mean it's the main impetus for almost all of my projects is that I was very frustrated
+
+with agents at the time and coding, you know, copy paste code from Chat GPT or I mean, I don't even think anyone was using Claude when I when we originally came up with the idea for the project. But the like the whole I mean actually I guess people were using cursor as well a lot more. I'm I remember I I I loved the tab complete and cursor, but I really hated the agents at the time and cursor because it would just ruin my projects. It would ruin what I would do. I just felt like, you know, it was just really poor code and I felt
+
+The number one thing that was missing was like this idea of iterative evaluation. and
+
+@dexhorthy (02:16.322)
+Yeah. This was when some someone sent me Slop Code Bench in March when you published it and I looked at it and I actually misread the landing page and I thought, this is just like using linters to evaluate AI written code and I literally spent the next three months telling people like
+
+We need a benchmark where the model doesn't know the whole problem up front and it has to like add functionality and we see like, hey, can it deliver feature number four without breaking feature number one? And I went around like this was the greatest and like not only did it already exist, but someone had already sent it to me and I just didn't read long enough.
+
+Gabe (02:47.56)
+Yeah, I mean I think the branding I'm happy with the branding 'cause it got you know, it got the point across, but also maybe a better I I we were debating the name for quite some time, right? Like Tech Deck, Eval, any you know, any one of the thousands of different names you could've used.
+
+@vaibcode (03:01.668)
+The name you have now is the best name that I can imagine for this kind of benchmark.
+
+Gabe (03:07.336)
+Yeah, I mean, I I don't know if it's hurt it from getting on the model card, but the same time, you know, I I love the name. But you know, d every single name has a trade-off. I think this name kind of perfectly encapsulated what we measured. but going to your point, I guess, Dex on in terms of the iterative evaluation, yeah, it was just not being done. And then I I remember I think it was Lucas Bayer, Gift Manna on Twitter. I saw a tweet from him about like talking about slop code and then
+
+Or just sloppy coding. And then there was all the Karpathi vibe coding discussions at the time. I think this was, you know, late August twenty twenty five. And so, you know, I like it just seemed like the perfect thing. Like as you're as agents are iterating on code, they don't really understand right how future agents or how future people will use that code. And so that's like the number one issue that we wanted to just isolate with soft code bench was the iterative evaluation. And there have been a lot of really other great benchmarks that have now incorporated iterative evaluation like Swee Marathon.
+
+@dexhorthy (03:36.856)
+Mm-hmm.
+
+Gabe (04:02.388)
+I think there's it was Sweet Marathon or Sweet Chat. There's one of the two that is doing iterative evaluation as well, which is a I think a really great benchmark too. And so yeah, I like the core idea was over iterations, agents will continuously just destroy their own code bases. And I think it it's like, you know, as we get into the the findings from the blog, it's happening more, but it's in a more I don't want to s like maybe pervasive way is the wrong word, but in much more
+
+Hard to realise way until it's way too late. I think is the best way to describe it.
+
+@dexhorthy (04:35.691)
+Yeah, I noticed I noticed some of the patterns you picked up. I'm excited to talk about like some of things that like used to happen sometimes are now happening a lot. the some of the things identified as like this is just bad code. But yeah, go ahead, Bye Bob.
+
+@vaibcode (04:36.004)
+Do I have
+
+@vaibcode (04:44.837)
+So
+
+Before we go into the whole gist, just to give people an idea, how complex are the easiest problems in Solpcode Bench, and how complex are the hardest problems in Solid Code Bench? Give me an order of magnitude here because otherwise, like I I I don't know if the models suffer at small tasks, but don't suffer at large tasks or suffer only at large tasks or medium-scale tasks, like tell help size size problems for me.
+
+Gabe (05:01.203)
+Yeah.
+
+Gabe (05:13.204)
+I think our easiest tasks are like the you know, the our motivating example, the code search one where agents have to, you know, essentially build a like a mini ASD grep from scratch. the other ones that we do, the other easiest one I would say is our circuit eval, which is just a circuit simulator. I think those two are the easiest. There's a couple other I'm you know, just remembering like there's one ETL one that's pretty easy for agents as well. Like those that's at the very lowest end, right? It's a
+
+Rather well bounded, rather simple thing. Like yes, there is multi multiplicative pressure, but you know, build building a code search engine is rather simple on a weekly on it. Like I I mean, I it is like AST traversing is incredibly difficult once you want to do like real stack analysis, but for pattern matching, it's pretty simple. But then at the other end, at the other end we have ones like I think dynamic buffer is one of the hardest ones, which is was it dyn- I think it's called dynamic buffer. It's essentially like protobuff.
+
+@vaibcode (05:50.148)
+Yeah. I agree.
+
+@vaibcode (05:58.212)
+Yeah yeah, agreed.
+
+Gabe (06:07.997)
+from Google, but as a like way of reading in files and you have to build a code generation engine that can generate code in like five different languages based off like some
+
+@vaibcode (06:17.402)
+So when we d yeah, when we do this, like what makes this what's the scale of these problems? 'Cause I can imagine what's the scale of a correct output?
+
+Again to help because I think the complexity of this problem is probably very correlated to how much people have worked on this. So if someone has never worked on dynamic buffers and language code gen, they probably have no idea how hard that is. Similarly, you probably have no idea how easy AST grep is to clone for the basic stuff. And how much harder add pattern matching makes it.
+
+@dexhorthy (06:30.338)
+Like how many lines of code?
+
+Gabe (06:30.77)
+Yeah.
+
+Gabe (06:45.841)
+Yeah, so I would say dynamic buffer is probably in the range of, you know, twenty thousand lines of code if I like of a a true proper working solution. The main difficult Yeah. Yeah.
+
+@dexhorthy (06:55.67)
+Like if you designed it properly with the right abstractions in from the start kind of thing.
+
+@vaibcode (06:56.24)
+Okay.
+
+Yeah. Okay.
+
+Gabe (07:00.187)
+Yeah, I mean if you design it right, honestly, it's probably like in the range of ten K. If you design it somewhat naively, just getting it done, I would guess it's, you know, orders of magnitude more at twenty. The main difficulties in dynamic buffer come from one, building a like a very simple way to extract operation like because the entire point is that you get in CSV files and you have generate code in another language that will be able to parse efficiently those CSV files. Right? So like whatever the transformations that are happening in them, whatever the
+
+@vaibcode (07:04.698)
+Fifteen. Yeah.
+
+Gabe (07:29.292)
+actual like filtering that goes on in them essentially is like you have to determine those on the fly which is kind of difficult. The hard part is just code yeah.
+
+@vaibcode (07:29.839)
+Mm-hmm.
+
+@vaibcode (07:37.712)
+So the idea just for just just so if I were to describe this, the idea is you describe the shape of your CSV file in this new spec called the dynamic buffer, and the dynamic buffer program can generate code in any other language to follow that spec and read the CSV file and do various kinds of processing on it very quickly and fast.
+
+Gabe (07:57.446)
+Yes. So I mean so it's even more than like it's even less than a spec. All we give the agents is an input data file and an output data file. And they have to build they have to build a code generator on the fly that will like say generate like your Python script that can then input that file, do those transformations and get that output. Yeah. Yeah. So it's it's a two-part problem, I would say, is the majority of the issue. Is that the first one is, you know, here's an input with, you know, obviously we bound it to like these are the transformations you can do, these are the filtering you can do.
+
+@vaibcode (08:11.982)
+Yeah, so that's a design the spec file as well. Okay.
+
+Gabe (08:26.865)
+And then here's the output of okay, here's what we expect. And determining that is it's not a trivial thing to do, but given how bounded the space is, it is rather easy. The hard part is, you know, picking the right abstractions for code generation. I did this a very long sorry, go.
+
+@vaibcode (08:29.677)
+Okay.
+
+@vaibcode (08:35.288)
+It's doable.
+
+@vaibcode (08:39.888)
+So when I look at
+
+So when I look at the size of problem, just as an engineer, when I look at like ten, twenty K lines of code as being the harder problems, what what's really even this actually makes the benchmark even more fascinating in my mind. Because if I think about ten K lines of code, that doesn't mean anything anymore.
+
+in today's world. And if the models are struggling with good design patterns in that small of a code base, they're definitively struggling in any real code base. That is like any product code base that you have, any SAS business that you have quickly explodes like 50K, 100K lines code now in no day, because the model will just generate this in like half a day. And that I think is a doubly interesting finding. This means like everyone's PRs, like if I just look at the size of PRs, they're de I don't know dextero about your teammate even better when you guys were working on it.
+
+I I personally see in Bamaldus.
+
+@dexhorthy (09:28.514)
+We worked we worked pretty hard to keep PRs like in the like you know, one to two K range near the top.
+
+@vaibcode (09:36.58)
+But did the number go up over time, whether you wanted it it to or not? I've seen the number creep up slowly.
+
+@dexhorthy (09:41.294)
+There are there are certain things that we were aware of that exist in the code base where it's like, hey, whenever we change something over here, we end up having a it like shotguns out into like fifty places. it's like we need to rethink how that's designed so that, you know, it's all it's all managed in one place. But I
+
+@vaibcode (09:52.077)
+Exactly.
+
+@vaibcode (09:58.04)
+Yeah. And that that's the most amazing part actually about this benchmark that I just saw. It's like, hey, twenty k lines of code, a pro a problem that's sufficiently pretty hard, but albeit not like impossible if you have the spec up front, is still suffering from bad design.
+
+@dexhorthy (10:10.71)
+Yeah, and I I wanna touch on I wanna touch on one idea really quickly before we get into we we got a hard stop at eleven, so I wanna spend fifteen minutes talking about Gabe's findings and then I wanna spend fifteen minutes talking about like the future and you know, riffing on just like what would make slot code bench even cooler, more useful, tell even more stories.
+
+But I want to quickly just for the audience, basically, like the idea of dynamic buffer is not just that you have to build this thing, but that it's broken up into like checkpoints, right? So you have like checkpoint one, checkpoint two. I don't know how many checkpoints there are, but like, Gabe, as I understand it, you're like, you're actually designing these checkpoints themselves in a way that kind of makes it quite like there's there's a subtlety to noticing, like in the middle of checkpoint three, now is the time to refactor code we wrote in checkpoint one so that like.
+
+Whatever comes next, not knowing what checkpoint four is, like a model that was really good at software design would know, okay, now is the time to centralize this and then basically be able to like, you know, we actually nailed it by checkpoint four we actually needed that abstraction, right?
+
+Gabe (11:14.054)
+Yeah, exactly. I mean I think even, you know, honestly, like my very opinioned bet with this is that agents should be so much better than us that at the very beginning they can you know, they build an abstraction that is able to be adapted very quickly with minimal changes throughout checkpoints, right? Like I think, you know, we shouldn't be like, as humans we see, okay, now it's t now it's worth it. It should be that agents are just able to do this from you know, from the get go. Yeah, like it should be like fundamentally in in their
+
+@vaibcode (11:38.755)
+The beginning.
+
+Gabe (11:43.43)
+capabilities that they're able to do this. Right. Like it shouldn't be, it has to go, you know, determinate. It's that they just do it right from the very beginning. G given how much it costs to do these problems, given how much, you know, we rely on agents, the bars should be so much higher.
+
+@dexhorthy (11:59.357)
+that makes sense. I'm going to pull up one more thing. Just Yeah, so I mean I did a blog post and we talked two weeks ago. You can watch the episode about or three weeks ago, you can t watch the episode of like, here's all the numbers and the scores and like, hey, Astra is hitting sixteen point three percent on strict passes, whereas like in March GPT five point five was hitting fourteen point eight percent. But I would love to hear I did not have time to do this, but this is I think one of the most interesting parts is like
+
+@vaibcode (12:03.085)
+Let's take a look at the blog post, actually. If
+
+@dexhorthy (12:26.412)
+I know Gabe and team dig into the actual code that was written and analyze the patterns and analyzing how model behavior is changing across model generation. So I'd love to have you share and just kinda walk through whether it's the blog post or anything else, what you think is the most interesting things that you found when digging through like how does Opus five point five write code or how does Fable five point one write code?
+
+Gabe (12:48.208)
+Yeah, yeah, let me I guess let me share the blog and screen. There you go. can you see it properly or is it too zoomed in? Perfect, yeah. So like yeah, so our core findings when looking at these details is that like line by line, if we look at the patterns that we created back in I don't remember what I guess March, but also you know, a lot of these were from January as well.
+
+@dexhorthy (12:55.734)
+Yep. No looks great.
+
+@vaibcode (12:57.583)
+We're good.
+
+@dexhorthy (13:10.71)
+And just just to be clear, these were like custom pattern detectors that you wrote by like analyzing code that was written before AI and comparing it to repos that had mostly AI contributions and then saying, Okay, what are agents doing differently that we can identify as like legitimately like suboptimal or bad that we can build like AST blinters for, right?
+
+Gabe (13:31.312)
+Yeah, so that was part of it. I think the larger part was honestly just like little knits that I found like when we were right, 'cause a lot of you know, this was still written pre, you know, real agents and pre like the software factory. So it was mostly just us handwriting a lot of this and you know, if I saw something that I didn't like, it would become a rule. If I saw something that annoyed me, it was a rule. so these are very opinionated rules like these are not end all be all, but they're like that's kind of like what I want. Yeah.
+
+@dexhorthy (13:48.514)
+Yep. Yep.
+
+@vaibcode (13:54.766)
+Yeah, they're a good they're a good sampling of what you think is good quality code, which at some point is just vibes.
+
+Gabe (13:59.483)
+Yes. Yeah, I mean, yeah, it's vibes all the way down. But so yeah, I mean so that's Yeah.
+
+@vaibcode (14:03.469)
+Yeah. But that's that I mean that's how we all determine good code. Let's be real. Like code reviews are effectively just vibes, ideally from engineers you like.
+
+@dexhorthy (14:13.215)
+How am I taking my ten years of experience on being burned by other people's slop code or my own slop code and applying it to like, okay, yeah.
+
+@vaibcode (14:18.435)
+Yeah. What what's the most surprising thing you found in this blog post?
+
+Gabe (14:26.802)
+So the most surprising thing, I think if we go down to you know our good, the bad, and the ugly, it's the most, you know, the most surprising thing is that agents are of course able to solve more. That's like the least surprising thing. But then across the board, our patterns are decreasing per line, right? Like we see, you know, you know, we see verbosses going down significantly. Erosion's staying roughly the same, but I think that's, you know, team that's seemingly a more fundamental issue with you know agents with iterative evaluations. I would say that the fundamental, like most surprising thing that we have seen.
+
+And it was also the impetus for you know our other benchmark, library design bench, was that agents have some weird aversion to ever using libraries. So in Slopcode Bench, we give them full internet access, which obviously I guess nowadays is not great. But but back then it back then it worked fine. Like it was fine. It was let it rip and no restrictions. But agents refuse to ever install libraries that would make their lives easier. And we see this now with like
+
+@dexhorthy (15:11.242)
+No.
+
+@vaibcode (15:12.91)
+Yeah.
+
+Gabe (15:23.868)
+They're rewriting entire libraries essentially from scratch when they are explicitly told to use a library, right? And the other incredibly concerning thing when it comes to agent behaviors is that when they design libraries, it's they're copying like the names and the shapes of existing libraries, but they're not actually doing anything more to them that makes them more usable, right? So like imagine imagine like we have a very specific use case. Yeah, so like imagine like we have a very specific use case for like what we want a library to do, right?
+
+@vaibcode (15:47.031)
+Ice.
+
+Gabe (15:53.638)
+I'm thinking like senior sweebench, we have a very specific use case there of here's what we need to build as our validator agent. It takes in the spec and it has to build out the tests for the patch that was written, right? And we want to make that a library. Now, agents are gonna copy like whatever they think is like the most useful production library, but they won't actually ever think like, this library is now gonna be used by agents fully and very little by humans. Let's optimize towards that. Let's actually make this very ergonomic, let's make this easy to use.
+
+And it's such a huge issue that we find at least. Yes.
+
+@vaibcode (16:24.632)
+Can you give can you make that more tangible? Like what does it mean to make an a library more more ergonomic? Because that's very b abstract.
+
+@dexhorthy (16:25.366)
+Right.
+
+Yeah. Well
+
+Gabe (16:30.683)
+So yes, so in our work on that we did a very simple experiment where we just had agent, you know, essentially run its ideas not in this post.
+
+@vaibcode (16:38.606)
+Do you have an example on this post by the way? Do you have an example of okay.
+
+@dexhorthy (16:40.695)
+So this is this is this thing where basically you talk about like, Hey, we have an agent build a library and then we measure what what like how much other models trying to use the library end up like working around the interface instead of using it, basically.
+
+Gabe (16:53.015)
+Exactly, yeah. Yeah. in our so I can pull up the other post, but essentially like our core idea here with that, like what we've seen is you can imagine, right, like at least for for CLAP, the the rough CLI, like let me actually pull up I can pull up the exact thing to do. Right. so I guess let me give a very quick setup for how this works. Agents are designing the library and then we're evaluating it by how other agents use it, right? Like this is under the thesis that
+
+Agents are going to be working with agent design libraries more than they ever work with human design libraries. It's going to be up to agents to make the decisions on how, like what abstractions to use, how to lay out their code, et cetera. And so we only evaluate the library based off how well future agents can use it. That's our core TLDR idea. Now, all the way at the bottom, we have this very explicit guidance that we gave to agents, which is so write programs downstream agents prefer. Test that out through subagents, right? Keep testing with subagents, test, test, test, test, test.
+
+And then specifically with those ones that they prefer, ship your entire library with just runnable examples. Like screw documentation, screw Ruadme, just provide templates. Right? This is under like this is a very opinionated idea that I had, which is agents well actually it wasn't even my idea. Yeah. It was just yeah, it was from a conversation I had with a few people where it's like the idea that agents will do much better with like templated here's the protocol you have to, you know, copy paste essentially, way better than humans do.
+
+@dexhorthy (17:59.86)
+Mm-hmm.
+
+@vaibcode (18:05.196)
+Yeah, they want they don't want docs, they want sample code.
+
+@dexhorthy (18:07.853)
+They want unit tests.
+
+@dexhorthy (18:19.275)
+The Shad C N thing.
+
+Gabe (18:19.333)
+But also even more yes, exactly. Right? Like they do w very well with that. But even more than that, the entire point is that we want our every single like verb that's used as a function name to be as short as possible. Right? Keep it as short, keep it as concise as possible. And look, agents do agents write simpler code. Correctness does drop off a bit. That I that I think is more noise than anything. But simpler code increases
+
+For all but TypeScript, we only had one we only have one library in TypeScript that we evaluate on. So it's not as big of a sample set. So look, this is obviously not like an end-all be-all, but the core idea is that agents are gonna be doing better with a completely different style of code than what we're expecting. And we need to figure one, figure that out, but it's also gonna mean that our what we consider slop is gonna change fundamentally, right? Like these new patterns that we're seeing of like
+
+we highlighted in the blog, but essentially the idea of like there's some very minor patterns that we see but they're becoming more subjective. What's becoming more objective in slot
+
+@dexhorthy (19:22.753)
+This is This is this is actually one of the one of my favorite lines in the like anti slop manifesto that we published last week is like slop is actu right now our detection of slop is mostly like human taste and vibes and things that we've seen that is bad, but like
+
+Slop and unreviewed output, basically, is a less derogatory way of saying it, is like it's only bad if it undermines our goal. Like if an agent writes code in a way that is bad for humans but is good for agents and allows us to continue building a good product or a maintainable system or generally save people time, then it's not necessarily bad that it's different from what humans prefer. But I think like what Slop Codebench proves is sort of like the code that agents write.
+
+undermines their ability to create maintainable systems, so it is bad, and we have this convenient overlap of like most of the things that human thinks are bad are also bad for agents, right?
+
+Gabe (20:14.223)
+Yeah, I think fundamentally it's becoming more of a question of we have to view slop as not like these individual patterns that we observe, not as this individual like, it's you know, it's using, you know, even I I so I guess the whole I'm not as familiar with TypeScript, but the whole use effect banning and all that stuff, like that I think is gonna start falling by the wayside. What's gonna become the bigger issue of slop, and as you like as you just said, it's gonna be are agents able to fix issues? Are they able to write less code fundamentally? Right? Like at the end of the day.
+
+Less code is always is almost always better if it does the same thing, right? Th there's obviously some yeah.
+
+@dexhorthy (20:47.659)
+Yeah. What you don't want is like a an Astra or like a mythos tier model having to basically reverse engineer your code base as if it was attacking a system just to reproduce a bug and solve it. Like you that that is not a world that we need to live in and we will probably end up in that world for a lot of code bases when there was a a much simpler path, right?
+
+Gabe (20:59.206)
+Yeah.
+
+@vaibcode (21:05.848)
+So I think that rises a very interesting question, which is how does that problem get solved fundamentally? Because it sounds like Yeah.
+
+@dexhorthy (21:13.697)
+Well let's I I wanna actually jump back to this sorry. I we w we should get to that, but like I wanna jump in 'cause there's a lot of interesting patterns. Like I wanna go to the table of like the the Python patterns and how they're growing. Like there's a bunch of cool stuff in this blog post that I think is worth covering.
+
+@vaibcode (21:23.99)
+let's yeah, let's take a look at that.
+
+Gabe (21:28.143)
+Yeah, so I mean so like we're seeing so this these are our old, very specific patterns that we had, right? So like this the whole this whole returning a tuple of none and error. I'm gonna be honest, I did this before agents. I I write I wrote sloppy code. I I love that return none comment error pattern. It would made my life easier, but agents shouldn't be doing it, right? That's gone down yeah.
+
+@dexhorthy (21:48.279)
+That's like a Golang thing, right? That's like r writing Python with a Golang accent.
+
+@vaibcode (21:49.718)
+Why not? Can I ask why not? Yeah, I was wondering like go it's a very common pattern. Go. What's wrong with this in Python?
+
+Gabe (21:58.973)
+I feel like at least my issue is I hate functions that return something or none. Like in any type, like it does it does it's just it adds like your abstractions should be strong enough. Yeah. Yeah.
+
+@vaibcode (22:04.159)
+I see. it it's yeah, yeah.
+
+I agree. This is the worst part about Golang for me too. So don't worry. Go on.
+
+@dexhorthy (22:12.043)
+The syntax of exceptions lets you bubble things up the stack without have to handle it at every layer of the call stack, basically.
+
+@vaibcode (22:18.443)
+Yeah, cool. I agree.
+
+Gabe (22:18.734)
+Yeah. yeah, I mean I should also preface that. I've yeah, I've only written research code, mostly. So my my tastes are like what at least my very opinion, like this is harder to understand when I'm reading someone else's code or my own code. Not like what actually will work at CL. But that's my core
+
+@vaibcode (22:25.485)
+Okay.
+
+@dexhorthy (22:35.255)
+The sis dot exit one is awesome. I actually really like that we don't do that anymore. That shit was so annoying.
+
+Gabe (22:40.014)
+I'm so glad we don't do that. That was I that was just so frustrating when things would exit randomly or you know like
+
+@vaibcode (22:45.707)
+Yeah, that should be that should be illegal.
+
+Gabe (22:48.878)
+Yeah. But I mean so the patterns are different, like from anthropic to open AI's families as well, right? Obviously the tuples one is mostly solved across them all, but it is roughly that, you know, across the board, across all of our patterns, they're all going down like open AI completely eliminated the sys.exit entirely from almost everything that they from every model it's content down to zero, right?
+
+@vaibcode (23:06.753)
+Make sense.
+
+Gabe (23:12.794)
+So how they've done it, slightly worse. I mean, I don't love raising all these errors in different spots, but like it's at least more tractable. I can understand more like quick easier what's going on.
+
+@vaibcode (23:23.661)
+I mean there's also not much more you can do than that in Python. Like you kind of just have to raise accept you have to catch and raise. Like there's that is the life of Python.
+
+Gabe (23:27.61)
+Yeah.
+
+@dexhorthy (23:33.9)
+Ha ha.
+
+Gabe (23:34.649)
+Yeah, that's the unfortunate truth. For GPT, it's you know, I think it's not great. I would prefer maybe, you know, a bit more of an informative error here than sources not tabular CSV content. Like what am I supposed to do with that when I see that? Like, cool, it's not C like I don't wanna have to go look through the entire CSV to figure out where it's broken. So there is still issues being left. I think when we actually look at like where slop is moving, right? Like
+
+@dexhorthy (23:57.143)
+Yeah.
+
+Gabe (24:04.152)
+As it's moving up and down the stack, it's it's leaving the lines, it's leaving functions, and it's kind of leaving programs overall. But it's moving up, like it's going to dependencies. Error handling is also becoming more and more of an issue, right? Like I as we literally just discussed, it's adding more errors, but it's also not making them informative. And it's becoming an overall like it's just moving up and it's becoming more it's harder to detect, but yet way more dangerous for when we're actually you know building products out, right?
+
+@dexhorthy (24:33.293)
+Hmm.
+
+Gabe (24:34.286)
+That's like the t TLDR's changing. If we look at like new patterns that are in there, these are again, I think yeah.
+
+@dexhorthy (24:38.475)
+This is the craziest one in the whole post. Is like these models are l it almost feels like they're learning from the previous generation's slop and then inheriting all these like weird patterns.
+
+Gabe (24:49.146)
+Yeah, I don't I have no idea why it went back to Python two style. I have no idea why it's like doing these very weird things. Like type of X equals the type. Like who why? Where where did that come from specifically?
+
+@dexhorthy (25:00.885)
+I remember being wrist slapped on a PR and like the first five PRs I wrote as a professional developer to fix and like the type of X equals T instead of using is instance.
+
+@vaibcode (25:08.865)
+I think there's a slight there's a very slight difference between what type does versus instance of in Python. And I think it's probably been burned by that and it's just one is more reliable than the other.
+
+Gabe (25:24.888)
+That would be so odd. they're
+
+@dexhorthy (25:26.701)
+So 'cause is instance will traverse the like like the the inheritance tree, whereas type will only check on the exact type.
+
+@vaibcode (25:29.835)
+Yeah, the the tree. Exactly. Exactly. So it's just like bounding it in that way. So like I suspect that's why, as opposed to anything else, if I were the model
+
+@dexhorthy (25:37.964)
+Interesting.
+
+Gabe (25:43.502)
+Yeah, I mean honestly, that happens. I think we also see almost entirely like the handwritten library fallbacks, which like the big one of the other big issues, right? Where it'll be like try this, otherwise the its name is none and it tries to re implement the entire library in line. I think like I think you're a hundred percent right. It's becoming from it's coming from these scenarios where it gets burned by one thing and then it just gets burned in through future, you know, training.
+
+@vaibcode (26:06.891)
+Yeah. And then like same with like bullet points number two and three, like if not instance, if an X is none, like Python libraries have to do this because the language itself doesn't guard them in a safe way. So like even if you write type safe Python code, the right way to write good Python code is actually to add these guards in defensively. And there's a lot of like st packages that you install that basically do type guarding for you that basically add this code in.
+
+Gabe (26:31.715)
+Yeah, I mean so I I guess maybe I slightly dis I I d I agree with that you have to do this. I disagree with that you have to write if and s like all these checks everywhere. I feel like the best Python code I've ever written I obviously this like it leans on say like Pydantic so much. But the best Python code I've ever read has been ones where by construction, if something is not a type, then s something else has gone terribly wrong and you shouldn't like it's just the entire construction of your abstractions means that the entire like
+
+That you imp implicitly you will never run into that issue, right? Like it will be caught so much farther up the stack that it's Yeah.
+
+@vaibcode (27:07.293)
+In theory, yes, but in practice, like in real pract in like production Python code bases, you usually have like some interrupt where it doesn't match the system or you're interacting with a network service where you like made one wrong assumption in the type system and now you're gonna get an exception all the way down because you passed the value by a mistake. Or you wrote some threading code and there's some mistakes. But the slop is amplifying.
+
+@dexhorthy (27:25.9)
+Alright. Listen, I didn't invite you on here f for Vibov to challenge all of your slop opinions.
+
+@vaibcode (27:32.939)
+No no, I think this is awesome. I think what I'm saying is like I get why the models are doing this, but it's guaranteed to be slop.
+
+@dexhorthy (27:39.594)
+okay.
+
+Gabe (27:39.747)
+Yeah, yeah. I mean so open AI is slightly less in terms of like the slot, but it's also I think just significantly more in the patterns that we see. Like we see the same exact type of X equals equals T, right? Like it's gonna be the same. Right. The but yeah, the Python two one, I would l
+
+@vaibcode (27:52.833)
+Have you checked Rust for some of these patterns? I'd love to see the
+
+@dexhorthy (27:55.384)
+So this is okay, amazing. I want to get into the future of Slop Code Bench. so really cool findings. I I recommend you all go read the blog post. I have I have questions. I think I think there's two dimensions here. One is like other languages and like how do we make that happen? And then number two is really around just to kind of like in like transition here is like this idea of like, okay, the the default prompt there's like two prompts I think that I looked at that ship with slop code bench. There's like just solve.
+
+Which is essentially like, go do the thing in the request, right? And here it is. There was another one that I think like you found didn't make a difference, which is like make a plan and then go implement it. and then I have started on my Fable five point two run, started doing this thing that Anthropic told us to do, or recommended in their prompting guide, right? Of like, tell Fable five point two that it it's the long term owner of this code base. and I'm really curious to ha see how that plays out. I have it running on
+
+@vaibcode (28:46.908)
+yeah, supervisor.
+
+@dexhorthy (28:54.958)
+workstation somewhere. it'll be it'll be a little while till those all come out. But like the in the early results are like don't show a huge difference, although it did ace just solve got a four out of eight and the like you own this code base, like ACED circuit eval, which I again is one of the easy problems. but I'm I'm curious have you thought much about like because like this proves that like if you just ask them all if you just push stuff into a queue and say f do this, do this, do this, you do end up with like like deteriorating results.
+
+Have you thought at all how we might evolve it to look more like what like a human design software factory might look like, where you have like agentic review and like opinionated linters? And like, what if we took all the linters in slop code bench and at the end of every run we told the model one time, Hey, here's all the things that you're gonna get judged on, like maybe fix some of them. And like, does that actually have any impact? Have you guys talked about this at all?
+
+Gabe (29:47.106)
+so we have thought of that. I think when we very at the very beginning when we were doing like the whole just solve, it was essentially the idea like I wanted to go with this very clear stance that the models like again, the models should internally be able to do all this by themselves. I do care a lot more about like this, you know, agents working by themselves in this like factory with agent agentic review than, you know, determining which issues need to be triaged, etcetera. I care a lot about that. I don't you know
+
+I don't necessarily know currently how we will we could incorporate that into like Slop Code Bench. I feel like the cleanest way, especially because like, you know, I'll like obviously my focus right now and I with the most recent paper has been on like agents designing for agents. If there, you know, we tried this a bit for library design bench and see if there was a way we could incorporate our findings from Slop Code Bench into our, you know, our problems that agents solve with the library. I feel the only way to really elicit the signal that, you know.
+
+@dexhorthy (30:30.883)
+Yeah.
+
+Gabe (30:45.795)
+actually reflects how you know people who are having a full agentic loop for their software development works is that we need to one simulate like pure issues and then having them determine what needs to be added to the lot like to a library, for example. But we also need to put a lot more emphasis on, okay, we need to let the agents work completely by themselves, right? We need to let them own the entire process and all we do is give them a bit of feedback here and there, like tell them, I don't like this, or you know,
+
+Maybe this could be a better way of doing it or I want to see this. I think even like this could be a better way of doing it is too much. Right. Like in my opinion in my opinion, like our benchmarks need to fundamentally ask how far away are we from letting agents do everything, right? And y like in the question I've been yeah.
+
+@dexhorthy (31:32.738)
+Yeah. How far away are we from the dark factory vision of like literally I just ask it for stuff and out to the other side I get really good working software forever.
+
+Gabe (31:41.955)
+Yeah. I I think even like even at a higher level, it's you know, the question I've really been interested in and working on recently has been how far away are we from agents producing useful artifacts to people, right? Like I think you can imagine a like Rust compiler speed up, right? How far away are we from that? How you know how far away are we from agents creating a piece of software that allows other agents to write less code, right? Like across the you can imagine like a a rough for agents that tells them this code is or this these tests
+
+are pinning your entire implementation to some specific thing, right? Like that's I wish we had that way to detect that type of slop slop code bench, which is tests that are just causing agents to hyperfixate on keeping old code around. That's the biggest piece of slop I've seen. So
+
+@dexhorthy (32:24.398)
+Interesting. Yeah, so it actually like the the the the agent propensity to write too many tests or write tests that are too specific to an implementation actually inhibits the future agents from doing the centralization and refactors because the agents don't have the like I don't know the the what is the D world? The the initiative to say like okay cool, yeah, we will centralize this.
+
+@vaibcode (32:45.897)
+One of the
+
+@dexhorthy (32:50.774)
+And I'm gonna rewrite all those tests too, because that's the right thing to do. They're very set on like have to keep the rest of the test passing and make the change within the g the the guardrails of what's there.
+
+@vaibcode (33:00.628)
+One of the things that we've started to do, one of the things that we do whenever we do any rewrite work is like first thing we do is we say rip out the old code. Like delete it from s delete it, that's a first commit, then re implement it. 'Cause otherwise like it will just bias towards keeping the old shit around by accident.
+
+Gabe (33:00.866)
+And like and even tests Yeah, I mean
+
+@dexhorthy (33:17.779)
+Interesting. Delete the code and the tests and then here's what I'm giving you to do.
+
+@vaibcode (33:20.416)
+Delete yeah, delete all of the and like the Rust type system is fantastic. So you delete it in one place, it just propagates it everywhere. But it actually you delete it, then you make the plan, then you basically rebuild the plan from scratch and then you implement.
+
+@dexhorthy (33:34.102)
+you are you deleting like a module and everything that that depends on it or like
+
+@vaibcode (33:38.164)
+No, I'll delete an entire feature. Like I've deleted entire features from scratch and re every time I want to re implement the feature I just delete it and then I replan. I plan, I delete, I replan, I implement.
+
+@dexhorthy (33:50.696)
+Interesting. Fascinating.
+
+@vaibcode (33:51.659)
+And that helps a lot with slot reduction. Because there's there's no i if you use depending on what languages you use, you have like no incremental s checkpoints. kind of like exactly what slop code bench is checking. So like because you can't compile Rust in incremental ways, you have to have everything be right. But if you start from scratch, you can actually build incremental checkpoints and you can build it working along the way. And like the slot
+
+@dexhorthy (34:15.072)
+Okay, so how does this fit into our our our eval question of like how can we build confidence that you're talking about like here's how we work around these problems, but do you have thoughts on like what you would want to see from a benchmark that would convince you that you don't need to do that anymore?
+
+@vaibcode (34:29.814)
+Think it's really hard without really pristine metrics that go into the software development flow. Like I need to understand the flow of roughly some data structures that can be quantified by some numbers. And once I understand the flow of a data structure quantified by numbers, then I can suddenly ask the question of like, did I accidentally use this? So for example, if I want to reuse a field and say I want I want this field to go from like a
+
+I want to delete this field from the data structure in some way. That's an easy thing to verify. But if I want to say I wanna I wanna use this field less, there's no way to quantify that in a really precise I mean there kind of is. They can do search by references, but then you have to do search by references, do AFC traversals to find everything that uses those references. There's no tool chain for that kind of problem. So I don't know how you actually really build a benchmark on this without humans vibe checking at the end.
+
+@dexhorthy (35:07.234)
+Continuum.
+
+@dexhorthy (35:20.6)
+Amazing. Guys, we are almost at time and I apologize this episode shorter than I wanted it to be. but I got a hard stop in a sec. Gabe, any final words, any asks for the audience? How can people get in touch with you? how can they be helpful to you?
+
+Gabe (35:33.519)
+Yes, so you know, reach out on either Twitter like at G Orlansky. we have a Discord for Slotcode Bench. That's also the Discord for Library Design Bench. check out the repos as well. Yeah. I guess we will hopefully have some news soon on like what the future holds for both these benchmarks and what our plans are there. And then also some new a new, hopefully very interesting and useful sort of challenges for agents that yeah. So you'll see those soon.
+
+@dexhorthy (36:00.288)
+Awesome.
+
+@vaibcode (36:01.693)
+I'm super looking forward to the harder challenges. It's gonna it's gonna be even more fun. Yeah.
+
+@dexhorthy (36:05.58)
+I mean dude, this benchmark is very unsaturated. I think Astra got a sixteen point three, dude. I don't know if we need our challenges.
+
+Gabe (36:12.95)
+So one of the biggest things I want to do for slobcode is at least go through and make like do full audits because I I know we're we were very opinated in certain parts, but were those opinionated decisions just? I think so, but obviously there, you know, some people point out there's a few things that we need to fix here and there. So we're that's at least on the top of my list is to go through it both and make sure that we have at least more clear guidelines on on what it takes for a problem to be saturated or not.
+
+@vaibcode (36:13.141)
+Yeah.
+
+@dexhorthy (36:40.45)
+Nice. cool. I'm gonna do a quick recap and then we will get y'all out of here. So let me share my screen. I'm just gonna share the whole window. Yeah, I will. Alright, what's up y'all? Today we talked about slop code bench and a technique I think more broadly known as iterative evaluation, where we have some problem where the model has to complete things in checkpoints and
+
+@vaibcode (36:48.873)
+You wanna put a screenshot of the blog post in too?
+
+@dexhorthy (37:04.834)
+May or may not decide to refactor or centralize something that it built before in order to enable future checkpoints. my favorite part here is we have Gabe Orlansky, the creator of Slop Code Bench, and he actually walked us through his new blog post that is both quantitative and qualitative analysis of a lot of the slot patterns and where they're moving and how they're changing. some really cool findings in there. You should check it out. and you should go check out Gabe and the Slop Code Bench website and the Discord, find him on Twitter.
+
+This was a really fun episode. I'm so excited to see what the future holds here. let's get into it.
+
+@dexhorthy (37:39.276)
+I can I can work with that. You guys good with that?
+
+@vaibcode (37:40.171)
+I'm gonna stop the live really fast.
+
+@vaibcode (37:45.887)
+It is
+
