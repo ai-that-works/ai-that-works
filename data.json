@@ -29,15 +29,16 @@
       "eventDate": "2026-11-24T18:00:00Z",
       "event_type": "episode",
       "media": {
-        "url": "https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt",
+        "url": "https://www.youtube.com/watch?v=a3T9Du5rOvo",
         "type": "video/youtube"
       },
       "links": {
+        "youtube": "https://www.youtube.com/watch?v=a3T9Du5rOvo",
         "code": "https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-24-no-vibes-opus-5-5"
       },
       "season": 2,
       "episode": 82,
-      "isPast": false,
+      "isPast": true,
       "isWorkshop": false
     },
     {
@@ -1802,14 +1803,14 @@
   ],
   "meta": {
     "totalEpisodes": 86,
-    "completedEpisodes": 80,
-    "upcomingEpisodes": 2,
+    "completedEpisodes": 81,
+    "upcomingEpisodes": 1,
     "workshops": 3,
     "seasons": [
       1,
       2
     ],
-    "lastUpdated": "2026-11-22T10:52:34.245Z",
+    "lastUpdated": "2026-11-28T02:19:16.352Z",
     "generatedBy": "validate-metadata.ts"
   }
 }

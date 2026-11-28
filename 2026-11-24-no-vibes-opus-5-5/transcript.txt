@@ -1,0 +1,893 @@
+@dexhorthy (00:00.068)
+Demo the hey, what's up, guys? We're here. I'm just out here doing doing things, building shit. What's up, Vibo?
+
+@vaibcode (00:07.394)
+How's it going, man? we actually are only live streaming on Twitch right now. Twitter did not connect. Can you para you might want to retweet and let people know that.
+
+@dexhorthy (00:09.386)
+I'm good.
+
+@dexhorthy (00:19.513)
+@vaibcode (00:22.872)
+Sorry.
+
+@dexhorthy (00:24.016)
+switch thread. Do you can we can we try again? Can we do it properly? I'm still trying to get my environment set up anyways.
+
+@vaibcode (00:28.865)
+I can try.
+
+let me try and get this hooked up and ready to go. But I just texted you the link. I'm not sure why Riverside is sometimes flaky sometimes.
+
+@dexhorthy (00:45.144)
+Okay. Hang hang tight, folks.
+
+@vaibcode (00:46.358)
+It says there's a technical problem with Twitter.
+
+@dexhorthy (00:51.556)
+All right. I will tweet this Twitch link.
+
+@vaibcode (00:56.408)
+Sorry.
+
+@vaibcode (01:00.398)
+It says something went wrong with nothing to do. How's it going from North Carolina? Welcome Rubs Blue Shee. Dexter, your vague post this morning was Yeah. I know. no, yeah the yeah what was it?
+
+@dexhorthy (01:12.72)
+Did you like it? It got a lot of like got a lot of views. Did you see my top reply?
+
+@dexhorthy (01:19.802)
+No, I said it it's basically a made up language. No one's no one's gonna people people who get it are gonna get it. The vague posting will continue until Vibov ships.
+
+@vaibcode (01:22.782)
+that was good. That was good.
+
+@vaibcode (01:31.296)
+Yeah, the vague posting is going to continue. I think we're gonna ship in I'm hoping end of this week. I like Charlie's response too.
+
+@vaibcode (01:47.168)
+I I should I should definitely name it.
+
+@vaibcode (01:55.916)
+yeah.
+
+I like I I I guess see I guess Twitter's all about that vague posting.
+
+@dexhorthy (02:08.12)
+Yeah, okay. I huh. Let me just try one thing here. I'm almost ready to rock.
+
+@vaibcode (02:29.384)
+And are we
+
+@dexhorthy (02:30.122)
+I am ready to riff. All right, let's go. We've these people, these fine people have sat through plenty. all right, y'all. what's up? All right. this is AI That Works, where we teach you about AI that works, beyond the demo, real stuff, a lot of systems design. Turns out a lot of AI is just good engineering. and building cool AI experiences is is a lot more than just the models. I'm Dex. I'm a member of technical staff at Factory, and I'm joined by Vibob.
+
+@vaibcode (02:37.944)
+Let's get to the good work. Start it started.
+
+@vaibcode (02:58.734)
+What's up guys? I'm Vibav. I work on a new programming language and new almost this new software stack over that we build over at Boundary.
+
+@dexhorthy (03:08.142)
+Very exciting. I I think next week's episode we should do a deep dive on your performance stuff that you did. I think that would fit nicely.
+
+@vaibcode (03:14.455)
+Okay. We I think that would be a very fun episode. But today's episode is not about that. Every few weeks, every now and then, Dexter and I get the we get the urge to basically just code for a while and turn this podcast into a live stream of us working. And one of the most useful things that I we have done and I have found extremely useful every single time we trade notes is just watch how each of us work. We call that no vibes allowed.
+
+@dexhorthy (03:18.523)
+cool.
+
+@vaibcode (03:37.955)
+The whole point is we pick a problem and we just work through it. so you'll get to see our exact same workflow, exactly how we go do things. And every time, every every few months the workflow changes. I made a post just yesterday about about how my main workflow has fundamentally shifted now. here, let me just pull that up really fast. how do I screen share? There we go. I made a post just yesterday about how my main workflow is fundamentally shifted.
+
+To where all I'm really doing most of the time is I literally just dump stuff into a main chat thread and I just have it drive every single task itself. And a lot of people do this per topic. A lot of people do this in other ways. For me, it's per chat thread. And I just I actively read every single word in that chat thread. And sometimes I even peruse the sub agents, but I am more engaged than ever before and I'm able to do more than ever before. I think today's episode is actually something that Dex has been doing.
+
+With how he uses some of the tools that he he's been thinking about and what his engineering workflow looks like. So we've actually picked together a sample problem and we're gonna take that sample problem and then just work through it for the couple next couple hours. You'll see us time in real time and we'll just yap. if you have questions, just post them in the chat stream. We'll try and be as engaged as possible with that. but really, we're just gonna try and solve problems with AI. This is AI that works. It's actually ready to get started.
+
+@dexhorthy (05:01.754)
+I'm ready to get started. this is gonna be a little bit less of a demo than I wanted it to be, because I'm having a technical difficulty. But I think we should just talk through it and maybe this will be a shorter episode. but
+
+@vaibcode (05:12.399)
+I mean I've got I've got live demos if you want to do the same thing.
+
+@dexhorthy (05:16.418)
+Yeah, okay. I
+
+@vaibcode (05:25.26)
+Let's go. How we're shipping with Opus FiFi. Okay. Do you want me to screen share? I'll just screen share and show what I've been doing. And I think that'll be really interesting. Okay. So I've been doing something recently where a lot of my work stream has been doing something kind of silly. where I basically rewrote our entire compiler from scratch in our programming language.
+
+@dexhorthy (05:26.754)
+Yeah, give me give me one sec, dude. Stall stall stall for one minute. Stall for one minute.
+
+@vaibcode (05:49.903)
+Part of that workflow has really been forced me to adapt the latest version of Claude. And it really came inspired by, in many ways, Jared from Bun, who did some incredible things over the last six months. He first migrated Bun from Zig to Rust and it apparently got better. He then did another thing where he was like, I'm gonna build AOT for Bun, and it works surprisingly well. So, and I think a lot of people are right to be skeptical about these problems. And to be honest, I was as well. It's like, how does stability work in that world?
+
+But I challenged myself more recently and I said, how is someone able to do this scale of problem as a solo man job? And I think one of the things that I pushed myself to over last week and a half where I've been playing around, or I guess like four or five days where I've been playing around with this, is pushing myself to save all the same scale of problems. And I want to show kind of the depth that we had to go into to solve some of these problems and how we adapted through them. Let me see if I can pull up the chat threads all from the very beginning and what the process has been like to do that.
+
+because surprisingly it's been mostly just using the Claude sessions. A station is too large to load. Keep on loading, come on. and the main thing that I've found, actually have some like slides and stuff to show as well. But the main thing that I've found is almost anyone can use Opus to solve effectively any kind of problem. And this works with Astra as well. I haven't tried Neon yet. The plan is to go try Neon really quickly as well while I go do this. But my basic workflow is the following. I basically will start working. I'll just basically tell a prompt something.
+
+I'll start doing things. And once it's done things, it'll basically just spawn infinity subagents constantly over time. And I take every single subagent while that is going on, I will constantly have it dump design conce where is this? Let me go to the more recent part of it that I can actually organize and chat through. Sorry, I wasn't prepped to show this today right away. But what I will do is show some of this. What I'll basically do is I'll go through the entire source conversation. Every single time I have a design statement. So in this case,
+
+I I had a design statement. I'll basically go create a sub agent or a side chat. I'll start chatting about that specific question one at a time in detail. And then I'll bring back a large summary of that to my main agent and then I'll start discussing again. And I will do this while the agent is working on other tasks on the book. And in this specific case, the specific task that I've been doing is how do I make our compiler and our runtime blazing fast?
+
+@vaibcode (08:18.081)
+And specifically, what I've been focusing on is we have a large code base. Our CI CD bill is on the order of like $10,000 a month based on how our code base works. We have like hundreds of thousands of lines of pure Rust code and we rely on Rust because of level of correctness that it provides. But our dev times are effectively bottlenecked by agentic development. What ends up happening is we ask an agent to do a task, it uses a shit ton of storage, it uses a shit ton of CPU.
+
+just for the Rust compile itself. And now I'm here iterating on problems at effectively one tenth the rate that I feel like I should be because I'm waiting on like 10, 15 minute builds. And then CI is slower because CI is a 40 minute build time or 30 minute build time. And I'm sure we could do things to optimize it, but there's very little I can probably do to optimize our CI CD time from like 40 minutes down to two, fundamentally just given what our current stack is. So I had this stupid idea of why don't I just
+
+What if I just made BAML incredibly fast? And if BAML became really fast, could I write the BAML compiler purely in BAML? And if I did that, then could I make our CI CD build really, really low? And as I went down this road, I just started exploring. And a large part of this task you'll see is literally just me writing assembly and reading and writing assembly code behind the scenes. And what the model is effectively doing is the model, I've told the model that consider me an Oracle for highly optimized assembly code. And you can still run experiments, just run through rational set thoughts of being.
+
+through me. So what the model does is for every subtest that it runs, it makes a lot of decisions, it makes a lot of things, but every single time it has major questions or design questions, it just logs them into a specific file that it's keeping track of and it'll propose them to me. And I'll specifically just read that file manually myself. Secondarily, what I will do is while the model is doing work, I'll just say keep showing me code. Like show me parts of the code about this problem or show me things that are how to do this.
+
+I think I have a message more recently here.
+
+@vaibcode (10:18.271)
+I was just like, what I end up doing is effectively a message like this one. nope, this was when I was actually engaged. Effectively when sub tasks end up happening, I'm just just start showing me code. What I don't think I've exact I don't have the exact message. What I end up saying is as the model task is happening, I just say, Hey, you're doing this work. While that work is happening on a background agent, why don't you just show me code that we should just look at that might be suspicious or might be good or might be relevant for design? And I just start reading and designing that myself while I'm there.
+
+And as soon as that ends up working, what that leads to is I find tons of bugs in the whole stack as I'm going through it. And then boom, I'm able to go ahead and just constantly review various things. Like our concurrency design didn't really work in the beginning. So I was like, the model had a solution for concurrency, but it wasn't very good. like the number of instructions that took was like 10x, what it needs to take. So it was just slow. the way that we're doing default parameters.
+
+It wasn't designed correctly. So I found this flaw and then I just started discussing with it. And eventually I got to a point where it wasn't actually good enough. So I had to make a side task and start discussing just that part of the code base until I got to a good solution. And then once that actually worked and the side task work, I actually gave it the entire design that I came up with independently. And then I just told it to was like here's a sum thoughts from a sub agent, go see if that's correct. And then I was able to go ahead and make some progress from their point onwards.
+
+But I think the general philosophy that I found is you use one main task, it drives a bunch of subtasks. And I wanna show some of like these small tickets that I make along the way and the types of files that I make. Let me share this really fast. And the stax are you ready to w if you're ready to go, let me know by the way.
+
+@dexhorthy (12:03.372)
+I am not ready. You should keep going. I am technical difficulties here.
+
+@vaibcode (12:08.697)
+That's funny. The way that I make these tasks end up boiling from different ways, like this README is absolute garbage. Like I this I don't know why the model always produces a giant README, but if I tell it not to and I tell it to delete it, it'll eventually add it again. So I just leave it there from now on. but like for example, the way that I was designing like our memory model, this literally required us to look at the object layout of exactly how things are designed. And once I did this, yeah. I know.
+
+@dexhorthy (12:30.736)
+Is this obsidian?
+
+Nice. Okay.
+
+@vaibcode (12:34.997)
+I'm back on Obsidian. And the reason I'm back on Obsidian is I produced a shit ton of markdown files. There's no better I I just didn't want to open Zed for some reason. I know why. Yeah, this is this is hand read. This is hand read. not hand read. I read.
+
+@dexhorthy (12:41.626)
+Do you read them?
+
+@dexhorthy (12:45.988)
+This this is so this is the thing I've been seeing a lot lately, is I think the newer models they really love using tables and I have found myself steering them to not use tables as much. I feel like it's for So that table is fine, but the the next one, it's not all of them. Like it seems okay. It's just like kind of a weird form factor for reading. Like I feel like these would be much I I don't know. All right, okay.
+
+@vaibcode (12:56.802)
+Really? I love these tables. This is great. This one's great too.
+
+@vaibcode (13:09.695)
+no, I love this. For for me, I actually love this style because super dense. Like all I wanna do is like I wanna go through and like be like how a string slice is held. And I wanna literally be like, this is how we do it, this is how Go does it, and this is how many bytes Go takes. And I wanna know the concept, because we're mapping to Go for a lot of our stuff. and when I go into this, I just start reading this. I'm like how literally how many assembly instructions does this? So I just need to go read this shit and be like, is this good or is this bad? Can I give the model something better to go that it can go do?
+
+And that's kind of how I approach this problem at least. And it's I have found that this works extremely well for us. Like in this case, like I was actually able to make our instruction count for doing most things. Much mu like in the case of Go, for example, it takes like 151 assembly instructions to do store, to do allocation stores, it takes us twenty-six. The prices are storing an int costs a little bit more. But like we give this trade off anytime.
+
+Because most of the time people are allocating memory for like application layer code. and that's been, I think, really fascinating. Same with node. and this is where like the performance basically comes from. And like once you're able to make something this fast, like literally make it like five times faster, your C like CI CD stops being a real problem in the same way. and then I'm just going through and like going through all sorts of decisions as we go through this. But
+
+I have a couple I think of more practical things to show. The other thing that has been happening that I think has been really relevant, it's not showing Slack. let me open.
+
+@vaibcode (14:44.952)
+Let me open more of these s things.
+
+@vaibcode (14:52.31)
+Okay. How do I screen share? I'm just gonna screen share my whole screen. I think that'll probably be better.
+
+@vaibcode (15:03.395)
+wrong thing, stop. Twin shirt my whole screen. Okay.
+
+@vaibcode (15:13.443)
+The other thing we've been doing is, and I think more people should be doing this, is you we run a lot more experiments on the team. Yeah, so so exactly. So we where is my freaking mouse? Okay, sorry, I was seeing my mouse on the screen. We've started to do a lot more experiments on team. And I think running experiments is the best way to define how you go make decisions. So instead of actually doing something like instead of actually doing something like randomly go
+
+@dexhorthy (15:17.976)
+are we removing tests? Are we deleting tests now?
+
+@vaibcode (15:43.501)
+randomly just decide if features are good or not. Sometimes super ambitious features can start off as mere experiments. so in this case, like one of the things that we did was that we just like ported Pi to BAML just to see what ends up happening. We wanted to just analyze what is good or bad. And we're like just port every file file by file to every single part of the language, provide I'm gonna and make every single decision on that end. And instead of actually like
+
+We assume that this code is gonna be slop, we don't care, it's totally fine. and we just wanna just for we just wanna have a proxy of understanding what's going on. So as we go down this road, we learned a lot of things. and I think b actually and like I think the general approach Yeah.
+
+@dexhorthy (16:25.936)
+Let's say the TypeScript had zero tests.
+
+Nice. Hell yeah, Morio.
+
+@vaibcode (16:34.959)
+yeah, I mean that w we learn a lot of things about a lot of code bases when we do these kinds of behaves. And then you get all sorts of other behaviors, like for example, like how much of the code actually lives in functions versus global variables and like what what do we do? Right? How much of the like how many lines of code are literally this closing bracket only? And this is just interesting to go down this road.
+
+@dexhorthy (16:57.646)
+How can you take a giant inscrutable data set and like pull insights out of it? Whether it's code or SQL or whatever.
+
+@vaibcode (17:02.806)
+Exactly. And
+
+Exactly. Like how many type declarations do you have to make? And like TypeScript has a lot less. And why? Well, because we don't have anonymous types. TypeScript has anonymous types. So you can get away with a lot less because you don't have to declare everything. You can just like declare shapes and start using them. But that comes with good and bad trade-offs. So you have to decide what you want out of that. and then we just manually actually literally read the code as well. We're literally just like take the equivalent code in one and the other and we do a human level of it. Like what which part of this code actually is better or worse?
+
+I don't know. And I'm I I don't think I make a super song strand some what's better or worse, but we do try and read it to see what is going on and see if this makes sense as a end user. And there's there is still a human and taste element to this along the way. But sometimes we do super ambitious bets. Like, for example, what if you could leverage a language to not run every single test along the way? So like if you I think this is actually a live demo. So this is a r and this is again the most incredible thing about agents.
+
+Before doing something correctly, you can just half ass do it. So like in this case, I'm gonna change I'm gonna change what percent I'm gonna change what apply does. And so I divide by a hundred, I'm gonna divide by ten. And it literally tells you it's like here's all the tests you have to run now. And it marks all the cards that are dirty. And you saw
+
+@dexhorthy (18:21.552)
+So you're tracing the whole AST to find like all the dependencies of of that of that t like all the tests that touch that code.
+
+@vaibcode (18:26.763)
+Exactly. And you can see like if this thing doesn't change, like this thing has now changed. So therefore, here's all the things that have to change now. And it tells you exactly what.
+
+@dexhorthy (18:33.701)
+And this is all compile time checks. This is not based on like runtime data that was baked in the past. Like it's not a coverage report. It's literally yeah, okay, cool.
+
+@vaibcode (18:39.373)
+Yeah.
+
+@vaibcode (18:42.734)
+And if I add a new test, you see that I added this new test. And like this is just a new test that you have to run. And it's able to tell you that this is a new test. So it has to go execute. So the fact that you can build this kind of bet really quickly and you can like this is a f I mean this is pure slop, just to be very clear. but we can build a fully working demo end to end, see what's good, and then actually go ahead and design this afterwards.
+
+By throwing away this and just taking all the learnings from this implementation work. And what's interesting about the way that this works is again, this is just a claude task. You build a claude agent, and this one wasn't done by me, it was done by Aaron on our team. But what we basically do is it just describes how it works. And this is great for anyone else on the team as well. So if someone wants to go understand this, you literally just go ahead and we can walk through this ourselves really quickly on this podcast without any of you having any background on BAML works.
+
+And be able to answer this question, which is you take the source code, you break it down to a bunch of tokens, then you go ahead and just build a hash of this for all the significant tokens. So that means we delete comments and stuff. And and then what you do is you start linking them. You start basically saying, like what functions call what functions, what functions depend on what classes, all the way down for every single test. And now you build a fingerprint that says this test has a fingerprint of this dependency class.
+
+@dexhorthy (19:50.97)
+No, this is cool.
+
+@vaibcode (20:07.747)
+And then you say you edit total, well, then therefore all of these things upstream of it must change. And this becomes super easy to go detect. And I think this kind of problem exists for a while. Like I think people have tried to go do something like this, v test does something like this. But the thing is, the solution over here is only ever going to be as good as whatever you can do whenever the actual runtime is actually dealable. So for example, like
+
+Dynamic imports don't work in TypeScript, and that makes sense because the language doesn't support it. Testmon was actually the first thing that inspired this for me. It's really freaking cool. But it doesn't work because of global variables and a bunch of other stuff that Python makes really hard because it's a constraint built into the system. And I think this is one of the most impressive things that I've seen be done with AI more recently. It's like two years ago, it would not have been possible to even explore this kind of experimentation. Now Aaron can literally on top of his main work.
+
+Be like, I'm inspired. I wanna I have this idea and I wanna see something tangible out of it. Guide an agent to solve the problem and like really just define the problem extremely well. Build a working demo, build an explanation for exactly what's working, and then like even push back and be like, Okay, actually these are the things that we want to change. So in this case, some of the stuff that we know doesn't work is like what's it called? reflection doesn't work as well. So when you do reflection, you kind of end up running all the tests. if
+
+@dexhorthy (21:34.026)
+@vaibcode (21:35.265)
+If you use reflection, everything above it is poisoned effectively at all times. And it it can never be cached. If you call a network call, it is poisoned and nothing above it can be cached. And there's all sorts of things like this. Certain functions are just marked always dirty effectively. But again, what's cool about this is you can tell exactly why something is running. So if some test is always running, you can literally know. Go ahead.
+
+@dexhorthy (21:58.798)
+And and but knowing that is is super important because it constrains how you define design stuff. It's like if you if you set up your incentives, so like, hey, if you write code in this way, if the important parts of what you're changing live beneath the network layer or live outside of reflection, suddenly you're eligible for much faster CI and much faster test running, all this kind of stuff. I saw a parallel of this. I've talked about this before, is like I've seen I talked to one CTO who basically put in a like auto merge policy for his whole engineering team, it was like forty or fifty engineers.
+
+@vaibcode (22:18.593)
+Exactly.
+
+@dexhorthy (22:28.353)
+And basically the rule was if it doesn't touch certain parts of the code base, if it's under a certain size and complexity, then and it's like, you know, it passes some automated review, then it is eligible to merge without human review, which means you can ship way faster. And I actually pulled a bunch, I don't have the dashboard here, but I pulled a bunch of data. It was like PRs that are reviewed by AI and like past that threshold, because we do similar thing at factory, but but but what it's like takes one and a half hours on average.
+
+@vaibcode (22:42.541)
+Mm-hmm.
+
+@dexhorthy (22:57.731)
+rather than you know, the average with a human review in the loop on a team of, you know, fifty engineers is like six it's like median six hours and sometimes like more than a day versus one and a half hours. And what happened on this team, the CTO that I was talking to is basically like not only did we ship more PRs, but at the start of I took the data before we made the rule and like twenty percent of the PRs matched that criteria. Like they would have been back test eligible for auto merge.
+
+@vaibcode (23:22.658)
+Yeah.
+
+@dexhorthy (23:24.814)
+And within like two weeks of that policy being in place, suddenly eighty percent of the PRs matched that criteria. People were making more PRs, smaller PRs, because you changed the incentives.
+
+@vaibcode (23:36.195)
+Yeah, exactly. It's like you need to make sure that people are aligned with what you're doing. I think we're to summarize like the number one things of today. I think the number one thing in general is this. I think more people need to be ambitiously engineering. Is kind of the general gist of what I would say. Is like you can do a lot. I was amazed by what I could do with Claude. And also like astral models and also the neon models. Like I haven't tried the neon ones, but I suspect them even now people are raving about them. I'll try it. My plan is to actually try them later today.
+
+But like generally it's like flip your mindset and just flip it to being ambitious. A lot of times when you say you can't do something, just like be like, what if and just go try. And I think you'll be surprised by how much you can go do. here, I'll send you the link to this one, Dexter. Or is that the one we're using? Okay. Let me open it. Sorry.
+
+@dexhorthy (24:22.808)
+I already have a ton in the other one. Can we use the other one?
+
+@dexhorthy (24:29.497)
+Yes, be ambitious. Here, I can take the screen share. I'm I'm I'm ready to show the thing I was gonna show.
+
+@vaibcode (24:34.777)
+Okay. Get me in here. So all right, let me finish my point really fast and let's get to it.
+
+@dexhorthy (24:37.688)
+All right. So I said definitely be ambitious. Also, I will add on, like be skeptical, also. Like continually challenge, like just because the model did a thing and it looks good from the outside does not mean it's perfect. Like you should always be asking the model to do a thing that you don't think it can do, especially in a new generation. I think this is from Simon Willison. It was like constantly like trying to push the boundaries, but also like don't just assume like be very skeptical. It was like trust but verify, right?
+
+@vaibcode (24:43.564)
+Yeah. Yeah, I agree.
+
+@vaibcode (25:05.442)
+Yeah, and like what I recommend is have your main chat thread have three jobs. Job number one is like drive sub agents.
+
+Job number true is show you show you things. And I I leave that very vague, but because it's really leading into what Dexha's saying about being skeptical. Why is this main chat thread showing me things? Because while the sub agents are doing things, this means downtime.
+
+And once you have downtime over here, that means you're just wasting a shit ton of time. And you're gonna get distracted. You're gonna go and you're gonna go on Twitter. You're gonna do other things. And what that's gonna lead to is when this model comes, yeah, you're gonna go start other agents, you're gonna go do things, but what that's gonna lead to is your brain is gonna leave the context window of what this main chat that was supposed to do. And then now you're when you come back, you're just gonna you're gonna do the same thing that we all do, which is we're gonna get lazy. You're gonna get lazy and you're gonna put next.
+
+@dexhorthy (25:44.868)
+You gotta go start other agents.
+
+@dexhorthy (25:58.192)
+gonna make your work harder. Yep.
+
+@vaibcode (26:02.658)
+Good enough, good enough. And it'll just make a lot of default decisions. So don't do that. Instead leverage is downtime to have the model to show you things. Yeah.
+
+@dexhorthy (26:09.91)
+Understand the problem, understand the solution, understand the state of the art. Yes, stay stay in sync with what the model knows. so that when it asks you a long-assed question of like, do you want to handle it this way or this way or this way? You actually know what the hell it's talking about.
+
+@vaibcode (26:17.965)
+And
+
+@vaibcode (26:24.227)
+Yeah. And this thing was actually stolen. This is not my creative thinking. Jared from Bun actually, in one of his tweets somewhere, he actually talked about these people, someone was asking him, like, what does he do? And this was a real unlock for me. He was like, I just randomly scrolled through the code. And I was like, Holy crap, that is so freaking genius. So like when you ask a model to be ambitious, it's going to be ambitious, but it's going to make a ton of mistakes. So while this thing is doing its own thing and making decisions in that downtime, you just
+
+@dexhorthy (26:38.596)
+Yep. Just look at shit.
+
+@dexhorthy (26:43.098)
+That's funny.
+
+@vaibcode (26:53.327)
+Start scanning random parts of it and start doing things. And then you like, and then what you do is along the way, you will discover a lot of log, important but not urgent tasks. Along the way of solving this task, you will come up with a lot of design things about how it can be better. And when you go do that, just pause and have the model like go solve all of those things, but just log them. And it's like, okay.
+
+I'm not gonna actually solve these, but I have a solution for this stuff. I'm just gonna write it down and the model can do this later after we get the whole thing working. And just tracking urgency is basically your task. Like what is urgent versus important? Because the model can't, at least today's models are not good at making that decision of important versus urgent. And then like you can do so much if you work on this loop.
+
+@dexhorthy (27:47.109)
+Yep. Okay. I agree. I wanna like kind of zoom out. I'm really glad you said be ambitious and do more sub agents. Basically, yeah, the the title of this episode is, and I know you probably can't stay for the whole thing, but I'm gonna do some live coding today. how we're shipping in the Opus 5.5 era. because some things are different, right? Like the models got a bit smarter, they're a little bit more autonomous. one thing that I think has become very popular. you see this in OpenAI, you see this in Cursor, you see this in Dots, you see this in Devon. I'm gonna show off how we think about it in factory today.
+
+but basically this model where you go one layer up. So in the old world you had like main chat and then it would drive, you know, N subagents. And these were basically like read only. Or like they were they they were not inner like they were non-interactive, right? Like in general, you don't in most harnesses, you don't really you're not intended to talk to the sub agents themselves. They're just kind of go off and do the thing, and then it would, you know, the sub agent would come back to the main chat with an answer, and then the main chat would talk to you.
+
+Right. and a th a pattern that I've seen that has become really, really common is actually like to have an orchestrator. and you can build this on any harness, you can do this with T mux and stuff, but then you have sub agents that are actually like top level chats.
+
+@vaibcode (29:04.298)
+Interesting. That's how you do it. Hm.
+
+@dexhorthy (29:06.755)
+Interactive. And then these sub agents still get use of the, you know, like you know, one shot. I'll call it one shot slash non-interactive subagents. but like the way I think about this is like in the old world where we would talk about RPI, and I'm gonna dig into kind of the the new RPI, as as we might call it, is you know, in the old world it was like research, and then you had to like then you know start a new session and say design.
+
+And the like output of the research would be some doc, right? Or like, you know, some doc doc plural that would go into your design and then the model would chat with you and then you would come out with a design doc.
+
+And then you would, you know, start another session and call another skill. So like this would be, you know, slash create research, slash create design. I'm talking about a very like specific opinionated way to do this. And then like, you know, slash create. I would call that an outline, but it was, you know, outline slash planning of like, hey, what order are we gonna do the work and like how am I gonna test it along the way? and then eventually you would go build it. So the new world is like so I had actually sketched out a a spec for like
+
+@vaibcode (30:07.373)
+Yeah.
+
+@vaibcode (30:10.989)
+What's the new world?
+
+@dexhorthy (30:16.643)
+Okay, how do we build like a JSON object that stitches all these together? but the new world is basically we take all of this stuff and we put it behind an orchestrator. And so the user just says, like, hey, here's all the skills and how they fit together. Like, go help me like run this pipeline. And so it's a lot less of like learning which skills to run and when do I start a new context window? The orchestrator kind of understands all of that. and
+
+@vaibcode (30:43.599)
+Can I ask a different okay, go ahead.
+
+@dexhorthy (30:46.692)
+No, go ahead. A ask a question. I there's there's there's like four layers to this, so I w I will keep moving, but
+
+@vaibcode (30:50.764)
+The r how often do you use specific skills now? I find that any specific skill I've nuked all my skills. I have no S skills, I have nothing integrated in I just I basically just use the raw model to produce really good docs along the way effectively.
+
+@dexhorthy (31:11.215)
+Yeah, so one of the things here is like if you look at most skill packs, I'm gonna go ahead and like share my whole browser or let's do the whole window at least. one of the things that's interesting here is like if you go to Matt Pocock Skills, he's got some awesome skills. I use them, I love them. where is the GitHub?
+
+@vaibcode (31:27.202)
+Matt Pocock. Yeah, he's got some awesome skills.
+
+@vaibcode (31:36.27)
+Skills that MD right there yeah.
+
+@dexhorthy (31:36.433)
+It's the first one. Okay, great. so there's a bunch of skills in here. And so there's like productivity. So there's like grill me. And this is a skill that is like, you know, ask me questions. Okay. I guess it got moved into this one. but it's like, hey, here's how to ask me questions. And then there's like, you know, writing for agents of like here's how to do writing. And then there's engineering stuff, like, you know, code review. And there's a skill here. I I think that this idea of having this like
+
+big bundle of like, you know, this skill pack. And like G-stack and P stack are also like similar. sorry, let me make these white. it like leans on the user a little bit to decide when to invoke all of these. And so I'm gonna show
+
+@vaibcode (32:15.363)
+Yeah.
+
+@dexhorthy (32:29.755)
+have I'm prototyping this stuff here. So if you want to see my private secret skill skill pile, it's it's here. But yes. Enterprise controls, my friend.
+
+@vaibcode (32:36.013)
+You made a new GitHub account? Why don't you just use your own GitHub account? What is wrong with you? You know tech No, I'm pretty sure GitHub has it illegal to have two GitHub accounts, but that's separate. No, I know, because of my one of my accounts got flagged once because I had two accounts.
+
+@dexhorthy (32:47.478)
+yeah, okay, buddy.
+
+@dexhorthy (32:53.497)
+Yeah, it's fine. There's also this is like an early like alpha version of what's also at GitHub.com slash human layer. So I know. Bro, I'm trying to get through a lot of content here. We're already 30 45 minutes in. so in here there is in the human layer skills too. I published this a little while ago. I sync these from time to time, but there's actually just one skill, which is you know.
+
+@vaibcode (32:58.358)
+No no I'm joking. I'm just giving I'm just giving you shit. I'm just giving you shit. Go on now.
+
+@vaibcode (33:08.776)
+Ha ha ha
+
+@dexhorthy (33:17.956)
+Here's how to here's what all the other stuff is. And then everything else that used to be skills is just reference files. And I think the idea is like when skills were first launched, there was a difference between, let's say you're in your context window, right? There was a big difference between like, you know, you have your system message and then the user says something. Let's get our colors here. and then the model would like use the skill, like the skill tool.
+
+@dexhorthy (33:50.529)
+and the the skill tool was like a magic thing. The like reference implementation for doing this in a harness was it would read your skill.md and it would actually inject it as a user message.
+
+@vaibcode (34:00.588)
+And
+
+@dexhorthy (34:05.936)
+plus base directory. So it would tell it where it was. So if it needed to find references and stuff. And the idea here was like the the naive way to do this before skills and like we actually built this by I built this by accident where you might just say like read instructions dot md and it would have a tool and it would just read the file.
+
+@vaibcode (34:22.403)
+Yeah.
+
+@dexhorthy (34:28.837)
+And this would come back as a tool result. and the idea was like the models were tuned to follow instructions from user messages. So if you had a skill with like, you know, 10 different like little things to do in it, like it was more likely to follow every single instruction more closely if you injected it as a user message versus if it was tool response content, basically.
+
+@vaibcode (34:55.33)
+Yes.
+
+@dexhorthy (34:55.556)
+This was like a little a magic, it wasn't complicated, but it was a magical thing in the harness. And I remember when this came out, I like, that's awesome. Because that's what I liked about slash commands, is like when you run a slash command, it inject the context of the command as a user message. And so it would follow all my instructions. Nowadays the models are smarter. And I don't think there's like unless you're doing like a thousand-step process, which if you are, you should rethink your process. It's actually fine to just literally like
+
+Tell it to go read. Like, I literally don't even install this skill sometimes. I literally just say clone that repo, read the skill file and do the stuff. And like Opus 5.5 and soul models can just do it. And so there's no more like. So I just give my orchestrator this RPI skill and I tell it like, go do this stuff. And then it's got other references too. Like I have this thing here for like writing. I think the writing of models has gotten now that they can do more, the actual I need them to be very, very good communicators and not like give me walls of bullshit.
+
+@vaibcode (35:32.909)
+Yeah.
+
+@dexhorthy (35:51.983)
+this is one that Kyle actually wrote that I I dropped in here. if you come in here, there's a couple other interesting ones. Cause you asked like, what do I actually put skills in? What do I actually use for skills? I use skills for things that the model anytime I'm working with a model and it doesn't do a thing that I like, I tell it, I make I I I make or update a skill. And so like this is one called shipping.
+
+@vaibcode (36:06.86)
+You make a skill.
+
+@vaibcode (36:10.85)
+That's so fascinating. I yeah, that's so fascinating. I have a totally different approach for this.
+
+@dexhorthy (36:17.308)
+so my challenge is like I'm now on a team of 50 people and I need to get code reviews on my stuff. And like I think they actually like the the code review culture at Factory is is pretty good. There's certain parts of the code base that are kind of like, yeah, just skim it and go, just like there was before AI. But there's other parts of the code base that we take a lot of care about, like the core agent loop and the harness and things like that. We are very, very like careful about where we make changes and where we add scope. and so this is my thing of like, okay, when you make a PR.
+
+We're actually gonna slice it up. We wanna make the PRs as small as possible because we want to optimize to make it easy for our human reviewers. If I send someone a 4K line PR, it's gonna take longer to get it merged, like exponentially longer than if I send them even, you know, 10 200 line PRs or 10, 400 line PRs. And so it's like, okay, when you make a PR, give the person the context of like every single thing that's going into this. And it's like, this is this PR and how it fits in the thing. So that that's the kind of thing I put in skills because I'm just like,
+
+@vaibcode (36:56.28)
+Yeah. Like t fifty lines. yeah, exactly. Yeah.
+
+@dexhorthy (37:13.647)
+The model didn't do that. I got tired of telling it that over and over again. I was like, people see this and they don't know what the fuck it's about. and then it's like use linear and track the slices as sub issues. And then there's like polish passes that need to happen, things like this. So, like, but again, all of this none of these are their own skills. It's literally one skill with every single thing that I'm anytime I tell an agent something three times, I just have a side chat where I'm like, okay, update and push the skills so that so that we don't this doesn't happen again.
+
+@vaibcode (37:19.266)
+You know it's
+
+@vaibcode (37:39.04)
+You know, you know, it's interesting. we have actually in some ways, like I do some of the stuff, but I have a slightly different approach and I think it's fascinating. It feels like what you do is when you encounter the model, you actually try and constrain the model in a really nice and reliable way so you can get the same pattern happening over and over again. And the thing that I've shifted my brain towards doing is like whenever the model doesn't do something right and I have to steer it, I just change how I work with the model.
+
+instead I changed me instead of the model instead of the harness or the model. And like some of the stuff by that what I mean is like I if I find certain phrasing works better the second time around, I just switch to using that phrasing every single time myself. And I'm sure you do that too, but I really like
+
+@dexhorthy (38:15.504)
+Of course.
+
+@dexhorthy (38:19.983)
+Yeah, some of these things are like very small, very small little things. I'm like, you know, give me I'll I'll just type, give me g give me a diff block to d explain this. And then it did it wrong and it did it again. But like now I'll just say, like, give me a show me block that explains this PR or explains this question you're asking me. And it's nice to have it's mostly like
+
+@vaibcode (38:25.804)
+Like the PR stuff makes sense.
+
+@vaibcode (38:31.535)
+That's cool.
+
+@vaibcode (38:37.964)
+Yeah. Yeah.
+
+@dexhorthy (38:42.498)
+Almost everything in my skills is now output templates. It's like how do I want you to communicate with me and how do I want you to write the things that other humans are gonna see? And part of that is code, but a lot of it is also writing.
+
+@vaibcode (38:47.168)
+Interesting.
+
+@vaibcode (38:53.344)
+I like that idea a lot to be honest. I think that way of like getting into communicating certain styles is very, very important. We've been I've been changing
+
+@dexhorthy (38:55.834)
+Yeah.
+
+@dexhorthy (39:00.58)
+The biggest bottleneck now is is again like there's the grilling and the interviewing and the interactive planning stuff that I think is still important. But there is also the the like how do I it's like how do I pull context out of the human as cleanly and painlessly and effectively as possible? And then once the work has been done, how do I pull context back out of the agent to the human in the most clean, low effort? Like reading a wall of Cloud Slop is
+
+@vaibcode (39:18.486)
+Ideally enjoyably.
+
+@dexhorthy (39:28.976)
+painful to me. I do it still a lot, but it's like, how do I make this as comfortable as possible, not just for me, but also like for the person I'm asking to take time out of their day to help me get something in.
+
+@vaibcode (39:40.493)
+And you know what's really interesting? There's actually a I build this internal slot meter for every person I communicate with about like how often do they send me something that's good versus bad? And the more often they send me something that's bad, I just don't read their stuff as much. I just literally put before I even op before I even open their links, is there a real thing for this? That's so funny.
+
+@dexhorthy (39:49.135)
+Yeah.
+
+@dexhorthy (39:53.147)
+This is in
+
+@dexhorthy (39:59.472)
+Slopmanifesto.com. I wrote this with the AI engineer speakers. It's like literally the agile manifesto, but for slop. And one of these things is like the more slop flying around a team, the more we lose the will to fight it. And so the more people sling slop, the less you just stop caring and then everything just gets worse because no one has the energy to review shit.
+
+@vaibcode (40:10.423)
+Yeah.
+
+@vaibcode (40:16.714)
+Exactly. Cause like what I've told is like I basically if for some people, like if they send me some stuff and like some people do all the time, which is I literally ping them like, did you read this yourself? did you re I actually specifically ask did you read a hundred percent of every word yourself? And it sounds like a really mean question, but it's like I think this is like I have to ask that question for some people and I don't have to ask for others.
+
+@dexhorthy (40:30.906)
+So this is a
+
+@dexhorthy (40:38.352)
+This is another one. It's like if someone sends you slop, tell them kindly and ask them to like fix it. and like admits that a lot of us have done this too and it takes time and it's learning. Yeah.
+
+@vaibcode (40:43.309)
+Yeah, exactly.
+
+Yeah. It's just a frequency. It it's also just a frequency. Like I think it's fine. Like the dashboards I showed earlier where I was showing like the metrics of the testing stuff, those are slop artifacts. Aaron vr d deliberately made slop artifacts. But those were shared with the context of he vibe coded an experiment was just to showing a point. And like as long as he prefaces that with the message of
+
+@dexhorthy (41:08.622)
+Yep. So
+
+@vaibcode (41:12.473)
+Hey, this is a vibe-coded slop artifact, but it's cool. Here's what I want you to take away from this. Here's the output I want you to have when you read this. I can go through and skim it with that same exact mindset.
+
+@dexhorthy (41:23.172)
+Yeah. So I want to talk through a little bit more of like basically like again. So we have this orchestrator, it pulls in the single skill, it knows how to do this whole RPI flow. And the other really cool thing that I think is important to this that is like not out of the box and is like a little bit non-trivial to build is this idea we call like automations. and automations is basically the simplest version of an automation is like send a message to agent or the orchestrator.
+
+On cron, you know, on some cron string.
+
+with content, right? and so this is kind of like your poor man's Ralph loop. This could be wake up daily and check what PRs I need to review. This could be, you know, every 30 minutes like check the PR status. But it it's a way to basically build something deterministic outside of the agent loop that will wake it back up. and there's other versions of this like you know, when a GitHub PR review comes in, like send the you know webhook object.
+
+@vaibcode (42:27.299)
+Yeah, th i you're basically building a trigger. Like what is a triggering system? Like what causes the trigger? Is it a cron? Is it a reaction to something else that happens? Is it event driven? Like it makes sense. Yeah.
+
+@dexhorthy (42:36.686)
+Yep. And so and so what I've been able to do with this is basically like I will start, I will do planning, and then once we're in design, I will actually have this thing fan out like a in we use linear, but basically like draw the slices in linear of like ticket one dot dot dot. And then it's like one point one is this, one point two is this. So all the slices become reflected in our tracker.
+
+And then as the agent is working, the orchestrator's job is to keep the tracker up to date and say, 1.2 came out to like 4K lines. 4K lines. So we're gonna split that up into 1.2.1, 1.2.2. So it's it's all about like how do you how do you ship faster? Well, you ship faster by doing it in smaller pieces. there is a there is of course like a failure mode there where you're like shipping things where someone's reviewing is like, I don't even have enough context from this PR to know.
+
+If this is the right thing or what it's going to touch or what it's going to impact. So there's a balance here. but I'm gonna pop open I just wanna kind of like show you like how this looks in like how I've been working lately. So there's our whole screen. So I started an RPI. So the thing I wanted to build, actually, I will let me go back to the Excalibur real quick. The thing I wanted to build was basically something that we do live every day, which is to take a like voice stream.
+
+Not every day, but we do on this podcast manually and then like put that into an app, some app or pipeline.
+
+that then would like basically update
+
+@dexhorthy (44:15.234)
+Update like an Excala, some kind of drawing. And so I started like trying to system design this out. And I was like, okay, I need to do this with an agent because there's all kinds of stuff of like, okay, we have like chunk one and then we kind of want it like chunks with overlap, chunk two, and the core loop is like you have a some chunk that comes in, and that comes in with you know.
+
+I guess so I'm I I'm like designing this live. So what else I would put in is like what is the current diagram? What is like the conversation so far? Yeah. Yeah.
+
+@vaibcode (44:48.312)
+So I I I Dex, Dex, Dex. I'm gonna I'm gonna pause you really fast. Describe the problem again really fast, just to catch everyone up. What is the problem? What what are we trying to do?
+
+@dexhorthy (44:55.097)
+Yeah, yeah, yeah. So like we're sitting on this show and I manually transcribe everything we talk about into diagrams. And like it's a nice way to convey it. I want to be able to be sitting with you riffing with a voice recorder on, or sit in a meeting with my team, and everybody's different people are talking, different people are having ideas. The the conversation moves from topic to topic. And I want at the end of the conversation to have a diagram that shows everything we talked about and how they relate and the mind map and action item.
+
+and like all the stuff that that all the decisions that were made, all the open decisions that need follow-ups. and the next the next level is like increment it live as we're talking.
+
+@vaibcode (45:24.364)
+Great.
+
+@vaibcode (45:29.462)
+Yeah, we want to take a live conversation.
+
+@vaibcode (45:35.138)
+Yeah, I want to take a live conversation and basically build the perfect whiteboard for it.
+
+@dexhorthy (45:39.396)
+Yeah, have the have the AI draw out the whiteboard as we go. And so the idea is like you would chop these up into, you know, like, I don't know, like 10 second chunks. and so you would have the the the latest chunk, the conversation so far, the current diagram, and the model would output like a tool call update diagram that like basically makes a bunch of changes to to what it should be. Either outputting the new end state or outputting code mode to make the changes.
+
+@vaibcode (46:06.635)
+Is
+
+@dexhorthy (46:09.06)
+and then that gets applied and you see it live in the in the in the UI.
+
+@vaibcode (46:13.248)
+Is this the thing you're gonna be building today?
+
+@dexhorthy (46:15.544)
+So this is the thing I started building today. So here I have a what like in in factory these are called
+
+@vaibcode (46:21.268)
+And then where where are we at with this today?
+
+@dexhorthy (46:25.459)
+I literally was having a bunch of technical issues. So I just started it and it is working on the let's see. I am on the research I am on the research phase of RPI. And so I can come in here and I can look at the files and I can come and see like, okay, cool. Like we did some research. we have the actual like here's all the prior art shit of like how things work and like how Excalibral works internally.
+
+@vaibcode (46:32.215)
+Okay, so you it's awesome. So we just started off the test.
+
+@dexhorthy (46:55.152)
+And the element sked skeleton. And then there's a bunch of stuff here. It's like here's how you merge stuff. I think I had it go read some like voice agent stuff. Yeah, code mode. How does code mode work? I I basically just gave it a prompt of like a bunch of shit to go learn. This is a Greenfield project, so our research is not go learn how the code base works. It's a lot more like go figure out what what exists today.
+
+@vaibcode (47:18.86)
+What's what apps and subsystems you can use as a part of this project to be successful. Yeah. I have an I have an idea. I think I think this research will probably take some time. So why don't we let the research in the design phase where we at?
+
+@dexhorthy (47:24.546)
+Exactly. Like what are the what are the patterns that we can follow? Yeah.
+
+So the research is done.
+
+sorry, I also had like a meta agent that was let's see, asking me for something. But go make the PRD now. so again, this is going to now go write a like here's how the thing works. PRD is product requirements doc. We've talked about this before on the show. but it's it's like, hey, okay, cool, like let's align on what we want this thing to look like.
+
+And then after that we go into like, okay, cool, what's the architecture and the tech design basically? but this orchestrator is gonna go launch a new agent to actually go do that PRD flow. So I never have to invoke like the slash command skills anymore. I just tell the orchestrator we're doing an RPI and it's gonna come through and like read all the references and read the research and go start working on stuff until it's ready for me to review.
+
+@vaibcode (48:06.679)
+Nice.
+
+@vaibcode (48:24.376)
+So what do you do in the meanwhile? No well what do you typically do in the meanwhile though? You just wait and usually paralyze tasks?
+
+@dexhorthy (48:24.536)
+While that's going, I do have another thing I can share that is I'm doing differently now but w
+
+@dexhorthy (48:32.204)
+Yeah, I mean I have too many things going right now. If I was in my like, you know, factory account, I'd have like seven of these, which I would I would prefer to only have like two large things going in parallel at a time and just focus. but I also have some of these like some of these are like prod there's a couple sorry, go ahead. Yeah. Yeah.
+
+@vaibcode (48:34.678)
+That's fair.
+
+@vaibcode (48:44.311)
+Yeah.
+
+@vaibcode (48:48.014)
+That's such a so can I ask you a couple of questions about that workflow that you have, where you have a lot of stuff running in parallel? I'm curious, do you feel like when you say you do a lot of these smaller tasks in parallel versus like two large tasks, was that an active choice that you made or was that one that's being passively made, do you think? It's like
+
+@dexhorthy (49:06.362)
+That was like priorities change and then the thing you were working on becomes lower priority and you slot something new on it.
+
+@vaibcode (49:13.377)
+Okay. That's kind of what I feel. I realize for me one of the decisions that I've had to make now more actively is like exactly what tasks I'm taking on in any given moment. I before I think I just like I just slop fest and I just keep doing it. But it's made a huge decision for me of like, shit, now I have to like what I choose to work on is the most important decision I make every day.
+
+@dexhorthy (49:34.106)
+Yep. Yep. I I I agree with you, man. It's priorities of are more important than ever. I also
+
+@vaibcode (49:40.16)
+What Yeah What's your max parallel number that you've you're able to do now? I know before you used to say two or three, but it sounds like the number is way more now.
+
+@dexhorthy (49:51.448)
+No, I I think I think you can only seriously do two or three things, especially if you're like also jumping on meetings and talking to customers and things like that. Like it's mighty be like one. but things break and there's bugs and you gotta go triage and you gotta figure out. So I have a whole other framework that I probably don't have time to get into that is like how I like manage a rolling inbox and like top items list, but I don't think we have time for that today. I would you like to hear how I'm doing planning nowadays? So
+
+@vaibcode (50:07.682)
+Okay, I was
+
+@vaibcode (50:12.502)
+Mm-hmm.
+
+@vaibcode (50:18.476)
+Yeah, show me.
+
+@dexhorthy (50:20.952)
+For whether it's tech design or product design. I got I I got this from Lucas Meyer. So Lucas Meyer, it's called L Plan.
+
+@vaibcode (50:33.913)
+Good luck. you might want to put them quotes.
+
+@dexhorthy (50:34.484)
+@dexhorthy (50:37.784)
+Yeah, I think it got. so this is, I think an older version of this, but I kind of adapted this. This is in the this is in our skills now. But basically the idea is I'm not gonna go, I'm just gonna talk about what this means, but this is something he came up with where like the old flow was like ask for a thing. You have some kind of context building, whether it's like formal research or the model just reads a bunch of things, reads a bunch of files, and then it's like
+
+@vaibcode (50:51.202)
+Yeah, just TL the army.
+
+@dexhorthy (51:07.514)
+Question one, question two, and you're sitting there asking questions, and every question kind of looks like this. It's like, how do you want to X? Option A, Option B, Option C, Recommendation, etc. And like it feels at the beginning, it feels very productive to have the model like pulling context out of you, like one step at a time. It's easy way to focus and make one decision at a time. But at the end of the day, it's like, yeah, I agree with.
+
+80% of the recommendations. Why am I waiting like, you know, 60 seconds for an inference turn in between, you know, 30 to 60 seconds for an inference turn in between every sometimes faster, but a lot of times there's like some thinking and some and some working, and it's got to like flush your decision to a doc. and so it was like basically what Lucas came up with was this idea where like instead of this interview phase, you have you just generate the plan doc. The model just writes it.
+
+And it basically writes each decision in as if as if it's already been made, like with the default recommendation. So it's like decision one, and then it's like an outline of what we do. with the code snippets and all of this, like show me stuff, whatever it is. And then what he'll do is he'll put like you know, alternatives why not X, you know, why not Y, right? And this becomes like a collapsed like details tray.
+
+Which you can then like expand, but you don't read it. If you like the first decision, you just read it and then you keep reading down to decision two. Right. and then this one has alternatives and stuff. And so, and then the the cool part of the cool part of this prompt is that it's basically if I say, you know, if I so I'm reading this, and let's say I don't like the answer to decision three, and I go in here and I look and I say, like, actually I want like alternative, I want alternative B.
+
+@vaibcode (52:43.319)
+Interesting.
+
+@dexhorthy (52:58.779)
+Here, or I say, like, none of the alternatives work easy either, or like I need to understand this better. Basically, if I come into the chat and I say, like, for D3, let's do, you know, ABC instead, the model interprets that as like, cool, decisions one and two are more or less accepted unless unless something else happens. But everything else beyond this is invalidated. That's like the interesting part of the prompt is the UX here.
+
+@vaibcode (53:02.531)
+Yeah.
+
+@vaibcode (53:23.33)
+That's
+
+Wait, so okay, so the problem that I have I so I tried this. I actually tried this a lot. And I ran into this exact same problem where when I start commenting on things and I comment about decision d three when there's like seven, eight, nine below all the way down below it as well, the model sometimes assumes that everything else is fine too. So I've actu
+
+@dexhorthy (53:45.08)
+Yeah, it fixes three, but it doesn't fix everything else.
+
+@vaibcode (53:48.424)
+Or it assumes that I was okay with everything down below it, even though I haven't read it yet. So I've actually had to slow myself down and not press enter unless I've commented on all of it.
+
+@dexhorthy (53:53.668)
+Exactly.
+
+@dexhorthy (53:58.116)
+Yeah. And so this is like a guide for the model on how to interpret the human's responses. Like except, but I don't know about four, is like accepts one, two, and three, assumes you have not read five, six, or seven.
+
+@vaibcode (54:05.718)
+I see. Yeah. That's cool. That's cool. Okay. This is cool. You're basic this is cool. No, this is
+
+@dexhorthy (54:11.406)
+Yeah. This is like the important high leverage. It's not that like cool a piece of technology, but it's like when we talk about how do I max maximize like the human's ability to make good decisions without wrangling with the implementation details of like what's physically in the document.
+
+@vaibcode (54:25.345)
+Okay. So I have a second follow-up to this. Here's what I run into again. When decisions when I'm making seven decisions at once and I go down a path of decision three, what ends up happening that I run into is like decisions four, five, six end up getting forgotten or not given as much care by the time I've resolved decision three. If I do it in the same thread.
+
+@dexhorthy (54:44.698)
+Well, that's the idea is also there's prompting in here is like that this must be top down. Like any decision any later decision can only depend upwards. Decision two cannot depend on decision four.
+
+@vaibcode (54:57.048)
+That's interesting. I'll have to try this kind of prompting. No, no, no. I yeah, 'cause what I end up having to do is I just spin up side tasks. If I know I'm gonna have more than two chats about any one decision, I have to spin up a side task. Just only about that decision.
+
+@dexhorthy (54:57.796)
+I know that doesn't solve it, but yeah.
+
+@dexhorthy (55:07.012)
+Well and that's what's also what's nice about this orchestrator flow is that like if I'm like, Okay, for D three I actually wanna do I need to go research X, the orchestrator can just like fire off a new agent to like, you know, research D three.
+
+@vaibcode (55:21.208)
+That's cool.
+
+@dexhorthy (55:23.288)
+Alternatives and how BAML does it or whatever. that can just be a new agent that goes and I'm still just one on one chatting with the orchestrator with a fairly clean context. And so I make decisions in the main chat, or I might comment on a doc, but the idea is like the main conversation happens with the orchestrator, but all of the work happens in these in these sub agents. And at any given point, I might actually step into one of these agents. Like, so we have this agent that's doing the PRD, it's asking me questions. And let's see.
+
+@vaibcode (55:44.472)
+That's neat.
+
+@vaibcode (55:51.993)
+How often do you how often do you step into a sub agent? What's the percentage of percentage of
+
+@dexhorthy (55:56.017)
+if there's a lot of back and forth planning, I will I will absolutely step into a sub agent.
+
+@vaibcode (56:01.634)
+But what percentage of tasks cause you to step into a sub agent?
+
+@dexhorthy (56:08.016)
+Sorry, I have a I'm on a trend right now where I don't like don't don't like ask user questions. So if I'm interviewing and making a bunch of decisions, I will jump into the subagents. If I have a large task where it's like I just want to polish one PR, I'd say about 80% of my chatting happens with the orchestrator. because I wanted to have kind of the overall context of the status of everything else. These agents will also message the orchestrator though. So like when it's done, I believe, yeah, so it'll send a message back to the orchestrator.
+
+@vaibcode (56:08.522)
+On my current task.
+
+@vaibcode (56:24.674)
+Okay. Yeah, I think I'm
+
+@vaibcode (56:29.974)
+Kind of similar.
+
+@vaibcode (56:33.774)
+Yeah. Every sub agent. Yeah.
+
+@dexhorthy (56:37.941)
+the sub agents have a tool that they can use to message the orchestrator. this has been an interesting like hill climbing eval thing like how do we get the like verbosity of this correct and things like that. But
+
+@vaibcode (56:41.582)
+Yeah, and I think every time they hit like a stop point.
+
+@vaibcode (56:50.338)
+That's cool. I think it's it's
+
+@dexhorthy (56:50.452)
+but yeah, now we're here, I will jump in and like do the L plan thing from RPI.
+
+@dexhorthy (57:00.432)
+Decision header, sorry. some some of my skills are still competing. Like the main PRD skill is still like write this doc one thing at a time. but I also have steering to like make all the decisions and then I will review them.
+
+@vaibcode (57:14.327)
+It's really I must say it's pro it's pretty validating that we both independently came to approximately the same ratio. Like twenty percent is in sub agents. But it is it is non zero and I think more people should be doing that. very few people actively read the sub agent tasks.
+
+@dexhorthy (57:19.898)
+Yep. Yep. Yep.
+
+@dexhorthy (57:25.572)
+Yeah. And then the other cool thing that we just shipped that I'm really excited about is I can now comment on this and I'm like, let's make this focused on multiplayer meetings. So this so it goes as a comment. So I can tell this one to check comments on the dock. They all have tools to like list the comments, but I can also just like inject this as a steering message.
+
+@vaibcode (57:31.182)
+That's funny. Nice.
+
+@vaibcode (57:36.438)
+What agent does this go to? Does this go to a sub agent or
+
+@vaibcode (57:45.006)
+I see. Okay.
+
+Yeah.
+
+I see. Got it. Nice.
+
+@dexhorthy (57:52.964)
+And so this will come in. And what's actually really cool is I haven't I don't think I have a demo for this. I did invite you to this Oregon factory, but if you wanted to, you could jump into this chat and like prompt the orchestrator with me. Cause the other cool thing that this allows is all of these agents, the orchestrator and each of the sub agents, run in their own like cloud sandboxes. And so you can steer it to run co located agents. But the idea here is you can kind of scale your compute. This all runs, it keeps running. If I close my laptop, all that all the like.
+
+@vaibcode (58:03.448)
+Nice.
+
+@vaibcode (58:21.368)
+Though my build though my though my build times would be atrocious cause it's gotta do a clean build if it's on a new machine every single time. Unless they use like NFS behind the scenes.
+
+@dexhorthy (58:30.753)
+so what you can do is you can bake you can bake a base image and then have it launch from those. So actually I have an agent here that is running through the running through the actually
+
+@vaibcode (58:31.982)
+Does it have like a shared file system?
+
+@dexhorthy (58:44.726)
+creating a specific environment. So you can you can seed it with a cache and you can rebuild that environment every hour if you want to. this is the default one, but like I can edit this and give it like a a setup script. So you can give it scripts and and and and Androids can manage these for you. I'm still I'm still wrapping my head around this part. but it in mine it like installs all the skills, clones all the repos. Say what?
+
+@vaibcode (59:04.046)
+I mean cloud compute is the way to go, by the way.
+
+@vaibcode (59:09.23)
+Cloud computer is the way to go. We should do an episode on like why cloud computer is really good for this kind of stuff. I think people would really
+
+@dexhorthy (59:14.82)
+Like the system design and all the hard problems and like building cloud agents. Yeah. I think that would be fun.
+
+@vaibcode (59:18.964)
+No, not even that. I mean, not even that. Just like why it's important. Like there's like a architectural thing that people like there's a huge burden to setting up cloud agents for your org. If anyone's ever tried to go do it, you'll you'll probably quickly run into like all the logistical problems, the security problems, the cost problems, the like all the shit that you typically in the process problem. You gotta teach your engineers something new. And there's and like how do you overcome that?
+
+And like, is it worth even like doing this process change? And what does that look like? And look what the upside is. I think like people need to really think about this stuff. I I actually just recently bought some MacBooks to deploy us to our own personal cloud that we can have. That's just like, hey.
+
+@dexhorthy (59:52.911)
+Yeah. So anyways
+
+@dexhorthy (59:59.556)
+You have a a cloud in the office that runs all your 'cause that was how A A T B worked, right?
+
+@vaibcode (01:00:02.018)
+That's the goal. Yeah, but we want to change it now to be like, I don't ever want to run anything on my machine. Now that now that our runtimes are running all the time, I never want to run anything on my personal machine. I only want things running on cloud machines at all times. And I want this cloud machine saturated a hundred percent of the time.
+
+@dexhorthy (01:00:16.516)
+Yep. And
+
+You want them always running. Well, what's all also nice about this is like the thing of like how do you sleep a machine and then wake it back up and then if it went to sleep with a like ask question pending, like how do you make sure the question gets like the tool gets recalled and the question gets re asked and that kind of stuff. There's all kinds of fun things.
+
+@vaibcode (01:00:33.652)
+yeah, there's also like a really interesting system design of how do you design this in a good way.
+
+@dexhorthy (01:00:38.232)
+Yeah. So I yeah, I don't think we have time to dig into that. But yeah, the the the whole cloud agent thing, I'm I'm really stoked. I've been I've been using it a ton and yeah, waking things up. So yeah, so here's our PRD. It's like okay, the web page is the meeting room, a link, a voice call, one shared board. Nope. I'm just gonna make a web app.
+
+@vaibcode (01:00:47.8)
+It's been
+
+@vaibcode (01:00:59.959)
+It sounds like you're gonna Okay, it sounds like you're gonna be coding for most of it. I actually do have to hop. It's been about an hour and a half, sadly. But I think I'll leave the stream on. People can definitely keep watching. I think it's gonna be really interesting to see how exactly how you're coding and what you're gonna be building out here. I might hop in later in the day after my calls. I've got I've just got one I've gotta prep for it at twelve thirty.
+
+@dexhorthy (01:01:06.223)
+Yeah.
+
+@dexhorthy (01:01:12.687)
+Yeah.
+
+@dexhorthy (01:01:20.154)
+Yeah. Okay, cool. So it actually made a little it made a little mock up of of like what this app might look like.
+
+@vaibcode (01:01:23.534)
+Yeah. And I and I think this just boils down to like what again, like why the Show Me skill is really interesting because like the Show Me skill is like it lets it know this kind of stuff is like exists. Even if it doesn't use it, just knowing that the k user has a care for how visual content is displayed is relevant.
+
+@dexhorthy (01:01:39.758)
+Yeah. cool. I actually why don't why don't we end the stream here? I think I I think I got out what I wanted to get out. I will I will maybe just do another live stream later of of me actually like working through and and building something because we got we got a little delayed here and I know you gotta run. So why don't we just recap it and we'll call that the episode.
+
+@vaibcode (01:01:59.054)
+Alright, you wanna do the recap, you want me to do it?
+
+@dexhorthy (01:02:01.232)
+sure, I can do it. okay, cool. So today on AI That Works, we covered how we're shipping in the Opus 5.5 era era changes to how smarter models and new workflows have changed the way me and Vibov work. Vibov's one is be ambitious. My take is also be skeptical. We both agree here. and the main thing here is like to be more ambitious, you need to have a main chat that can drive sub agents. and then to be skeptical, you need to actually like
+
+@vaibcode (01:02:03.949)
+Go for it.
+
+@dexhorthy (01:02:30.153)
+One, you should understand what it's doing. And so you can have the main chat show you things that are happening as it's as it's going on. Maybe log like important but not urgent tasks, but to give you something to do in the downtime so you don't start multitasking, because multitasking is what actually like degrades the quality of your work. we go into the orchestrator and sub agent design that a lot of tools are using, including factory.
+
+And talk about like why skills, we're not using skill packs as much because reading a tool result is almost as good as injecting a user message at this point with today's Frontier models. and then we wanted to design for a little voice agent that we want to build that like watches a live recording and then turns it into updated live drawing diagrams, sort of like what we've been doing by hand on this show forever. and then we talked about Lucas Meyer's L plan system, where rather than having the model interview you.
+
+We go through the design and the alternatives are kind of collapsed and hidden and how to work with a model in a way where you're not constantly just answering questions when most of its default answers are correct and you only need to interfere on certain things. So really fun. We dug into some some how I use this stuff in factory and orchestrator and how you can get started with the new version of RPI, which is just one skill. and Vibov also shared, I don't have the live thing, but he shared a ton of cool shit they're doing at BAML about how to
+
+He shared a c ton of cool stuff they're doing at BAML on analyzing their test usage and figuring out how to only run certain tests in CI based on what code change. Super exciting episode. I'm really excited to get into it. let's do it.
+
+@vaibcode (01:03:56.355)
+Cool. All right folks. Thank you for joining today. Dex always a pleasure.
+
+@dexhorthy (01:03:57.998)
+All right. Real quick note for the editors. I did I did swear in the in the intro, which I know YouTube doesn't like, so I did do a recut. So just I the this two me saying the same thing twice, just cut out the first one, so that we can be PG in the first five minutes of the video. Not that we're monetized, but I assume it'll hurt our engagement.
+
+@vaibcode (01:04:11.063)
+Ha ha.
+
+@vaibcode (01:04:14.67)
+All right, that's a good point.
+
+yeah, probably. man, engagement farming.
+
+@dexhorthy (01:04:19.918)
+Anyways, this'll go up this will go up on YouTube on Friday. and we're working on getting Spotify as well, so stay tuned for Spotify.
+
+@vaibcode (01:04:28.558)
+Alright, Dex, always a pleasure. This is really cool. Thanks for sharing, man. This is cool. Nice work. I really like this.
+
+@dexhorthy (01:04:29.04)
+Thanks everybody. See ya.
+

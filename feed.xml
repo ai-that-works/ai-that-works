@@ -16,8 +16,32 @@
       <link>https://github.com/ai-that-works/ai-that-works</link>
     </image>
     <atom:link href="https://github.com/ai-that-works/ai-that-works/raw/main/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sun, 22 Nov 2026 10:52:34 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 28 Nov 2026 02:19:16 GMT</lastBuildDate>
     <ttl>1440</ttl>
+    <item>
+      <title><![CDATA[No Vibes Allowed: Shipping in the Opus 5.5 Era]]></title>
+      <description><![CDATA[This week on the podcast we're hosting another session of our No Vibes Allowed series, where we skip the slides and write real code, live, to solve real problems. In this episode, Dex will demo his new workflow for shipping software in the era of Opus 5.5. He's shipped a lot of new work lately, with new skills and a new setup. This is a good chance to watch someone at the forefront of this work use these models day to day.
+
+Meet the Speakers🧑‍💻​
+
+​​Meet Vaibhav Gupta, one of the creators of BAML and YC alum. He spent 10 years in AI performance optimization at places like Google, Microsoft, and D. E. Shaw. He loves diving deep and chatting about anything related to Gen AI and Computer Vision!
+
+​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
+
+
+Watch: https://www.youtube.com/watch?v=a3T9Du5rOvo
+Code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-24-no-vibes-opus-5-5
+Event: https://luma.com/no-vibes-opus-55
+
+AI That Works - Weekly conversations about production-ready AI engineering with live coding and Q&A.]]></description>
+      <link>https://www.youtube.com/watch?v=a3T9Du5rOvo</link>
+      <guid isPermaLink="false">aitw-082</guid>
+      <pubDate>Tue, 24 Nov 2026 18:00:00 GMT</pubDate>
+      <category>Technology</category>
+      <category>Software Engineering</category>
+      <category>Artificial Intelligence</category>
+      <enclosure url="https://www.youtube.com/watch?v=a3T9Du5rOvo" type="video/youtube" />
+    </item>
     <item>
       <title><![CDATA[Emergent Behaviors with Gabe Orlanski, creator of SlopCodeBench]]></title>
       <description><![CDATA[We've done a few episodes on our favorite benchmark, SlopCodeBench, and this week we'll be joined by Gabe Orlanski from UW Madison to chat about what's underneath the data: new slop patterns that are emerging or worsening in modern models like Fable and Opus 5.5, and how agents do at building and designing libraries and interfaces. We'll also dig into what Dex and Vaibhav are doing to fight slop, and some go-forward ideas for Fable 5.2.

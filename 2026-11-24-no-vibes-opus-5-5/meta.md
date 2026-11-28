@@ -12,10 +12,11 @@ description: |
 event_link: https://luma.com/no-vibes-opus-55
 eventDate: 2026-11-24T18:00:00Z
 media:
-  url: https://www.youtube.com/playlist?list=PLi60mUelRAbFqfgymVfZttlkIyt0XHZjt
+  url: https://www.youtube.com/watch?v=a3T9Du5rOvo
   type: video/youtube
 links:
   code: https://github.com/ai-that-works/ai-that-works/tree/main/2026-11-24-no-vibes-opus-5-5
+  youtube: https://www.youtube.com/watch?v=a3T9Du5rOvo
 season: 2
 episode: 82
 event_type: episode

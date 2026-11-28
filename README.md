@@ -12,9 +12,9 @@
 
 <div align="center">
 <h2>🦄 <strong>Next Episode</strong></h2>
-<h3><strong>No Vibes Allowed: Shipping in the Opus 5.5 Era</strong></h3>
-<p><strong>Tuesday, November 24, 2026 at 10 AM PST</strong></p>
-<p><em>This week on the podcast we're hosting another session of our No Vibes Allowed series, where we skip the slides and write real code, live, to solve real problems. In this episode, Dex will demo his new workflow for shipping software in the era of Opus 5.5. He's shipped a lot of new work lately, with new skills and a new setup. This is a good chance to watch someone at the forefront of this work use these models day to day.
+<h3><strong>Building Evals on Production Data</strong></h3>
+<p><strong>Tuesday, December 1, 2026 at 10 AM PST</strong></p>
+<p><em>We’ve done a ton of deep dives on eval design and eval frameworks, today we’re gonna talk about practical examples for taking production data and using to design and extend your eval system.
 
 Meet the Speakers🧑‍💻​
 
@@ -23,7 +23,7 @@ Meet the Speakers🧑‍💻​
 ​Meet Dex Horthy, founder at HumanLayer and coiner of the term Context Engineering. He spent 10+ years building devops tools at Replicated, Sprout Social and JPL. DevOps junkie turned AI Engineer.
 </em></p>
 
-<a href="https://luma.com/no-vibes-opus-55" target="_blank">
+<a href="https://luma.com/evals-on-prod-data" target="_blank">
 <img src="https://img.shields.io/badge/🦄_REGISTER_NOW-Join_Live_Session-ff4444?style=for-the-badge&logo=calendar" alt="Register Now">
 </a>
 
@@ -124,12 +124,12 @@ Meet the Speakers🧑‍💻​
 <tr><td>
       <div style="padding: 8px 0;">
         <div style="margin-bottom: 2px;">
-          <span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">UPCOMING</span>
+          <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold;">PAST</span>
         </div>
         <div style="color: #666; font-size: 13px; margin-bottom: 4px;">2026-11-24</div>
         <div style="font-size: 16px; line-height: 1.3; margin-bottom: 6px;"><strong>#82</strong>: No Vibes Allowed: Shipping in the Opus 5.5 Era</div>
         <div style="font-size: 13px; color: #666;">
-          <a href="./2026-11-24-no-vibes-opus-5-5">code</a> • <a href="https://luma.com/no-vibes-opus-55">register</a>
+          <a href="https://www.youtube.com/watch?v=a3T9Du5rOvo">watch</a> • <a href="./2026-11-24-no-vibes-opus-5-5">code</a>
         </div>
       </div>
     </td><td><div style="padding: 8px 0; line-height: 1.5;">This week on the podcast we're hosting another session of our No Vibes Allowed series, where we skip the slides and write real code, live, to solve real problems. In this episode, Dex will demo his new workflow for shipping software in the era of Opus 5.5. He's shipped a lot of new work lately, with new skills and a new setup. This is a good chance to watch someone at the forefront of this work use these models day to day.
